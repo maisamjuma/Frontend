@@ -4,11 +4,11 @@ html, body {
     padding: 0;
     height: 100%; /* Ensure body takes full height of viewport */
     background-color: #ffffff; /* Set background color to white */
-    overflow-x: auto; /* Allow horizontal scrolling */
+    overflow-y: auto; /* Allow horizontal scrolling */
 }
 
 /* Container should not have a fixed width */
-.container {
+.backend-container {
     padding: 0;
     margin: 0;
     margin-left: -240px;
@@ -16,10 +16,12 @@ html, body {
     min-height: 100vh; /* Minimum height to fill the viewport */
     background-color: #ffffff; /* Ensure background color remains white */
     box-sizing: border-box; /* Include padding and border in element's total width and height */
+
 }
 
+
 /* Allow status-container to extend with content and wrap items */
-.status-container {
+.backend-status-container {
     display: flex;
     flex-wrap: nowrap; /* Prevent items from wrapping to the next line */
     align-items: flex-start; /* Align items to the start of the container */
@@ -27,84 +29,177 @@ html, body {
     justify-content: flex-start; /* Align items to the start (left) */
 }
 
-/* Status boxes and button styles */
-.status-box {
+/* Status boxes styling */
+.backend-status-box {
     padding: 20px; /* Increase padding for larger boxes */
     font-size: 18px; /* Increase font size */
     border: 1px solid #ccc;
     border-radius: 8px;
     background-color: #f9f9f9;
     min-width: 200px; /* Minimum width to ensure boxes are larger */
-    min-height: 50px; /* Minimum height if needed */
     display: flex;
+    flex-direction: column; /* Stack items vertically */
+    gap: 10px; /* Space between items */
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+    position: relative; /* Position for dropdown menu */
+}
+
+/* Header for status box */
+.backend-status-header {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
+    font-weight: bold;
+}
+
+/* Style for the status title */
+.backend-status-title {
+    font-size: 18px;
+}
+
+/* Menu dots style */
+.backend-status-menu {
+    cursor: pointer;
+    font-size: 20px;
+}
+
+/* Dropdown menu styles */
+.backend-dropdown-menu {
+    position: absolute;
+    top: 40px; /* Adjust based on the height of the status-header */
+    right: 10px; /* Adjust based on the padding of the status-box */
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    z-index: 1; /* Ensure dropdown is above other elements */
+    display: flex;
+    flex-direction: column;
+    gap: 5px; /* Space between dropdown items */
+    width: 150px; /* Set a fixed width for the dropdown */
     box-sizing: border-box; /* Include padding and border in element's total width and height */
 }
 
-.add-status-button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    background-color: #ff69b4;
-    color: white;
+/* Dropdown item styles */
+.backend-dropdown-item {
+    padding: 10px;
     cursor: pointer;
-    display: inline-flex; /* Adjust to fit the text size */
-    align-items: center;
-    justify-content: center;
-    white-space: nowrap; /* Prevent text from wrapping */
-}
-/* Style for the form container */
-.add-status-form {
-    margin-top: 10px; /* Space above the form */
-    padding: 10px; /* Padding around the form content */
-    border: 1px solid #ccc; /* Border for the form area */
-    border-radius: 4px; /* Rounded corners for the form area */
-    background-color: #e0e0e0; /* Background color of the form area */
+    border-radius: 8px;
+    transition: background-color 0.3s ease; /* Smooth transition for background color */
 }
 
-/* Style for the input field */
-.status-input {
+.backend-dropdown-item:hover {
+    background-color: #f0f0f0;
+}
+
+/* Task container styles */
+.backend-tasks-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Space between tasks */
+}
+
+/* Task box styles */
+.backend-task-box {
     padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 4px;
-    display: block; /* Make the input field take full width */
-    width: 100%; /* Full width of the parent container */
-    box-sizing: border-box; /* Include padding and border in element's total width */
-    margin-bottom: 10px; /* Space below the input field */
-    background-color: #f0f0f0; /* Background color of the input field */
+    border-radius: 8px;
+    background-color: #fff;
 }
 
-/* Style for the buttons container */
-.add-status-actions {
+/* Add task form styles */
+.backend-add-task-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Space between form elements */
+}
+
+/* Input for tasks */
+.backend-task-input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+/* Add task button styles */
+.backend-add-task-button {
+    padding: 10px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth transition for background color */
+}
+
+.backend-add-task-button:hover {
+    background-color: #45a049;
+}
+
+/* Show add task button styles */
+.backend-show-add-task {
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth transition for background color */
+}
+
+.backend-show-add-task:hover {
+    background-color: #0069d9;
+}
+
+/* Add status button styles */
+.backend-add-status-button {
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth transition for background color */
+    margin-top: 20px;
+}
+
+.backend-add-status-button:hover {
+    background-color: #0069d9;
+}
+
+/* Add status form styles */
+.backend-add-status-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Space between form elements */
+    margin-top: 20px;
+}
+
+/* Input for statuses */
+.backend-status-input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+/* Add status actions container */
+.backend-add-status-actions {
     display: flex;
     gap: 10px; /* Space between buttons */
 }
 
-/* Style for the buttons */
-.add-status-button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    background-color: #ff69b4;
+/* Cancel button styles */
+.backend-cancel-button {
+    padding: 10px;
+    background-color: #f44336;
     color: white;
-    cursor: pointer;
-}
-
-.add-status-button:hover {
-    background-color: #ff69b4;
-}
-
-.cancel-button {
-    padding: 10px 20px;
     border: none;
-    border-radius: 4px;
-    background-color: #ccc;
-    color: white;
+    border-radius: 8px;
     cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth transition for background color */
 }
 
-.cancel-button:hover {
-    background-color: #aaa;
+.backend-cancel-button:hover {
+    background-color: #da190b;
 }
-

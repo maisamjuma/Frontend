@@ -60,48 +60,51 @@ const Layout = ({ children, onLogout }) => {
     };
 
     return (
-        <div className="layout">
+        <div className="layout1">
             <Navbar onLogout={onLogout} />  {/* Pass onLogout to Navbar */}
-            <div className="sidebar">
-                <ul>
-                    <li>
-                        <img src={dashboardIcon} alt="Dashboard" className="sidebar-icon" />
-                        <span className="sidebar-text">Dashboard</span>
-                    </li>
-                    <hr />
-                    <li className="projects-container" onClick={toggleProjects}>
-                        <span>Projects</span>
-                        <div className="menu-container">
-                            <span className="menu-toggle" onClick={toggleMenu}>...</span>
-                            {isMenuOpen && (
-                                <ul className="menu-list" onClick={(e) => e.stopPropagation()}>
-                                    <li onClick={() => handleMenuAction('Add')}>Add</li>
-                                    <li onClick={() => handleMenuAction('Delete')}>Delete</li>
-                                </ul>
-                            )}
-                        </div>
-                    </li>
-                    {isProjectsOpen && (
-                        <ul className="dropdown-list">
-                            {projects.map(project => (
-                                <li key={project.id} onClick={() => handleProjectClick(project.id)}>
-                                    {project.name}
-                                </li>
-                            ))}
-                        </ul>
-                    )}
-                    <li>Tasks</li>
-                    <li>Teams</li>
-                    <li>Settings</li>
-                </ul>
-            </div>
-            <div className="main-content">
-                <div className="content">
-                    {children}
+            <div>
+
+                <div className="sidebar">
+                    <ul>
+                        <li>
+                            <img src={dashboardIcon} alt="Dashboard" className="sidebar-icon"/>
+                            <span className="sidebar-text">Dashboard</span>
+                        </li>
+                        <hr/>
+                        <li className="projects-container" onClick={toggleProjects}>
+                            <span>Projects</span>
+                            <div className="menu-container">
+                                <span className="menu-toggle" onClick={toggleMenu}>...</span>
+                                {isMenuOpen && (
+                                    <ul className="menu-list" onClick={(e) => e.stopPropagation()}>
+                                        <li onClick={() => handleMenuAction('Add')}>Add</li>
+                                        <li onClick={() => handleMenuAction('Delete')}>Delete</li>
+                                    </ul>
+                                )}
+                            </div>
+                        </li>
+                        {isProjectsOpen && (
+                            <ul className="dropdown-list">
+                                {projects.map(project => (
+                                    <li key={project.id} onClick={() => handleProjectClick(project.id)}>
+                                        {project.name}
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                        <li>Tasks</li>
+                        <li>Teams</li>
+                        <li>Settings</li>
+                    </ul>
+                </div>
+                <div className="main-content">
+                    <div className="content">
+                        {children}
+                    </div>
                 </div>
             </div>
             {/* Render the Modal component */}
-            <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} addProject={addProject} />
+            <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} addProject={addProject}/>
         </div>
     );
 };
