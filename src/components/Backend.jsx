@@ -13,7 +13,7 @@ const Backend = () => {
     const [newStatusName, setNewStatusName] = useState(''); // State for the input field
 
     const handleInputChange = (e) => {
-        setNewStatusName(e.target.value); // Update state with the input value
+        setNewStatusName(e.target.value); 
     };
 
     const handleAddStatus = () => {
