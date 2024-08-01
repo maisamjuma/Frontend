@@ -1,0 +1,62 @@
+/* src/components/Workspace.css */
+
+.layout {
+    display: flex;
+    height: 100vh;
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: #f8f9fa;
+}
+
+.sidebar {
+    width: 200px;
+    background-color: #f8f9fa;
+    padding-top: 56px; /* Ensure content is below navbar */
+}
+
+.sidebar h2 {
+    padding: 10px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    padding: 10px;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+    margin-left: 200px; /* Ensure content is beside sidebar */
+    padding-top: 56px; /* Ensure content is below navbar */
+}
+
+.navbar .navbar-brand {
+    font-weight: bold;
+}
+
+.navbar .form-inline {
+    display: flex;
+    align-items: center;
+}
+
+.navbar .btn-outline-success {
+    border-color: #ff69b4;
+    color: #ff69b4;
+}
+
+.navbar .btn-outline-success:hover,
+.navbar .btn-outline-success:active,
+.navbar .btn-outline-success:focus {
+    background-color: #ff69b4;
+    color: white;
+}

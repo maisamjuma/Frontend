@@ -1,0 +1,30 @@
+/* src/App.css */
+
+.app-content {
+  margin-left: 300px; /* This will move the content to the right */
+  padding: 20px; /* Optional: Adjust padding as needed */
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  transition: filter 300ms;
+}
+
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  margin-top: 2em;
+  color: #888;
+}

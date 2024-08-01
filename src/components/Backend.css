@@ -1,0 +1,110 @@
+/* Set background color for the entire page */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%; /* Ensure body takes full height of viewport */
+    background-color: #ffffff; /* Set background color to white */
+    overflow-x: auto; /* Allow horizontal scrolling */
+}
+
+/* Container should not have a fixed width */
+.container {
+    padding: 0;
+    margin: 0;
+    margin-left: -240px;
+    width: auto; /* Allow container width to adjust based on content */
+    min-height: 100vh; /* Minimum height to fill the viewport */
+    background-color: #ffffff; /* Ensure background color remains white */
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+}
+
+/* Allow status-container to extend with content and wrap items */
+.status-container {
+    display: flex;
+    flex-wrap: nowrap; /* Prevent items from wrapping to the next line */
+    align-items: flex-start; /* Align items to the start of the container */
+    gap: 10px; /* Space between items */
+    justify-content: flex-start; /* Align items to the start (left) */
+}
+
+/* Status boxes and button styles */
+.status-box {
+    padding: 20px; /* Increase padding for larger boxes */
+    font-size: 18px; /* Increase font size */
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    min-width: 200px; /* Minimum width to ensure boxes are larger */
+    min-height: 50px; /* Minimum height if needed */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+}
+
+.add-status-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #ff69b4;
+    color: white;
+    cursor: pointer;
+    display: inline-flex; /* Adjust to fit the text size */
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap; /* Prevent text from wrapping */
+}
+/* Style for the form container */
+.add-status-form {
+    margin-top: 10px; /* Space above the form */
+    padding: 10px; /* Padding around the form content */
+    border: 1px solid #ccc; /* Border for the form area */
+    border-radius: 4px; /* Rounded corners for the form area */
+    background-color: #e0e0e0; /* Background color of the form area */
+}
+
+/* Style for the input field */
+.status-input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    display: block; /* Make the input field take full width */
+    width: 100%; /* Full width of the parent container */
+    box-sizing: border-box; /* Include padding and border in element's total width */
+    margin-bottom: 10px; /* Space below the input field */
+    background-color: #f0f0f0; /* Background color of the input field */
+}
+
+/* Style for the buttons container */
+.add-status-actions {
+    display: flex;
+    gap: 10px; /* Space between buttons */
+}
+
+/* Style for the buttons */
+.add-status-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #ff69b4;
+    color: white;
+    cursor: pointer;
+}
+
+.add-status-button:hover {
+    background-color: #ff69b4;
+}
+
+.cancel-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #ccc;
+    color: white;
+    cursor: pointer;
+}
+
+.cancel-button:hover {
+    background-color: #aaa;
+}
+

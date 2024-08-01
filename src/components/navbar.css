@@ -1,0 +1,72 @@
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: #f8f9fa;
+}
+
+.navbar .navbar-nav .nav-link {
+    margin-right: 1rem;
+}
+
+.navbar .form-inline {
+    display: flex;
+    align-items: center;
+}
+
+.navbar .navbar-brand {
+    font-weight: bold; /* Ensure 'Task Hub' is bold */
+    cursor: pointer; /* Indicate that it is clickable */
+}
+
+.navbar .dropdown-menu {
+    background-color: #f8f9fa;
+    border: none; /* Remove border if you want a cleaner look */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Add subtle shadow */
+}
+
+.navbar .btn-outline-success {
+    border-color: #ff69b4;
+    color: #ff69b4;
+}
+
+.navbar .btn-outline-success:hover,
+.navbar .btn-outline-success:active,
+.navbar .btn-outline-success:focus {
+    background-color: #ff69b4;
+    color: white;
+}
+
+body {
+    padding-top: 56px; /* Ensure content is not hidden behind the fixed navbar */
+}
+
+.navbar-nav .nav-item.dropdown {
+    position: relative;
+}
+
+.navbar-nav .nav-item.dropdown .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 0.125rem; /* Adjust spacing as needed */
+    z-index: 1000; /* Ensure dropdown appears above other content */
+    display: none; /* Hide dropdown by default */
+}
+
+.navbar-nav .nav-item.dropdown.show .dropdown-menu {
+    display: block; /* Show dropdown when parent has 'show' class */
+}
+
+.navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item {
+    color: #000; /* Adjust text color */
+}
+
+.navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item:hover {
+    background-color: #e9ecef; /* Adjust hover background color */
+}
+.track {
+    color: #ff69b4;
+}
