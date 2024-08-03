@@ -4,18 +4,34 @@ html, body {
     padding: 0;
     height: 100%; /* Ensure body takes full height of viewport */
     background-color: #ffffff; /* Set background color to white */
-    overflow-y: auto; /* Allow horizontal scrolling */
+    overflow-y: hidden; /* Allow horizontal scrolling */
+    overflow-x: auto;
 }
+
+
+.backend-page {
+    padding: 0; /* Ensure no extra padding */
+    margin: 0; /* Ensure no extra margin */
+    box-sizing: border-box; /* Ensure padding is included in height calculation */
+}
+
+.backend-content {
+    padding: 20px; /* Padding for content */
+    box-sizing: border-box; /* Ensure padding is included in height calculation */
+}
+
+
 
 /* Container should not have a fixed width */
 .backend-container {
     padding: 0;
     margin: 0;
-    margin-left: -240px;
+
     width: auto; /* Allow container width to adjust based on content */
     min-height: 100vh; /* Minimum height to fill the viewport */
     background-color: #ffffff; /* Ensure background color remains white */
     box-sizing: border-box; /* Include padding and border in element's total width and height */
+
 
 }
 

@@ -1,7 +1,12 @@
-/* src/components/Workspace.css */
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden; /* Prevents overall scrolling */
+}
 
 .layout {
     display: flex;
+    flex-direction: column;
     height: 100vh;
 }
 
@@ -12,51 +17,42 @@
     right: 0;
     z-index: 1000;
     background-color: #f8f9fa;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.sidebar {
-    width: 200px;
-    background-color: #f8f9fa;
-    padding-top: 56px; /* Ensure content is below navbar */
+.secondary-navbar {
+    position: fixed;
+    top: 60px; /* Adjust based on navbar height */
+    left: 200px; /* Width of the sidebar */
+    right: 0;
+    z-index: 999;
+    background-color: #e9ecef;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 10px 0; /* Adjust for vertical padding */
 }
-
-.sidebar h2 {
-    padding: 10px;
-}
-
-.sidebar ul {
+.secondary-nav {
+    display: flex;
     list-style: none;
+    margin: 0;
     padding: 0;
+    justify-content: center;
 }
 
-.sidebar ul li {
-    padding: 10px;
+.secondary-nav-item {
+    margin: 0 15px;
 }
+
+.secondary-nav-item .nav-link {
+    color: #000;
+    text-decoration: none;
+}
+
 
 .main-content {
-    flex-grow: 1;
+    margin-top: 10px; /* Height of top navbar */
+    margin-left: 200px; /* Width of the sidebar */
     padding: 20px;
-    margin-left: 200px; /* Ensure content is beside sidebar */
-    padding-top: 56px; /* Ensure content is below navbar */
-}
-
-.navbar .navbar-brand {
-    font-weight: bold;
-}
-
-.navbar .form-inline {
-    display: flex;
-    align-items: center;
-}
-
-.navbar .btn-outline-success {
-    border-color: #ff69b4;
-    color: #ff69b4;
-}
-
-.navbar .btn-outline-success:hover,
-.navbar .btn-outline-success:active,
-.navbar .btn-outline-success:focus {
-    background-color: #ff69b4;
-    color: white;
+    flex-grow: 1;
+    overflow-y: hidden; /* Allows scrolling only within this area */
+    overflow-x: hidden; /* Prevents horizontal scrolling */
 }
