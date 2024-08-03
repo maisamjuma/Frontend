@@ -5,10 +5,11 @@ const Backend = () => {
     const loadStatuses = () => {
         const savedStatuses = localStorage.getItem('statuses');
         return savedStatuses ? JSON.parse(savedStatuses) : [
-            { id: 1, title: 'To Do', tasks: [], backgroundColor: '#f9f9f9' },
-            { id: 2, title: 'Doing', tasks: [], backgroundColor: '#f9f9f9' },
-            { id: 3, title: 'Ready to Review', tasks: [], backgroundColor: '#f9f9f9' },
-            { id: 4, title: 'Reviewing', tasks: [], backgroundColor: '#f9f9f9' }
+            { id: 1, title: 'unassigned tasks', tasks: [], backgroundColor: '#f9f9f9' },
+            { id: 2, title: 'To Do', tasks: [], backgroundColor: '#f9f9f9' },
+            { id: 3, title: 'Doing', tasks: [], backgroundColor: '#f9f9f9' },
+            { id: 4, title: 'Ready to Review', tasks: [], backgroundColor: '#f9f9f9' }
+
         ];
     };
 
@@ -81,7 +82,7 @@ const Backend = () => {
         <div className="backend-container">
             <h1>Backend</h1>
             <div className="backend-status-container">
-                {statuses.map((status) => (
+                {statuses.map((status, index) => (
                     <div key={status.id} className="backend-status-box" style={{ backgroundColor: status.backgroundColor }}>
                         <div className="backend-status-header">
                             <span className="backend-status-title">{status.title}</span>
@@ -103,37 +104,39 @@ const Backend = () => {
                                 </div>
                             ))}
                         </div>
-                        {currentStatusId === status.id ? (
-                            <div className="backend-add-task-form">
-                                <input
-                                    type="text"
-                                    value={newTaskName}
-                                    onChange={(e) => setNewTaskName(e.target.value)}
-                                    placeholder="Enter task name"
-                                    className="backend-task-input"
-                                />
-                                <div className="backend-add-status-actions">
-                                    <button
-                                        onClick={() => handleAddTask(status.id)}
-                                        className="backend-add-task-button"
-                                    >
-                                        Add Task
-                                    </button>
-                                    <button
-                                        onClick={() => setCurrentStatusId(null)}
-                                        className="backend-cancel-button"
-                                    >
-                                        Cancel
-                                    </button>
+                        {(index === 0 || index === 1) && (
+                            currentStatusId === status.id ? (
+                                <div className="backend-add-task-form">
+                                    <input
+                                        type="text"
+                                        value={newTaskName}
+                                        onChange={(e) => setNewTaskName(e.target.value)}
+                                        placeholder="Enter task name"
+                                        className="backend-task-input"
+                                    />
+                                    <div className="backend-add-status-actions">
+                                        <button
+                                            onClick={() => handleAddTask(status.id)}
+                                            className="backend-add-task-button"
+                                        >
+                                            Add Task
+                                        </button>
+                                        <button
+                                            onClick={() => setCurrentStatusId(null)}
+                                            className="backend-cancel-button"
+                                        >
+                                            Cancel
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        ) : (
-                            <button
-                                onClick={() => setCurrentStatusId(status.id)}
-                                className="backend-show-add-task"
-                            >
-                                + Add Task
-                            </button>
+                            ) : (
+                                <button
+                                    onClick={() => setCurrentStatusId(status.id)}
+                                    className="backend-show-add-task"
+                                >
+                                    + Add Task
+                                </button>
+                            )
                         )}
                     </div>
                 ))}
