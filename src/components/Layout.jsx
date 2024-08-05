@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './Layout.css';
-import dashboardIcon from '../assets/t.png';
-import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';  // Import your Navbar component
 import Modal from './Modal';    // Import your Modal component
+import Sidebar from './Sidebar'; // Import the new Sidebar component
+import { useNavigate } from 'react-router-dom'; // Make sure to import useNavigate
 
 const Layout = ({ children, onLogout }) => {
-    const [isProjectsOpen, setIsProjectsOpen] = useState(false);
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [isModalOpen, setIsModalOpen] = useState(false);
     const [projects, setProjects] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -31,25 +29,6 @@ const Layout = ({ children, onLogout }) => {
         localStorage.setItem('projects', JSON.stringify(projects));
     }, [projects]);
 
-    const toggleProjects = () => {
-        setIsProjectsOpen(!isProjectsOpen);
-    };
-
-    const toggleMenu = (e) => {
-        e.stopPropagation();  // Prevent the click from affecting parent elements
-        setIsMenuOpen(!isMenuOpen);
-    };
-
-    const handleMenuAction = (action) => {
-        if (action === 'Add') {
-            setIsModalOpen(true);
-        } else if (action === 'Delete') {
-            // Handle delete action here
-            console.log('Delete action triggered');
-        }
-        setIsMenuOpen(false);  // Close the menu after selecting an action
-    };
-
     const handleProjectClick = (projectId) => {
         navigate(`/main/${projectId}`);
     };
@@ -59,44 +38,25 @@ const Layout = ({ children, onLogout }) => {
         setProjects([...projects, { id: newProjectId, name: projectName }]);
     };
 
+    const handleMenuAction = (action) => {
+        if (action === 'Add') {
+            setIsModalOpen(true);
+        } else if (action === 'Delete') {
+            // Handle delete action here
+            console.log('Delete action triggered');
+        }
+    };
+
     return (
         <div className="layout1">
             <Navbar onLogout={onLogout} />  {/* Pass onLogout to Navbar */}
-            <div>
-
-                <div className="sidebar">
-                    <ul>
-                        <li>
-                            <img src={dashboardIcon} alt="Dashboard" className="sidebar-icon"/>
-                            <span className="sidebar-text">Dashboard</span>
-                        </li>
-                        <hr/>
-                        <li className="projects-container" onClick={toggleProjects}>
-                            <span>Projects</span>
-                            <div className="menu-container">
-                                <span className="menu-toggle" onClick={toggleMenu}>...</span>
-                                {isMenuOpen && (
-                                    <ul className="menu-list" onClick={(e) => e.stopPropagation()}>
-                                        <li onClick={() => handleMenuAction('Add')}>Add</li>
-                                        <li onClick={() => handleMenuAction('Delete')}>Delete</li>
-                                    </ul>
-                                )}
-                            </div>
-                        </li>
-                        {isProjectsOpen && (
-                            <ul className="dropdown-list">
-                                {projects.map(project => (
-                                    <li key={project.id} onClick={() => handleProjectClick(project.id)}>
-                                        {project.name}
-                                    </li>
-                                ))}
-                            </ul>
-                        )}
-                        <li>Tasks</li>
-                        <li>Teams</li>
-                        <li>Settings</li>
-                    </ul>
-                </div>
+            <div className="main">
+                <Sidebar
+                    projects={projects}
+                    onProjectClick={handleProjectClick}
+                    onAddProject={addProject}
+                    onMenuAction={handleMenuAction}
+                />
                 <div className="main-content">
                     <div className="content">
                         {children}

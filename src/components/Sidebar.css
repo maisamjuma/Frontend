@@ -1,0 +1,60 @@
+/* src/components/Sidebar.css */
+
+
+
+.sidebar {
+    position: fixed;
+    top: 60px; /* Height of the top navbar */
+    left: 0;
+    width: 200px; /* Width of the sidebar */
+    bottom: 0; /* Extend to the bottom */
+    background-color: #fff;
+    z-index: 998;
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+    overflow-y: hidden; /* Optional: to handle overflow */
+}
+
+.sidebar-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.projects-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.menu-container {
+    position: relative;
+}
+
+.menu-toggle {
+    cursor: pointer;
+}
+
+.menu-list {
+    position: absolute;
+    right: 0;
+    top: 20px;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    list-style: none;
+}
+
+.dropdown-list {
+    padding-left: 20px;
+}
