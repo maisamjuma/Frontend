@@ -56,3 +56,6 @@ html, body {
     overflow-y: hidden; /* Allows scrolling only within this area */
     overflow-x: hidden; /* Prevents horizontal scrolling */
 }
+.main-content::-webkit-scrollbar {
+    background-color: #ffffff;
+}

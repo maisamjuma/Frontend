@@ -8,7 +8,6 @@ html, body {
     overflow-x: auto;
 }
 
-
 .backend-page {
     padding: 0; /* Ensure no extra padding */
     margin: 0; /* Ensure no extra margin */
@@ -20,19 +19,14 @@ html, body {
     box-sizing: border-box; /* Ensure padding is included in height calculation */
 }
 
-
-
 /* Container should not have a fixed width */
 .backend-container {
     padding: 0;
     margin: 0;
-
     width: auto; /* Allow container width to adjust based on content */
     min-height: 100vh; /* Minimum height to fill the viewport */
     background-color: #ffffff; /* Ensure background color remains white */
     box-sizing: border-box; /* Include padding and border in element's total width and height */
-
-
 }
 
 /* Status boxes styling */
@@ -42,7 +36,8 @@ html, body {
     border: 1px solid #ccc;
     border-radius: 8px;
     background-color: #f9f9f9;
-    min-width: 200px; /* Minimum width to ensure boxes are larger */
+    min-width: 260px; /* Increased minimum width */
+    min-height: 300px; /* Added minimum height */
     display: flex;
     flex-direction: column; /* Stack items vertically */
     gap: 10px; /* Space between items */
@@ -65,7 +60,28 @@ html, body {
     flex-direction: column;
     gap: 10px; /* Space between tasks */
     max-height: 200px; /* Set a maximum height for the tasks container */
+    padding: 0 10px; /* Add padding for equal margin on both sides */
     overflow-y: auto; /* Enable vertical scrolling */
+    background-color: #ffffff; /* Ensure background color remains white */
+    border-radius: 8px;
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+}
+
+/* Ensure the background color remains white while scrolling */
+.backend-tasks-container::-webkit-scrollbar {
+    background-color: #ffffff;
+}
+
+/* Individual task styles */
+.backend-task-box {
+    position: relative; /* Ensure positioning context for popup */
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin: 5px 0; /* Equal top and bottom margin, no left and right margin */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 /* Allow status-container to extend with content and wrap items */
@@ -76,8 +92,6 @@ html, body {
     gap: 10px; /* Space between items */
     justify-content: flex-start; /* Align items to the start (left) */
 }
-
-
 
 /* Style for the status title */
 .backend-status-title {
@@ -120,8 +134,6 @@ html, body {
     background-color: #f0f0f0;
 }
 
-
-
 /* Add task form styles */
 .backend-add-task-form {
     display: flex;
@@ -138,9 +150,10 @@ html, body {
 
 /* Add task button styles */
 .backend-add-task-button {
-    padding: 10px;
-    background-color: #ff69b4;
-    color: white;
+    padding: 5px; /* Adjust padding to make the button smaller */
+    font-size: 12px; /* Reduce font size */
+    background-color: transparent; /* Remove background color */
+    color: black; /* Set text color */
     border: none;
     border-radius: 8px;
     cursor: pointer;
@@ -148,14 +161,15 @@ html, body {
 }
 
 .backend-add-task-button:hover {
-    background-color: #ff69b4;
+    background-color: #f0f0f0; /* Light gray background on hover */
+    color: #ffffff;
 }
 
 /* Show add task button styles */
 .backend-show-add-task {
     padding: 10px;
-    background-color: #ff69b4;
-    color: white;
+    background: none;
+    color: black;
     border: none;
     border-radius: 8px;
     cursor: pointer;
@@ -163,23 +177,10 @@ html, body {
 }
 
 .backend-show-add-task:hover {
-    background-color: #ff69b4;
+    background-color: #0b0a0a; /* Dark background on hover */
+    color: #ffffff; /* White text color on hover */
 }
 
-.backend-add-task-button {
-    padding: 10px; /* Adjust padding to make the button smaller */
-    font-size: 10px; /* Reduce font size */
-    background-color: #ff69b4;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease; /* Smooth transition for background color */
-}
-
-.backend-add-status-button:hover {
-    background-color: #ff69b4;
-}
 
 /* Add status form styles */
 .backend-add-status-form {
@@ -217,12 +218,6 @@ html, body {
 .backend-cancel-button:hover {
     background-color: #ff69b4;
 }
-.backend-task-box {
-    position: relative; /* Ensure positioning context for popup */
-    padding: 10px;
-    border: 1px solid #ddd;
-    margin: 5px;
-}
 
 .backend-pencil-icon {
     cursor: pointer;
@@ -250,10 +245,6 @@ html, body {
     background-color: #f0f0f0;
 }
 
-
-
 .backend-popup.active {
     display: flex; /* Show when active */
 }
-
-

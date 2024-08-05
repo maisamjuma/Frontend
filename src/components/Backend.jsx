@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Backend.css';
 import { FaPen } from 'react-icons/fa';
-import TaskModal from './TaskModal'; // Import the TaskModal component
+import TaskModal from './TaskModal';
 
 const generateUniqueTaskId = (statusId, taskId) => `${statusId}_${taskId}`;
 
@@ -54,7 +54,8 @@ const Backend = () => {
             const status = statuses.find(status => status.id === statusId);
             const newTask = {
                 id: generateUniqueTaskId(statusId, status.tasks.length + 1),
-                name: newTaskName
+                name: newTaskName,
+                date: null // Initialize date as null
             };
             const updatedStatuses = statuses.map(status => {
                 if (status.id === statusId) {
@@ -73,6 +74,14 @@ const Backend = () => {
 
     const handleDeleteStatus = (statusId) => {
         const updatedStatuses = statuses.filter(status => status.id !== statusId);
+        setStatuses(updatedStatuses);
+    };
+
+    const handleDeleteTask = (taskId) => {
+        const updatedStatuses = statuses.map(status => ({
+            ...status,
+            tasks: status.tasks.filter(task => task.id !== taskId)
+        }));
         setStatuses(updatedStatuses);
     };
 
@@ -98,6 +107,32 @@ const Backend = () => {
     const handleCloseModal = () => {
         setSelectedTask(null); // Clear the selected task
         setHighlightedTaskId(null); // Remove highlighting from the task
+    };
+
+    const handleSaveDate = (date) => {
+        if (selectedTask) {
+            const updatedStatuses = statuses.map(status => ({
+                ...status,
+                tasks: status.tasks.map(task =>
+                    task.id === selectedTask.id ? { ...task, date: date instanceof Date ? date : new Date(date) } : task
+                )
+            }));
+            setStatuses(updatedStatuses);
+            handleCloseModal(); // Close the modal after saving
+        }
+    };
+
+    const handleRemoveDate = () => {
+        if (selectedTask) {
+            const updatedStatuses = statuses.map(status => ({
+                ...status,
+                tasks: status.tasks.map(task =>
+                    task.id === selectedTask.id ? { ...task, date: null } : task
+                )
+            }));
+            setStatuses(updatedStatuses);
+            handleCloseModal(); // Close the modal after removing the date
+        }
     };
 
     const handleReset = () => {
@@ -131,15 +166,21 @@ const Backend = () => {
                             {status.tasks.map((task) => (
                                 <div
                                     key={task.id}
-                                    className={`backend-task-box ${highlightedTaskId === task.id ? 'highlighted' : ''}`} // Add class if highlighted
+                                    className={`backend-task-box ${highlightedTaskId === task.id ? 'highlighted' : ''}`}
                                 >
                                     {task.name}
+                                    {task.date && (
+                                        <div className="task-date">
+                                            {task.date instanceof Date ? task.date.toDateString() : "Invalid Date"}
+                                        </div>
+                                    )}
                                     <FaPen
                                         className="backend-pencil-icon"
                                         onClick={() => handlePencilClick(task)}
                                     />
                                 </div>
                             ))}
+
                         </div>
                         {(status.id === 1 || status.id === 2) && (
                             currentStatusId === status.id ? (
@@ -206,7 +247,17 @@ const Backend = () => {
             </div>
 
             {/* Render the TaskModal component */}
-            <TaskModal task={selectedTask} onClose={handleCloseModal} />
+            {selectedTask && (
+                <TaskModal
+                    task={selectedTask}
+                    onClose={handleCloseModal}
+                    onDelete={handleDeleteTask}
+                    boards={statuses}
+                    statuses={statuses}
+                    onSaveDate={handleSaveDate}
+                    onRemoveDate={handleRemoveDate}
+                />
+            )}
         </div>
     );
 };
