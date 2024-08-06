@@ -26,6 +26,7 @@ const Backend = () => {
     const [dropdownStatusId, setDropdownStatusId] = useState(null);
     const [selectedTask, setSelectedTask] = useState(null); // Track the selected task for the modal
     const [highlightedTaskId, setHighlightedTaskId] = useState(null); // Track the highlighted task
+    const [editingTaskId, setEditingTaskId] = useState(null); // Track the editing task
 
     useEffect(() => {
         localStorage.setItem('statuses', JSON.stringify(statuses));
@@ -140,6 +141,21 @@ const Backend = () => {
         localStorage.removeItem('statuses'); // Clear saved statuses from local storage
     };
 
+    const handleDoubleClick = (taskId) => {
+        setEditingTaskId(taskId);
+    };
+
+    const handleBlur = (statusId, taskId, newName) => {
+        const updatedStatuses = statuses.map(status => ({
+            ...status,
+            tasks: status.tasks.map(task =>
+                task.id === taskId ? { ...task, name: newName } : task
+            )
+        }));
+        setStatuses(updatedStatuses);
+        setEditingTaskId(null);
+    };
+
     return (
         <div className="backend-container">
             <h1>Backend</h1>
@@ -167,17 +183,29 @@ const Backend = () => {
                                 <div
                                     key={task.id}
                                     className={`backend-task-box ${highlightedTaskId === task.id ? 'highlighted' : ''}`}
+                                    onDoubleClick={() => handleDoubleClick(task.id)}
                                 >
-                                    {task.name}
-                                    {task.date && (
-                                        <div className="task-date">
-                                            {task.date instanceof Date ? task.date.toDateString() : "Invalid Date"}
-                                        </div>
+                                    {editingTaskId === task.id ? (
+                                        <input
+                                            type="text"
+                                            defaultValue={task.name}
+                                            onBlur={(e) => handleBlur(status.id, task.id, e.target.value)}
+                                            autoFocus
+                                        />
+                                    ) : (
+                                        <>
+                                            {task.name}
+                                            {task.date && (
+                                                <div className="task-date">
+                                                    {task.date instanceof Date ? task.date.toDateString() : "Invalid Date"}
+                                                </div>
+                                            )}
+                                            <FaPen
+                                                className="backend-pencil-icon"
+                                                onClick={() => handlePencilClick(task)}
+                                            />
+                                        </>
                                     )}
-                                    <FaPen
-                                        className="backend-pencil-icon"
-                                        onClick={() => handlePencilClick(task)}
-                                    />
                                 </div>
                             ))}
 

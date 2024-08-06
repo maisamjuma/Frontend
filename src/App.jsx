@@ -1,9 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
 import Login from './components/Login';
 import Project1 from './components/project1';
+import ListUser from "./components/ListUser";
 import Workspace from './components/Workspace';
+import User from "./components/User";
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -15,6 +17,7 @@ function App() {
     const handleLogout = () => {
         setIsAuthenticated(false);
     };
+
     useEffect(() => {
         const styledTitle = document.getElementById('styled-title');
         if (styledTitle) {
@@ -40,7 +43,9 @@ function App() {
                     isAuthenticated ? (
                         <Layout onLogout={handleLogout}>
                             <Routes>
-                                <Route path="/" element={<div>Welcome to Task Hub</div>} />
+                                <Route path="/" element={<ListUser />} />
+                                <Route path="ListUser" element={<ListUser />} />
+                                <Route path="User" element={<User />} />
                                 <Route path="project1" element={<Project1 />} />
                                 <Route path="workspace/*" element={<Workspace />} />
                             </Routes>

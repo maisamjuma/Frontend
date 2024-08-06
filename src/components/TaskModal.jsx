@@ -1,3 +1,4 @@
+// TaskModal.js
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './TaskModal.css';
@@ -25,12 +26,6 @@ const TaskModal = ({ task, onClose, onDelete, boards, statuses, onSaveDate, onRe
         }
     };
 
-    const handleRemoveDateClick = () => {
-        if (window.confirm('Are you sure you want to remove the date for this task?')) {
-            onRemoveDate();
-        }
-    };
-
     return (
         <div className="task-modal-overlay" onClick={handleOverlayClick}>
             <div className="task-modal-content">
@@ -50,9 +45,7 @@ const TaskModal = ({ task, onClose, onDelete, boards, statuses, onSaveDate, onRe
                 </div>
                 {task.date && (
                     <div className="task-date">
-                        <button onClick={handleRemoveDateClick} className="remove-date-button">
-                            Remove Date
-                        </button>
+                        {task.date instanceof Date ? task.date.toDateString() : "Invalid Date"}
                     </div>
                 )}
             </div>
@@ -68,9 +61,12 @@ const TaskModal = ({ task, onClose, onDelete, boards, statuses, onSaveDate, onRe
                 <CalendarModal
                     onClose={() => setIsCalendarModalOpen(false)}
                     onSave={onSaveDate}
+                    onRemoveDate={() => {
+                        onRemoveDate();
+                        onClose();
+                    }}
                 />
             )}
-
         </div>
     );
 };
@@ -94,7 +90,7 @@ TaskModal.propTypes = {
         name: PropTypes.string.isRequired,
     })).isRequired,
     onSaveDate: PropTypes.func.isRequired,
-    onRemoveDate: PropTypes.func.isRequired,
+    onRemoveDate: PropTypes.func.isRequired, // Add this prop type
 };
 
 export default TaskModal;
