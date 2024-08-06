@@ -1,17 +1,26 @@
-// TaskModal.js
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './TaskModal.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faCalendar, faArrowsAlt, faTrash } from '@fortawesome/free-solid-svg-icons';
-import MoveModal from './MoveModal'; // Import the MoveModal component
-import CalendarModal from './CalendarModal'; // Import the CalendarModal component
-
+import { faUser, faCalendar, faArrowsAlt, faTrash, faClipboard } from '@fortawesome/free-solid-svg-icons';
+import MoveModal from './MoveModal';
+import CalendarModal from './CalendarModal';
+import DetailsModal from './DetailsModal';
 const TaskModal = ({ task, onClose, onDelete, boards, statuses, onSaveDate, onRemoveDate }) => {
     const [isMoveModalOpen, setIsMoveModalOpen] = useState(false);
     const [isCalendarModalOpen, setIsCalendarModalOpen] = useState(false);
+    const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
 
     if (!task) return null;
+
+    // Debugging
+    console.log('Statuses:', statuses);
+    console.log('Task Status ID:', task.statusId);
+
+    // Find the status name
+    const status = statuses.find(status => status.id === Number(task.statusId)); // Ensure comparison is correct
+    console.log('Status:', status); // Debugging
+    const statusName = status ? status.name : 'Unknown Status';
 
     const handleOverlayClick = (e) => {
         if (e.target.classList.contains('task-modal-overlay')) {
@@ -30,17 +39,20 @@ const TaskModal = ({ task, onClose, onDelete, boards, statuses, onSaveDate, onRe
         <div className="task-modal-overlay" onClick={handleOverlayClick}>
             <div className="task-modal-content">
                 <div className="task-modal-actions">
+                    <button onClick={() => setIsDetailsModalOpen(true)}>
+                        <FontAwesomeIcon icon={faClipboard}/> Show Details
+                    </button>
                     <button>
-                        <FontAwesomeIcon icon={faUser} /> Change Member
+                        <FontAwesomeIcon icon={faUser}/> Change Member
                     </button>
                     <button onClick={() => setIsCalendarModalOpen(true)}>
-                        <FontAwesomeIcon icon={faCalendar} /> Edit Dates
+                        <FontAwesomeIcon icon={faCalendar}/> Edit Dates
                     </button>
                     <button onClick={() => setIsMoveModalOpen(true)}>
-                        <FontAwesomeIcon icon={faArrowsAlt} /> Move
+                        <FontAwesomeIcon icon={faArrowsAlt}/> Move
                     </button>
                     <button onClick={handleDeleteClick}>
-                        <FontAwesomeIcon icon={faTrash} /> Delete
+                        <FontAwesomeIcon icon={faTrash}/> Delete
                     </button>
                 </div>
                 {task.date && (
@@ -67,17 +79,23 @@ const TaskModal = ({ task, onClose, onDelete, boards, statuses, onSaveDate, onRe
                     }}
                 />
             )}
+            {isDetailsModalOpen && (
+                <DetailsModal
+                    onClose={() => setIsDetailsModalOpen(false)}
+                    task={{ ...task, statusName }} // Pass the task object with the status name
+                />
+            )}
         </div>
     );
 };
 
-// Define prop types
+
 TaskModal.propTypes = {
     task: PropTypes.shape({
         name: PropTypes.string.isRequired,
         id: PropTypes.string.isRequired,
-        statusId: PropTypes.number.isRequired,
-        date: PropTypes.instanceOf(Date), // Add this line if date is used
+        statusId: PropTypes.number, // Remove .isRequired if statusId might be undefined
+        date: PropTypes.instanceOf(Date),
     }),
     onClose: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
@@ -90,7 +108,8 @@ TaskModal.propTypes = {
         name: PropTypes.string.isRequired,
     })).isRequired,
     onSaveDate: PropTypes.func.isRequired,
-    onRemoveDate: PropTypes.func.isRequired, // Add this prop type
+    onRemoveDate: PropTypes.func.isRequired,
 };
+
 
 export default TaskModal;

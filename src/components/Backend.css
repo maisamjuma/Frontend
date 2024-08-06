@@ -32,7 +32,7 @@ html, body {
 /* Status boxes styling */
 .backend-status-box {
     padding: 20px; /* Increase padding for larger boxes */
-    font-size: 18px; /* Increase font size */
+    font-size: 16px; /* Increase font size */
     border: 1px solid #ccc;
     border-radius: 8px;
     background-color: #f9f9f9;
@@ -76,12 +76,35 @@ html, body {
 .backend-task-box {
     position: relative; /* Ensure positioning context for popup */
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid #ccc;
     border-radius: 8px;
-    margin: 5px 0; /* Equal top and bottom margin, no left and right margin */
+    margin: 8px 0; /* Equal top and bottom margin, no left and right margin */
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+/* Highlighted task box */
+.backend-task-box.highlighted {
+    border: 1px solid #f9f9f9; /* Highlight border color */
+    background-color: #f9f9f9; /* Light background color when highlighted */
+}
+
+/* Input field when editing */
+.backend-task-box input {
+    width: 176px;
+    padding: 10px;
+    border: 1px solid #f9f9f9;
+    border-radius: 1px;
+    background-color: #f9f9f9;
+    font-size: 16px; /* Adjust font size as needed */
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+}
+
+/* Remove any borders or background of the task box when input is focused */
+.backend-task-box input:focus {
+    border-color: #f9f9f9;
+    outline: none; /* Remove default focus outline */
+    color: #000;
 }
 
 /* Allow status-container to extend with content and wrap items */
@@ -115,12 +138,32 @@ html, body {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     padding: 10px;
     z-index: 1; /* Ensure dropdown is above other elements */
-    display: flex;
-    flex-direction: column;
-    gap: 5px; /* Space between dropdown items */
-    width: 150px; /* Set a fixed width for the dropdown */
+    width: 220px; /* Adjust the width to fit all color boxes */
     box-sizing: border-box; /* Include padding and border in element's total width and height */
 }
+
+/* Color picker styles */
+.backend-dropdown-color-picker {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Two columns */
+    gap: 1px; /* Space between color boxes */
+    margin-bottom: 10px; /* Space between color boxes and delete button */
+    margin-left: 13px;
+}
+/* Line between color boxes and delete button */
+.backend-dropdown-separator {
+    border-top: 1px solid #ccc;
+    margin: 10px 0; /* Space above and below the line */
+}
+/* Color box styles */
+.backend-color-box {
+    width: 30px; /* Width of the color box */
+    height: 25px; /* Height of the color box */
+    border: 1px solid #ccc;
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer;
+}
+
 
 /* Dropdown item styles */
 .backend-dropdown-item {
@@ -128,11 +171,22 @@ html, body {
     cursor: pointer;
     border-radius: 8px;
     transition: background-color 0.3s ease; /* Smooth transition for background color */
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between color box and text */
 }
 
 .backend-dropdown-item:hover {
     background-color: #f0f0f0;
 }
+
+/* Color box styles */
+.color-box {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+}
+
 
 /* Add task form styles */
 .backend-add-task-form {

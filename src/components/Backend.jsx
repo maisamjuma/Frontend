@@ -56,7 +56,8 @@ const Backend = () => {
             const newTask = {
                 id: generateUniqueTaskId(statusId, status.tasks.length + 1),
                 name: newTaskName,
-                date: null // Initialize date as null
+                date: null, // Initialize date as null
+                statusId: statusId // Include statusId
             };
             const updatedStatuses = statuses.map(status => {
                 if (status.id === statusId) {
@@ -99,11 +100,15 @@ const Backend = () => {
         setStatuses(updatedStatuses);
         setDropdownStatusId(null);
     };
-
     const handlePencilClick = (task) => {
-        setSelectedTask(task); // Set the selected task
-        setHighlightedTaskId(task.id); // Highlight the task
+        const status = statuses.find(status => status.id === task.statusId); // Ensure statusId is used
+        setSelectedTask({
+            ...task,
+            statusName: status ? status.title : 'Unknown Status' // Set statusName
+        });
+        setHighlightedTaskId(task.id);
     };
+
 
     const handleCloseModal = () => {
         setSelectedTask(null); // Clear the selected task
@@ -164,17 +169,38 @@ const Backend = () => {
             </button>
             <div className="backend-status-container">
                 {statuses.map((status) => (
-                    <div key={status.id} className="backend-status-box" style={{ backgroundColor: status.backgroundColor }}>
+                    <div key={status.id} className="backend-status-box"
+                         style={{ backgroundColor: status.backgroundColor }}>
                         <div className="backend-status-header">
                             <span className="backend-status-title">{status.title}</span>
-                            <span className="backend-status-menu" onClick={() => setDropdownStatusId(dropdownStatusId === status.id ? null : status.id)}>...</span>
+                            <span className="backend-status-menu"
+                                  onClick={() => setDropdownStatusId(dropdownStatusId === status.id ? null : status.id)}>...</span>
                             {dropdownStatusId === status.id && (
                                 <div className="backend-dropdown-menu">
-                                    <div className="backend-dropdown-item" onClick={() => handleDeleteStatus(status.id)}>Delete Status</div>
-                                    <div className="backend-dropdown-item" onClick={() => handleChangeColor(status.id, '#ffcccc')}>Red</div>
-                                    <div className="backend-dropdown-item" onClick={() => handleChangeColor(status.id, '#ccffcc')}>Green</div>
-                                    <div className="backend-dropdown-item" onClick={() => handleChangeColor(status.id, '#ccccff')}>Blue</div>
-                                    <div className="backend-dropdown-item" onClick={() => handleChangeColor(status.id, '#ffffcc')}>Yellow</div>
+                                    <div className="backend-dropdown-item"
+                                         onClick={() => handleDeleteStatus(status.id)}>Delete Status
+                                    </div>
+                                    <div className="backend-dropdown-separator"/>
+                                    <div className="backend-dropdown-color-picker">
+                                        <div className="backend-color-box" style={{backgroundColor: '#a729ca'}}
+                                             onClick={() => handleChangeColor(status.id, '#a729ca')}/>
+                                        <div className="backend-color-box" style={{backgroundColor: '#1148cc'}}
+                                             onClick={() => handleChangeColor(status.id, '#1148cc')}/>
+                                        <div className="backend-color-box" style={{backgroundColor: '#ffcccc'}}
+                                             onClick={() => handleChangeColor(status.id, '#ffcccc')}/>
+                                        <div className="backend-color-box" style={{backgroundColor: '#ccffcc'}}
+                                             onClick={() => handleChangeColor(status.id, '#ccffcc')}/>
+                                        <div className="backend-color-box" style={{backgroundColor: '#c3a838'}}
+                                             onClick={() => handleChangeColor(status.id, '#c3a838')}/>
+                                        <div className="backend-color-box" style={{backgroundColor: '#6ab54d'}}
+                                             onClick={() => handleChangeColor(status.id, '#6ab54d')}/>
+                                        <div className="backend-color-box" style={{backgroundColor: '#ccccff'}}
+                                             onClick={() => handleChangeColor(status.id, '#ccccff')}/>
+                                        <div className="backend-color-box" style={{backgroundColor: '#ffffcc'}}
+                                             onClick={() => handleChangeColor(status.id, '#ffffcc')}/>
+                                    </div>
+
+
                                 </div>
                             )}
                         </div>
@@ -191,6 +217,7 @@ const Backend = () => {
                                             defaultValue={task.name}
                                             onBlur={(e) => handleBlur(status.id, task.id, e.target.value)}
                                             autoFocus
+                                            className="backend-task-edit-input" /* Use a specific class for the input */
                                         />
                                     ) : (
                                         <>
@@ -225,7 +252,7 @@ const Backend = () => {
                                             onClick={() => handleAddTask(status.id)}
                                             className="backend-add-task-button"
                                         >
-                                            Add Task
+                                        Add Task
                                         </button>
                                         <button
                                             onClick={() => setCurrentStatusId(null)}
