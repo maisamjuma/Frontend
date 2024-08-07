@@ -62,7 +62,7 @@ const ListUser = () => {
 
     function addNewUser() {
         //whenever user click on add addNewUser button -> user should navigate to add-user page
-        navigator('/add-user')
+        navigator('/main/User')
     }
 
     function updateUser(id){
@@ -118,6 +118,7 @@ const ListUser = () => {
                 </tbody>
 
             </table>
+
         </div>
     )
 }

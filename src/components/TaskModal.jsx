@@ -6,6 +6,7 @@ import { faUser, faCalendar, faArrowsAlt, faTrash, faClipboard } from '@fortawes
 import MoveModal from './MoveModal';
 import CalendarModal from './CalendarModal';
 import DetailsModal from './DetailsModal';
+
 const TaskModal = ({ task, onClose, onDelete, boards, statuses, onSaveDate, onRemoveDate }) => {
     const [isMoveModalOpen, setIsMoveModalOpen] = useState(false);
     const [isCalendarModalOpen, setIsCalendarModalOpen] = useState(false);
@@ -13,14 +14,15 @@ const TaskModal = ({ task, onClose, onDelete, boards, statuses, onSaveDate, onRe
 
     if (!task) return null;
 
-    // Debugging
-    console.log('Statuses:', statuses);
-    console.log('Task Status ID:', task.statusId);
 
-    // Find the status name
-    const status = statuses.find(status => status.id === Number(task.statusId)); // Ensure comparison is correct
-    console.log('Status:', status); // Debugging
-    const statusName = status ? status.name : 'Unknown Status';
+    console.log('Task in Modal:', task);
+    console.log('Statuses in Modal:', statuses);
+    const statusId = parseInt(task.id.split('_')[0], 10); // Extract statusId from task id
+    const status = statuses.find(status => status.id === statusId);
+    console.log('Status for Task:', status);
+
+    // Ensure statusName is correctly set
+    const statusName = status ? status.title : 'Unknown Status'; // Use title instead of name
 
     const handleOverlayClick = (e) => {
         if (e.target.classList.contains('task-modal-overlay')) {
@@ -54,6 +56,9 @@ const TaskModal = ({ task, onClose, onDelete, boards, statuses, onSaveDate, onRe
                     <button onClick={handleDeleteClick}>
                         <FontAwesomeIcon icon={faTrash}/> Delete
                     </button>
+                </div>
+                <div className="task-status">
+                    Status: {statusName}
                 </div>
                 {task.date && (
                     <div className="task-date">
@@ -89,12 +94,11 @@ const TaskModal = ({ task, onClose, onDelete, boards, statuses, onSaveDate, onRe
     );
 };
 
-
 TaskModal.propTypes = {
     task: PropTypes.shape({
         name: PropTypes.string.isRequired,
         id: PropTypes.string.isRequired,
-        statusId: PropTypes.number, // Remove .isRequired if statusId might be undefined
+        statusId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), // Ensure statusId can be a number or string
         date: PropTypes.instanceOf(Date),
     }),
     onClose: PropTypes.func.isRequired,
@@ -105,11 +109,10 @@ TaskModal.propTypes = {
     })).isRequired,
     statuses: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.number.isRequired,
-        name: PropTypes.string.isRequired,
+        title: PropTypes.string.isRequired,
     })).isRequired,
     onSaveDate: PropTypes.func.isRequired,
     onRemoveDate: PropTypes.func.isRequired,
 };
-
 
 export default TaskModal;

@@ -1,19 +1,13 @@
 import React from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
 import './Workspace.css';
-import Backend from './Backend';
-import Frontend from './Frontend';
-import QA from './QA';
+import Boards from './Boards';
 import Navbar from './Navbar';
-
-
 
 const Workspace = () => {
     return (
         <div className="layout">
             <Navbar />
-
-
             <nav className="secondary-navbar">
                 <ul className="secondary-nav">
                     <li className="secondary-nav-item">
@@ -27,13 +21,9 @@ const Workspace = () => {
                     </li>
                 </ul>
             </nav>
-
             <div className="main-content">
                 <Routes>
-                    <Route path="/" element={<div><h1>Home</h1><p>This is the home content.</p></div>} />
-                    <Route path="backend" element={<Backend />} />
-                    <Route path="frontend" element={<Frontend />} />
-                    <Route path="qa" element={<QA />} />
+                    <Route path=":boardId" element={<Boards />} />
                 </Routes>
             </div>
         </div>

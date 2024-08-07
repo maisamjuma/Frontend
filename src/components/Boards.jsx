@@ -1,73 +1,71 @@
 import React, { useState, useEffect } from 'react';
-import './Backend.css';
-import { FaPen } from 'react-icons/fa';
+import { useParams } from 'react-router-dom';
 import TaskModal from './TaskModal';
+import './Boards.css';
+import { FaPen } from 'react-icons/fa';
+import MoveModal from "./MoveModal.jsx";
+//const generateUniqueTaskId = (statusId, taskId) => `${statusId}_${taskId}`;
 
-const generateUniqueTaskId = (statusId, taskId) => `${statusId}_${taskId}`;
+const Boards = () => {
+    const { boardId } = useParams(); // Get the current board ID from the route parameters
 
-const Backend = () => {
-    const initialStatuses = [
-        { id: 1, title: 'unassigned tasks', tasks: [], backgroundColor: '#f9f9f9' },
-        { id: 2, title: 'To Do', tasks: [], backgroundColor: '#f9f9f9' },
-        { id: 3, title: 'Doing', tasks: [], backgroundColor: '#f9f9f9' },
-        { id: 4, title: 'Ready to Review', tasks: [], backgroundColor: '#f9f9f9' },
-        { id: 5, title: 'Reviewing', tasks: [], backgroundColor: '#f9f9f9' },
-        { id: 6, title: 'complete', tasks: [], backgroundColor: '#f9f9f9' }
-    ];
-
-    const loadStatuses = () => {
-        const savedStatuses = localStorage.getItem('statuses');
-        return savedStatuses ? JSON.parse(savedStatuses) : initialStatuses;
-    };
-    // const handleResetStatuses = () => {
-    //     setStatuses(initialStatuses);
-    //     localStorage.setItem('statuses', JSON.stringify(initialStatuses)); // Save new statuses to local storage
-    // };
-
-    const [statuses, setStatuses] = useState(loadStatuses());
+    const [statuses, setStatuses] = useState([]);
     const [newTaskName, setNewTaskName] = useState('');
     const [currentStatusId, setCurrentStatusId] = useState(null);
-    // const [isAdding, setIsAdding] = useState(false);
-    // const [newStatusName, setNewStatusName] = useState('');
+    const [editingTaskId, setEditingTaskId] = useState(null);
+    const [selectedTask, setSelectedTask] = useState(null);
     const [dropdownStatusId, setDropdownStatusId] = useState(null);
-    const [selectedTask, setSelectedTask] = useState(null); // Track the selected task for the modal
-    const [highlightedTaskId, setHighlightedTaskId] = useState(null); // Track the highlighted task
-    const [editingTaskId, setEditingTaskId] = useState(null); // Track the editing task
+   const [highlightedTaskId, setHighlightedTaskId] = useState(null); // Track the highlighted task
+    const [showMoveModal, setShowMoveModal] = useState(false); // Track the visibility of MoveModal
 
     useEffect(() => {
-        localStorage.setItem('statuses', JSON.stringify(statuses));
-    }, [statuses]);
+        // Load board-specific statuses from local storage or initialize with default
+        const loadStatuses = () => {
+            const savedStatuses = localStorage.getItem(`${boardId}_statuses`);
+            return savedStatuses ? JSON.parse(savedStatuses) : [
+                { id: 1, title: 'unassigned tasks', tasks: [], backgroundColor: '#f9f9f9' },
+                { id: 2, title: 'To Do', tasks: [], backgroundColor: '#f9f9f9' },
+                { id: 3, title: 'Doing', tasks: [], backgroundColor: '#f9f9f9' },
+                { id: 4, title: 'Ready to Review', tasks: [], backgroundColor: '#f9f9f9' },
+                { id: 5, title: 'Reviewing', tasks: [], backgroundColor: '#f9f9f9' },
+                { id: 6, title: 'Complete', tasks: [], backgroundColor: '#f9f9f9' }
+            ];
+        };
+
+        setStatuses(loadStatuses());
+    }, [boardId]);
     useEffect(() => {
-        console.log('Current Statuses:', statuses);
-    }, [statuses]);
+        console.log('Loading statuses for boardId:', boardId); // Log boardId
+        const loadStatuses = () => {
+            const savedStatuses = localStorage.getItem(`${boardId}_statuses`);
+            return savedStatuses ? JSON.parse(savedStatuses) : [];
+        };
 
-    // const handleInputChange = (e) => {
-    //     setNewStatusName(e.target.value);
-    // };
+        const statuses = loadStatuses();
+        console.log('Loaded statuses:', statuses); // Log statuses
+        setStatuses(statuses);
+    }, [boardId]);
 
-    // const handleAddStatus = () => {
-    //     if (newStatusName.trim()) {
-    //         const newStatus = {
-    //             id: statuses.length + 1,
-    //             title: newStatusName,
-    //             tasks: [],
-    //             backgroundColor: '#f9f9f9'
-    //         };
-    //         setStatuses([...statuses, newStatus]);
-    //         setNewStatusName('');
-    //         setIsAdding(false);
-    //     }
-    // };
+
+    useEffect(() => {
+        // Save statuses to local storage when they change
+        localStorage.setItem(`${boardId}_statuses`, JSON.stringify(statuses));
+    }, [statuses, boardId]);
+    useEffect(() => {
+        console.log('Saving statuses for boardId:', boardId); // Log boardId
+        localStorage.setItem(`${boardId}_statuses`, JSON.stringify(statuses));
+        console.log('Statuses saved:', statuses); // Log statuses
+    }, [statuses, boardId]);
 
     const handleAddTask = (statusId) => {
         if (newTaskName.trim()) {
             const status = statuses.find(status => status.id === statusId);
-            if (status) { // Ensure status is found
+            if (status) {
                 const newTask = {
-                    id: generateUniqueTaskId(statusId, status.tasks.length + 1),
+                    id: `${statusId}_${status.tasks.length + 1}`,
                     name: newTaskName,
-                    date: null, // Initialize date as null
-                    statusId: statusId // Include statusId
+                    date: null,
+                    statusId: statusId
                 };
                 const updatedStatuses = statuses.map(status => {
                     if (status.id === statusId) {
@@ -81,15 +79,8 @@ const Backend = () => {
                 setStatuses(updatedStatuses);
                 setNewTaskName('');
                 setCurrentStatusId(null);
-            } else {
-                console.error('Status not found:', statusId);
             }
         }
-    };
-
-    const handleDeleteStatus = (statusId) => {
-        const updatedStatuses = statuses.filter(status => status.id !== statusId);
-        setStatuses(updatedStatuses);
     };
 
     const handleDeleteTask = (taskId) => {
@@ -100,6 +91,20 @@ const Backend = () => {
         setStatuses(updatedStatuses);
     };
 
+    const handleDoubleClick = (taskId) => {
+        setEditingTaskId(taskId);
+    };
+
+    const handleBlur = (statusId, taskId, newName) => {
+        const updatedStatuses = statuses.map(status => ({
+            ...status,
+            tasks: status.tasks.map(task =>
+                task.id === taskId ? { ...task, name: newName } : task
+            )
+        }));
+        setStatuses(updatedStatuses);
+        setEditingTaskId(null);
+    };
     const handleChangeColor = (statusId, color) => {
         const updatedStatuses = statuses.map(status => {
             if (status.id === statusId) {
@@ -124,14 +129,11 @@ const Backend = () => {
         });
         setHighlightedTaskId(task.id);
     };
-
-
     const handleCloseModal = () => {
         console.log('Closing Modal. Selected Task:', selectedTask);
         setSelectedTask(null); // Clear the selected task
         setHighlightedTaskId(null); // Remove highlighting from the task
     };
-
     const handleSaveDate = (date) => {
         console.log('Saving Date:', date, 'for Task:', selectedTask);
         if (selectedTask) {
@@ -145,7 +147,6 @@ const Backend = () => {
             handleCloseModal(); // Close the modal after saving
         }
     };
-
     const handleRemoveDate = () => {
         if (selectedTask) {
             const updatedStatuses = statuses.map(status => ({
@@ -158,40 +159,34 @@ const Backend = () => {
             handleCloseModal(); // Close the modal after removing the date
         }
     };
-
-    // const handleReset = () => {
-    //     setStatuses(initialStatuses);
-    //     localStorage.removeItem('statuses'); // Clear saved statuses from local storage
-    // };
-
-    const handleDoubleClick = (taskId) => {
-        setEditingTaskId(taskId);
-    };
-
-    const handleBlur = (statusId, taskId, newName) => {
-        const updatedStatuses = statuses.map(status => ({
-            ...status,
-            tasks: status.tasks.map(task =>
-                task.id === taskId ? { ...task, name: newName } : task
-            )
-        }));
+    const handleDeleteStatus = (statusId) => {
+        const updatedStatuses = statuses.filter(status => status.id !== statusId);
         setStatuses(updatedStatuses);
-        setEditingTaskId(null);
+    };
+    const handleMoveTask = (task, newStatusId) => {
+        const updatedStatuses = statuses.map(status => {
+            if (status.id === newStatusId) {
+                return {
+                    ...status,
+                    tasks: [...status.tasks, task]
+                };
+            } else {
+                return {
+                    ...status,
+                    tasks: status.tasks.filter(t => t.id !== task.id)
+                };
+            }
+        });
+        setStatuses(updatedStatuses);
     };
 
     return (
-        <div className="backend-container">
-            <h1>Backend</h1>
-            {/*<button onClick={handleReset} className="backend-reset-button">*/}
-            {/*    Reset All Tasks*/}
-            {/*</button>*/}
-            {/*<button onClick={handleResetStatuses} className="backend-reset-button">*/}
-            {/*    Reset Statuses*/}
-            {/*</button>*/}
+        <div className={`backend-container ${boardId}`}>
+            <h1>{boardId.charAt(0).toUpperCase() + boardId.slice(1)}</h1>
             <div className="backend-status-container">
                 {statuses.map((status) => (
                     <div key={status.id} className="backend-status-box"
-                         style={{backgroundColor: status.backgroundColor}}>
+                         style={{ backgroundColor: status.backgroundColor }}>
                         <div className="backend-status-header">
                             <span className="backend-status-title">{status.title}</span>
                             <span className="backend-status-menu"
@@ -238,7 +233,7 @@ const Backend = () => {
                                             defaultValue={task.name}
                                             onBlur={(e) => handleBlur(status.id, task.id, e.target.value)}
                                             autoFocus
-                                            className="backend-task-edit-input" /* Use a specific class for the input */
+                                            className="backend-task-edit-input"
                                         />
                                     ) : (
                                         <>
@@ -256,7 +251,6 @@ const Backend = () => {
                                     )}
                                 </div>
                             ))}
-
                         </div>
                         {(status.id === 1 || status.id === 2) && (
                             currentStatusId === status.id ? (
@@ -284,58 +278,40 @@ const Backend = () => {
                                     </div>
                                 </div>
                             ) : (
-                                <button
-                                    onClick={() => setCurrentStatusId(status.id)}
-                                    className="backend-show-add-task"
+                                <button onClick={() => setCurrentStatusId(status.id)}
+                                        className="backend-show-add-task"
                                 >
-                                    + Add Task
-                                </button>
+                                    + Add Task</button>
                             )
                         )}
                     </div>
                 ))}
-                {/*{!isAdding ? (*/}
-                {/*    <button*/}
-                {/*        onClick={() => setIsAdding(true)}*/}
-                {/*        className="backend-add-status-button"*/}
-                {/*    >*/}
-                {/*        + Add New Status*/}
-                {/*    </button>*/}
-                {/*) : (*/}
-                {/*    <div className="backend-add-status-form">*/}
-                {/*        <input*/}
-                {/*            type="text"*/}
-                {/*            value={newStatusName}*/}
-                {/*            onChange={handleInputChange}*/}
-                {/*            placeholder="Enter status name"*/}
-                {/*            className="backend-status-input"*/}
-                {/*        />*/}
-                {/*        <div className="backend-add-status-actions">*/}
-                {/*            <button onClick={handleAddStatus} className="backend-add-status-button">*/}
-                {/*                Submit*/}
-                {/*            </button>*/}
-                {/*            <button onClick={() => setIsAdding(false)} className="backend-cancel-button">*/}
-                {/*                Cancel*/}
-                {/*            </button>*/}
-                {/*        </div>*/}
-                {/*    </div>*/}
-                {/*)}*/}
             </div>
-
-            {/* Render the TaskModal component */}
             {selectedTask && (
                 <TaskModal
+                   // onClose={() => setSelectedTask(null)}
+                    onDelete={handleDeleteTask}
                     task={selectedTask}
                     onClose={handleCloseModal}
-                    onDelete={handleDeleteTask}
                     boards={statuses}
                     statuses={statuses}
                     onSaveDate={handleSaveDate}
                     onRemoveDate={handleRemoveDate}
                 />
             )}
+            {showMoveModal && selectedTask && (
+                <MoveModal
+                    task={selectedTask}
+                    statuses={statuses}
+                    onClose={() => setShowMoveModal(false)}
+                    onMove={(task, newStatusId) => {
+                        handleMoveTask(task, boardId, newStatusId);
+                        setShowMoveModal(false);
+                    }}
+                />
+            )}
         </div>
     );
 };
 
-export default Backend;
+export default Boards;
