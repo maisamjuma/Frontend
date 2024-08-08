@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
-import Layout from './components/Layout';
-import Login from './components/Login';
+import Layout from './components/Layout/Layout.jsx';
+import Login from './components/Login/Login.jsx';
 import Project1 from './components/project1';
-import ListUser from "./components/ListUser";
+import ListUser from "./components/ListUser/ListUser.jsx";
 import Workspace from './components/Workspace';
 import User from "./components/User";
 

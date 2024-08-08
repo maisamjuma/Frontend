@@ -58,3 +58,9 @@
 .dropdown-list {
     padding-left: 20px;
 }
+.rotate-180{
+    transform: rotate(180deg);
+}
+.bg-pink-100{
+    background: #fae6ff;
+}

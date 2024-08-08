@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import './TaskModal.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faCalendar, faArrowsAlt, faTrash, faClipboard } from '@fortawesome/free-solid-svg-icons';
-import MoveModal from './MoveModal';
-import CalendarModal from './CalendarModal';
-import DetailsModal from './DetailsModal';
+import MoveModal from './MoveModal/MoveModal.jsx';
+import CalendarModal from './CalendarModal/CalendarModal.jsx';
+import DetailsModal from './DetailsModal/DetailsModal.jsx';
 const TaskModal = ({ task, onClose, onDelete, boards, statuses, onSaveDate, onRemoveDate }) => {
     const [isMoveModalOpen, setIsMoveModalOpen] = useState(false);
     const [isCalendarModalOpen, setIsCalendarModalOpen] = useState(false);

@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
 import './Workspace.css';
-import Backend from './Backend';
-import Frontend from './Frontend';
+import Backend from './Backend/Backend.jsx';
+import Frontend from './Frontend/Frontend.jsx';
 import QA from './QA';
-import Navbar from './Navbar';
+import Navbar from './Navbar/Navbar.jsx';
 
 
 

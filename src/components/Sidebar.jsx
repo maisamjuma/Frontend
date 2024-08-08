@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types'; // Import prop-types
 import './Sidebar.css';
-import dashboardIcon from '../assets/t.png'; // Update path if needed
+import dashboardIcon from '../assets/t.png';
+import {ArrowDownIcon} from "./SVGIcons.jsx"; // Update path if needed
 
 const Sidebar = ({ projects, onProjectClick, onAddProject, onMenuAction }) => {
     const [isProjectsOpen, setIsProjectsOpen] = useState(false);
@@ -21,7 +22,7 @@ const Sidebar = ({ projects, onProjectClick, onAddProject, onMenuAction }) => {
 
     const handleMenuAction = (action) => {
         if (action === 'Add') {
-            setIsAddProjectVisible(true);  // Show the add project form
+            setIsAddProjectVisible(true);
         } else if (action === 'Delete') {
             if (selectedProject) {
                 onMenuAction('Delete', selectedProject);
@@ -52,8 +53,14 @@ const Sidebar = ({ projects, onProjectClick, onAddProject, onMenuAction }) => {
                     <span className="sidebar-text">Dashboard</span>
                 </li>
                 <hr/>
+
                 <li className="projects-container" onClick={toggleProjects}>
-                    <span>Projects</span>
+                    <div className= "d-flex gap-2 ">
+                        <span className="fw-semibold align-items-center">Projects</span>
+                        <div className={isProjectsOpen ? `rotate-180` : ` `}>
+                            <ArrowDownIcon/>
+                        </div>
+                    </div>
                     <div className="menu-container">
                         <span className="menu-toggle" onClick={toggleMenu}>...</span>
                         {isMenuOpen && (
@@ -65,9 +72,10 @@ const Sidebar = ({ projects, onProjectClick, onAddProject, onMenuAction }) => {
                     </div>
                 </li>
                 {isProjectsOpen && (
-                    <ul className="dropdown-list">
+                    <div>
+                    <ul className="dropdown-list rounded-3 ">
                         {projects.map(project => (
-                            <li key={project.id} onClick={() => handleProjectClick(project)}>
+                            <li className= "bg-pink-100 mx-3 fw-semibold " key={project.id} onClick={() => handleProjectClick(project)}>
                                 {project.name}
                             </li>
                         ))}
@@ -83,10 +91,9 @@ const Sidebar = ({ projects, onProjectClick, onAddProject, onMenuAction }) => {
                             </li>
                         )}
                     </ul>
+                    </div>
                 )}
-                <li>Tasks</li>
-                <li>Teams</li>
-                <li>Settings</li>
+
             </ul>
         </div>
     );

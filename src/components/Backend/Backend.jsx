@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Backend.css';
 import { FaPen } from 'react-icons/fa';
-import TaskModal from './TaskModal';
+import TaskModal from '../TaskModal.jsx';
 
 const generateUniqueTaskId = (statusId, taskId) => `${statusId}_${taskId}`;
 

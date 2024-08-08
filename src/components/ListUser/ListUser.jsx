@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
-import {listUsers} from "../Services/UserService";
-
+import {listUsers} from "../../Services/UserService.js";
+import classes from "*.module.css";
 import {useNavigate} from "react-router-dom";
 
 
@@ -71,9 +71,13 @@ const ListUser = () => {
 
     return (
         <div className='container'>
-            <h2 className='text-bg-dark'>List of Users</h2>
+            <div className={classes.bgPrimary}>
+            <h2 className=' rounded py-2 px-4 text-center '>List of Users</h2>
+            </div>
+            <div className="d-flex gap-3">
             <button type='button' className='btn btn-secondary mb-2' onClick={addNewUser}>Add User</button>
             <button type='button' className='btn btn-secondary mb-2'>Assign Team Leaders</button>
+            </div>
             <table className="table table-striped table-bordered">
                 <thead>
                 <tr>
@@ -122,3 +126,4 @@ const ListUser = () => {
     )
 }
 export default ListUser
+// style={{backgroundColor: '#4d0026'}}

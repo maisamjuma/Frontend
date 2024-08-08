@@ -1,7 +1,7 @@
 // src/components/Login.jsx
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import './Login.css';
+import './Login.module.css';
 
 const Login = ({ onLogin }) => {
     const [email, setEmail] = useState('');
