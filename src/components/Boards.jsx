@@ -4,10 +4,9 @@ import TaskModal from './TaskModal';
 import './Boards.css';
 import { FaPen } from 'react-icons/fa';
 import MoveModal from "./MoveModal.jsx";
-//const generateUniqueTaskId = (statusId, taskId) => `${statusId}_${taskId}`;
 
 const Boards = () => {
-    const { boardId } = useParams(); // Get the current board ID from the route parameters
+    const { projectName, boardId } = useParams(); // Get projectName and boardId from the route parameters
 
     const [statuses, setStatuses] = useState([]);
     const [newTaskName, setNewTaskName] = useState('');
@@ -15,13 +14,13 @@ const Boards = () => {
     const [editingTaskId, setEditingTaskId] = useState(null);
     const [selectedTask, setSelectedTask] = useState(null);
     const [dropdownStatusId, setDropdownStatusId] = useState(null);
-   const [highlightedTaskId, setHighlightedTaskId] = useState(null); // Track the highlighted task
-    const [showMoveModal, setShowMoveModal] = useState(false); // Track the visibility of MoveModal
+    const [highlightedTaskId, setHighlightedTaskId] = useState(null);
+    const [showMoveModal, setShowMoveModal] = useState(false);
 
+    // Load statuses from localStorage or use default values
     useEffect(() => {
-        // Load board-specific statuses from local storage or initialize with default
         const loadStatuses = () => {
-            const savedStatuses = localStorage.getItem(`${boardId}_statuses`);
+            const savedStatuses = localStorage.getItem(`${projectName}_${boardId}_statuses`);
             return savedStatuses ? JSON.parse(savedStatuses) : [
                 { id: 1, title: 'unassigned tasks', tasks: [], backgroundColor: '#f9f9f9' },
                 { id: 2, title: 'To Do', tasks: [], backgroundColor: '#f9f9f9' },
@@ -33,36 +32,20 @@ const Boards = () => {
         };
 
         setStatuses(loadStatuses());
-    }, [boardId]);
+    }, [projectName, boardId]);
+
+    // Save statuses to localStorage whenever they change
     useEffect(() => {
-        console.log('Loading statuses for boardId:', boardId); // Log boardId
-        const loadStatuses = () => {
-            const savedStatuses = localStorage.getItem(`${boardId}_statuses`);
-            return savedStatuses ? JSON.parse(savedStatuses) : [];
-        };
+        localStorage.setItem(`${projectName}_${boardId}_statuses`, JSON.stringify(statuses));
+    }, [statuses, projectName, boardId]);
 
-        const statuses = loadStatuses();
-        console.log('Loaded statuses:', statuses); // Log statuses
-        setStatuses(statuses);
-    }, [boardId]);
-
-
-    useEffect(() => {
-        // Save statuses to local storage when they change
-        localStorage.setItem(`${boardId}_statuses`, JSON.stringify(statuses));
-    }, [statuses, boardId]);
-    useEffect(() => {
-        console.log('Saving statuses for boardId:', boardId); // Log boardId
-        localStorage.setItem(`${boardId}_statuses`, JSON.stringify(statuses));
-        console.log('Statuses saved:', statuses); // Log statuses
-    }, [statuses, boardId]);
-
+    // Add a new task to a status
     const handleAddTask = (statusId) => {
         if (newTaskName.trim()) {
             const status = statuses.find(status => status.id === statusId);
             if (status) {
                 const newTask = {
-                    id: `${statusId}_${status.tasks.length + 1}`,
+                    id: `${projectName}_${boardId}_${statusId}_${status.tasks.length + 1}`,
                     name: newTaskName,
                     date: null,
                     statusId: statusId
@@ -82,6 +65,7 @@ const Boards = () => {
             }
         }
     };
+
 
     const handleDeleteTask = (taskId) => {
         const updatedStatuses = statuses.map(status => ({
@@ -105,6 +89,7 @@ const Boards = () => {
         setStatuses(updatedStatuses);
         setEditingTaskId(null);
     };
+
     const handleChangeColor = (statusId, color) => {
         const updatedStatuses = statuses.map(status => {
             if (status.id === statusId) {
@@ -118,24 +103,23 @@ const Boards = () => {
         setStatuses(updatedStatuses);
         setDropdownStatusId(null);
     };
+
     const handlePencilClick = (task) => {
-        console.log('Clicked Task:', task);
-        const statusId = parseInt(task.id.split('_')[0], 10); // Extract statusId from task id
+        const statusId = parseInt(task.id.split('_')[2], 10);
         const status = statuses.find(status => status.id === statusId);
-        console.log('Found Status:', status);
         setSelectedTask({
             ...task,
             statusName: status ? status.title : 'Unknown Status'
         });
         setHighlightedTaskId(task.id);
     };
+
     const handleCloseModal = () => {
-        console.log('Closing Modal. Selected Task:', selectedTask);
-        setSelectedTask(null); // Clear the selected task
-        setHighlightedTaskId(null); // Remove highlighting from the task
+        setSelectedTask(null);
+        setHighlightedTaskId(null);
     };
+
     const handleSaveDate = (date) => {
-        console.log('Saving Date:', date, 'for Task:', selectedTask);
         if (selectedTask) {
             const updatedStatuses = statuses.map(status => ({
                 ...status,
@@ -144,9 +128,10 @@ const Boards = () => {
                 )
             }));
             setStatuses(updatedStatuses);
-            handleCloseModal(); // Close the modal after saving
+            handleCloseModal();
         }
     };
+
     const handleRemoveDate = () => {
         if (selectedTask) {
             const updatedStatuses = statuses.map(status => ({
@@ -156,29 +141,37 @@ const Boards = () => {
                 )
             }));
             setStatuses(updatedStatuses);
-            handleCloseModal(); // Close the modal after removing the date
+            handleCloseModal();
         }
     };
+
     const handleDeleteStatus = (statusId) => {
         const updatedStatuses = statuses.filter(status => status.id !== statusId);
         setStatuses(updatedStatuses);
     };
+
     const handleMoveTask = (task, newStatusId) => {
+        console.log('Moving task:', task, 'to status:', newStatusId);
+
         const updatedStatuses = statuses.map(status => {
             if (status.id === newStatusId) {
                 return {
                     ...status,
                     tasks: [...status.tasks, task]
                 };
-            } else {
+            } else if (status.tasks.some(t => t.id === task.id)) {
                 return {
                     ...status,
                     tasks: status.tasks.filter(t => t.id !== task.id)
                 };
             }
+            return status;
         });
+
+        console.log('Updated statuses:', updatedStatuses);
         setStatuses(updatedStatuses);
     };
+
 
     return (
         <div className={`backend-container ${boardId}`}>
@@ -215,8 +208,6 @@ const Boards = () => {
                                         <div className="backend-color-box" style={{backgroundColor: '#ffffcc'}}
                                              onClick={() => handleChangeColor(status.id, '#ffffcc')}/>
                                     </div>
-
-
                                 </div>
                             )}
                         </div>
@@ -232,8 +223,7 @@ const Boards = () => {
                                             type="text"
                                             defaultValue={task.name}
                                             onBlur={(e) => handleBlur(status.id, task.id, e.target.value)}
-                                            autoFocus
-                                            className="backend-task-edit-input"
+                                            className="backend-task-input"
                                         />
                                     ) : (
                                         <>
@@ -281,7 +271,8 @@ const Boards = () => {
                                 <button onClick={() => setCurrentStatusId(status.id)}
                                         className="backend-show-add-task"
                                 >
-                                    + Add Task</button>
+                                    + Add Task
+                                </button>
                             )
                         )}
                     </div>
@@ -289,7 +280,6 @@ const Boards = () => {
             </div>
             {selectedTask && (
                 <TaskModal
-                   // onClose={() => setSelectedTask(null)}
                     onDelete={handleDeleteTask}
                     task={selectedTask}
                     onClose={handleCloseModal}
@@ -305,7 +295,7 @@ const Boards = () => {
                     statuses={statuses}
                     onClose={() => setShowMoveModal(false)}
                     onMove={(task, newStatusId) => {
-                        handleMoveTask(task, boardId, newStatusId);
+                        handleMoveTask(task, newStatusId);
                         setShowMoveModal(false);
                     }}
                 />
