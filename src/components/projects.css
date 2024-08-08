@@ -1,0 +1,13 @@
+/* Add this CSS to your stylesheet or inline styles */
+.projectscon {
+    display: flex;
+    justify-content: flex-end; /* Aligns items to the right */
+    padding: 20px; /* Optional: Add some padding if needed */
+
+}
+
+.projectscon h1,
+.projectscon p,
+.projectscon button {
+    margin-left: 150px/* Optional: Remove default margins */
+}
