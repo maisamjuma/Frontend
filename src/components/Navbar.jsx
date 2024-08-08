@@ -44,9 +44,8 @@ const Navbar = ({ onLogout }) => {
     );
 };
 
-// Add PropTypes validation
 Navbar.propTypes = {
-    onLogout: PropTypes.func.isRequired, // Ensure onLogout is a required function
+    onLogout: PropTypes.func.isRequired,
 };
 
 export default Navbar;
