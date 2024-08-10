@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import TaskModal from './TaskModal';
 import './Boards.css';
-import { FaPen } from 'react-icons/fa';
+import { FaPen} from 'react-icons/fa';
 import MoveModal from "./MoveModal.jsx";
+import PriorityModal from './PriorityModal'; // Import the new component
 
 const Boards = () => {
     const { projectName, boardId } = useParams(); // Get projectName and boardId from the route parameters
@@ -16,6 +17,7 @@ const Boards = () => {
     const [dropdownStatusId, setDropdownStatusId] = useState(null);
     const [highlightedTaskId, setHighlightedTaskId] = useState(null);
     const [showMoveModal, setShowMoveModal] = useState(false);
+    const [showPriorityModal, setShowPriorityModal] = useState(false);
 
     // Load statuses from localStorage or use default values
     useEffect(() => {
@@ -39,7 +41,6 @@ const Boards = () => {
         localStorage.setItem(`${projectName}_${boardId}_statuses`, JSON.stringify(statuses));
     }, [statuses, projectName, boardId]);
 
-    // Add a new task to a status
     const handleAddTask = (statusId) => {
         if (newTaskName.trim()) {
             const status = statuses.find(status => status.id === statusId);
@@ -48,7 +49,8 @@ const Boards = () => {
                     id: `${projectName}_${boardId}_${statusId}_${status.tasks.length + 1}`,
                     name: newTaskName,
                     date: null,
-                    statusId: statusId
+                    statusId: statusId,
+                    priority: 'medium' // Set default priority
                 };
                 const updatedStatuses = statuses.map(status => {
                     if (status.id === statusId) {
@@ -65,7 +67,6 @@ const Boards = () => {
             }
         }
     };
-
 
     const handleDeleteTask = (taskId) => {
         const updatedStatuses = statuses.map(status => ({
@@ -172,6 +173,23 @@ const Boards = () => {
         setStatuses(updatedStatuses);
     };
 
+    const handleSavePriority = (newPriority) => {
+        if (selectedTask) {
+            const updatedStatuses = statuses.map(status => ({
+                ...status,
+                tasks: status.tasks.map(task =>
+                    task.id === selectedTask.id ? { ...task, priority: newPriority } : task
+                )
+            }));
+            setStatuses(updatedStatuses);
+            setShowPriorityModal(false);
+        }
+    };
+
+    const handleClosePriorityModal = () => {
+        setShowPriorityModal(false);
+    };
+
 
     return (
         <div className={`backend-container ${boardId}`}>
@@ -218,6 +236,27 @@ const Boards = () => {
                                     className={`backend-task-box ${highlightedTaskId === task.id ? 'highlighted' : ''}`}
                                     onDoubleClick={() => handleDoubleClick(task.id)}
                                 >
+                                    <div className="task-priority-display priority-${task.priority}">
+                                        {/* Display priority name and icon */}
+                                        {task.priority === 'high' && (
+                                            <>
+
+                                                <span className="priority-high">High</span>
+                                            </>
+                                        )}
+                                        {task.priority === 'medium' && (
+                                            <>
+
+                                                <span className="priority-medium">Medium</span>
+                                            </>
+                                        )}
+                                        {task.priority === 'low' && (
+                                            <>
+
+                                                <span className="priority-low">Low</span>
+                                            </>
+                                        )}
+                                    </div>
                                     {editingTaskId === task.id ? (
                                         <input
                                             type="text"
@@ -287,6 +326,7 @@ const Boards = () => {
                     statuses={statuses}
                     onSaveDate={handleSaveDate}
                     onRemoveDate={handleRemoveDate}
+                    onSavePriority={handleSavePriority}
                 />
             )}
             {showMoveModal && selectedTask && (
@@ -298,6 +338,13 @@ const Boards = () => {
                         handleMoveTask(task, newStatusId);
                         setShowMoveModal(false);
                     }}
+                />
+            )}
+            {showPriorityModal && (
+                <PriorityModal
+                    isVisible={showPriorityModal}
+                    onClose={handleClosePriorityModal}
+                    onSavePriority={handleSavePriority}
                 />
             )}
         </div>
