@@ -9,11 +9,14 @@ const DetailsModal = ({ task, onClose }) => {
     const initialTableData = (task && task.tableData && Array.isArray(task.tableData) && task.tableData.length > 0)
         ? task.tableData
         : [{ Description: "", Comments: "" }];
-    const [tableData, setTableData] = useState(initialTableData);
+
+    const [descriptionData, setDescriptionData] = useState(initialTableData.map(row => ({ Description: row.Description })));
+    const [commentsData, setCommentsData] = useState(initialTableData.map(row => ({ Comments: row.Comments })));
 
     useEffect(() => {
         if (task && task.tableData && Array.isArray(task.tableData)) {
-            setTableData(task.tableData.length > 0 ? task.tableData : [{ Description: "", Comments: "" }]);
+            setDescriptionData(task.tableData.map(row => ({ Description: row.Description })));
+            setCommentsData(task.tableData.map(row => ({ Comments: row.Comments })));
         }
     }, [task]);
 
@@ -25,15 +28,24 @@ const DetailsModal = ({ task, onClose }) => {
         }
     };
 
-    const handleInputChange = (e, rowIndex, colKey) => {
-        const updatedData = [...tableData];
-        updatedData[rowIndex][colKey] = e.target.value;
-        setTableData(updatedData);
+    const handleDescriptionChange = (e, rowIndex) => {
+        const updatedData = [...descriptionData];
+        updatedData[rowIndex].Description = e.target.value;
+        setDescriptionData(updatedData);
     };
 
-    const handleAddRow = () => {
-        const emptyRow = { Description: '', Comments: '' };
-        setTableData([...tableData, emptyRow]);
+    const handleCommentsChange = (e, rowIndex) => {
+        const updatedData = [...commentsData];
+        updatedData[rowIndex].Comments = e.target.value;
+        setCommentsData(updatedData);
+    };
+
+    const handleAddDescriptionRow = () => {
+        setDescriptionData([...descriptionData, { Description: '' }]);
+    };
+
+    const handleAddCommentsRow = () => {
+        setCommentsData([...commentsData, { Comments: '' }]);
     };
 
     return (
@@ -41,43 +53,34 @@ const DetailsModal = ({ task, onClose }) => {
             <div className="details-modal-content">
                 <div className="details-modal-header">
                     <div className="details-modal-title">
-                        <FontAwesomeIcon icon={faTasks} className="details-icon" />
+                        <FontAwesomeIcon icon={faTasks} className="details-icon"/>
                         <h2>{task.name}</h2>
                     </div>
-                    <FontAwesomeIcon icon={faTimes} className="close-icon" onClick={onClose} />
+                    <FontAwesomeIcon icon={faTimes} className="close-icon" onClick={onClose}/>
                 </div>
                 <p className="task-status">In Status: {task.statusName}</p>
-                <p className="task-description">Description {task.description}</p>
+                <p className="task-description">Description: {task.description}</p>
 
                 <div className="table-container">
-                    {tableData.map((row, rowIndex) => (
+                    {descriptionData.map((row, rowIndex) => (
                         <div key={rowIndex} className="table-row">
                             {/* Displaying "Member Name" as normal text above each row */}
-                            <div className="member-name">Member Name: </div>
+                            <div className="member-name">Member Name:</div>
                             <table className="task-details-table">
                                 <thead>
                                 <tr>
                                     <th>Description</th>
-                                    <th>Comments</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr>
                                     <td>
-                                            <textarea className="textarea"
-                                                value={row.Description}
-                                                onChange={(e) => handleInputChange(e, rowIndex, 'Description')}
-                                                rows="10" // Adjust rows as needed
-
-                                            />
-                                    </td>
-                                    <td>
-                                            <textarea className="textarea"
-                                                value={row.Comments}
-                                                onChange={(e) => handleInputChange(e, rowIndex, 'Comments')}
-                                                rows="10" // Adjust rows as needed
-
-                                            />
+                                        <textarea
+                                            className="textarea"
+                                            value={row.Description}
+                                            onChange={(e) => handleDescriptionChange(e, rowIndex)}
+                                            rows="10" // Adjust rows as needed
+                                        />
                                     </td>
                                 </tr>
                                 </tbody>
@@ -87,7 +90,39 @@ const DetailsModal = ({ task, onClose }) => {
                 </div>
 
                 <div className="table-controls">
-                    <button onClick={handleAddRow}>Add Row</button>
+                    <button onClick={handleAddDescriptionRow}>Add Row</button>
+                </div>
+
+                <div className="table-container-comment">
+                    {commentsData.map((row, rowIndex) => (
+                        <div key={rowIndex} className="table-row">
+                            {/* Displaying "Member Name" as normal text above each row */}
+                            <div className="member-name-comment">Member Name:</div>
+                            <table className="task-details-table-comment">
+                                <thead>
+                                <tr>
+                                    <th>Comments</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <textarea
+                                            className="textarea-comment"
+                                            value={row.Comments}
+                                            onChange={(e) => handleCommentsChange(e, rowIndex)}
+                                            rows="10" // Adjust rows as needed
+                                        />
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    ))}
+                </div>
+
+                <div className="table-controls-comment">
+                    <button onClick={handleAddCommentsRow}>Add Comments</button>
                 </div>
             </div>
         </div>

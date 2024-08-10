@@ -58,6 +58,9 @@
 .table-container {
     margin-bottom: 20px;
 }
+.table-container-comments {
+    margin-bottom: 20px;
+}
 
 .table-row {
     margin-bottom: 10px;
@@ -68,7 +71,11 @@
     color: #dcdde1;
     margin-bottom: 5px;
 }
-
+.member-name-comment {
+    font-size: 1em;
+    color: #dcdde1;
+    margin-bottom: 5px;
+}
 .task-details-table {
     width: 80%; /* Adjust table width as needed */
     border-collapse: collapse;
@@ -81,16 +88,35 @@
     text-align: left;
     line-height: 0.6; /* Adjust line height to reduce row height */
 }
+.task-details-table-comment {
+    width: 70%; /* Reduce the width of the comment table */
+    border-collapse: collapse;
+    margin-bottom: 5px; /* Reduce the margin at the bottom of the table */
+    font-size: 0.85em; /* Reduce the font size for a smaller appearance */
+}
+
+.task-details-table-comment th,
+.task-details-table-comment td {
+    border: 1px solid #7f8fa6;
+    padding: 3px; /* Reduce padding for cells */
+    text-align: left;
+    line-height: 3px; /* Adjust line height for more compact rows */
+}
 
 .task-details-table th {
     background-color: #34495e;
     color: #dcdde1;
 }
-
+.task-details-table-comment th {
+    background-color: #34495e;
+    color: #dcdde1;
+}
 .task-details-table tr:nth-child(even) {
     background-color: #2f3640;
 }
-
+.task-details-table-comment tr:nth-child(even) {
+    background-color: #2f3640;
+}
 .textarea {
     width: 100%; /* Adjusts the width to fit within the table cell */
     min-height: 25px; /* Adjust height of textarea to fit within row */
@@ -98,11 +124,28 @@
     background: #2f3640;
     color: #dcdde1;
     border: 1px solid #7f8fa6;
-    padding: 2px; /* Reduced padding for more compact appearance */
+    padding: 7px; /* Adds padding inside the textarea */
+
     box-sizing: border-box; /* Ensures padding and border are included in the element's total width and height */
+}
+.textarea-comment {
+    width: 100%; /* Keeps the textarea width the same */
+    min-height: 15px; /* Keeps the textarea height reduced */
+    padding: 7px; /* Adds padding inside the textarea */
+    resize: vertical; /* Allows resizing vertically only */
+    background: #2f3640; /* Keeps the background color */
+    color: #dcdde1; /* Keeps the text color */
+    border: 1px solid #7f8fa6; /* Keeps the border style */
+    box-sizing: border-box; /* Ensures padding is included in the textarea's total size */
+    vertical-align: bottom; /* Aligns text towards the bottom of the textarea */
 }
 
 .table-controls {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+.table-controls-comment {
     display: flex;
     gap: 10px;
     margin-top: 20px;
