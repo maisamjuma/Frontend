@@ -307,3 +307,33 @@ html, body {
     display: flex; /* Show when active */
 }
 
+
+.task-priority-display {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 4px; /* Rounded edges for the priority display */
+    font-size: 0.8rem; /* Reduce font size */
+    color: #fff; /* Adjust color as needed */
+}
+
+.priority-high {
+    background-color: #ff4d4d; /* Red for high priority */
+}
+
+.priority-medium {
+    background-color: #ffcc00; /* Yellow for medium priority */
+}
+
+.priority-low {
+    background-color: #66cc66; /* Green for low priority */
+}
+
+
+.backend-task-item {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    position: relative;
+    border-radius: 4px;
+}

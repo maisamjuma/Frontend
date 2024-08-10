@@ -19,6 +19,7 @@
     text-align: center;
     position: relative;
     background: none;
+
 }
 
 .task-modal-actions {
@@ -54,3 +55,4 @@
     margin-top: 30px; /* Space between task name and date */
     display: block; /* Ensure date appears on a new line */
 }
+

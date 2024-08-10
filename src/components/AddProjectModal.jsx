@@ -1,36 +1,17 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import './AddProjectModal.css';
+import './AddProjectModal.css'; // Create a CSS file for modal styles
 
 const AddProjectModal = ({ isVisible, onClose, onAddProject }) => {
     const [newProjectName, setNewProjectName] = useState('');
+    const [newProjectDescription, setNewProjectDescription] = useState('');
 
-    const handleAddProject = async () => {
-        if (newProjectName.trim()) {
-            try {
-                const response = await fetch('/api/projects', {  // Adjust the URL to match your backend's endpoint
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ name: newProjectName }),
-                });
-
-                if (!response.ok) {
-                    throw new Error('Failed to add project');
-                }
-
-                const result = await response.json();
-
-                onAddProject(result); // Assuming onAddProject updates the UI with the new project
-
-                setNewProjectName('');
-                onClose(); // Close the modal after adding the project
-
-            } catch (error) {
-                console.error('Error adding project:', error);
-                // Optionally, you could add error handling to display an error message in the UI
-            }
+    const handleAddProject = () => {
+        if (newProjectName.trim() && newProjectDescription.trim()) {
+            onAddProject(newProjectName, newProjectDescription);
+            setNewProjectName('');
+            setNewProjectDescription('');
+            onClose(); // Close the modal after adding the project
         }
     };
 
@@ -45,6 +26,11 @@ const AddProjectModal = ({ isVisible, onClose, onAddProject }) => {
                         onChange={(e) => setNewProjectName(e.target.value)}
                         placeholder="New project name"
                     />
+                    <textarea
+                        value={newProjectDescription}
+                        onChange={(e) => setNewProjectDescription(e.target.value)}
+                        placeholder="Project description"
+                    />
                     <button onClick={handleAddProject}>Add Project</button>
                     <button onClick={onClose}>Cancel</button>
                 </div>
@@ -56,7 +42,7 @@ const AddProjectModal = ({ isVisible, onClose, onAddProject }) => {
 AddProjectModal.propTypes = {
     isVisible: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
-    onAddProject: PropTypes.func.isRequired,
+    onAddProject: PropTypes.func.isRequired
 };
 
 export default AddProjectModal;

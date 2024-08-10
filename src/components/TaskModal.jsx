@@ -1,28 +1,32 @@
+// TaskModal.jsx
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './TaskModal.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faCalendar, faArrowsAlt, faTrash, faClipboard } from '@fortawesome/free-solid-svg-icons';
+import {
+    faUser,
+    faCalendar,
+    faArrowsAlt,
+    faTrash,
+    faClipboard
+} from '@fortawesome/free-solid-svg-icons';
+import PriorityModal from './PriorityModal';
 import MoveModal from "./MoveModal/MoveModal.jsx";
 import CalendarModal from "./CalendarModal/CalendarModal.jsx";
-import DetailsModal from "./DetailsModal/DetailsModal.jsx";
+import DetailsModal from "./DetailsModal/DetailsModal.jsx"; // Import your new PriorityModal
 
-const TaskModal = ({ task, onClose, onDelete, boards, statuses, onSaveDate, onRemoveDate }) => {
+const TaskModal = ({ task, onClose, onDelete, boards, statuses, onSaveDate, onRemoveDate, onSavePriority }) => {
     const [isMoveModalOpen, setIsMoveModalOpen] = useState(false);
     const [isCalendarModalOpen, setIsCalendarModalOpen] = useState(false);
     const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
+    const [isPriorityModalOpen, setIsPriorityModalOpen] = useState(false);
+
 
     if (!task) return null;
 
-
-    console.log('Task in Modal:', task);
-    console.log('Statuses in Modal:', statuses);
-    const statusId = parseInt(task.id.split('_')[0], 10); // Extract statusId from task id
+    const statusId = parseInt(task.id.split('_')[0], 10);
     const status = statuses.find(status => status.id === statusId);
-    console.log('Status for Task:', status);
-
-    // Ensure statusName is correctly set
-    const statusName = status ? status.title : 'Unknown Status'; // Use title instead of name
+    const statusName = status ? status.title : 'Unknown Status';
 
     const handleOverlayClick = (e) => {
         if (e.target.classList.contains('task-modal-overlay')) {
@@ -37,6 +41,11 @@ const TaskModal = ({ task, onClose, onDelete, boards, statuses, onSaveDate, onRe
         }
     };
 
+    const handlePrioritySelect = (priority) => {
+        onSavePriority(priority);
+        setIsPriorityModalOpen(false);
+    };
+
     return (
         <div className="task-modal-overlay" onClick={handleOverlayClick}>
             <div className="task-modal-content">
@@ -44,6 +53,7 @@ const TaskModal = ({ task, onClose, onDelete, boards, statuses, onSaveDate, onRe
                     <button onClick={() => setIsDetailsModalOpen(true)}>
                         <FontAwesomeIcon icon={faClipboard}/> Show Details
                     </button>
+                    <button onClick={() => setIsPriorityModalOpen(true)}>Edit Priority</button>
                     <button>
                         <FontAwesomeIcon icon={faUser}/> Change Member
                     </button>
@@ -72,7 +82,7 @@ const TaskModal = ({ task, onClose, onDelete, boards, statuses, onSaveDate, onRe
                     boards={boards}
                     statuses={statuses}
                     task={task}
-                 onMoveTask={()=>{}}/>
+                />
             )}
             {isCalendarModalOpen && (
                 <CalendarModal
@@ -87,7 +97,13 @@ const TaskModal = ({ task, onClose, onDelete, boards, statuses, onSaveDate, onRe
             {isDetailsModalOpen && (
                 <DetailsModal
                     onClose={() => setIsDetailsModalOpen(false)}
-                    task={{ ...task, statusName }} // Pass the task object with the status name
+                    task={{ ...task, statusName }}
+                />
+            )}
+            {isPriorityModalOpen && (
+                <PriorityModal
+                    onClose={() => setIsPriorityModalOpen(false)}
+                    onSave={handlePrioritySelect}
                 />
             )}
         </div>
@@ -98,8 +114,9 @@ TaskModal.propTypes = {
     task: PropTypes.shape({
         name: PropTypes.string.isRequired,
         id: PropTypes.string.isRequired,
-        statusId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), // Ensure statusId can be a number or string
+        statusId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         date: PropTypes.instanceOf(Date),
+        priority: PropTypes.string,
     }),
     onClose: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
@@ -113,6 +130,7 @@ TaskModal.propTypes = {
     })).isRequired,
     onSaveDate: PropTypes.func.isRequired,
     onRemoveDate: PropTypes.func.isRequired,
+    onSavePriority: PropTypes.func.isRequired,
 };
 
 export default TaskModal;
