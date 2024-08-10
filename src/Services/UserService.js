@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // const REST_API_BASE_URL = process.env.REST_API_URL;
-const REST_API_BASE_URL = 'http://localhost:8080/api/users';
+const REST_API_BASE_URL = 'http://10.10.30.77:8080/api/users';
 
 /*
 export const listUsers =()=>{

@@ -2,64 +2,77 @@
 
 .login-container {
     display: flex;
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    height: 100vh; /* Full viewport height */
-    width: 100vw; /* Full viewport width */
-    background-color: #f4f4f4;
-    box-sizing: border-box; /* Include padding and border in the width */
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    background-color: #e0e7ff; /* Soft blue background for a modern feel */
+    box-sizing: border-box;
+    padding: 20px; /* Add padding for better responsiveness on small screens */
 }
 
 .login-form {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background: #ffffff;
+    padding: 30px; /* Increased padding for a more spacious look */
+    border-radius: 12px; /* Slightly larger border radius for a softer edge */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Larger shadow for a floating effect */
     width: 100%;
-    max-width: 400px; /* Adjust as needed */
-    box-sizing: border-box; /* Include padding and border in the width */
+    max-width: 380px; /* Adjusted width for a sleeker look */
+    box-sizing: border-box;
+    transition: transform 0.3s ease; /* Add transition for hover effect */
+}
+
+.login-form:hover {
+    transform: translateY(-5px); /* Slight lift on hover */
 }
 
 .login-form h2 {
-    margin-bottom: 20px;
-    text-align: center; /* Center text if needed */
+    margin-bottom: 25px; /* Increased spacing for better readability */
+    text-align: center;
+    font-size: 1.5rem; /* Larger font size for better hierarchy */
+    color: #333333; /* Darker text color for better contrast */
+    font-weight: 600;
 }
 
 .login-form label {
-    font-weight: bold;
+    font-weight: 500; /* Slightly lighter weight for a more modern look */
     display: block;
-    margin-bottom: 10px;
+    margin-bottom: 8px; /* Adjusted spacing for consistency */
+    color: #666666; /* Softer label color */
 }
 
 .login-form input {
     width: 100%;
-    padding: 8px;
+    padding: 12px; /* Larger padding for a better touch target */
     margin-bottom: 20px;
-    border: 1px solid #0b0a0a;
-    border-radius: 4px;
-    background: #fae6ff;
-    /*color: #14001a;*/
+    border: 1px solid #cccccc; /* Lighter border color */
+    border-radius: 6px; /* Slightly more rounded corners */
+    background: #f9f9f9; /* Lighter background for inputs */
+    color: #333333; /* Darker text color */
+    font-size: 1rem; /* Consistent font size */
+    transition: border-color 0.3s ease, background-color 0.3s ease; /* Smooth transition for focus effects */
 }
 
-.login-form button:hover {
-    width: 100%;
-    padding: 10px;
-    background-color: #ff3399;
-    color:#fae6ff; /* Text color */
-    border: 1px solid #ff69b4; /* Border color */
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s; /* Smooth transition for color changes */
+.login-form input:focus {
+    border-color: #4f46e5; /* Modern purple-blue border color on focus */
+    background-color: #ffffff; /* White background on focus */
+    outline: none; /* Remove default outline */
 }
 
 .login-form button {
     width: 100%;
-    padding: 10px;
-    border-radius: 4px;
+    padding: 12px;
+    border-radius: 6px;
     cursor: pointer;
-    transition: background-color 0.3s, color 0.3s; /* Smooth transition for color changes */
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for all hover effects */
+    background-color: #4f46e5; /* Modern purple-blue background color */
+    color: #ffffff; /* White text color */
+    border: 1px solid #4f46e5;
+    font-size: 1rem; /* Consistent font size */
+    font-weight: 600; /* Bold text for better readability */
+}
 
-    background-color: #ff69b4; /* Background color on hover */
-    color: #ffffff; /* Text color on hover */
-    border: 1px solid #ff69b4; /* Border color */
+.login-form button:hover {
+    background-color: #4338ca; /* Darker shade on hover */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow on hover */
 }

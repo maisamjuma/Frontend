@@ -1,83 +1,70 @@
 import React, { useState, useEffect } from 'react';
-import './Backend.css';
 import { FaPen } from 'react-icons/fa';
-import TaskModal from '../TaskModal.jsx';
+import { useParams } from 'react-router-dom';
+import TaskModal from "./TaskModal.jsx";
+import MoveModal from "./MoveModal/MoveModal.jsx";
 
-const generateUniqueTaskId = (statusId, taskId) => `${statusId}_${taskId}`;
+const Boards = () => {
+    const { projectName, boardId } = useParams(); // Get projectName and boardId from the route parameters
 
-const Backend = () => {
-    const initialStatuses = [
-        { id: 1, title: 'unassigned tasks', tasks: [], backgroundColor: '#f9f9f9' },
-        { id: 2, title: 'To Do', tasks: [], backgroundColor: '#f9f9f9' },
-        { id: 3, title: 'Doing', tasks: [], backgroundColor: '#f9f9f9' },
-        { id: 4, title: 'Ready to Review', tasks: [], backgroundColor: '#f9f9f9' }
-    ];
-
-    const loadStatuses = () => {
-        const savedStatuses = localStorage.getItem('statuses');
-        return savedStatuses ? JSON.parse(savedStatuses) : initialStatuses;
-    };
-
-    const [statuses, setStatuses] = useState(loadStatuses());
+    const [statuses, setStatuses] = useState([]);
     const [newTaskName, setNewTaskName] = useState('');
     const [currentStatusId, setCurrentStatusId] = useState(null);
-    const [isAdding, setIsAdding] = useState(false);
-    const [newStatusName, setNewStatusName] = useState('');
+    const [editingTaskId, setEditingTaskId] = useState(null);
+    const [selectedTask, setSelectedTask] = useState(null);
     const [dropdownStatusId, setDropdownStatusId] = useState(null);
-    const [selectedTask, setSelectedTask] = useState(null); // Track the selected task for the modal
-    const [highlightedTaskId, setHighlightedTaskId] = useState(null); // Track the highlighted task
-    const [editingTaskId, setEditingTaskId] = useState(null); // Track the editing task
+    const [highlightedTaskId, setHighlightedTaskId] = useState(null);
+    const [showMoveModal, setShowMoveModal] = useState(false);
 
+    // Load statuses from localStorage or use default values
     useEffect(() => {
-        localStorage.setItem('statuses', JSON.stringify(statuses));
-    }, [statuses]);
+        const loadStatuses = () => {
+            const savedStatuses = localStorage.getItem(`${projectName}_${boardId}_statuses`);
+            return savedStatuses ? JSON.parse(savedStatuses) : [
+                { id: 1, title: 'unassigned tasks', tasks: [], backgroundColor: '#f9f9f9' },
+                { id: 2, title: 'To Do', tasks: [], backgroundColor: '#f9f9f9' },
+                { id: 3, title: 'Doing', tasks: [], backgroundColor: '#f9f9f9' },
+                { id: 4, title: 'Ready to Review', tasks: [], backgroundColor: '#f9f9f9' },
+                { id: 5, title: 'Reviewing', tasks: [], backgroundColor: '#f9f9f9' },
+                { id: 6, title: 'Complete', tasks: [], backgroundColor: '#f9f9f9' }
+            ];
+        };
 
-    const handleInputChange = (e) => {
-        setNewStatusName(e.target.value);
-    };
+        setStatuses(loadStatuses());
+    }, [projectName, boardId]);
 
-    const handleAddStatus = () => {
-        if (newStatusName.trim()) {
-            const newStatus = {
-                id: statuses.length + 1,
-                title: newStatusName,
-                tasks: [],
-                backgroundColor: '#f9f9f9'
-            };
-            setStatuses([...statuses, newStatus]);
-            setNewStatusName('');
-            setIsAdding(false);
-        }
-    };
+    // Save statuses to localStorage whenever they change
+    useEffect(() => {
+        localStorage.setItem(`${projectName}_${boardId}_statuses`, JSON.stringify(statuses));
+    }, [statuses, projectName, boardId]);
 
+    // Add a new task to a status
     const handleAddTask = (statusId) => {
         if (newTaskName.trim()) {
             const status = statuses.find(status => status.id === statusId);
-            const newTask = {
-                id: generateUniqueTaskId(statusId, status.tasks.length + 1),
-                name: newTaskName,
-                date: null, // Initialize date as null
-                statusId: statusId // Include statusId
-            };
-            const updatedStatuses = statuses.map(status => {
-                if (status.id === statusId) {
-                    return {
-                        ...status,
-                        tasks: [...status.tasks, newTask]
-                    };
-                }
-                return status;
-            });
-            setStatuses(updatedStatuses);
-            setNewTaskName('');
-            setCurrentStatusId(null);
+            if (status) {
+                const newTask = {
+                    id: `${projectName}_${boardId}_${statusId}_${status.tasks.length + 1}`,
+                    name: newTaskName,
+                    date: null,
+                    statusId: statusId
+                };
+                const updatedStatuses = statuses.map(status => {
+                    if (status.id === statusId) {
+                        return {
+                            ...status,
+                            tasks: [...status.tasks, newTask]
+                        };
+                    }
+                    return status;
+                });
+                setStatuses(updatedStatuses);
+                setNewTaskName('');
+                setCurrentStatusId(null);
+            }
         }
     };
 
-    const handleDeleteStatus = (statusId) => {
-        const updatedStatuses = statuses.filter(status => status.id !== statusId);
-        setStatuses(updatedStatuses);
-    };
 
     const handleDeleteTask = (taskId) => {
         const updatedStatuses = statuses.map(status => ({
@@ -85,65 +72,6 @@ const Backend = () => {
             tasks: status.tasks.filter(task => task.id !== taskId)
         }));
         setStatuses(updatedStatuses);
-    };
-
-    const handleChangeColor = (statusId, color) => {
-        const updatedStatuses = statuses.map(status => {
-            if (status.id === statusId) {
-                return {
-                    ...status,
-                    backgroundColor: color
-                };
-            }
-            return status;
-        });
-        setStatuses(updatedStatuses);
-        setDropdownStatusId(null);
-    };
-    const handlePencilClick = (task) => {
-        const status = statuses.find(status => status.id === task.statusId); // Ensure statusId is used
-        setSelectedTask({
-            ...task,
-            statusName: status ? status.title : 'Unknown Status' // Set statusName
-        });
-        setHighlightedTaskId(task.id);
-    };
-
-
-    const handleCloseModal = () => {
-        setSelectedTask(null); // Clear the selected task
-        setHighlightedTaskId(null); // Remove highlighting from the task
-    };
-
-    const handleSaveDate = (date) => {
-        if (selectedTask) {
-            const updatedStatuses = statuses.map(status => ({
-                ...status,
-                tasks: status.tasks.map(task =>
-                    task.id === selectedTask.id ? { ...task, date: date instanceof Date ? date : new Date(date) } : task
-                )
-            }));
-            setStatuses(updatedStatuses);
-            handleCloseModal(); // Close the modal after saving
-        }
-    };
-
-    const handleRemoveDate = () => {
-        if (selectedTask) {
-            const updatedStatuses = statuses.map(status => ({
-                ...status,
-                tasks: status.tasks.map(task =>
-                    task.id === selectedTask.id ? { ...task, date: null } : task
-                )
-            }));
-            setStatuses(updatedStatuses);
-            handleCloseModal(); // Close the modal after removing the date
-        }
-    };
-
-    const handleReset = () => {
-        setStatuses(initialStatuses);
-        localStorage.removeItem('statuses'); // Clear saved statuses from local storage
     };
 
     const handleDoubleClick = (taskId) => {
@@ -161,12 +89,92 @@ const Backend = () => {
         setEditingTaskId(null);
     };
 
+    const handleChangeColor = (statusId, color) => {
+        const updatedStatuses = statuses.map(status => {
+            if (status.id === statusId) {
+                return {
+                    ...status,
+                    backgroundColor: color
+                };
+            }
+            return status;
+        });
+        setStatuses(updatedStatuses);
+        setDropdownStatusId(null);
+    };
+
+    const handlePencilClick = (task) => {
+        const statusId = parseInt(task.id.split('_')[2], 10);
+        const status = statuses.find(status => status.id === statusId);
+        setSelectedTask({
+            ...task,
+            statusName: status ? status.title : 'Unknown Status'
+        });
+        setHighlightedTaskId(task.id);
+    };
+
+    const handleCloseModal = () => {
+        setSelectedTask(null);
+        setHighlightedTaskId(null);
+    };
+
+    const handleSaveDate = (date) => {
+        if (selectedTask) {
+            const updatedStatuses = statuses.map(status => ({
+                ...status,
+                tasks: status.tasks.map(task =>
+                    task.id === selectedTask.id ? { ...task, date: date instanceof Date ? date : new Date(date) } : task
+                )
+            }));
+            setStatuses(updatedStatuses);
+            handleCloseModal();
+        }
+    };
+
+    const handleRemoveDate = () => {
+        if (selectedTask) {
+            const updatedStatuses = statuses.map(status => ({
+                ...status,
+                tasks: status.tasks.map(task =>
+                    task.id === selectedTask.id ? { ...task, date: null } : task
+                )
+            }));
+            setStatuses(updatedStatuses);
+            handleCloseModal();
+        }
+    };
+
+    const handleDeleteStatus = (statusId) => {
+        const updatedStatuses = statuses.filter(status => status.id !== statusId);
+        setStatuses(updatedStatuses);
+    };
+
+    const handleMoveTask = (task, newStatusId) => {
+        console.log('Moving task:', task, 'to status:', newStatusId);
+
+        const updatedStatuses = statuses.map(status => {
+            if (status.id === newStatusId) {
+                return {
+                    ...status,
+                    tasks: [...status.tasks, task]
+                };
+            } else if (status.tasks.some(t => t.id === task.id)) {
+                return {
+                    ...status,
+                    tasks: status.tasks.filter(t => t.id !== task.id)
+                };
+            }
+            return status;
+        });
+
+        console.log('Updated statuses:', updatedStatuses);
+        setStatuses(updatedStatuses);
+    };
+
+
     return (
-        <div className="backend-container">
-            <h1>Backend</h1>
-            <button onClick={handleReset} className="backend-reset-button">
-                Reset All Tasks
-            </button>
+        <div className={`backend-container ${boardId}`}>
+            <h1>{boardId.charAt(0).toUpperCase() + boardId.slice(1)}</h1>
             <div className="backend-status-container">
                 {statuses.map((status) => (
                     <div key={status.id} className="backend-status-box"
@@ -199,8 +207,6 @@ const Backend = () => {
                                         <div className="backend-color-box" style={{backgroundColor: '#ffffcc'}}
                                              onClick={() => handleChangeColor(status.id, '#ffffcc')}/>
                                     </div>
-
-
                                 </div>
                             )}
                         </div>
@@ -216,8 +222,7 @@ const Backend = () => {
                                             type="text"
                                             defaultValue={task.name}
                                             onBlur={(e) => handleBlur(status.id, task.id, e.target.value)}
-                                            autoFocus
-                                            className="backend-task-edit-input" /* Use a specific class for the input */
+                                            className="backend-task-input"
                                         />
                                     ) : (
                                         <>
@@ -235,7 +240,6 @@ const Backend = () => {
                                     )}
                                 </div>
                             ))}
-
                         </div>
                         {(status.id === 1 || status.id === 2) && (
                             currentStatusId === status.id ? (
@@ -252,7 +256,7 @@ const Backend = () => {
                                             onClick={() => handleAddTask(status.id)}
                                             className="backend-add-task-button"
                                         >
-                                        Add Task
+                                            Add Task
                                         </button>
                                         <button
                                             onClick={() => setCurrentStatusId(null)}
@@ -263,9 +267,8 @@ const Backend = () => {
                                     </div>
                                 </div>
                             ) : (
-                                <button
-                                    onClick={() => setCurrentStatusId(status.id)}
-                                    className="backend-show-add-task"
+                                <button onClick={() => setCurrentStatusId(status.id)}
+                                        className="backend-show-add-task"
                                 >
                                     + Add Task
                                 </button>
@@ -273,48 +276,31 @@ const Backend = () => {
                         )}
                     </div>
                 ))}
-                {!isAdding ? (
-                    <button
-                        onClick={() => setIsAdding(true)}
-                        className="backend-add-status-button"
-                    >
-                        + Add New Status
-                    </button>
-                ) : (
-                    <div className="backend-add-status-form">
-                        <input
-                            type="text"
-                            value={newStatusName}
-                            onChange={handleInputChange}
-                            placeholder="Enter status name"
-                            className="backend-status-input"
-                        />
-                        <div className="backend-add-status-actions">
-                            <button onClick={handleAddStatus} className="backend-add-status-button">
-                                Submit
-                            </button>
-                            <button onClick={() => setIsAdding(false)} className="backend-cancel-button">
-                                Cancel
-                            </button>
-                        </div>
-                    </div>
-                )}
             </div>
-
-            {/* Render the TaskModal component */}
             {selectedTask && (
                 <TaskModal
+                    onDelete={handleDeleteTask}
                     task={selectedTask}
                     onClose={handleCloseModal}
-                    onDelete={handleDeleteTask}
                     boards={statuses}
                     statuses={statuses}
                     onSaveDate={handleSaveDate}
                     onRemoveDate={handleRemoveDate}
                 />
             )}
+            {showMoveModal && selectedTask && (
+                <MoveModal
+                    task={selectedTask}
+                    statuses={statuses}
+                    onClose={() => setShowMoveModal(false)}
+                    onMove={(task, newStatusId) => {
+                        handleMoveTask(task, newStatusId);
+                        setShowMoveModal(false);
+                    }}
+                 onMoveTask={()=>{}}/>
+            )}
         </div>
     );
 };
 
-export default Backend;
+export default Boards;

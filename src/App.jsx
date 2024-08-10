@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
-import Layout from './components/Layout/Layout.jsx';
-import Login from './components/Login/Login.jsx';
-import Project1 from './components/project1';
-import ListUser from "./components/ListUser/ListUser.jsx";
+import Projects from './components/projects';
 import Workspace from './components/Workspace';
 import User from "./components/User";
+import Layout from "./components/Layout/Layout.jsx";
+import Login from "./components/Login/Login.jsx";
+import ListUser from "./components/ListUser/ListUser.jsx";
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -46,8 +46,8 @@ function App() {
                                 <Route path="/" element={<ListUser />} />
                                 <Route path="ListUser" element={<ListUser />} />
                                 <Route path="User" element={<User />} />
-                                <Route path="project1" element={<Project1 />} />
-                                <Route path="workspace/*" element={<Workspace />} />
+                                <Route path=":projectName" element={<Projects />} /> {/* Dynamic route for projects */}
+                                <Route path="workspace/:projectName/*" element={<Workspace />} />
                             </Routes>
                         </Layout>
                     ) : (

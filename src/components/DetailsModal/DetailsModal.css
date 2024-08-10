@@ -8,14 +8,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: auto;
 }
 
 .details-modal-content {
     background: #2f3640;
     padding: 20px;
     border-radius: 8px;
-    max-width: 500px;
+    max-width: 90%;
     width: 100%;
+    max-height: 90%;
+    overflow-y: auto;
     color: #dcdde1;
     position: relative;
 }
@@ -46,7 +49,61 @@
     color: #7f8fa6;
 }
 
-.task-date {
+.task-description {
     font-size: 0.9em;
     color: #7f8fa6;
+    margin-bottom: 10px;
+}
+
+.table-container {
+    margin-bottom: 20px;
+}
+
+.table-row {
+    margin-bottom: 10px;
+}
+
+.member-name {
+    font-size: 1em;
+    color: #dcdde1;
+    margin-bottom: 5px;
+}
+
+.task-details-table {
+    width: 80%; /* Adjust table width as needed */
+    border-collapse: collapse;
+    margin-bottom: 10px;
+}
+
+.task-details-table th, .task-details-table td {
+    border: 1px solid #7f8fa6;
+    padding: 5px; /* Reduced padding */
+    text-align: left;
+    line-height: 0.6; /* Adjust line height to reduce row height */
+}
+
+.task-details-table th {
+    background-color: #34495e;
+    color: #dcdde1;
+}
+
+.task-details-table tr:nth-child(even) {
+    background-color: #2f3640;
+}
+
+.textarea {
+    width: 100%; /* Adjusts the width to fit within the table cell */
+    min-height: 25px; /* Adjust height of textarea to fit within row */
+    resize: vertical; /* Allows resizing vertically only */
+    background: #2f3640;
+    color: #dcdde1;
+    border: 1px solid #7f8fa6;
+    padding: 2px; /* Reduced padding for more compact appearance */
+    box-sizing: border-box; /* Ensures padding and border are included in the element's total width and height */
+}
+
+.table-controls {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
 }

@@ -28,7 +28,7 @@ html, body {
     z-index: 999;
     background-color: #e9ecef;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 10px 0; /* Adjust for vertical padding */
+    padding: 8px 0; /* Adjust for vertical padding */
 }
 .secondary-nav {
     display: flex;
@@ -39,6 +39,7 @@ html, body {
 }
 
 .secondary-nav-item {
+
     margin: 0 15px;
 }
 
@@ -58,4 +59,19 @@ html, body {
 }
 .main-content::-webkit-scrollbar {
     background-color: #ffffff;
+}
+.secondary-nav-button {
+    margin: 0 1px;
+    background-color: #e9ecef;
+    color: darksalmon;
+    padding: 3px;
+    font-weight: bolder;
+    letter-spacing: 1px;
+    font-family: Bahnschrift;
+}
+.secondary-nav-button:hover{
+background-color: #7f8fa6;
+    color: #333333;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 1px 4px;
+
 }

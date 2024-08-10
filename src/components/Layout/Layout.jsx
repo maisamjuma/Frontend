@@ -38,12 +38,18 @@ const Layout = ({ children, onLogout }) => {
         setProjects([...projects, { id: newProjectId, name: projectName }]);
     };
 
-    const handleMenuAction = (action) => {
+    const handleMenuAction = (action, selectedProjects) => {
         if (action === 'Add') {
             setIsModalOpen(true);
-        } else if (action === 'Delete') {
-            // Handle delete action here
-            console.log('Delete action triggered');
+        } else if (action === 'Delete' && selectedProjects && selectedProjects.length > 0) {
+            selectedProjects.forEach(projectId => {
+                const project = projects.find(p => p.id === projectId);
+                if (window.confirm(`Are you sure you want to delete the project "${project.name}"?`)) {
+                    setProjects(prevProjects =>
+                        prevProjects.filter(p => p.id !== projectId)
+                    );
+                }
+            });
         }
     };
 
