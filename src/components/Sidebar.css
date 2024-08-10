@@ -44,7 +44,7 @@
 }
 
 .menu-container {
-    position: inherit;
+    position: relative;
 }
 
 .menu-toggle {
@@ -60,9 +60,8 @@
 
 .menu-list {
     position: absolute;
-    left: 20px;
+    right: 0px;
     top: 20px;
-    right: 5px;
     background: white;
     border: 1px solid #ccc;
     padding: 20px;
@@ -79,4 +78,8 @@
 }
 .bg-pink-100{
     background: #fae6ff;
+}
+
+.display-dots{
+    display:block;
 }

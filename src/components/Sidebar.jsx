@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 import './Sidebar.css';
 import dashboardIcon from '../assets/t.png';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import AddProjectModal from './AddProjectModal';
+import {ArrowDownIcon} from "./SVGIcons.jsx";
 
-const Sidebar = ({ projects, onAddProject, onMenuAction }) => {
+const Sidebar = ({projects, onAddProject, onMenuAction}) => {
     const [isProjectsOpen, setIsProjectsOpen] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isAddProjectModalVisible, setIsAddProjectModalVisible] = useState(false);
@@ -77,14 +78,18 @@ const Sidebar = ({ projects, onAddProject, onMenuAction }) => {
         <div className="sidebar" ref={sidebarRef}>
             <ul>
                 <li>
-                    <img src={dashboardIcon} alt="Dashboard" className="sidebar-icon" />
+                    <img src={dashboardIcon} alt="Dashboard" className="sidebar-icon"/>
                     <span className="sidebar-text">Dashboard</span>
                 </li>
-                <hr />
+                <hr/>
                 <li className="projects-container" onClick={toggleProjects}>
-                    <span>Projects</span>
+                    <span className="d-flex gap-2">Projects
+                        <div className={isProjectsOpen && "rotate-180 mt-1"}>
+                            <ArrowDownIcon/>
+                        </div>
+                    </span>
                     <div className="menu-container">
-                        <span className="menu-toggle" onClick={toggleMenu}>...</span>
+                        <span className="menu-toggle " onClick={toggleMenu}>...</span>
                         {isMenuOpen && (
                             <ul className="menu-list" onClick={(e) => e.stopPropagation()}>
                                 <li onClick={() => handleMenuAction('Add')}>Add</li>
@@ -98,6 +103,7 @@ const Sidebar = ({ projects, onAddProject, onMenuAction }) => {
                         {projects.map((project) => (
                             <li key={project.id} onClick={() => handleProjectClick(project)}>
                                 {isDeleteMode && (
+
                                     <input
                                         type="checkbox"
                                         checked={selectedProjects.includes(project.id)}
@@ -105,6 +111,7 @@ const Sidebar = ({ projects, onAddProject, onMenuAction }) => {
                                     />
                                 )}
                                 {project.name}
+
                             </li>
                         ))}
                         {isDeleteMode && (
@@ -112,7 +119,8 @@ const Sidebar = ({ projects, onAddProject, onMenuAction }) => {
                         )}
                     </ul>
                 )}
-                <div className="line-above-settings" /> {/* Line above Settings */}
+                <div className="line-above-settings"/>
+                {/* Line above Settings */}
                 <li>Settings</li>
             </ul>
             <AddProjectModal
