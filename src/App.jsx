@@ -46,8 +46,8 @@ function App() {
                                 <Route path="/" element={<ListUser />} />
                                 <Route path="ListUser" element={<ListUser />} />
                                 <Route path="User" element={<User />} />
-                                <Route path=":projectName" element={<Projects />} /> {/* Dynamic route for projects */}
-                                <Route path="workspace/:projectName*" element={<Workspace />} />
+                                <Route path=":projectName" element={<Projects />} /> {/* Use projectId instead of projectName */}
+                                <Route path="workspace/:projectName/*" element={<Workspace />} />
                             </Routes>
                         </Layout>
                     ) : (

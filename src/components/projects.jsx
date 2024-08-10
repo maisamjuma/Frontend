@@ -5,6 +5,7 @@ import './projects.css'; // Make sure to import your CSS file
 const Projects = () => {
     const navigate = useNavigate();
     const { projectName } = useParams();
+    const { projectDescription } = useParams();
 
     const handleButtonClick = () => {
         navigate(`/main/workspace/${projectName}`); // Ensure this is correct
@@ -14,7 +15,7 @@ const Projects = () => {
         <div className="projectscon">
             <div>
                 <h1>{projectName}</h1>
-                <p>This is the content of {projectName}.</p>
+                <p>{projectDescription}</p>
                 <button className="btn btn-primary" onClick={handleButtonClick}>Go to Workspace</button>
             </div>
         </div>
