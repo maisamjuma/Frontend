@@ -10,14 +10,6 @@
     margin: auto;
 }
 
-
-/*.projectscon h1,*/
-/*.projectscon p,*/
-/*.projectscon button {*/
-/*    margin-left: 150px!* Optional: Remove default margins *!*/
-/*}*/
-
-
 .flex-row {
     display: flex;
     align-items: center;

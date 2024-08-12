@@ -53,16 +53,20 @@ const Sidebar = ({onMenuAction}) => {
                 ? prevSelected.filter(id => id !== project.id)
                 : [...prevSelected, project.id]
         );
-        onMenuAction('Delete', [project.id]); // Directly delete the project after confirming
     };
 
     const handleDeleteProjects = () => {
         if (selectedProjects.length > 0) {
-            onMenuAction('Delete', selectedProjects); // Pass selected projects for deletion
+            const updatedProjects = projects.filter(
+                (project) => !selectedProjects.includes(project.id)
+            );
+            setProjects(updatedProjects); // Update the projects list to remove the selected ones
             setSelectedProjects([]); // Clear selection
             setIsDeleteMode(false); // Exit delete mode
+            onMenuAction('Delete', selectedProjects); // Notify the parent component of the deletion
         }
     };
+
 
 
     const handleCloseModal = () => {

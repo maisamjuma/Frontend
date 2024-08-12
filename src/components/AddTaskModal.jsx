@@ -1,15 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './AddTaskModal.css';
 import PriorityModal from './PriorityModal';
+import CalendarModal from './CalendarModal/CalendarModal.jsx';
 
 // eslint-disable-next-line react/prop-types
-const AddTaskModal = ({ isVisible, onClose, onAddTask, onSave }) => {
+const AddTaskModal = ({ isVisible, onClose, onAddTask }) => {
     const [taskName, setTaskName] = useState('');
     const [description, setDescription] = useState('');
     const [dueDate, setDueDate] = useState('');
     const [priority, setPriority] = useState('medium'); // Default priority
     const [isPriorityModalVisible, setPriorityModalVisible] = useState(false);
-    const [selectedPriority, setSelectedPriority] = useState('');
+    const [isDateModalVisible, setDateModalVisible] = useState(false);
+
+    useEffect(() => {
+        if (isVisible) {
+            // Set default due date to today
+            const today = new Date().toISOString().split('T')[0];
+            setDueDate(today);
+        }
+    }, [isVisible]);
+
     const handleAddTask = () => {
         if (taskName.trim()) {
             const newTask = {
@@ -29,16 +39,28 @@ const AddTaskModal = ({ isVisible, onClose, onAddTask, onSave }) => {
         }
     };
 
-    const handlePriorityChange = (priority) => {
-        setSelectedPriority(priority);
+    const handlePriorityChange = (selectedPriority) => {
+        setPriority(selectedPriority);
     };
 
+    // const handleDateChange = (selectedDate) => {
+    //     setDueDate(selectedDate);
+    // };
+
     const handlePrioritySave = (selectedPriority) => {
-        // Use default priority if none is selected
         const priorityToSave = selectedPriority || 'medium';
-        onSave(priorityToSave);
-        setPriority(selectedPriority);
-        onClose();
+        setPriority(priorityToSave);
+        setPriorityModalVisible(false);
+    };
+
+    const handleDateSave = (selectedDate) => {
+        setDueDate(selectedDate);
+        setDateModalVisible(false);
+    };
+
+    const handleDateRemove = () => {
+        setDueDate('');
+        setDateModalVisible(false);
     };
 
     return (
@@ -47,45 +69,46 @@ const AddTaskModal = ({ isVisible, onClose, onAddTask, onSave }) => {
                 <div className="modal-overlay">
                     <div className="modal-content">
                         <h2>Add New Task</h2>
-                        <input
-                            type="text"
-                            value={taskName}
-                            onChange={(e) => setTaskName(e.target.value)}
-                            placeholder="Enter task name"
-                            className="modal-task-input"
-                        />
+                        <div className="task-info">
+                            <input
+                                type="text"
+                                value={taskName}
+                                onChange={(e) => setTaskName(e.target.value)}
+                                placeholder="Enter task name"
+                                className="modal-task-input"
+                            />
+                            {/* Display the due date next to the task name */}
+                            <span className="task-due-date">
+                                Due Date: {new Date(dueDate).toLocaleDateString()}
+                            </span>
+                        </div>
                         <textarea
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                             placeholder="Enter task description"
                             className="modal-description-textarea"
                         />
-                        <input
-                            type="date"
-                            value={dueDate}
-                            onChange={(e) => setDueDate(e.target.value)}
-                            className="modal-due-date-input"
-                        />
-                        <div className="priority-options">
-                            <button
-                                className={`priority-option ${selectedPriority === 'high' ? 'selected' : ''}`}
-                                onClick={() => handlePriorityChange('high')}
-                            >
-                                High
-                            </button>
-                            <button
-                                className={`priority-option ${selectedPriority === 'medium' ? 'selected' : ''}`}
-                                onClick={() => handlePriorityChange('medium')}
-                            >
-                                Medium
-                            </button>
-                            <button
-                                className={`priority-option ${selectedPriority === 'low' ? 'selected' : ''}`}
-                                onClick={() => handlePriorityChange('low')}
-                            >
-                                Low
+
+                        {/* Date Picker */}
+                        <div className="date-options">
+                            <button onClick={() => setDateModalVisible(true)} className="date-picker-button">
+                                {dueDate ? new Date(dueDate).toLocaleDateString() : 'Select Date'}
                             </button>
                         </div>
+
+                        {/* Priority Dropdown */}
+                        <div className="priority-options">
+                            <select
+                                value={priority}
+                                onChange={(e) => handlePriorityChange(e.target.value)}
+                                className="priority-dropdown"
+                            >
+                                <option value="high">High</option>
+                                <option value="medium">Medium</option>
+                                <option value="low">Low</option>
+                            </select>
+                        </div>
+
                         <div className="modal-actions">
                             <button onClick={handleAddTask} className="modal-add-button">Add Task</button>
                             <button onClick={onClose} className="modal-cancel-button">Cancel</button>
@@ -97,6 +120,13 @@ const AddTaskModal = ({ isVisible, onClose, onAddTask, onSave }) => {
                 <PriorityModal
                     onClose={() => setPriorityModalVisible(false)}
                     onSave={handlePrioritySave}
+                />
+            )}
+            {isDateModalVisible && (
+                <CalendarModal
+                    onClose={() => setDateModalVisible(false)}
+                    onSave={handleDateSave}
+                    onRemoveDate={handleDateRemove}
                 />
             )}
         </>
