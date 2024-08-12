@@ -31,7 +31,7 @@ const CalendarModal = ({ onClose, onSave, onRemoveDate }) => {
                 <Calendar
                     onChange={handleDateChange}
                     value={selectedDate || new Date()} // Default to today if no date selected
-                    tileClassName={({ date, view }) =>
+                    tileClassName={({ date }) =>
                         selectedDate && date.toDateString() === selectedDate.toDateString() ? 'selected-date' : null
                     }
                 />
