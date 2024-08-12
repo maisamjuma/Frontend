@@ -11,12 +11,10 @@ const PriorityModal = ({ onClose, onSave }) => {
     };
 
     const handleSaveClick = () => {
-        if (selectedPriority) {
-            onSave(selectedPriority); // Call onSave with the selected priority
-            onClose(); // Close the modal after saving
-        } else {
-            alert('Please select a priority.'); // Optional: Notify user if no priority is selected
-        }
+        // Use default priority if none is selected
+        const priorityToSave = selectedPriority || 'medium';
+        onSave(priorityToSave);
+        onClose();
     };
 
     return (
