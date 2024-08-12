@@ -1,4 +1,3 @@
-// CalendarModal.js
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Calendar from 'react-calendar';
@@ -32,6 +31,9 @@ const CalendarModal = ({ onClose, onSave, onRemoveDate }) => {
                 <Calendar
                     onChange={handleDateChange}
                     value={selectedDate || new Date()} // Default to today if no date selected
+                    tileClassName={({ date, view }) =>
+                        selectedDate && date.toDateString() === selectedDate.toDateString() ? 'selected-date' : null
+                    }
                 />
                 <div className="calendar-modal-actions">
                     <button onClick={handleSave} className="calendar-modal-save-button">

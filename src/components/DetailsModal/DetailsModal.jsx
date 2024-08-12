@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './DetailsModal.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTasks, faTimes } from '@fortawesome/free-solid-svg-icons';
+import {faListAlt, faTasks, faTimes} from '@fortawesome/free-solid-svg-icons';
 
 const DetailsModal = ({ task, onClose }) => {
     // Initialize tableData with default structure if task or task.tableData is not available
@@ -40,9 +40,6 @@ const DetailsModal = ({ task, onClose }) => {
         setCommentsData(updatedData);
     };
 
-    const handleAddDescriptionRow = () => {
-        setDescriptionData([...descriptionData, { Description: '' }]);
-    };
 
     const handleAddCommentsRow = () => {
         setCommentsData([...commentsData, { Comments: '' }]);
@@ -53,25 +50,23 @@ const DetailsModal = ({ task, onClose }) => {
             <div className="details-modal-content">
                 <div className="details-modal-header">
                     <div className="details-modal-title">
-                        <FontAwesomeIcon icon={faTasks} className="details-icon"/>
+                        <FontAwesomeIcon icon={faListAlt} className="details-icon"/>
                         <h2>{task.name}</h2>
                     </div>
                     <FontAwesomeIcon icon={faTimes} className="close-icon" onClick={onClose}/>
                 </div>
                 <p className="task-status">In Status: {task.statusName}</p>
+                <div className="detailstitle">
+                <FontAwesomeIcon icon={faTasks} className="details-icon"/>
                 <p className="task-description">Description: {task.description}</p>
-
+                </div>
                 <div className="table-container">
                     {descriptionData.map((row, rowIndex) => (
                         <div key={rowIndex} className="table-row">
                             {/* Displaying "Member Name" as normal text above each row */}
-                            <div className="member-name">Member Name:</div>
+
                             <table className="task-details-table">
-                                <thead>
-                                <tr>
-                                    <th>Description</th>
-                                </tr>
-                                </thead>
+
                                 <tbody>
                                 <tr>
                                     <td>
@@ -89,10 +84,10 @@ const DetailsModal = ({ task, onClose }) => {
                     ))}
                 </div>
 
-                <div className="table-controls">
-                    <button onClick={handleAddDescriptionRow}>Add Row</button>
+                <div className="detailstitle">
+                <FontAwesomeIcon icon={faTasks} className="details-icon"/>
+                <p className="task-comment">Comments: {task.comment}</p>
                 </div>
-
                 <div className="table-container-comment">
                     {commentsData.map((row, rowIndex) => (
                         <div key={rowIndex} className="table-row">
@@ -101,7 +96,7 @@ const DetailsModal = ({ task, onClose }) => {
                             <table className="task-details-table-comment">
                                 <thead>
                                 <tr>
-                                    <th>Comments</th>
+                                    <th>Comment</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -135,6 +130,7 @@ DetailsModal.propTypes = {
         statusName: PropTypes.string.isRequired,
         date: PropTypes.instanceOf(Date),
         description: PropTypes.string,
+        comment: PropTypes.string,
         tableData: PropTypes.arrayOf(PropTypes.shape({
             Description: PropTypes.string,
             Comments: PropTypes.string

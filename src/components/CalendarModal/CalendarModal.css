@@ -42,8 +42,8 @@
 .react-calendar__tile--now {
     background-color: white; /* White background for today */
     color: black; /* Text color for today's date */
-    border: 2px solid #ffeb3b; /* Light yellow border for today's date */
-    border-radius: 50%; /* Rounded border for today's date */
+    border: 3px solid #ffeb3b; /* Light yellow border for today's date */
+    border-radius: 4px;/* Rounded border for today's date */
 }
 
 /* Style the hover effect for the date boxes */
@@ -107,7 +107,7 @@
 /* Save button styles */
 .calendar-modal-save-button {
     padding: 8px 12px;
-    background-color: #4caf50; /* Green background */
+    background-color: rgba(220, 99, 147, 0.99); /* Green background */
     color: white;
     border: none;
     border-radius: 4px;
@@ -117,13 +117,13 @@
 }
 
 .calendar-modal-save-button:hover {
-    background-color: #45a049; /* Darker green on hover */
+    background-color: rgba(220, 99, 147, 0.99); /* Darker green on hover */
 }
 
 /* Remove button styles */
 .calendar-modal-remove-button {
     padding: 8px 12px;
-    background-color: #f44336; /* Red background */
+    background-color: rgba(220, 99, 147, 0.99); /* Red background */
     color: white;
     border: none;
     border-radius: 4px;
@@ -133,5 +133,12 @@
 }
 
 .calendar-modal-remove-button:hover {
-    background-color: #d32f2f; /* Darker red on hover */
+    background-color: rgba(220, 99, 147, 0.99); /* Darker red on hover */
+}
+/* Existing CSS remains the same */
+
+.selected-date {
+    background-color: rgba(220, 99, 147, 0.99) !important; /* Pink background for selected date */
+    color: white !important; /* Ensure text is readable on pink background */
+    border-radius: 4px; /* Optionally, make it rounded */
 }

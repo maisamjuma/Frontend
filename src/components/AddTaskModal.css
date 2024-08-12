@@ -1,0 +1,73 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    max-width: 100%;
+}
+.modal-task-input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+}
+
+.modal-task-textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    resize: vertical;
+}
+
+.modal-due-date-input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+}
+
+.modal-priority-select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+}
+
+
+.modal-actions {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+
+.modal-add-button {
+    background-color: rgba(220, 99, 147, 0.99);
+    color: white;
+}
+
+.modal-cancel-button {
+    background-color: rgb(71, 66, 66);
+    color: white;
+}
+
+
+.modal-add-button:hover {
+    background-color: #f0f0f0; /* Light gray background on hover */
+    color: #0b0a0a;
+}
+.modal-cancel-button:hover {
+    background-color: #f0f0f0; /* Light gray background on hover */
+    color: #0b0a0a;
+}

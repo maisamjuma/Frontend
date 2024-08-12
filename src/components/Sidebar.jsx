@@ -6,12 +6,15 @@ import {useNavigate} from 'react-router-dom';
 import AddProjectModal from './AddProjectModal';
 import {ArrowDownIcon} from "./SVGIcons.jsx";
 
-const Sidebar = ({projects, onAddProject, onMenuAction}) => {
+// const Sidebar = ({ onMenuAction }) => {
+//     const [projects, setProjects] = useState([]); // Added state for projects
+
+const Sidebar = ({projects, onMenuAction}) => {
     const [isProjectsOpen, setIsProjectsOpen] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isAddProjectModalVisible, setIsAddProjectModalVisible] = useState(false);
     const [isDeleteMode, setIsDeleteMode] = useState(false);
-    const [selectedProjects, setSelectedProjects] = useState([]);
+    const [selectedProjects, setSelectedProjects] = useState([]); // Added this line
     const sidebarRef = useRef(null);
     const navigate = useNavigate();
 
@@ -35,9 +38,12 @@ const Sidebar = ({projects, onAddProject, onMenuAction}) => {
 
     const handleProjectClick = (project) => {
         if (!isDeleteMode) {
-            navigate(`/main/${project.name}`);
+            navigate(`/main/${project.name}`, {
+                state: { projectDescription: project.description }
+            });
         }
     };
+
 
     const handleCheckboxChange = (project) => {
         setSelectedProjects(prevSelected =>
@@ -45,6 +51,7 @@ const Sidebar = ({projects, onAddProject, onMenuAction}) => {
                 ? prevSelected.filter(id => id !== project.id)
                 : [...prevSelected, project.id]
         );
+        onMenuAction('Delete', [project.id]); // Directly delete the project after confirming
     };
 
     const handleDeleteProjects = () => {
@@ -54,6 +61,7 @@ const Sidebar = ({projects, onAddProject, onMenuAction}) => {
             setIsDeleteMode(false); // Exit delete mode
         }
     };
+
 
     const handleCloseModal = () => {
         setIsAddProjectModalVisible(false);
@@ -73,6 +81,12 @@ const Sidebar = ({projects, onAddProject, onMenuAction}) => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
+
+    const handleAddProject = (projectName, projectDescription) => {
+        const newProject = { id: Date.now().toString(), name: projectName, description: projectDescription };
+        setProjects([...projects, newProject]);
+    };
+
 
     return (
         <div className="sidebar" ref={sidebarRef}>
@@ -126,7 +140,7 @@ const Sidebar = ({projects, onAddProject, onMenuAction}) => {
             <AddProjectModal
                 isVisible={isAddProjectModalVisible}
                 onClose={handleCloseModal}
-                onAddProject={onAddProject}
+                onAddProject={handleAddProject} // Pass the handler function to the modal
             />
         </div>
     );

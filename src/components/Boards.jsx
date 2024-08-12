@@ -3,14 +3,15 @@ import { useParams } from 'react-router-dom';
 import TaskModal from './TaskModal';
 import './Boards.css';
 import { FaPen} from 'react-icons/fa';
+import MoveModal from "./MoveModal.jsx";
+import PriorityModal from './PriorityModal';
+import AddTaskModal from "./AddTaskModal"; // Import the new component
 import PriorityModal from './PriorityModal';
 import MoveModal from "./MoveModal/MoveModal.jsx"; // Import the new component
 
 const Boards = () => {
     const { projectName, boardId } = useParams(); // Get projectName and boardId from the route parameters
-
     const [statuses, setStatuses] = useState([]);
-    const [newTaskName, setNewTaskName] = useState('');
     const [currentStatusId, setCurrentStatusId] = useState(null);
     const [editingTaskId, setEditingTaskId] = useState(null);
     const [selectedTask, setSelectedTask] = useState(null);
@@ -18,7 +19,7 @@ const Boards = () => {
     const [highlightedTaskId, setHighlightedTaskId] = useState(null);
     const [showMoveModal, setShowMoveModal] = useState(false);
     const [showPriorityModal, setShowPriorityModal] = useState(false);
-
+    const [showAddTaskModal, setShowAddTaskModal] = useState(false);
     // Load statuses from localStorage or use default values
     useEffect(() => {
         const loadStatuses = () => {
@@ -41,16 +42,14 @@ const Boards = () => {
         localStorage.setItem(`${projectName}_${boardId}_statuses`, JSON.stringify(statuses));
     }, [statuses, projectName, boardId]);
 
-    const handleAddTask = (statusId) => {
-        if (newTaskName.trim()) {
+    const handleAddTask = (statusId, task) => {
+        if (task.name.trim()) {
             const status = statuses.find(status => status.id === statusId);
             if (status) {
                 const newTask = {
                     id: `${projectName}_${boardId}_${statusId}_${status.tasks.length + 1}`,
-                    name: newTaskName,
-                    date: null,
-                    statusId: statusId,
-                    priority: 'medium' // Set default priority
+                    ...task,
+                    statusId: statusId
                 };
                 const updatedStatuses = statuses.map(status => {
                     if (status.id === statusId) {
@@ -62,11 +61,11 @@ const Boards = () => {
                     return status;
                 });
                 setStatuses(updatedStatuses);
-                setNewTaskName('');
-                setCurrentStatusId(null);
+                setShowAddTaskModal(false);
             }
         }
     };
+
 
     const handleDeleteTask = (taskId) => {
         const updatedStatuses = statuses.map(status => ({
@@ -75,6 +74,7 @@ const Boards = () => {
         }));
         setStatuses(updatedStatuses);
     };
+
 
     const handleDoubleClick = (taskId) => {
         setEditingTaskId(taskId);
@@ -158,7 +158,7 @@ const Boards = () => {
             if (status.id === newStatusId) {
                 return {
                     ...status,
-                    tasks: [...status.tasks, task]
+                    tasks: [...status.tasks, { ...task, statusId: newStatusId }] // Update statusId here
                 };
             } else if (status.tasks.some(t => t.id === task.id)) {
                 return {
@@ -282,37 +282,15 @@ const Boards = () => {
                             ))}
                         </div>
                         {(status.id === 1 || status.id === 2) && (
-                            currentStatusId === status.id ? (
-                                <div className="backend-add-task-form">
-                                    <input
-                                        type="text"
-                                        value={newTaskName}
-                                        onChange={(e) => setNewTaskName(e.target.value)}
-                                        placeholder="Enter task name"
-                                        className="backend-task-input"
-                                    />
-                                    <div className="backend-add-status-actions">
-                                        <button
-                                            onClick={() => handleAddTask(status.id)}
-                                            className="backend-add-task-button"
-                                        >
-                                            Add Task
-                                        </button>
-                                        <button
-                                            onClick={() => setCurrentStatusId(null)}
-                                            className="backend-cancel-button"
-                                        >
-                                            Cancel
-                                        </button>
-                                    </div>
-                                </div>
-                            ) : (
-                                <button onClick={() => setCurrentStatusId(status.id)}
-                                        className="backend-show-add-task"
-                                >
-                                    + Add Task
-                                </button>
-                            )
+                            <button
+                                onClick={() => {
+                                    setCurrentStatusId(status.id);
+                                    setShowAddTaskModal(true);
+                                }}
+                                className="backend-show-add-task"
+                            >
+                                + Add Task
+                            </button>
                         )}
                     </div>
                 ))}
@@ -347,6 +325,14 @@ const Boards = () => {
                     onSavePriority={handleSavePriority}
                 />
             )}
+            {showAddTaskModal && (
+                <AddTaskModal
+                    isVisible={showAddTaskModal}
+                    onClose={() => setShowAddTaskModal(false)}
+                    onAddTask={(task) => handleAddTask(currentStatusId, task)}
+                />
+            )}
+
         </div>
     );
 };

@@ -4,12 +4,19 @@ import './projects.css';
 import Navbar from "./Navbar/Navbar.jsx";
 import Member from "./Member/Member.jsx"; // Make sure to import your CSS file
 
+import { useLocation } from 'react-router-dom';
+
 const Projects = () => {
     const navigate = useNavigate();
     const { projectName } = useParams();
+    const location = useLocation();
+    const { projectDescription } = location.state || {}; // Get the description from state
+
 
     const handleButtonClick = () => {
-        navigate(`/main/workspace/${projectName}`); // Ensure this is correct
+        navigate(`/main/workspace/${projectName}`, {
+            state: { projectDescription }
+        });
     };
 
     return (
@@ -28,8 +35,8 @@ const Projects = () => {
                     </figure>
                     <h1>{projectName}</h1>
                 </div>
-                <p>This is the content of <strong>{projectName}.</strong> </p>
-                <button onClick={handleButtonClick}>Go to Workspace</button>
+                <p>{projectDescription}</p> {/* Display project description */}
+                <button className="btn btn-primary" onClick={handleButtonClick}>Go to Workspace</button>
             </div>
         </>
     );

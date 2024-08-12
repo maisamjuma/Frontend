@@ -192,12 +192,7 @@ html, body {
 }
 
 
-/* Add task form styles */
-.backend-add-task-form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px; /* Space between form elements */
-}
+
 
 /* Input for tasks */
 .backend-task-input {
@@ -206,22 +201,7 @@ html, body {
     border-radius: 8px;
 }
 
-/* Add task button styles */
-.backend-add-task-button {
-    padding: 5px; /* Adjust padding to make the button smaller */
-    font-size: 12px; /* Reduce font size */
-    background-color: transparent; /* Remove background color */
-    color: black; /* Set text color */
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease; /* Smooth transition for background color */
-}
 
-.backend-add-task-button:hover {
-    background-color: #f0f0f0; /* Light gray background on hover */
-    color: #ffffff;
-}
 
 /* Show add task button styles */
 .backend-show-add-task {
