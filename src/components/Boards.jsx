@@ -3,10 +3,10 @@ import { useParams } from 'react-router-dom';
 import TaskModal from './TaskModal';
 import './Boards.css';
 import { FaPen} from 'react-icons/fa';
-import MoveModal from "./MoveModal.jsx";
+// import MoveModal from "./MoveModal.jsx";
 import PriorityModal from './PriorityModal';
 import AddTaskModal from "./AddTaskModal"; // Import the new component
-import PriorityModal from './PriorityModal';
+// import PriorityModal from './PriorityModal';
 import MoveModal from "./MoveModal/MoveModal.jsx"; // Import the new component
 
 const Boards = () => {

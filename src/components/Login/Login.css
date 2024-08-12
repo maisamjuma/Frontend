@@ -1,0 +1,60 @@
+/* src/components/Login.css */
+html, body {
+    height: 100%; /* Ensure the body and html take full height */
+    margin: 0; /* Remove default margins */
+}
+
+.login-container {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 100vh; /* Full viewport height */
+    width: 100vw; /* Full viewport width */
+    background-color: #f4f4f4;
+    box-sizing: border-box; /* Include padding and border in the width */
+}
+
+.login-form {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px; /* Adjust as needed */
+    box-sizing: border-box; /* Include padding and border in the width */
+}
+
+.login-form h2 {
+    margin-bottom: 20px;
+    text-align: center; /* Center text if needed */
+}
+
+.login-form label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #0b0a0a;
+    border-radius: 4px;
+}
+
+.login-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #ffffff;
+    color: #ff69b4; /* Text color */
+    border: 1px solid #ff69b4; /* Border color */
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition for color changes */
+}
+
+.login-form button:hover {
+    background-color: #ff69b4; /* Background color on hover */
+    color: #ffffff; /* Text color on hover */
+    border: 1px solid #ff69b4; /* Border color */
+}

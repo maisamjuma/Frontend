@@ -9,7 +9,9 @@ import {ArrowDownIcon} from "./SVGIcons.jsx";
 // const Sidebar = ({ onMenuAction }) => {
 //     const [projects, setProjects] = useState([]); // Added state for projects
 
-const Sidebar = ({projects, onMenuAction}) => {
+const Sidebar = ({onMenuAction}) => {
+    const [projects, setProjects] = useState([]); // Added state for projects
+
     const [isProjectsOpen, setIsProjectsOpen] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isAddProjectModalVisible, setIsAddProjectModalVisible] = useState(false);
@@ -39,7 +41,7 @@ const Sidebar = ({projects, onMenuAction}) => {
     const handleProjectClick = (project) => {
         if (!isDeleteMode) {
             navigate(`/main/${project.name}`, {
-                state: { projectDescription: project.description }
+                state: {projectDescription: project.description}
             });
         }
     };
@@ -83,7 +85,7 @@ const Sidebar = ({projects, onMenuAction}) => {
     }, []);
 
     const handleAddProject = (projectName, projectDescription) => {
-        const newProject = { id: Date.now().toString(), name: projectName, description: projectDescription };
+        const newProject = {id: Date.now().toString(), name: projectName, description: projectDescription};
         setProjects([...projects, newProject]);
     };
 

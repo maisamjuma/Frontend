@@ -1,11 +1,22 @@
 /* projects.css */
 .projectscon {
+    /*display: flex;*/
+    /*justify-content: flex-end; !* Aligns items to the right *!*/
+
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: #333;
     padding: 20px;
     max-width: 1200px;
     margin: auto;
 }
+
+
+/*.projectscon h1,*/
+/*.projectscon p,*/
+/*.projectscon button {*/
+/*    margin-left: 150px!* Optional: Remove default margins *!*/
+/*}*/
+
 
 .flex-row {
     display: flex;
@@ -65,3 +76,4 @@ button:hover {
     transform: scale(1.05);
     color: #333333;
 }
+

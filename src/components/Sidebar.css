@@ -7,7 +7,7 @@
     left: 0;
     width: 200px; /* Width of the sidebar */
     bottom: 0; /* Extend to the bottom */
-    background-color: rgba(149, 162, 182, 0.8);
+    background-color: #fff;
     z-index: 998;
     box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
     overflow-y: hidden; /* Optional: to handle overflow */
@@ -22,7 +22,6 @@
 .sidebar ul {
     list-style: none;
     padding: 0;
-
 }
 
 .sidebar ul li {
@@ -48,38 +47,19 @@
 }
 
 .menu-toggle {
-    font-weight: bolder;
-    letter-spacing: 1px;
-    padding-left: 10px;
-
-}
-.menu-toggle:hover{
-    color: #7f8fa6;
-    border: #7f8fa6;
+    cursor: pointer;
 }
 
 .menu-list {
     position: absolute;
-    right: 0px;
+    right: 0;
     top: 20px;
     background: white;
     border: 1px solid #ccc;
-    padding: 20px;
+    padding: 10px;
     list-style: none;
-    color: black;
-    line-height: 20px;
 }
 
 .dropdown-list {
     padding-left: 20px;
-}
-.rotate-180{
-    transform: rotate(180deg);
-}
-.bg-pink-100{
-    background: #fae6ff;
-}
-
-.display-dots{
-    display:block;
 }
