@@ -27,6 +27,7 @@ const AddProjectModal = ({ isVisible, onClose, onAddProject }) => {
                         placeholder="New project name"
                     />
                     <textarea
+                        type="text"
                         value={newProjectDescription}
                         onChange={(e) => setNewProjectDescription(e.target.value)}
                         placeholder="Project description"

@@ -24,7 +24,7 @@ const TaskModal = ({ task, onClose, onDelete, boards, statuses, onSaveDate, onRe
 
     if (!task) return null;
 
-    const statusId = parseInt(task.id.split('_')[0], 10);
+    const statusId = task.statusId; // Use task.statusId directly
     const status = statuses.find(status => status.id === statusId);
     const statusName = status ? status.title : 'Unknown Status';
 

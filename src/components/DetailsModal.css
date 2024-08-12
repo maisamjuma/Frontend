@@ -35,8 +35,14 @@
     align-items: center;
 }
 
+.detailstitle {
+    display: flex;
+    align-items: center;
+}
+
 .details-icon {
     margin-right: 10px;
+    color: #ffffff; /* Ensure the icon color matches the text */
 }
 
 .close-icon {
@@ -49,16 +55,18 @@
     color: #7f8fa6;
 }
 
-.task-description {
-    font-size: 0.9em;
-    color: #7f8fa6;
-    margin-bottom: 10px;
+.task-description,
+.task-comment {
+    font-size: 1.1em; /* Increase font size slightly */
+    font-weight: bold; /* Make the text bold */
+    color: #ffffff; /* Make the text white */
+    margin-bottom: 10px; /* Space below the text */
+    margin-top: 10px; /* Space above the text to move it slightly down */
 }
 
-.table-container {
-    margin-bottom: 20px;
-}
-.table-container-comments {
+
+.table-container,
+.table-container-comment {
     margin-bottom: 20px;
 }
 
@@ -66,28 +74,26 @@
     margin-bottom: 10px;
 }
 
-.member-name {
-    font-size: 1em;
-    color: #dcdde1;
-    margin-bottom: 5px;
-}
 .member-name-comment {
     font-size: 1em;
     color: #dcdde1;
     margin-bottom: 5px;
 }
+
 .task-details-table {
     width: 80%; /* Adjust table width as needed */
     border-collapse: collapse;
     margin-bottom: 10px;
 }
 
-.task-details-table th, .task-details-table td {
+.task-details-table th,
+.task-details-table td {
     border: 1px solid #7f8fa6;
     padding: 5px; /* Reduced padding */
     text-align: left;
     line-height: 0.6; /* Adjust line height to reduce row height */
 }
+
 .task-details-table-comment {
     width: 70%; /* Reduce the width of the comment table */
     border-collapse: collapse;
@@ -103,48 +109,38 @@
     line-height: 3px; /* Adjust line height for more compact rows */
 }
 
-.task-details-table th {
-    background-color: #34495e;
-    color: #dcdde1;
-}
+.task-details-table th,
 .task-details-table-comment th {
     background-color: #34495e;
     color: #dcdde1;
 }
-.task-details-table tr:nth-child(even) {
-    background-color: #2f3640;
-}
+
+.task-details-table tr:nth-child(even),
 .task-details-table-comment tr:nth-child(even) {
     background-color: #2f3640;
 }
-.textarea {
-    width: 100%; /* Adjusts the width to fit within the table cell */
-    min-height: 25px; /* Adjust height of textarea to fit within row */
-    resize: vertical; /* Allows resizing vertically only */
+
+.textarea,
+.textarea-comment {
+    width: 100%;
     background: #2f3640;
     color: #dcdde1;
     border: 1px solid #7f8fa6;
-    padding: 7px; /* Adds padding inside the textarea */
-
-    box-sizing: border-box; /* Ensures padding and border are included in the element's total width and height */
+    padding: 7px;
+    box-sizing: border-box;
 }
+
+.textarea {
+    min-height: 25px;
+    resize: vertical;
+}
+
 .textarea-comment {
-    width: 100%; /* Keeps the textarea width the same */
-    min-height: 15px; /* Keeps the textarea height reduced */
-    padding: 7px; /* Adds padding inside the textarea */
-    resize: vertical; /* Allows resizing vertically only */
-    background: #2f3640; /* Keeps the background color */
-    color: #dcdde1; /* Keeps the text color */
-    border: 1px solid #7f8fa6; /* Keeps the border style */
-    box-sizing: border-box; /* Ensures padding is included in the textarea's total size */
-    vertical-align: bottom; /* Aligns text towards the bottom of the textarea */
+    min-height: 15px;
+    resize: vertical;
 }
 
-.table-controls {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-}
+
 .table-controls-comment {
     display: flex;
     gap: 10px;
