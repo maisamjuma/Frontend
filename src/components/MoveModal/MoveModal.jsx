@@ -116,7 +116,7 @@ MoveModal.propTypes = {
     statuses: PropTypes.array.isRequired,
     task: PropTypes.object.isRequired,
     onClose: PropTypes.func.isRequired,
-    onMoveTask: PropTypes.func.isRequired,
+    onMoveTask: PropTypes.func,
 };
 
 export default MoveModal;

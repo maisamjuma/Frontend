@@ -2,14 +2,14 @@ import React from 'react';
 import {useParams, Link, Route, Routes} from 'react-router-dom';
 import './Workspace.css';
 import Boards from './Boards';
-import Navbar from './Navbar';
+import Navbar from "./Navbar/Navbar.jsx";
 
 const Workspace = () => {
     const { projectName } = useParams();
 
     return (
         <div className="layout">
-            <Navbar />
+            <Navbar onLogout={() => {}}/>
             <nav className="secondary-navbar">
                 <ul className="secondary-nav">
                     <li className="secondary-nav-item">

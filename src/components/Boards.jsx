@@ -3,9 +3,11 @@ import { useParams } from 'react-router-dom';
 import TaskModal from './TaskModal';
 import './Boards.css';
 import { FaPen} from 'react-icons/fa';
-import MoveModal from "./MoveModal.jsx";
+// import MoveModal from "./MoveModal.jsx";
 import PriorityModal from './PriorityModal';
 import AddTaskModal from "./AddTaskModal"; // Import the new component
+// import PriorityModal from './PriorityModal';
+import MoveModal from "./MoveModal/MoveModal.jsx"; // Import the new component
 
 const Boards = () => {
     const { projectName, boardId } = useParams(); // Get projectName and boardId from the route parameters
@@ -150,6 +152,8 @@ const Boards = () => {
     };
 
     const handleMoveTask = (task, newStatusId) => {
+        console.log('Moving task:', task, 'to status:', newStatusId);
+
         const updatedStatuses = statuses.map(status => {
             if (status.id === newStatusId) {
                 return {
@@ -165,6 +169,7 @@ const Boards = () => {
             return status;
         });
 
+        console.log('Updated statuses:', updatedStatuses);
         setStatuses(updatedStatuses);
     };
 

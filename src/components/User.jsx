@@ -148,7 +148,7 @@ const User = () => {
         <div className="container">
             <br /><br />
             <div className="row">
-                <div className="card col-md-6 offset-md-3">
+                <div className="card col-md-6 offset-md-3 ">
                     {pageTitle()}
                     <div className="card-body">
                         <form onSubmit={saveUser}>

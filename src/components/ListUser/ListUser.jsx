@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { listUsers } from "../Services/UserService";
 import { useNavigate } from "react-router-dom";
+import {listUsers} from "../../Services/UserService.js";
 
 const ListUser = () => {
     const [users, setUsers] = useState([]);

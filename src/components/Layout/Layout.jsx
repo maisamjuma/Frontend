@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './Layout.css';
-import Navbar from './Navbar';  // Import your Navbar component
-import Modal from './Modal';    // Import your Modal component
-import Sidebar from './Sidebar'; // Import the new Sidebar component
+import Navbar from '../Navbar/Navbar.jsx';  // Import your Navbar component
+import Modal from '../Modal/Modal.jsx';    // Import your Modal component
+import Sidebar from '../Sidebar.jsx'; // Import the new Sidebar component
 import { useNavigate } from 'react-router-dom'; // Make sure to import useNavigate
 
 const Layout = ({ children, onLogout }) => {

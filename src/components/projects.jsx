@@ -1,6 +1,8 @@
 import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import './projects.css'; // Make sure to import your CSS file
+import {Link, useNavigate, useParams} from 'react-router-dom';
+import './projects.css';
+import Navbar from "./Navbar/Navbar.jsx";
+import Member from "./Member/Member.jsx"; // Make sure to import your CSS file
 
 import { useLocation } from 'react-router-dom';
 
@@ -18,13 +20,25 @@ const Projects = () => {
     };
 
     return (
-        <div className="projectscon">
-            <div>
-                <h1>{projectName}</h1>
+        <>
+            <nav className="secondary-navbar">
+                <ul className="secondary-nav">
+                    <li>
+                        <button className="secondary-nav-button">Project Members</button>
+                    </li>
+                </ul>
+            </nav>
+            <div className="projectscon">
+                <div className="flex-row">
+                    <figure className="projectImg">
+                        <img src="/icons.png" alt="Project Logo" />
+                    </figure>
+                    <h1>{projectName}</h1>
+                </div>
                 <p>{projectDescription}</p> {/* Display project description */}
                 <button className="btn btn-primary" onClick={handleButtonClick}>Go to Workspace</button>
             </div>
-        </div>
+        </>
     );
 };
 

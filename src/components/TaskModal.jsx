@@ -10,10 +10,10 @@ import {
     faTrash,
     faClipboard
 } from '@fortawesome/free-solid-svg-icons';
-import MoveModal from './MoveModal';
-import CalendarModal from './CalendarModal';
-import DetailsModal from './DetailsModal';
-import PriorityModal from './PriorityModal'; // Import your new PriorityModal
+import PriorityModal from './PriorityModal';
+import MoveModal from "./MoveModal/MoveModal.jsx";
+import CalendarModal from "./CalendarModal/CalendarModal.jsx";
+import DetailsModal from "./DetailsModal/DetailsModal.jsx"; // Import your new PriorityModal
 
 const TaskModal = ({ task, onClose, onDelete, boards, statuses, onSaveDate, onRemoveDate, onSavePriority }) => {
     const [isMoveModalOpen, setIsMoveModalOpen] = useState(false);

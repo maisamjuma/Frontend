@@ -1,12 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 import './Sidebar.css';
 import dashboardIcon from '../assets/t.png';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import AddProjectModal from './AddProjectModal';
+import {ArrowDownIcon} from "./SVGIcons.jsx";
 
-const Sidebar = ({ onMenuAction }) => {
+// const Sidebar = ({ onMenuAction }) => {
+//     const [projects, setProjects] = useState([]); // Added state for projects
+
+const Sidebar = ({onMenuAction}) => {
     const [projects, setProjects] = useState([]); // Added state for projects
+
     const [isProjectsOpen, setIsProjectsOpen] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isAddProjectModalVisible, setIsAddProjectModalVisible] = useState(false);
@@ -28,7 +33,7 @@ const Sidebar = ({ onMenuAction }) => {
         if (action === 'Add') {
             setIsAddProjectModalVisible(true);
         } else if (action === 'Delete') {
-            setIsDeleteMode(true);
+            setIsDeleteMode(!isDeleteMode); // Toggle delete mode
         }
         setIsMenuOpen(false);
     };
@@ -36,7 +41,7 @@ const Sidebar = ({ onMenuAction }) => {
     const handleProjectClick = (project) => {
         if (!isDeleteMode) {
             navigate(`/main/${project.name}`, {
-                state: { projectDescription: project.description }
+                state: {projectDescription: project.description}
             });
         }
     };
@@ -50,6 +55,15 @@ const Sidebar = ({ onMenuAction }) => {
         );
         onMenuAction('Delete', [project.id]); // Directly delete the project after confirming
     };
+
+    const handleDeleteProjects = () => {
+        if (selectedProjects.length > 0) {
+            onMenuAction('Delete', selectedProjects); // Pass selected projects for deletion
+            setSelectedProjects([]); // Clear selection
+            setIsDeleteMode(false); // Exit delete mode
+        }
+    };
+
 
     const handleCloseModal = () => {
         setIsAddProjectModalVisible(false);
@@ -71,7 +85,7 @@ const Sidebar = ({ onMenuAction }) => {
     }, []);
 
     const handleAddProject = (projectName, projectDescription) => {
-        const newProject = { id: Date.now().toString(), name: projectName, description: projectDescription };
+        const newProject = {id: Date.now().toString(), name: projectName, description: projectDescription};
         setProjects([...projects, newProject]);
     };
 
@@ -80,14 +94,18 @@ const Sidebar = ({ onMenuAction }) => {
         <div className="sidebar" ref={sidebarRef}>
             <ul>
                 <li>
-                    <img src={dashboardIcon} alt="Dashboard" className="sidebar-icon" />
+                    <img src={dashboardIcon} alt="Dashboard" className="sidebar-icon"/>
                     <span className="sidebar-text">Dashboard</span>
                 </li>
-                <hr />
+                <hr/>
                 <li className="projects-container" onClick={toggleProjects}>
-                    <span>Projects</span>
+                    <span className="d-flex gap-2">Projects
+                        <div className={isProjectsOpen && "rotate-180 mt-1"}>
+                            <ArrowDownIcon/>
+                        </div>
+                    </span>
                     <div className="menu-container">
-                        <span className="menu-toggle" onClick={toggleMenu}>...</span>
+                        <span className="menu-toggle " onClick={toggleMenu}>...</span>
                         {isMenuOpen && (
                             <ul className="menu-list" onClick={(e) => e.stopPropagation()}>
                                 <li onClick={() => handleMenuAction('Add')}>Add</li>
@@ -101,6 +119,7 @@ const Sidebar = ({ onMenuAction }) => {
                         {projects.map((project) => (
                             <li key={project.id} onClick={() => handleProjectClick(project)}>
                                 {isDeleteMode && (
+
                                     <input
                                         type="checkbox"
                                         checked={selectedProjects.includes(project.id)}
@@ -108,11 +127,16 @@ const Sidebar = ({ onMenuAction }) => {
                                     />
                                 )}
                                 {project.name}
+
                             </li>
                         ))}
+                        {isDeleteMode && (
+                            <button onClick={handleDeleteProjects}>Delete Selected Projects</button>
+                        )}
                     </ul>
                 )}
-                <div className="line-above-settings" /> {/* Line above Settings */}
+                <div className="line-above-settings"/>
+                {/* Line above Settings */}
                 <li>Settings</li>
             </ul>
             <AddProjectModal
@@ -125,6 +149,13 @@ const Sidebar = ({ onMenuAction }) => {
 };
 
 Sidebar.propTypes = {
+    projects: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.string.isRequired,
+            name: PropTypes.string.isRequired,
+        })
+    ).isRequired,
+    onAddProject: PropTypes.func.isRequired,
     onMenuAction: PropTypes.func.isRequired,
 };
 

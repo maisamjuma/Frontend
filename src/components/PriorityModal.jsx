@@ -51,7 +51,7 @@ const PriorityModal = ({ onClose, onSave }) => {
 
 PriorityModal.propTypes = {
     onClose: PropTypes.func.isRequired,
-    onSave: PropTypes.func.isRequired,
+    onSave: PropTypes.func,
 };
 
 export default PriorityModal;
