@@ -11,11 +11,11 @@ const PriorityModal = ({ onClose, onSave }) => {
     };
 
     const handleSaveClick = () => {
-        // Use default priority if none is selected
-        const priorityToSave = selectedPriority || 'medium';
-        onSave(priorityToSave);
+        // Save selected priority directly
+        onSave(selectedPriority);
         onClose();
     };
+
 
     return (
         <div className="priority-modal-overlay" onClick={onClose}>

@@ -12,14 +12,14 @@ const CalendarModal = ({ onClose, onSave, onRemoveDate }) => {
 
     const handleSave = () => {
         if (selectedDate) {
-            onSave(selectedDate); // Save the selected date
-            onClose(); // Close the modal after saving
+            onSave(selectedDate);
+            onClose();
         }
     };
 
     const handleRemove = () => {
-        onRemoveDate(); // Inform parent to remove the date
-        onClose(); // Close the modal after removing
+        onRemoveDate();
+        onClose();
     };
 
     return (
@@ -30,7 +30,7 @@ const CalendarModal = ({ onClose, onSave, onRemoveDate }) => {
                 </button>
                 <Calendar
                     onChange={handleDateChange}
-                    value={selectedDate || new Date()} // Default to today if no date selected
+                    value={selectedDate || new Date()}
                     tileClassName={({ date }) =>
                         selectedDate && date.toDateString() === selectedDate.toDateString() ? 'selected-date' : null
                     }
@@ -51,7 +51,7 @@ const CalendarModal = ({ onClose, onSave, onRemoveDate }) => {
 CalendarModal.propTypes = {
     onClose: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired,
-    onRemoveDate: PropTypes.func.isRequired, // Add this prop type
+    onRemoveDate: PropTypes.func.isRequired,
 };
 
 export default CalendarModal;
