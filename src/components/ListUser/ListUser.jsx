@@ -15,6 +15,9 @@ const ListUser = () => {
     function addNewUser() {
         navigator('/main/User');
     }
+    function assignTeamLeader() {
+        // navigator('/main/Project/CreateProjectComp');
+    }
 
     function updateUser(id) {
         navigator(`/edit-user/${id}`);
@@ -24,7 +27,7 @@ const ListUser = () => {
         <div className='listcontainer'>
             <h2 className='text-bg-dark'>List of Users</h2>
             <button type='button' className='btn btn-secondary mb-2' onClick={addNewUser}>Add User</button>
-            <button type='button' className='btn btn-secondary mb-2'>Assign Team Leaders</button>
+            <button type='button' className='btn btn-secondary mb-2'onClick={assignTeamLeader}>Assign Team Leaders</button>
             <table className="table table-striped table-bordered">
                 <thead>
                 <tr>

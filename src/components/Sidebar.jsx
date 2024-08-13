@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import './Sidebar.css';
 import dashboardIcon from '../assets/t.png';
 import {useNavigate} from 'react-router-dom';
-import AddProjectModal from './AddProjectModal';
+import AddProjectModal from './Project/AddProjectModal.jsx';
 import {ArrowDownIcon} from "./SVGIcons.jsx";
 
 // const Sidebar = ({ onMenuAction }) => {
