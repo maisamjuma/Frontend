@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import './AddTaskModal.css';
 import PriorityModal from './PriorityModal';
 import CalendarModal from './CalendarModal/CalendarModal.jsx';
+import Calendar from "react-calendar";
 
 // eslint-disable-next-line react/prop-types
 const AddTaskModal = ({ isVisible, onClose, onAddTask }) => {
     const [taskName, setTaskName] = useState('');
     const [description, setDescription] = useState('');
-    const [dueDate, setDueDate] = useState('');
+    const [dueDate, setDueDate] = useState(new Date()); // Initialize as Date object
     const [priority, setPriority] = useState('medium'); // Default priority
     const [isPriorityModalVisible, setPriorityModalVisible] = useState(false);
     const [isDateModalVisible, setDateModalVisible] = useState(false);
@@ -15,23 +16,25 @@ const AddTaskModal = ({ isVisible, onClose, onAddTask }) => {
     useEffect(() => {
         if (isVisible) {
             // Set default due date to today
-            const today = new Date().toISOString().split('T')[0];
-            setDueDate(today);
+            setDueDate(new Date()); // Set as Date object
         }
     }, [isVisible]);
 
     const handleAddTask = () => {
         if (taskName.trim()) {
+            const adjustedDate = new Date(dueDate);
+            adjustedDate.setDate(adjustedDate.getDate() + 1); // Add one day
+
             const newTask = {
                 name: taskName,
                 description,
-                dueDate,
+                dueDate: adjustedDate.toISOString().split('T')[0], // Adjusted date
                 priority
             };
-            onAddTask(newTask);
+            onAddTask(newTask); // Pass newTask with the adjusted dueDate
             setTaskName('');
             setDescription('');
-            setDueDate('');
+            setDueDate(new Date());
             setPriority('medium'); // Reset to default
             onClose();
         } else {
@@ -39,13 +42,15 @@ const AddTaskModal = ({ isVisible, onClose, onAddTask }) => {
         }
     };
 
+
+
     const handlePriorityChange = (selectedPriority) => {
         setPriority(selectedPriority);
     };
 
-    // const handleDateChange = (selectedDate) => {
-    //     setDueDate(selectedDate);
-    // };
+    const handleDateChange = (selectedDate) => {
+        setDueDate(selectedDate); // Ensure selectedDate is a Date object
+    };
 
     const handlePrioritySave = (selectedPriority) => {
         const priorityToSave = selectedPriority || 'medium';
@@ -59,7 +64,7 @@ const AddTaskModal = ({ isVisible, onClose, onAddTask }) => {
     };
 
     const handleDateRemove = () => {
-        setDueDate('');
+        setDueDate(new Date()); // Reset to today if date is removed
         setDateModalVisible(false);
     };
 
@@ -77,10 +82,6 @@ const AddTaskModal = ({ isVisible, onClose, onAddTask }) => {
                                 placeholder="Enter task name"
                                 className="modal-task-input"
                             />
-                            {/* Display the due date next to the task name */}
-                            <span className="task-due-date">
-                                Due Date: {new Date(dueDate).toLocaleDateString()}
-                            </span>
                         </div>
                         <textarea
                             value={description}
@@ -91,11 +92,14 @@ const AddTaskModal = ({ isVisible, onClose, onAddTask }) => {
 
                         {/* Date Picker */}
                         <div className="date-options">
-                            <button onClick={() => setDateModalVisible(true)} className="date-picker-button">
-                                {dueDate ? new Date(dueDate).toLocaleDateString() : 'Select Date'}
-                            </button>
+                            <Calendar
+                                onChange={handleDateChange}
+                                value={dueDate}
+                                tileClassName={({ date }) =>
+                                    dueDate && date.toDateString() === new Date(dueDate).toDateString() ? 'selected-date' : null
+                                }
+                            />
                         </div>
-
                         {/* Priority Dropdown */}
                         <div className="priority-options">
                             <select
