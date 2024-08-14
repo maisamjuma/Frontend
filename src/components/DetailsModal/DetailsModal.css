@@ -38,6 +38,7 @@
 .detailstitle {
     display: flex;
     align-items: center;
+    margin-bottom: 10px; /* Adjust margin to ensure proper spacing */
 }
 
 .details-icon {
@@ -64,6 +65,12 @@
     margin-top: 10px; /* Space above the text to move it slightly down */
 }
 
+.task-description {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #ffffff;
+    margin-right: 10px; /* Space between description and button */
+}
 
 .table-container,
 .table-container-comment {
@@ -123,7 +130,7 @@
 .textarea,
 .textarea-comment {
     width: 100%;
-    background: #2f3640;
+    background: #3c4451;
     color: #dcdde1;
     border: 1px solid #7f8fa6;
     padding: 7px;
@@ -145,4 +152,32 @@
     display: flex;
     gap: 10px;
     margin-top: 20px;
+}
+.table-controls {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.add-attachment-btn:hover {
+    background-color: darksalmon; /* Darker shade for hover effect */
+}
+.add-attachment-btn {
+    background-color: #7f8fa6; /* Button color */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 8px;
+    margin-left: 740px;
+}
+
+
+/* Additional styling for other elements */
+.table-container,
+.table-container-comment {
+    margin-bottom: 20px;
 }
