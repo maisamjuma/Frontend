@@ -18,20 +18,6 @@
     padding-bottom: 10px;
 }
 
-.projectImg {
-    width: 60px; /* Slightly larger image */
-    height: 60px;
-    margin-right: 20px; /* More space between image and text */
-    border-radius: 50%; /* Round image */
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-}
-
-.projectImg img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Ensure the image covers the container */
-}
 
 h1 {
     color: #2c3e50;
@@ -69,3 +55,42 @@ button:hover {
     color: #333333;
 }
 
+.projectIcon {
+    display: inline-block;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+    position: relative;
+}
+
+.projectIcon img {
+    display: block; /* Ensure there is no extra space around the image */
+}
+
+.delete-image-button {
+    position: absolute;
+    top: 0;
+    right: -10px; /* Adjust this value to move the button further to the right */
+    background: rgba(255, 255, 255, 0.7);
+    border: none;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 13px;
+    color: #333;
+    opacity: 0; /* Hide button by default */
+    transition: opacity 0.3s, background 0.3s;
+}
+
+.projectIcon:hover .delete-image-button {
+    opacity: 1; /* Show button when hovering over the image */
+}
+
+.delete-image-button:hover {
+    background: darksalmon;
+    color: #fff;
+}

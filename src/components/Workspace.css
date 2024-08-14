@@ -44,6 +44,7 @@ html, body {
     margin-right: 10px;
     margin-left: 10px;
     margin-top: 5px;
+    position: relative;
 }
 
 .secnav-link {
@@ -124,4 +125,33 @@ html, body {
 .dropdownaddboard button:hover {
     background-color: #0b0a0a;
     color: white;
+}
+
+
+.board-container {
+    position: relative;
+}
+
+.delete-board-button {
+    display: none;
+    margin-left: 10px;
+    position: absolute;
+    top: 100%; /* Position it just below the board name */
+    left: 0;
+    background-color: darksalmon;
+    color: white;
+    border: none;
+    padding: 8px 16px; /* Increase padding for a bigger button */
+    font-size: 14px; /* Increase font size */
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 0px;
+}
+
+.board-container:hover .delete-board-button {
+    display: inline-block; /* Show the button when the board is hovered */
+}
+
+.delete-board-button:hover {
+    background-color: darksalmon; /* Darker red on hover */
 }

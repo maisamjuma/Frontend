@@ -4,6 +4,8 @@ import './Workspace.css';
 import Boards from './Boards';
 import Navbar from "./Navbar/Navbar.jsx";
 
+
+
 const Workspace = () => {
     const { projectName } = useParams();
     const [selectedBoard, setSelectedBoard] = useState(null);
@@ -32,6 +34,10 @@ const Workspace = () => {
         }
     };
 
+    const handleDeleteBoard = (boardId) => {
+        setBoards(boards.filter((board) => board.id !== boardId)); // Remove the board
+    };
+
     return (
         <div className="layout">
             <Navbar onLogout={() => {}} />
@@ -39,17 +45,25 @@ const Workspace = () => {
                 <ul className="secondary-nav">
                     {boards.map((board) => (
                         <li key={board.id} className="secondary-nav-item">
-                            <Link
-                                className="secnav-link"
-                                to={`/main/workspace/${projectName}/${board.id}`}
-                                style={{
-                                    color: selectedBoard === board.id ? 'darksalmon' : 'black',
-                                    fontWeight: selectedBoard === board.id ? "bold" : "normal"
-                                }}
-                                onClick={() => handleBoardClick(board.id)}
-                            >
-                                {board.name}
-                            </Link>
+                            <div className="board-container">
+                                <Link
+                                    className="secnav-link"
+                                    to={`/main/workspace/${projectName}/${board.id}`}
+                                    style={{
+                                        color: selectedBoard === board.id ? 'darksalmon' : 'black',
+                                        fontWeight: selectedBoard === board.id ? "bold" : "normal"
+                                    }}
+                                    onClick={() => handleBoardClick(board.id)}
+                                >
+                                    {board.name}
+                                </Link>
+                                <button
+                                    className="delete-board-button"
+                                    onClick={() => handleDeleteBoard(board.id)}
+                                >
+                                    Delete
+                                </button>
+                            </div>
                         </li>
                     ))}
                     <button onClick={handleAddClick} className="add-board-button">+</button>
