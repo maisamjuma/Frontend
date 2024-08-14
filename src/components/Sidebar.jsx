@@ -1,51 +1,47 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import './Sidebar.css';
 import dashboardIcon from '../assets/t.png';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import AddProjectModal from './AddProjectModal';
-import {ArrowDownIcon} from "./SVGIcons.jsx";
+import { ArrowDownIcon } from "./SVGIcons.jsx";
 
-// const Sidebar = ({ onMenuAction }) => {
-//     const [projects, setProjects] = useState([]); // Added state for projects
-
-const Sidebar = ({onMenuAction}) => {
-    const [projects, setProjects] = useState([]); // Added state for projects
-
+const Sidebar = ({ onProjectDelete }) => {
+    const [projects, setProjects] = useState([]);
     const [isProjectsOpen, setIsProjectsOpen] = useState(false);
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [openMenus, setOpenMenus] = useState({});
     const [isAddProjectModalVisible, setIsAddProjectModalVisible] = useState(false);
     const [isDeleteMode, setIsDeleteMode] = useState(false);
-    const [selectedProjects, setSelectedProjects] = useState([]); // Added this line
+    const [selectedProjects, setSelectedProjects] = useState([]);
+    const [confirmDeleteProject, setConfirmDeleteProject] = useState(null);
     const sidebarRef = useRef(null);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        // Load projects from localStorage
+        const storedProjects = JSON.parse(localStorage.getItem('projects')) || [];
+        setProjects(storedProjects);
+    }, []);
 
     const toggleProjects = () => {
         setIsProjectsOpen(!isProjectsOpen);
     };
 
-    const toggleMenu = (e) => {
+    const toggleMenu = (projectId, e) => {
         e.stopPropagation();
-        setIsMenuOpen(!isMenuOpen);
-    };
-
-    const handleMenuAction = (action) => {
-        if (action === 'Add') {
-            setIsAddProjectModalVisible(true);
-        } else if (action === 'Delete') {
-            setIsDeleteMode(!isDeleteMode); // Toggle delete mode
-        }
-        setIsMenuOpen(false);
+        setOpenMenus(prevOpenMenus => ({
+            ...prevOpenMenus,
+            [projectId]: !prevOpenMenus[projectId],
+        }));
     };
 
     const handleProjectClick = (project) => {
         if (!isDeleteMode) {
             navigate(`/main/${project.name}`, {
-                state: {projectDescription: project.description}
+                state: { projectDescription: project.description }
             });
         }
     };
-
 
     const handleCheckboxChange = (project) => {
         setSelectedProjects(prevSelected =>
@@ -55,19 +51,18 @@ const Sidebar = ({onMenuAction}) => {
         );
     };
 
-    const handleDeleteProjects = () => {
-        if (selectedProjects.length > 0) {
-            const updatedProjects = projects.filter(
-                (project) => !selectedProjects.includes(project.id)
-            );
-            setProjects(updatedProjects); // Update the projects list to remove the selected ones
-            setSelectedProjects([]); // Clear selection
-            setIsDeleteMode(false); // Exit delete mode
-            onMenuAction('Delete', selectedProjects); // Notify the parent component of the deletion
-        }
+    const handleDeleteProject = (projectId) => {
+        setConfirmDeleteProject(projectId);
     };
 
+    const confirmDelete = () => {
+        onProjectDelete(confirmDeleteProject);
+        setConfirmDeleteProject(null);
+    };
 
+    const cancelDelete = () => {
+        setConfirmDeleteProject(null);
+    };
 
     const handleCloseModal = () => {
         setIsAddProjectModalVisible(false);
@@ -76,7 +71,7 @@ const Sidebar = ({onMenuAction}) => {
     const handleClickOutside = (event) => {
         if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
             setIsProjectsOpen(false);
-            setIsMenuOpen(false);
+            setOpenMenus({});
             setIsDeleteMode(false);
         }
     };
@@ -89,48 +84,60 @@ const Sidebar = ({onMenuAction}) => {
     }, []);
 
     const handleAddProject = (projectName, projectDescription) => {
-        const newProject = {id: Date.now().toString(), name: projectName, description: projectDescription};
-        setProjects([...projects, newProject]);
+        const newProject = { id: Date.now().toString(), name: projectName, description: projectDescription };
+        setProjects(prevProjects => {
+            const updatedProjects = [...prevProjects, newProject];
+            localStorage.setItem('projects', JSON.stringify(updatedProjects));
+            return updatedProjects;
+        });
     };
 
+    const handleDeleteProjects = () => {
+        const updatedProjects = projects.filter(project => !selectedProjects.includes(project.id));
+        setProjects(updatedProjects);
+        localStorage.setItem('projects', JSON.stringify(updatedProjects));
+        setSelectedProjects([]);
+    };
 
     return (
         <div className="sidebar" ref={sidebarRef}>
             <ul>
                 <li>
-                    <img src={dashboardIcon} alt="Dashboard" className="sidebar-icon"/>
+                    <img src={dashboardIcon} alt="Dashboard" className="sidebar-icon" />
                     <span className="sidebar-text">Dashboard</span>
                 </li>
-                <hr/>
+                <hr />
                 <li className="projects-container" onClick={toggleProjects}>
-                    <span className="d-flex gap-2">Projects
-                        <div className={isProjectsOpen && "rotate-180 mt-1"}>
-                            <ArrowDownIcon/>
+                    <span className="d-flex gap-2 rot">
+                        Projects
+                        <div className={isProjectsOpen ? "rotate-180 mt-1" : "mt-1"}>
+                            <ArrowDownIcon />
                         </div>
                     </span>
                     <div className="menu-container">
-                        <span className="menu-toggle " onClick={toggleMenu}>...</span>
-                        {isMenuOpen && (
+                        <span className="menu-toggle" onClick={(e) => toggleMenu('projects', e)}>...</span>
+                        {openMenus['projects'] && (
                             <ul className="menu-list" onClick={(e) => e.stopPropagation()}>
-                                <li onClick={() => handleMenuAction('Add')}>Add</li>
-                                <li onClick={() => handleMenuAction('Delete')}>Delete</li>
+                                <li onClick={() => setIsAddProjectModalVisible(true)}>Add</li>
+                                <li onClick={() => setIsDeleteMode(!isDeleteMode)}>Delete</li>
                             </ul>
                         )}
                     </div>
                 </li>
                 {isProjectsOpen && (
                     <ul className="dropdown-list">
-                        {projects.map((project) => (
-                            <li key={project.id} onClick={() => handleProjectClick(project)}>
+                        {projects.map(project => (
+                            <li className="d-flex flex-row gap-5 align-items-center" key={project.id}>
                                 {isDeleteMode && (
-
                                     <input
                                         type="checkbox"
                                         checked={selectedProjects.includes(project.id)}
                                         onChange={() => handleCheckboxChange(project)}
                                     />
                                 )}
-                                {project.name}
+                                <span onClick={() => handleProjectClick(project)}>
+                                    {project.name}
+                                </span>
 
                             </li>
                         ))}
@@ -139,28 +146,21 @@ const Sidebar = ({onMenuAction}) => {
                         )}
                     </ul>
                 )}
-                <div className="line-above-settings"/>
-                {/* Line above Settings */}
+                <div className="line-above-settings" />
                 <li>Settings</li>
             </ul>
             <AddProjectModal
                 isVisible={isAddProjectModalVisible}
                 onClose={handleCloseModal}
-                onAddProject={handleAddProject} // Pass the handler function to the modal
+                onAddProject={handleAddProject}
             />
+
         </div>
     );
 };
 
 Sidebar.propTypes = {
-    projects: PropTypes.arrayOf(
-        PropTypes.shape({
-            id: PropTypes.string.isRequired,
-            name: PropTypes.string.isRequired,
-        })
-    ).isRequired,
-    onAddProject: PropTypes.func.isRequired,
-    onMenuAction: PropTypes.func.isRequired,
+    onProjectDelete: PropTypes.func.isRequired,
 };
 
 export default Sidebar;

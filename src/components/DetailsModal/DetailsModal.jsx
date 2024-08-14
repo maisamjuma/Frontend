@@ -63,7 +63,7 @@ const DetailsModal = ({ task, onClose }) => {
                 <div className="table-container">
                     {descriptionData.map((row, rowIndex) => (
                         <div key={rowIndex} className="table-row">
-                            {/* Displaying "Member Name" as normal text above each row */}
+                            {/* Displaying "Members Name" as normal text above each row */}
 
                             <table className="task-details-table">
 
@@ -91,7 +91,7 @@ const DetailsModal = ({ task, onClose }) => {
                 <div className="table-container-comment">
                     {commentsData.map((row, rowIndex) => (
                         <div key={rowIndex} className="table-row">
-                            {/* Displaying "Member Name" as normal text above each row */}
+                            {/* Displaying "Members Name" as normal text above each row */}
                             <div className="member-name-comment">Member Name:</div>
                             <table className="task-details-table-comment">
                                 <thead>

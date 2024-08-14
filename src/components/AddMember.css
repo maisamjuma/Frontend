@@ -1,0 +1,93 @@
+.add-member-container {
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 320px;
+    margin-top: 20px;
+}
+
+.add-member-search {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.member-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 350px;
+    overflow: auto; /* Keep overflow to enable scrolling */
+}
+
+/* Hide scrollbars for Webkit browsers (Chrome, Safari) */
+.member-list::-webkit-scrollbar {
+    display: none; /* Hide scrollbar */
+}
+
+/* Hide scrollbars for Firefox */
+.member-list {
+    scrollbar-width: none; /* Hide scrollbar in Firefox */
+}
+
+.member-item {
+    display: flex;
+    align-items: center; /* Center items vertically */
+    gap: 25px; /* Adjust gap for better spacing */
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    margin-bottom: 10px; /* Reduce bottom margin */
+    transition: background-color 0.3s ease;
+    position: relative; /* Position relative for checkbox positioning */
+}
+
+.member-item input[type="checkbox"] {
+    position: absolute; /* Position checkbox absolutely */
+    left: 10px; /* Align checkbox to the left */
+    top: 50%; /* Center checkbox vertically */
+    transform: translateY(-50%); /* Adjust vertical alignment */
+}
+
+.member-info {
+    flex: 1; /* Take up remaining space */
+    display: flex;
+    flex-direction: column;
+    gap: 5px; /* Space between name and role */
+}
+
+.member-name {
+    font-weight: bold;
+    font-size: 16px;
+    color: #333;
+}
+
+.member-role {
+    font-size: 14px;
+    color: #777;
+}
+
+.member-item:hover {
+    background-color: #f0f0f0;
+}
+
+.member-item button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.member-item button:hover {
+    background-color: #0056b3;
+}
+.member-item.selected {
+    background-color: #d1e7ff; /* Light blue to indicate selection */
+}
+

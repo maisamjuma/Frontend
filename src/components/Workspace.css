@@ -29,6 +29,7 @@ html, body {
     background-color: #e9ecef;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 8px 0; /* Adjust for vertical padding */
+
 }
 .secondary-nav {
     display: flex;
@@ -36,6 +37,9 @@ html, body {
     margin: 0;
     padding: 0;
     justify-content: center;
+    flex: auto;
+    flex-direction: row;
+    gap: 30px;
 }
 
 .secondary-nav-item {
