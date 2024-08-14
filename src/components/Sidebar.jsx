@@ -5,6 +5,7 @@ import './Sidebar.css';
 import {useNavigate} from 'react-router-dom';
 import AddProjectModal from './Project/AddProjectModal.jsx';
 import ProjectService from '../Services/ProjectService';  // Adjust the import path as necessary
+// import { deleteProject } from '../Services/ProjectService'; // Import the deleteProject function
 
 import {ArrowDownIcon} from "./SVGIcons.jsx";
 
@@ -33,6 +34,8 @@ const Sidebar = ({onMenuAction}) => {
         if (action === 'Add') {
             setIsAddProjectModalVisible(true);
         } else if (action === 'Delete') {
+            setIsProjectsOpen(true);
+
             // setIsMenuOpen(true);
             setIsDeleteMode(!isDeleteMode); // Toggle delete mode
         }
@@ -57,21 +60,11 @@ const Sidebar = ({onMenuAction}) => {
         );
     };
 
-    const handleDeleteProjects = () => {
-        if (selectedProjects.length > 0) {
-            const updatedProjects = projects.filter(
-                (project) => !selectedProjects.includes(project.id)
-            );
-            setProjects(updatedProjects); // Update the projects list to remove the selected ones
-            setSelectedProjects([]); // Clear selection
-            setIsDeleteMode(false); // Exit delete mode
-            onMenuAction('Delete', selectedProjects); // Notify the parent component of the deletion
-        }
-    };
+
 
 
     const handleCloseModal = () => {
-        setIsAddProjectModalVisible(false);
+        setIsAddProjectModalVisible(true);
     };
 
     const handleClickOutside = (event) => {
@@ -79,6 +72,8 @@ const Sidebar = ({onMenuAction}) => {
             setIsProjectsOpen(false);
             setIsMenuOpen(false);
             setIsDeleteMode(false);
+            setIsAddProjectModalVisible(false);
+
         }
     };
 
@@ -112,6 +107,54 @@ const Sidebar = ({onMenuAction}) => {
             console.error("There was an error fetching the projects!", error);
         }
     };
+
+//////////////////////Delete/////////////////////////////////////////////////
+//     const handleDeleteProjects = () => {
+//         if (selectedProjects.length > 0) {
+//             const updatedProjects = projects.filter(
+//                 (project) => !selectedProjects.includes(project.id)
+//             );
+//             setProjects(updatedProjects); // Update the projects list to remove the selected ones
+//             setSelectedProjects([]); // Clear selection
+//             setIsDeleteMode(false); // Exit delete mode
+//             onMenuAction('Delete', selectedProjects); // Notify the parent component of the deletion
+//         }
+//     };
+    const handleDeleteSelected = async () => {
+        if (selectedProjects.length === 0) return;
+
+        const projectsToDelete = Array.from(selectedProjects);
+
+        try {
+            // const response = await ProjectService.getAllProjects();
+
+            // await Promise.all(projectsToDelete.map(id => deleteProject(id)));
+            // await Promise.all(projectsToDelete.map(id => ProjectService.deleteProject(id)));
+            // Remove deleted projects from state
+            // setProjects(projects.filter(project => !projectsToDelete.includes(project.id)));
+            // setSelectedProjects(new Set()); // Clear selection
+
+            await Promise.all(projectsToDelete.map(id => ProjectService.deleteProject(id)));
+            setProjects(projects.filter(project => !projectsToDelete.includes(project.id)));
+
+            onMenuAction('Delete', selectedProjects); // Notify the parent component of the deletion
+            setSelectedProjects([]); // Clear selection
+        } catch (error) {
+            console.error('Error deleting projects:', error);
+        }
+
+    };
+
+    // const handleDelete = async (projectId) => {
+    //     try {
+    //         await deleteProject(projectId);
+    //         // Remove project from state
+    //         setProjects(projects.filter(project => project.id !== projectId));
+    //     } catch (error) {
+    //         console.error('Error deleting project:', error);
+    //     }
+    // };
+//////////////////////Delete/////////////////////////////////////////////////
 
     const handleAddProject = (projectName, projectDescription) => {
         // const newProject = {id: Date.now().toString(), name: projectName, description: projectDescription};
@@ -165,7 +208,7 @@ const Sidebar = ({onMenuAction}) => {
                             </li>
                         ))}
                         {isDeleteMode && (
-                            <button onClick={handleDeleteProjects}>Delete Selected Projects</button>
+                            <button onClick={handleDeleteSelected} disabled={selectedProjects.length === 0}>Delete Selected Projects</button>
                         )}
                     </ul>
                 )}
