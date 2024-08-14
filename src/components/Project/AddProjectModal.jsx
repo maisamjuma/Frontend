@@ -1,14 +1,13 @@
 import './AddProjectModal.css'; // Create a CSS file for modal styles
 import React, {useState} from 'react';
-// import PropTypes from 'prop-types';
-import {useNavigate} from 'react-router-dom';
+// import {useNavigate} from 'react-router-dom';
 import ProjectService from '../../Services/ProjectService.js';
 import PropTypes from "prop-types";
-// import AddProjectModal from "../AddProjectModal.jsx";
+
 
 
 const AddProjectModal = ({isVisible, onClose, onAddProject}) => {
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
@@ -53,9 +52,9 @@ const AddProjectModal = ({isVisible, onClose, onAddProject}) => {
 
     };
 
-    const cancel = () => {
-        navigate('/projects');
-    };
+    // const cancel = () => {
+    //     navigate('/projects');
+    // };
 
     const getTitle = () => {
         return <h3 className="text-center">Add Project</h3>;
@@ -95,14 +94,14 @@ const AddProjectModal = ({isVisible, onClose, onAddProject}) => {
                         </div>
                         <h1></h1>
                         <button className="btn btn-success" onClick={handleAddProject}>Save</button>
-                        <button className="btn btn-danger" onClick={cancel}
-                                style={{marginLeft: "10px"}}>Cancel
-                        </button>
-                    </form>
+                        <button className="btn btn-danger" onClick={onClose}
+                            style={{marginLeft: "10px"}}>Cancel
+                    </button>
+                </form>
 
 
-                </div>
             </div>
+</div>
         )
     );
 };
