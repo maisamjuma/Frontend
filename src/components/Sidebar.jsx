@@ -4,7 +4,7 @@ import './Sidebar.css';
 //import dashboardIcon from '../assets/t.png';
 import {useNavigate} from 'react-router-dom';
 import AddProjectModal from './Project/AddProjectModal.jsx';
-import ProjectService from '../Services/ProjectService';  // Adjust the import path as necessary
+import ProjectService from '../services/ProjectService.js';  // Adjust the import path as necessary
 // import { deleteProject } from '../Services/ProjectService'; // Import the deleteProject function
 
 import {ArrowDownIcon} from "./SVGIcons.jsx";

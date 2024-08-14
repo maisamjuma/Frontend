@@ -1,7 +1,7 @@
 import './AddProjectModal.css'; // Create a CSS file for modal styles
 import React, {useState} from 'react';
 // import {useNavigate} from 'react-router-dom';
-import ProjectService from '../../Services/ProjectService.js';
+import ProjectService from '../../services/ProjectService.js';
 import PropTypes from "prop-types";
 
 

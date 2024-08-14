@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import { listUsers } from "../../Services/UserService.js";
-import RoleService from '../../Services/RoleService';
+import { listUsers } from "../../services/UserService.js";
+import RoleService from '../../services/RoleService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserPlus, faUserShield, faUserTag } from '@fortawesome/free-solid-svg-icons'; // Import specific icons
 import './ListUser.css';

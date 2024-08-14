@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { createUser, getUser } from "../Services/UserService";
+import { createUser, getUser } from "../services/UserService";
 import { useNavigate, useParams } from "react-router-dom";
 import "./User.css"
 const User = () => {
