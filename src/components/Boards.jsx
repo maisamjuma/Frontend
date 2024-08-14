@@ -355,7 +355,9 @@ const Boards = () => {
                     isVisible={showAddTaskModal}
                     onClose={() => setShowAddTaskModal(false)}
                     onAddTask={(task) => handleAddTask(currentStatusId, task)}
+                    status={statuses.find(status => status.id === currentStatusId)} // Pass the correct status object
                 />
+
             )}
 
         </div>
