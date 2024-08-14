@@ -4,32 +4,37 @@ const PROJECTS_API_BASE_URL = "http://10.10.30.77:8080/api/projects";
 
 class ProjectService {
 
-    getProject(){
+    // Fetch all projects
+    getAllProjects() {
         return axios.get(PROJECTS_API_BASE_URL);
     }
 
-    // createProject(project){
-    //     return axios.post(PROJECTS_API_BASE_URL,project );
-    // }
+    // Fetch a project by its ID
+    getProjectById(projectId) {
+        return axios.get(`${PROJECTS_API_BASE_URL}/${projectId}`);
+    }
 
-    createProject = (project) => {
+    // Create a new project
+    createProject(project) {
         return axios.post(PROJECTS_API_BASE_URL, project, {
             headers: {
                 'Content-Type': 'application/json'
             }
         });
-    };
-
-    getProjectById(projectId){
-        return axios.get(PROJECTS_API_BASE_URL + '/' + projectId);
     }
 
-    updateProject(project, projectId){
-        return axios.put(PROJECTS_API_BASE_URL + '/' + projectId, project);
+    // Update an existing project by its ID
+    updateProject(projectId, updatedProject) {
+        return axios.put(`${PROJECTS_API_BASE_URL}/${projectId}`, updatedProject, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
     }
 
-    deleteProject(projectId){
-        return axios.delete(PROJECTS_API_BASE_URL + '/' + projectId);
+    // Delete a project by its ID
+    deleteProject(projectId) {
+        return axios.delete(`${PROJECTS_API_BASE_URL}/${projectId}`);
     }
 }
 

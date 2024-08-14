@@ -10,8 +10,19 @@
     background-color: #fff;
     z-index: 998;
     box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
-    overflow-y: hidden; /* Optional: to handle overflow */
+    overflow-y: auto; /* Optional: to handle overflow */
 }
+
+/* Hide scrollbars for Webkit browsers (Chrome, Safari) */
+.sidebar::-webkit-scrollbar {
+    display: none; /* Hide scrollbar */
+}
+
+/* Hide scrollbars for Firefox */
+.sidebar {
+    scrollbar-width: none; /* Hide scrollbar in Firefox */
+}
+
 
 .sidebar-icon {
     width: 20px;

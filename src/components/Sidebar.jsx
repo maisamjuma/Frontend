@@ -4,6 +4,8 @@ import './Sidebar.css';
 import dashboardIcon from '../assets/t.png';
 import {useNavigate} from 'react-router-dom';
 import AddProjectModal from './Project/AddProjectModal.jsx';
+import ProjectService from '../Services/ProjectService';  // Adjust the import path as necessary
+
 import {ArrowDownIcon} from "./SVGIcons.jsx";
 
 // const Sidebar = ({ onMenuAction }) => {
@@ -33,6 +35,7 @@ const Sidebar = ({onMenuAction}) => {
         if (action === 'Add') {
             setIsAddProjectModalVisible(true);
         } else if (action === 'Delete') {
+            // setIsMenuOpen(true);
             setIsDeleteMode(!isDeleteMode); // Toggle delete mode
         }
         setIsMenuOpen(false);
@@ -68,7 +71,6 @@ const Sidebar = ({onMenuAction}) => {
     };
 
 
-
     const handleCloseModal = () => {
         setIsAddProjectModalVisible(false);
     };
@@ -82,14 +84,31 @@ const Sidebar = ({onMenuAction}) => {
     };
 
     useEffect(() => {
+        fetchProjects();
+
+
         document.addEventListener('mousedown', handleClickOutside);
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
+
     }, []);
 
+
+    const fetchProjects = async () => {
+        try {
+            const response = await ProjectService.getAllProjects();
+            setProjects(response.data);  // Assuming the response contains the project data in a `data` field
+        } catch (error) {
+            console.error("There was an error fetching the projects!", error);
+        }
+    };
+
     const handleAddProject = (projectName, projectDescription) => {
+        // const newProject = {id: Date.now().toString(), name: projectName, description: projectDescription};
         const newProject = {id: Date.now().toString(), name: projectName, description: projectDescription};
+
+
         setProjects([...projects, newProject]);
     };
 
