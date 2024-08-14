@@ -1,13 +1,11 @@
 import React, {useState, useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 import './Sidebar.css';
-import dashboardIcon from '../assets/t.png';
+//import dashboardIcon from '../assets/t.png';
 import {useNavigate} from 'react-router-dom';
 import AddProjectModal from './Project/AddProjectModal.jsx';
 import {ArrowDownIcon} from "./SVGIcons.jsx";
 
-// const Sidebar = ({ onMenuAction }) => {
-//     const [projects, setProjects] = useState([]); // Added state for projects
 
 const Sidebar = ({onMenuAction}) => {
     const [projects, setProjects] = useState([]); // Added state for projects
@@ -98,8 +96,10 @@ const Sidebar = ({onMenuAction}) => {
         <div className="sidebar" ref={sidebarRef}>
             <ul>
                 <li>
-                    <img src={dashboardIcon} alt="Dashboard" className="sidebar-icon"/>
-                    <span className="sidebar-text">Dashboard</span>
+                    <div className="icon-text-container">
+                        <div className="circle-icon">D</div>
+                        <span className="sidebar-text">Dashboard</span>
+                    </div>
                 </li>
                 <hr/>
                 <li className="projects-container" onClick={toggleProjects}>
