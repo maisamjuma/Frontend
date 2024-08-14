@@ -1,0 +1,183 @@
+.details-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: auto;
+}
+
+.details-modal-content {
+    background: #2f3640;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 90%;
+    width: 100%;
+    max-height: 90%;
+    overflow-y: auto;
+    color: #dcdde1;
+    position: relative;
+}
+
+.details-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.details-modal-title {
+    display: flex;
+    align-items: center;
+}
+
+.detailstitle {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; /* Adjust margin to ensure proper spacing */
+}
+
+.details-icon {
+    margin-right: 10px;
+    color: #ffffff; /* Ensure the icon color matches the text */
+}
+
+.close-icon {
+    cursor: pointer;
+    color: #dcdde1;
+}
+
+.task-status {
+    font-size: 0.9em;
+    color: #7f8fa6;
+}
+
+.task-description,
+.task-comment {
+    font-size: 1.1em; /* Increase font size slightly */
+    font-weight: bold; /* Make the text bold */
+    color: #ffffff; /* Make the text white */
+    margin-bottom: 10px; /* Space below the text */
+    margin-top: 10px; /* Space above the text to move it slightly down */
+}
+
+.task-description {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #ffffff;
+    margin-right: 10px; /* Space between description and button */
+}
+
+.table-container,
+.table-container-comment {
+    margin-bottom: 20px;
+}
+
+.table-row {
+    margin-bottom: 10px;
+}
+
+.member-name-comment {
+    font-size: 1em;
+    color: #dcdde1;
+    margin-bottom: 5px;
+}
+
+.task-details-table {
+    width: 80%; /* Adjust table width as needed */
+    border-collapse: collapse;
+    margin-bottom: 10px;
+}
+
+.task-details-table th,
+.task-details-table td {
+    border: 1px solid #7f8fa6;
+    padding: 5px; /* Reduced padding */
+    text-align: left;
+    line-height: 0.6; /* Adjust line height to reduce row height */
+}
+
+.task-details-table-comment {
+    width: 70%; /* Reduce the width of the comment table */
+    border-collapse: collapse;
+    margin-bottom: 5px; /* Reduce the margin at the bottom of the table */
+    font-size: 0.85em; /* Reduce the font size for a smaller appearance */
+}
+
+.task-details-table-comment th,
+.task-details-table-comment td {
+    border: 1px solid #7f8fa6;
+    padding: 3px; /* Reduce padding for cells */
+    text-align: left;
+    line-height: 3px; /* Adjust line height for more compact rows */
+}
+
+.task-details-table th,
+.task-details-table-comment th {
+    background-color: #34495e;
+    color: #dcdde1;
+}
+
+.task-details-table tr:nth-child(even),
+.task-details-table-comment tr:nth-child(even) {
+    background-color: #2f3640;
+}
+
+.textarea,
+.textarea-comment {
+    width: 100%;
+    background: #3c4451;
+    color: #dcdde1;
+    border: 1px solid #7f8fa6;
+    padding: 7px;
+    box-sizing: border-box;
+}
+
+.textarea {
+    min-height: 25px;
+    resize: vertical;
+}
+
+.textarea-comment {
+    min-height: 15px;
+    resize: vertical;
+}
+
+
+.table-controls-comment {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+.table-controls {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.add-attachment-btn:hover {
+    background-color: darksalmon; /* Darker shade for hover effect */
+}
+.add-attachment-btn {
+    background-color: #7f8fa6; /* Button color */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 8px;
+    margin-left: 740px;
+}
+
+
+/* Additional styling for other elements */
+.table-container,
+.table-container-comment {
+    margin-bottom: 20px;
+}

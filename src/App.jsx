@@ -1,9 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import { Route, Routes, Navigate } from 'react-router-dom';
-import Layout from './components/Layout';
-import Login from './components/Login';
-import Project1 from './components/project1';
+import {Route, Routes, Navigate} from 'react-router-dom';
+import Projects from './components/projects';
 import Workspace from './components/Workspace';
+import User from "./components/User";
+import Layout from "./components/Layout/Layout.jsx";
+import Login from "./components/Login/Login.jsx";
+import ListUser from "./components/ListUser/ListUser.jsx";
+
+// import CreateProjectComp from "./components/Project/CreateProjectComp.jsx";
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -15,6 +19,7 @@ function App() {
     const handleLogout = () => {
         setIsAuthenticated(false);
     };
+
     useEffect(() => {
         const styledTitle = document.getElementById('styled-title');
         if (styledTitle) {
@@ -28,9 +33,9 @@ function App() {
                 path="/login"
                 element={
                     isAuthenticated ? (
-                        <Navigate to="/main" />
+                        <Navigate to="/main"/>
                     ) : (
-                        <Login onLogin={handleLogin} />
+                        <Login onLogin={handleLogin}/>
                     )
                 }
             />
@@ -40,17 +45,20 @@ function App() {
                     isAuthenticated ? (
                         <Layout onLogout={handleLogout}>
                             <Routes>
-                                <Route path="/" element={<div>Welcome to Task Hub</div>} />
-                                <Route path="project1" element={<Project1 />} />
-                                <Route path="workspace/*" element={<Workspace />} />
+                                <Route path="/" element={<ListUser/>}/>
+                                <Route path="ListUser" element={<ListUser/>}/>
+                                <Route path="User" element={<User/>}/>
+                                {/*<Route path="Project/CreateProjectComp" element={<CreateProjectComp />} />*/}
+                                <Route path=":projectName" element={<Projects/>}/> {/* Dynamic route for projects */}
+                                <Route path="workspace/:projectName/*" element={<Workspace/>}/>
                             </Routes>
                         </Layout>
                     ) : (
-                        <Navigate to="/login" />
+                        <Navigate to="/login"/>
                     )
                 }
             />
-            <Route path="/" element={<Navigate to="/login" />} />
+            <Route path="/" element={<Navigate to="/login"/>}/>
         </Routes>
     );
 }

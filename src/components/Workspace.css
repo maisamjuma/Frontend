@@ -18,6 +18,7 @@ html, body {
     z-index: 1000;
     background-color: #f8f9fa;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
 }
 
 .secondary-navbar {
@@ -29,25 +30,29 @@ html, body {
     background-color: #e9ecef;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 10px 0; /* Adjust for vertical padding */
+
 }
+
 .secondary-nav {
-    display: flex;
     list-style: none;
-    margin: 0;
     padding: 0;
-    justify-content: center;
+    margin: 0;
+    display: flex;
 }
 
 .secondary-nav-item {
-    margin: 0 15px;
+    margin-right: 10px;
+    margin-left: 10px;
+    margin-top: 5px;
+    position: relative;
 }
 
-.secondary-nav-item .nav-link {
-    color: #000;
+.secnav-link {
     text-decoration: none;
+    color: black; /* Default color */
+    margin-left: 30px;
+
 }
-
-
 .main-content {
     margin-top: 10px; /* Height of top navbar */
     margin-left: 200px; /* Width of the sidebar */
@@ -55,4 +60,98 @@ html, body {
     flex-grow: 1;
     overflow-y: hidden; /* Allows scrolling only within this area */
     overflow-x: hidden; /* Prevents horizontal scrolling */
+}
+.main-content::-webkit-scrollbar {
+    background-color: #ffffff;
+}
+.secondary-nav-button {
+    margin: 0 1px;
+    background-color: #e9ecef;
+    color: darksalmon;
+    padding: 3px;
+    font-weight: bolder;
+    letter-spacing: 1px;
+    font-family: Bahnschrift;
+}
+.secondary-nav-button:hover{
+    background-color: #7f8fa6;
+    color: #333333;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 1px 4px;
+
+}
+.add-board-button {
+    margin-left: 25px;
+    padding: 5px 5px;
+    background: none;
+    color: #0b0a0a;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.add-board-button:hover{
+    background: darksalmon;
+    color : #ffffff;
+}
+.dropdownaddboard {
+    position: absolute;
+    top: 100%; /* Position dropdown below the + button */
+    left: 0;
+    margin-left: 300px;
+    background-color: #e9ecef;
+    padding: 10px;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+}
+
+.dropdownaddboard input {
+    margin-bottom: 1px;
+    padding: 5px;
+}
+
+.dropdownaddboard button {
+    padding: 5px 10px;
+    background-color: darksalmon;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 15px;
+    align-self: flex-start; /* Align button to the left */
+}
+
+.dropdownaddboard button:hover {
+    background-color: #0b0a0a;
+    color: white;
+}
+
+
+.board-container {
+    position: relative;
+}
+
+.delete-board-button {
+    display: none;
+    margin-left: 10px;
+    position: absolute;
+    top: 100%; /* Position it just below the board name */
+    left: 0;
+    background-color: darksalmon;
+    color: white;
+    border: none;
+    padding: 8px 16px; /* Increase padding for a bigger button */
+    font-size: 14px; /* Increase font size */
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 0px;
+}
+
+.board-container:hover .delete-board-button {
+    display: inline-block; /* Show the button when the board is hovered */
+}
+
+.delete-board-button:hover {
+    background-color: darksalmon; /* Darker red on hover */
 }

@@ -1,0 +1,110 @@
+/* Container to center the card */
+.full-screen-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Full viewport height */
+    padding: 0; /* Remove default padding */
+    margin-left: 300px;
+    margin-top: -70px;
+}
+
+/* Card styles */
+.card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 900px; /* Adjust as needed */
+    height: 80vh; /* Adjust height to give more space */
+    padding: 20px;
+    box-sizing: border-box;
+    background: #fff; /* Ensure background color to distinguish card */
+    margin: 0; /* Remove margins */
+    overflow: auto; /* Enable scrolling */
+}
+
+/* Hide scrollbars but keep scrolling */
+.card::-webkit-scrollbar {
+    width: 0; /* Hide vertical scrollbar */
+    height: 0; /* Hide horizontal scrollbar */
+}
+
+.card {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+/* Header styles */
+.card-header {
+    background-color: darksalmon;
+    color: white;
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    font-size: 1.5rem;
+    text-align: center; /* Center text in header */
+}
+
+/* Form group styles */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+/* Label styles */
+.form-label {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    display: block;
+    color: #333;
+}
+
+/* Input and textarea styles */
+.form-control {
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Input focus styles */
+.form-control:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
+}
+
+/* Invalid feedback styles */
+.invalid-feedback {
+    display: block;
+    color: #dc3545;
+    font-size: 0.875rem;
+}
+
+/* Button styles */
+.btn-success {
+    background-color: #0b0a0a !important; /* Use !important to override default styles */
+    border: none !important; /* Remove default border */
+    color: white !important; /* Ensure text color is white */
+    padding: 0.5rem 1rem !important; /* Consistent padding */
+    border-radius: 0.25rem !important; /* Rounded corners */
+    cursor: pointer !important; /* Pointer cursor on hover */
+    font-size: 1rem !important; /* Font size */
+}
+
+/* Button hover styles */
+.btn-success:hover {
+    background-color: darksalmon !important; /* Background color on hover */
+}
+
+/* Checkbox styles */
+.form-check-input {
+    margin-right: 0.5rem;
+}
+
+/* Form control sizes */
+input[type="datetime-local"] {
+    padding: 0.5rem;
+}

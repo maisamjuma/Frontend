@@ -1,0 +1,55 @@
+
+.listcontainer {
+    max-height: 100vh; /* Adjust this value as needed */
+    overflow-y: auto; /* Enables vertical scrolling */
+
+}
+
+.table {
+    width: 100%;
+}
+
+.video-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0; /* Adjust the margin as needed */
+}
+
+.video-container video {
+    max-width: 30%;
+    height: 10%;
+    border-radius: 8px; /* Optional: Adds rounded corners to the video */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Adds shadow for better visibility */
+}
+.track{
+    color:darksalmon;
+}
+.home-button-container {
+    display: flex;
+    margin-top: 100px;
+    gap:10px;
+    margin-left: 200px;
+}
+.btnAddUser,
+.btnAddRole,
+.btnAssignTeamLeader
+{
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    background: rgb(11, 10, 10);
+    width: 170px;
+    height: 100px;
+
+}
+.btnAddUser:hover,
+.btnAddRole:hover,
+.btnAssignTeamLeader:hover
+{
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    background: darksalmon;
+}
+.text-bg-dark{
+    margin-top: 20px;
+
+}

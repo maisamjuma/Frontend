@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './Layout.css';
-import Navbar from './Navbar';  // Import your Navbar component
-import Modal from './Modal';    // Import your Modal component
-import Sidebar from './Sidebar'; // Import the new Sidebar component
+import Navbar from '../Navbar/Navbar.jsx';  // Import your Navbar component
+import Modal from '../Modal/Modal.jsx';    // Import your Modal component
+import Sidebar from '../Sidebar.jsx'; // Import the new Sidebar component
 import { useNavigate } from 'react-router-dom'; // Make sure to import useNavigate
 
 const Layout = ({ children, onLogout }) => {
@@ -38,12 +38,18 @@ const Layout = ({ children, onLogout }) => {
         setProjects([...projects, { id: newProjectId, name: projectName }]);
     };
 
-    const handleMenuAction = (action) => {
+    const handleMenuAction = (action, selectedProjects) => {
         if (action === 'Add') {
             setIsModalOpen(true);
-        } else if (action === 'Delete') {
-            // Handle delete action here
-            console.log('Delete action triggered');
+        } else if (action === 'Delete' && selectedProjects && selectedProjects.length > 0) {
+            selectedProjects.forEach(projectId => {
+                const project = projects.find(p => p.id === projectId);
+                if (window.confirm(`Are you sure you want to delete the project "${project.name}"?`)) {
+                    setProjects(prevProjects =>
+                        prevProjects.filter(p => p.id !== projectId)
+                    );
+                }
+            });
         }
     };
 

@@ -30,23 +30,17 @@ const Navbar = ({ onLogout }) => {
                         <li className="nav-item">
                             <Link className="nav-link" to="/notifications">Notifications</Link>
                         </li>
-                        <li className="nav-item">
-                            <Link className="nav-link disabled" aria-disabled="true">Disabled</Link>
-                        </li>
+
                     </ul>
-                    <form className="d-flex" role="search">
-                        <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                        <button className="btn btn-outline-success" type="submit">Search</button>
-                    </form>
+
                 </div>
             </div>
         </nav>
     );
 };
 
-// Add PropTypes validation
 Navbar.propTypes = {
-    onLogout: PropTypes.func.isRequired, // Ensure onLogout is a required function
+    onLogout: PropTypes.func.isRequired,
 };
 
 export default Navbar;
