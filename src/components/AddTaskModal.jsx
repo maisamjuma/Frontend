@@ -1,71 +1,54 @@
 import React, { useState, useEffect } from 'react';
 import './AddTaskModal.css';
-import PriorityModal from './PriorityModal';
-import CalendarModal from './CalendarModal/CalendarModal.jsx';
-import Calendar from "react-calendar";
+import Calendar from 'react-calendar';
+
+// Static list of users
+const usersList = [
+    { id: 1, name: 'John Doe' },
+    { id: 2, name: 'Jane Smith' },
+    { id: 3, name: 'Alice Johnson' },
+    { id: 4, name: 'Bob Brown' }
+];
 
 // eslint-disable-next-line react/prop-types
-const AddTaskModal = ({ isVisible, onClose, onAddTask }) => {
+const AddTaskModal = ({ isVisible, onClose, onAddTask, status }) => {
     const [taskName, setTaskName] = useState('');
     const [description, setDescription] = useState('');
-    const [dueDate, setDueDate] = useState(new Date()); // Initialize as Date object
-    const [priority, setPriority] = useState('medium'); // Default priority
-    const [isPriorityModalVisible, setPriorityModalVisible] = useState(false);
-    const [isDateModalVisible, setDateModalVisible] = useState(false);
+    const [dueDate, setDueDate] = useState(new Date());
+    const [priority, setPriority] = useState('medium');
+    const [assignedUser, setAssignedUser] = useState(''); // State for selected user
 
     useEffect(() => {
         if (isVisible) {
-            // Set default due date to today
-            setDueDate(new Date()); // Set as Date object
+            setDueDate(new Date());
         }
     }, [isVisible]);
 
     const handleAddTask = () => {
         if (taskName.trim()) {
             const adjustedDate = new Date(dueDate);
-            adjustedDate.setDate(adjustedDate.getDate() + 1); // Add one day
+            adjustedDate.setDate(adjustedDate.getDate() + 1);
 
             const newTask = {
                 name: taskName,
                 description,
-                dueDate: adjustedDate.toISOString().split('T')[0], // Adjusted date
-                priority
+                dueDate: adjustedDate.toISOString().split('T')[0],
+                priority,
+                // eslint-disable-next-line react/prop-types
+                status: status.title, // Use status title
+                // eslint-disable-next-line react/prop-types
+                assignedUser: status.id === 2 ? assignedUser : '' // Assign user only if status.id is 2
             };
-            onAddTask(newTask); // Pass newTask with the adjusted dueDate
+            onAddTask(newTask);
             setTaskName('');
             setDescription('');
             setDueDate(new Date());
-            setPriority('medium'); // Reset to default
+            setPriority('medium');
+            setAssignedUser(''); // Reset user selection
             onClose();
         } else {
             alert('Task name is required.');
         }
-    };
-
-
-
-    const handlePriorityChange = (selectedPriority) => {
-        setPriority(selectedPriority);
-    };
-
-    const handleDateChange = (selectedDate) => {
-        setDueDate(selectedDate); // Ensure selectedDate is a Date object
-    };
-
-    const handlePrioritySave = (selectedPriority) => {
-        const priorityToSave = selectedPriority || 'medium';
-        setPriority(priorityToSave);
-        setPriorityModalVisible(false);
-    };
-
-    const handleDateSave = (selectedDate) => {
-        setDueDate(selectedDate);
-        setDateModalVisible(false);
-    };
-
-    const handleDateRemove = () => {
-        setDueDate(new Date()); // Reset to today if date is removed
-        setDateModalVisible(false);
     };
 
     return (
@@ -93,18 +76,19 @@ const AddTaskModal = ({ isVisible, onClose, onAddTask }) => {
                         {/* Date Picker */}
                         <div className="date-options">
                             <Calendar
-                                onChange={handleDateChange}
+                                onChange={(date) => setDueDate(date)}
                                 value={dueDate}
                                 tileClassName={({ date }) =>
                                     dueDate && date.toDateString() === new Date(dueDate).toDateString() ? 'selected-date' : null
                                 }
                             />
                         </div>
+
                         {/* Priority Dropdown */}
                         <div className="priority-options">
                             <select
                                 value={priority}
-                                onChange={(e) => handlePriorityChange(e.target.value)}
+                                onChange={(e) => setPriority(e.target.value)}
                                 className="priority-dropdown"
                             >
                                 <option value="high">High</option>
@@ -113,25 +97,31 @@ const AddTaskModal = ({ isVisible, onClose, onAddTask }) => {
                             </select>
                         </div>
 
+                        {/* Conditionally Render User Dropdown */}
+                        {/* eslint-disable-next-line react/prop-types */}
+                        {status.id === 2 && (
+                            <div className="user-options">
+                                <select
+                                    value={assignedUser}
+                                    onChange={(e) => setAssignedUser(e.target.value)}
+                                    className="user-dropdown"
+                                >
+                                    <option value="">Assign to...</option>
+                                    {usersList.map(user => (
+                                        <option key={user.id} value={user.name}>
+                                            {user.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        )}
+
                         <div className="modal-actions">
                             <button onClick={handleAddTask} className="modal-add-button">Add Task</button>
                             <button onClick={onClose} className="modal-cancel-button">Cancel</button>
                         </div>
                     </div>
                 </div>
-            )}
-            {isPriorityModalVisible && (
-                <PriorityModal
-                    onClose={() => setPriorityModalVisible(false)}
-                    onSave={handlePrioritySave}
-                />
-            )}
-            {isDateModalVisible && (
-                <CalendarModal
-                    onClose={() => setDateModalVisible(false)}
-                    onSave={handleDateSave}
-                    onRemoveDate={handleDateRemove}
-                />
             )}
         </>
     );

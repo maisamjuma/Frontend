@@ -77,3 +77,15 @@
     background-color: #f0f0f0; /* Light gray background on hover */
     color: #0b0a0a;
 }
+/* Add to AddTaskModal.css */
+
+.assign-to-options {
+    margin-top: 10px;
+}
+
+.assign-to-dropdown {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
