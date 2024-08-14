@@ -48,7 +48,8 @@ const Sidebar = ({onMenuAction}) => {
     };
 
 
-    const handleCheckboxChange = (project) => {
+    const handleCheckboxChange = (e,project) => {
+        e.stopPropagation();
         setSelectedProjects(prevSelected =>
             prevSelected.includes(project.id)
                 ? prevSelected.filter(id => id !== project.id)
@@ -96,7 +97,17 @@ const Sidebar = ({onMenuAction}) => {
     const fetchProjects = async () => {
         try {
             const response = await ProjectService.getAllProjects();
-            setProjects(response.data);  // Assuming the response contains the project data in a `data` field
+
+            const projectsWithIds = response.data.map(project => ({
+                ...project,
+                id: project.projectId  // Assuming `id` is the correct field from the database
+            }));
+
+
+            // setProjects(response.data);  // Assuming the response contains the project data in a `data` field
+            setProjects(projectsWithIds);  // Assuming the response contains the project data in a `data` field
+
+
         } catch (error) {
             console.error("There was an error fetching the projects!", error);
         }
@@ -140,13 +151,13 @@ const Sidebar = ({onMenuAction}) => {
                 {isProjectsOpen && (
                     <ul className="dropdown-list">
                         {projects.map((project) => (
-                            <li key={project.id} onClick={() => handleProjectClick(project)}>
+                            <li key={project.projectId} onClick={() => handleProjectClick(project)}>
                                 {isDeleteMode && (
 
                                     <input
                                         type="checkbox"
                                         checked={selectedProjects.includes(project.id)}
-                                        onChange={() => handleCheckboxChange(project)}
+                                        onChange={(e) => handleCheckboxChange(e,project)}
                                     />
                                 )}
                                 {project.name}
