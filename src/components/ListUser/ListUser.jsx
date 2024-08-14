@@ -1,7 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import {useNavigate} from "react-router-dom";
-import {listUsers} from "../../Services/UserService.js";
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
+import { listUsers } from "../../Services/UserService.js";
 import RoleService from '../../Services/RoleService';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserPlus, faUserShield, faUserTag } from '@fortawesome/free-solid-svg-icons'; // Import specific icons
+import './ListUser.css';
 
 const ListUser = () => {
     const [users, setUsers] = useState([]);
@@ -33,59 +36,23 @@ const ListUser = () => {
         setNewRole(e.target.value);
     }
 
-    // function handleSaveRole() {
-    //     // Here you would typically make an API call to save the new role
-    //     console.log('New Role:', newRole);
-    //
-    //     // Reset state and hide the input
-    //     setNewRole('');
-    //     setIsAddingRole(false);
-    // }
-
-    // function handleSaveRole() {
-    //     // Ensure newRole is not empty before making the API call
-    //     if (!newRole) {
-    //         console.error('Role data is missing');
-    //         return;
-    //     }
-    //
-    //     // Call the createRole method from RoleService
-    //     RoleService.createRole(newRole)
-    //         .then(response => {
-    //             // Handle success
-    //             console.log('Role created successfully:', response.data);
-    //
-    //             // Reset state and hide the input
-    //             setNewRole(''); // Assuming newRole is a string, adjust if it's an object
-    //             setIsAddingRole(false);
-    //         })
-    //         .catch(error => {
-    //             // Handle error
-    //             console.error('Error creating role:', error);
-    //         });
-    // }
-
     const handleSaveRole = (e) => {
-        e.preventDefault(); // Prevent the default form submission
+        e.preventDefault();
 
-        if (newRole.trim()) { // Check if newRole is not empty
+        if (newRole.trim()) {
             const role = {
-                // Assuming newRole is an object with properties
-                roleName: newRole // Adjust this if newRole has a different structure
+                roleName: newRole
             };
 
             console.log('Role => ' + JSON.stringify(role));
 
             RoleService.createRole(role)
                 .then(() => {
-                    // Handle success
                     setSuccessMessage('Role added successfully!');
-                    // Reset state
                     setNewRole('');
-                    setIsAddingRole(true);
+                    setIsAddingRole(false);
                 })
                 .catch(error => {
-                    // Handle error
                     console.error('There was an error adding the role!', error);
                 });
         } else {
@@ -95,19 +62,34 @@ const ListUser = () => {
 
     return (
         <div className='listcontainer'>
-            <h2 className='text-bg-dark'>List of Users</h2>
-            <button type='button' className='btn btn-secondary mb-2' onClick={addNewUser}>Add User</button>
-            <button type='button' className='btn btn-secondary mb-2' onClick={assignTeamLeader}>Assign Team Leaders
-            </button>
+            {/* Video Element */}
+            <div className='video-container mb-3 d-flex align-items-center'>
+                <video width="25%" height="10%" autoPlay loop muted>
+                    <source src="/videos/H.mp4" type="video/mp4"/>
+                    Your browser does not support the video tag.
+                </video>
+                <div className='devtrack-text ms-3'>
+                    <span className="dev fw-bold" style={{fontSize: '24px'}}>Your one-stop platform for seamless </span>
+                    <span className="track fw-bold" style={{fontSize: '24px'}}> team collaboration and project management.</span>
+                </div>
 
-            <button
-                type='button'
-                className='btn btn-secondary mb-2'
-                onClick={() => setIsAddingRole(!isAddingRole)}
-            >
-                {isAddingRole ? 'Cancel' : 'Add new role'}
-            </button>
+            </div>
+            <div className="home-button-container">
+                <button type='button' className='btnAddUser' onClick={addNewUser}>
+                    <FontAwesomeIcon icon={faUserPlus} /> Add User
+                </button>
+                <button type='button' className='btnAssignTeamLeader' onClick={assignTeamLeader}>
+                    <FontAwesomeIcon icon={faUserShield} /> Assign Team Leaders
+                </button>
 
+                <button
+                    type='button'
+                    className='btnAddRole'
+                    onClick={() => setIsAddingRole(!isAddingRole)}
+                >
+                    <FontAwesomeIcon icon={faUserTag} /> {isAddingRole ? 'Cancel' : 'Add new role'}
+                </button>
+            </div>
             {isAddingRole && (
                 <div className='mb-2'>
                     <input
@@ -127,6 +109,7 @@ const ListUser = () => {
                     </button>
                 </div>
             )}
+            <h2 className='text-bg-dark'>List of Users</h2>
 
             <table className="table table-striped table-bordered">
                 <thead>
@@ -145,27 +128,25 @@ const ListUser = () => {
                 </tr>
                 </thead>
                 <tbody>
-                {
-                    users.map(user => (
-                        <tr key={user.id}>
-                            <td>{user.userId}</td>
-                            <td>{user.username}</td>
-                            <td>{user.email}</td>
-                            <td>{user.password}</td>
-                            <td>{user.firstName}</td>
-                            <td>{user.lastName}</td>
-                            <td>{user.role}</td>
-                            <td>{user.isAdmin ? 'Yes' : 'No'}</td>
-                            <td>{user.createdAt}</td>
-                            <td>{user.updatedAt}</td>
-                            <td>
-                                <button type='button' className='btn btn-info mb-2'
-                                        onClick={() => updateUser(user.userId)}>Update
-                                </button>
-                            </td>
-                        </tr>
-                    ))
-                }
+                {users.map(user => (
+                    <tr key={user.id}>
+                        <td>{user.userId}</td>
+                        <td>{user.username}</td>
+                        <td>{user.email}</td>
+                        <td>{user.password}</td>
+                        <td>{user.firstName}</td>
+                        <td>{user.lastName}</td>
+                        <td>{user.role}</td>
+                        <td>{user.isAdmin ? 'Yes' : 'No'}</td>
+                        <td>{user.createdAt}</td>
+                        <td>{user.updatedAt}</td>
+                        <td>
+                            <button type='button' className='btn btn-info mb-2'
+                                    onClick={() => updateUser(user.userId)}>Update
+                            </button>
+                        </td>
+                    </tr>
+                ))}
                 </tbody>
             </table>
         </div>
