@@ -10,7 +10,7 @@ const Projects = () => {
     const navigate = useNavigate();
     const { projectName } = useParams();
     const location = useLocation();
-    const { projectDescription } = location.state || {};
+    const { projectId,projectDescription } = location.state || {};
     const [projectMembers, setProjectMembers] = useState(
         JSON.parse(localStorage.getItem(projectName + '-members')) || []
     );
@@ -67,9 +67,12 @@ const Projects = () => {
         setShowDeletePopup(false);
     };
 
+    console.log('Project ID:', projectId);
+    console.log('Project Description:', projectDescription);
+
     const handleButtonClick = () => {
         navigate(`/main/workspace/${projectName}`, {
-            state: { projectDescription, projectMembers }
+            state: { projectDescription,projectId, projectMembers }
         });
     };
 
