@@ -10,7 +10,7 @@ import RoleService from '../Services/RoleService';  // Import RoleService to fet
 import BoardService from '../Services/BoardService';
 // import ProjectService from "../Services/ProjectService.js";  // Adjust import path as necessary
 
-const Workspace = ({ isVisible }) => {
+const Workspace = ({isVisible}) => {
     const [roles, setRoles] = useState([]);
     const [selected_roleId, setSelected_roleId] = useState(null);
     const [projectId, setProjectId] = useState(null); // Assuming you have a way to set the projectId
@@ -46,7 +46,7 @@ const Workspace = ({ isVisible }) => {
 
     useEffect(() => {
         // if (isVisible) {
-            fetchRoles();
+        fetchRoles();
         // }
     }, [isVisible]);
 
@@ -110,17 +110,17 @@ const Workspace = ({ isVisible }) => {
                 return;
             }
 
-                const newBoard = {
-                    // id: selectedRole, // Use the role ID as the board ID
-                    // name: roles.find(role => role.id === selectedRole)?.roleName || 'New Board'
-                    // name: roles.find(role => role.id === selected_roleId)?.roleName || 'New Board'
-                    // name: roles.find().roleName
-                    //name: means board name
-                    // name: ourRole ? ourRole.roleName : 'New Board'
-                    // name: selected_roleId || 'New Board'
-                    id: selected_roleId,
-                    name: role.roleName || 'New Board',
-                };
+            const newBoard = {
+                // id: selectedRole, // Use the role ID as the board ID
+                // name: roles.find(role => role.id === selectedRole)?.roleName || 'New Board'
+                // name: roles.find(role => role.id === selected_roleId)?.roleName || 'New Board'
+                // name: roles.find().roleName
+                //name: means board name
+                // name: ourRole ? ourRole.roleName : 'New Board'
+                // name: selected_roleId || 'New Board'
+                id: selected_roleId,
+                name: role.roleName || 'New Board',
+            };
 
             await BoardService.createBoard(projectId, selected_roleId);
             setBoards([...boards, newBoard]);
@@ -187,7 +187,7 @@ const Workspace = ({ isVisible }) => {
 
                             {/*<div className={`modal ${isVisible ? 'visible' : ''}`}>*/}
                             <p>Add Board</p>
-                            <select value={selected_roleId}  onChange={handleRoleChange}>
+                            <select value={selected_roleId} onChange={handleRoleChange}>
 
                                 <option value="">Select Role</option>
 

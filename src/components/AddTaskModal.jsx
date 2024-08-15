@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import './AddTaskModal.css';
 import Calendar from 'react-calendar';
 
 // Static list of users
 const usersList = [
-    { id: 1, name: 'John Doe' },
-    { id: 2, name: 'Jane Smith' },
-    { id: 3, name: 'Alice Johnson' },
-    { id: 4, name: 'Bob Brown' }
+    {id: 1, name: 'John Doe'},
+    {id: 2, name: 'Jane Smith'},
+    {id: 3, name: 'Alice Johnson'},
+    {id: 4, name: 'Bob Brown'}
 ];
 
 // eslint-disable-next-line react/prop-types
-const AddTaskModal = ({ isVisible, onClose, onAddTask, status }) => {
+const AddTaskModal = ({isVisible, onClose, onAddTask, status}) => {
     const [taskName, setTaskName] = useState('');
     const [description, setDescription] = useState('');
     const [dueDate, setDueDate] = useState(new Date());
@@ -78,7 +78,7 @@ const AddTaskModal = ({ isVisible, onClose, onAddTask, status }) => {
                             <Calendar
                                 onChange={(date) => setDueDate(date)}
                                 value={dueDate}
-                                tileClassName={({ date }) =>
+                                tileClassName={({date}) =>
                                     dueDate && date.toDateString() === new Date(dueDate).toDateString() ? 'selected-date' : null
                                 }
                             />

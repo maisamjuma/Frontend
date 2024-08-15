@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import './Layout.css';
 import Navbar from '../Navbar/Navbar.jsx';  // Import your Navbar component
 import Modal from '../Modal/Modal.jsx';    // Import your Modal component
 import Sidebar from '../Sidebar.jsx'; // Import the new Sidebar component
-import { useNavigate } from 'react-router-dom'; // Make sure to import useNavigate
+import {useNavigate} from 'react-router-dom'; // Make sure to import useNavigate
 
-const Layout = ({ children, onLogout }) => {
+const Layout = ({children, onLogout}) => {
     const [projects, setProjects] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
@@ -35,7 +35,7 @@ const Layout = ({ children, onLogout }) => {
 
     const addProject = (projectName) => {
         const newProjectId = `project${projects.length + 1}`; // Generate a new project ID
-        setProjects([...projects, { id: newProjectId, name: projectName }]);
+        setProjects([...projects, {id: newProjectId, name: projectName}]);
     };
 
     const handleMenuAction = (action, selectedProjects) => {
@@ -55,7 +55,7 @@ const Layout = ({ children, onLogout }) => {
 
     return (
         <div className="layout1">
-            <Navbar onLogout={onLogout} />  {/* Pass onLogout to Navbar */}
+            <Navbar onLogout={onLogout}/> {/* Pass onLogout to Navbar */}
             <div className="main">
                 <Sidebar
                     projects={projects}

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import './AddMember.css';
 
 // eslint-disable-next-line react/prop-types
-const AddMember = ({ availableMembers, onAddMember, onSave, onDeleteMode, isDeleting }) => {
+const AddMember = ({availableMembers, onAddMember, onSave, onDeleteMode, isDeleting}) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredMembers, setFilteredMembers] = useState(availableMembers);
     const [selectedMembers, setSelectedMembers] = useState([]);

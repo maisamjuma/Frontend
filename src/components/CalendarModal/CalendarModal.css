@@ -43,7 +43,7 @@
     background-color: white; /* White background for today */
     color: black; /* Text color for today's date */
     border: 3px solid #ffeb3b; /* Light yellow border for today's date */
-    border-radius: 4px;/* Rounded border for today's date */
+    border-radius: 4px; /* Rounded border for today's date */
 }
 
 /* Style the hover effect for the date boxes */
@@ -97,6 +97,7 @@
     border-radius: 4px; /* Rounded corners for the active label */
     padding: 5px; /* Padding inside the label */
 }
+
 /* Calendar modal actions styles */
 .calendar-modal-actions {
     display: flex;
@@ -135,6 +136,7 @@
 .calendar-modal-remove-button:hover {
     background-color: rgba(220, 99, 147, 0.99); /* Darker red on hover */
 }
+
 /* Existing CSS remains the same */
 
 .selected-date {

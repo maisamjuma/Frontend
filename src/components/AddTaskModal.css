@@ -19,6 +19,7 @@
     width: 300px;
     max-width: 100%;
 }
+
 .modal-task-input {
     width: 100%;
     padding: 8px;
@@ -73,10 +74,12 @@
     background-color: #f0f0f0; /* Light gray background on hover */
     color: #0b0a0a;
 }
+
 .modal-cancel-button:hover {
     background-color: #f0f0f0; /* Light gray background on hover */
     color: #0b0a0a;
 }
+
 /* Add to AddTaskModal.css */
 
 .assign-to-options {

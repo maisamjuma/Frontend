@@ -1,8 +1,8 @@
 // TaskModal.jsx
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import './TaskModal.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {
     faUser,
     faCalendar,
@@ -15,7 +15,7 @@ import MoveModal from "./MoveModal/MoveModal.jsx";
 import CalendarModal from "./CalendarModal/CalendarModal.jsx";
 import DetailsModal from "./DetailsModal/DetailsModal.jsx"; // Import your new PriorityModal
 
-const TaskModal = ({ task, onClose, onDelete, boards, statuses, onSaveDate, onRemoveDate, onSavePriority }) => {
+const TaskModal = ({task, onClose, onDelete, boards, statuses, onSaveDate, onRemoveDate, onSavePriority}) => {
     const [isMoveModalOpen, setIsMoveModalOpen] = useState(false);
     const [isCalendarModalOpen, setIsCalendarModalOpen] = useState(false);
     const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
@@ -97,7 +97,7 @@ const TaskModal = ({ task, onClose, onDelete, boards, statuses, onSaveDate, onRe
             {isDetailsModalOpen && (
                 <DetailsModal
                     onClose={() => setIsDetailsModalOpen(false)}
-                    task={{ ...task, statusName }}
+                    task={{...task, statusName}}
                 />
             )}
             {isPriorityModalOpen && (

@@ -1,9 +1,9 @@
 // PriorityModal.jsx
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import './PriorityModal.css';
 
-const PriorityModal = ({ onClose, onSave }) => {
+const PriorityModal = ({onClose, onSave}) => {
     const [selectedPriority, setSelectedPriority] = useState('');
 
     const handlePriorityChange = (priority) => {

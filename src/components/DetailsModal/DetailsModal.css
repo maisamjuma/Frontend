@@ -153,6 +153,7 @@
     gap: 10px;
     margin-top: 20px;
 }
+
 .table-controls {
     display: flex;
     justify-content: space-between;
@@ -162,6 +163,7 @@
 .add-attachment-btn:hover {
     background-color: darksalmon; /* Darker shade for hover effect */
 }
+
 .add-attachment-btn {
     background-color: #7f8fa6; /* Button color */
     border: none;

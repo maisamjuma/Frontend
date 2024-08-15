@@ -74,9 +74,11 @@
 .dropdown-list {
     padding-left: 20px;
 }
-.rotate-180{
-    rotate:180deg;
+
+.rotate-180 {
+    rotate: 180deg;
 }
+
 .icon-text-container {
     display: flex;
     align-items: center;

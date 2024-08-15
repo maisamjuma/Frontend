@@ -1,22 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import './DetailsModal.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faListAlt, faTasks, faTimes } from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faListAlt, faTasks, faTimes} from '@fortawesome/free-solid-svg-icons';
 
-const DetailsModal = ({ task, onClose }) => {
+const DetailsModal = ({task, onClose}) => {
     // Initialize tableData with default structure if task or task.tableData is not available
     const initialTableData = (task && task.tableData && Array.isArray(task.tableData) && task.tableData.length > 0)
         ? task.tableData
-        : [{ Description: task.description || "", Comments: "" }];
+        : [{Description: task.description || "", Comments: ""}];
 
-    const [descriptionData, setDescriptionData] = useState(initialTableData.map(row => ({ Description: row.Description })));
-    const [commentsData, setCommentsData] = useState(initialTableData.map(row => ({ Comments: row.Comments })));
+    const [descriptionData, setDescriptionData] = useState(initialTableData.map(row => ({Description: row.Description})));
+    const [commentsData, setCommentsData] = useState(initialTableData.map(row => ({Comments: row.Comments})));
 
     useEffect(() => {
         if (task && task.tableData && Array.isArray(task.tableData)) {
-            setDescriptionData(task.tableData.map(row => ({ Description: row.Description })));
-            setCommentsData(task.tableData.map(row => ({ Comments: row.Comments })));
+            setDescriptionData(task.tableData.map(row => ({Description: row.Description})));
+            setCommentsData(task.tableData.map(row => ({Comments: row.Comments})));
         }
     }, [task]);
 
@@ -42,7 +42,7 @@ const DetailsModal = ({ task, onClose }) => {
 
 
     const handleAddCommentsRow = () => {
-        setCommentsData([...commentsData, { Comments: '' }]);
+        setCommentsData([...commentsData, {Comments: ''}]);
     };
 
     const handleAddAttachment = () => {

@@ -9,5 +9,6 @@ export const request = (method, url, data) => {
         method: method,
         url: url,
         // headers: headers,
-        data: data});
+        data: data
+    });
 };

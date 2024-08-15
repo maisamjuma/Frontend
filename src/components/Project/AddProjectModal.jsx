@@ -1,9 +1,9 @@
 import './AddProjectModal.css'; // Create a CSS file for modal styles
-import React, { useState, useRef, useEffect } from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import ProjectService from '../../Services/ProjectService.js';
 import PropTypes from "prop-types";
 
-const AddProjectModal = ({ isVisible, onClose, onAddProject }) => {
+const AddProjectModal = ({isVisible, onClose, onAddProject}) => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
@@ -83,7 +83,9 @@ const AddProjectModal = ({ isVisible, onClose, onAddProject }) => {
                             />
                         </div>
                         <button type="button" className="btn btn-success" onClick={handleAddProject}>Save</button>
-                        <button type="button" className="btn btn-danger" onClick={onClose} style={{ marginLeft: "10px" }}>Cancel</button>
+                        <button type="button" className="btn btn-danger" onClick={onClose}
+                                style={{marginLeft: "10px"}}>Cancel
+                        </button>
                     </form>
                 </div>
             </div>

@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import { useParams } from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import TaskModal from './TaskModal';
 import './Boards.css';
-import { FaPen} from 'react-icons/fa';
+import {FaPen} from 'react-icons/fa';
 // import MoveModal from "./MoveModal.jsx";
 import PriorityModal from './PriorityModal';
 import AddTaskModal from "./AddTaskModal"; // Import the new component
@@ -12,7 +12,7 @@ import CalendarModal from "./CalendarModal/CalendarModal.jsx";
 
 
 const Boards = () => {
-    const { projectName, boardId } = useParams(); // Get projectName and boardId from the route parameters
+    const {projectName, boardId} = useParams(); // Get projectName and boardId from the route parameters
     const [statuses, setStatuses] = useState([]);
     const [currentStatusId, setCurrentStatusId] = useState(null);
     const [editingTaskId, setEditingTaskId] = useState(null);
@@ -30,22 +30,22 @@ const Boards = () => {
         const loadStatuses = () => {
             const savedStatuses = localStorage.getItem(`${projectName}_${boardId}_statuses`);
             const defaultStatuses = [
-                { id: 1, title: 'unassigned tasks', tasks: [], backgroundColor: '#f9f9f9' },
-                { id: 2, title: 'To Do', tasks: [], backgroundColor: '#f9f9f9' },
-                { id: 3, title: 'Doing', tasks: [], backgroundColor: '#f9f9f9' },
-                { id: 4, title: 'Ready to Review', tasks: [], backgroundColor: '#f9f9f9' },
-                { id: 5, title: 'Reviewing', tasks: [], backgroundColor: '#f9f9f9' },
-                { id: 6, title: 'Ready for QA', tasks: [], backgroundColor: '#f9f9f9' },
-                { id: 7, title: 'In Progress', tasks: [], backgroundColor: '#f9f9f9' },
-                { id: 8, title: 'QA Failed', tasks: [], backgroundColor: '#f9f9f9' },
-                { id: 9, title: 'QA Passed', tasks: [], backgroundColor: '#f9f9f9' }
+                {id: 1, title: 'unassigned tasks', tasks: [], backgroundColor: '#f9f9f9'},
+                {id: 2, title: 'To Do', tasks: [], backgroundColor: '#f9f9f9'},
+                {id: 3, title: 'Doing', tasks: [], backgroundColor: '#f9f9f9'},
+                {id: 4, title: 'Ready to Review', tasks: [], backgroundColor: '#f9f9f9'},
+                {id: 5, title: 'Reviewing', tasks: [], backgroundColor: '#f9f9f9'},
+                {id: 6, title: 'Ready for QA', tasks: [], backgroundColor: '#f9f9f9'},
+                {id: 7, title: 'In Progress', tasks: [], backgroundColor: '#f9f9f9'},
+                {id: 8, title: 'QA Failed', tasks: [], backgroundColor: '#f9f9f9'},
+                {id: 9, title: 'QA Passed', tasks: [], backgroundColor: '#f9f9f9'}
             ];
             const statuses = savedStatuses ? JSON.parse(savedStatuses) : defaultStatuses;
 
             if (boardId === 'qa') {
                 return statuses.filter(status => status.id > 5); // Show only statuses with id > 5
                 // eslint-disable-next-line no-dupe-else-if
-            }else if (boardId === 'frontend' || boardId === 'backend') {
+            } else if (boardId === 'frontend' || boardId === 'backend') {
                 return statuses.filter(status => status.id <= 5);
             }
             return statuses; // Show all statuses for other boards
@@ -86,7 +86,6 @@ const Boards = () => {
     };
 
 
-
     const handleDeleteTask = (taskId) => {
         const updatedStatuses = statuses.map(status => ({
             ...status,
@@ -103,7 +102,7 @@ const Boards = () => {
         const updatedStatuses = statuses.map(status => ({
             ...status,
             tasks: status.tasks.map(task =>
-                task.id === taskId ? { ...task, name: newName } : task
+                task.id === taskId ? {...task, name: newName} : task
             )
         }));
         setStatuses(updatedStatuses);
@@ -147,7 +146,7 @@ const Boards = () => {
             const updatedStatuses = statuses.map(status => ({
                 ...status,
                 tasks: status.tasks.map(task =>
-                    task.id === selectedTask.id ? { ...task, dueDate: adjustedDate.toISOString().split('T')[0] } : task
+                    task.id === selectedTask.id ? {...task, dueDate: adjustedDate.toISOString().split('T')[0]} : task
                 )
             }));
             setStatuses(updatedStatuses);
@@ -160,7 +159,7 @@ const Boards = () => {
             const updatedStatuses = statuses.map(status => ({
                 ...status,
                 tasks: status.tasks.map(task =>
-                    task.id === selectedTask.id ? { ...task, dueDate: null } : task
+                    task.id === selectedTask.id ? {...task, dueDate: null} : task
                 )
             }));
             setStatuses(updatedStatuses);
@@ -180,7 +179,7 @@ const Boards = () => {
             if (status.id === newStatusId) {
                 return {
                     ...status,
-                    tasks: [...status.tasks, { ...task, statusId: newStatusId }] // Update statusId here
+                    tasks: [...status.tasks, {...task, statusId: newStatusId}] // Update statusId here
                 };
             } else if (status.tasks.some(t => t.id === task.id)) {
                 return {
@@ -200,7 +199,7 @@ const Boards = () => {
             const updatedStatuses = statuses.map(status => ({
                 ...status,
                 tasks: status.tasks.map(task =>
-                    task.id === selectedTask.id ? { ...task, priority: newPriority } : task
+                    task.id === selectedTask.id ? {...task, priority: newPriority} : task
                 )
             }));
             setStatuses(updatedStatuses);

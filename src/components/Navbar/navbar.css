@@ -24,7 +24,7 @@
 .navbar .dropdown-menu {
     background-color: #f8f9fa;
     border: none; /* Remove border if you want a cleaner look */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Add subtle shadow */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
 }
 
 .navbar .btn-outline-success {
@@ -67,6 +67,7 @@ body {
 .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item:hover {
     background-color: #e9ecef; /* Adjust hover background color */
 }
+
 .track {
     color: darksalmon;
 }

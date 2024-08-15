@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './Members.css';
 
-const Members = ({ members, isDeleting, onCheckboxChange, selectedMembers }) => {
+const Members = ({members, isDeleting, onCheckboxChange, selectedMembers}) => {
     return (
         <div className="member-list">
             {members.map(member => (

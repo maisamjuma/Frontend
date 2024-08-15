@@ -1,7 +1,7 @@
-import React, { useContext, useState, useEffect } from "react";
-import { auth } from "../../firebase/firebase";
+import React, {useContext, useState, useEffect} from "react";
+import {auth} from "../../firebase/firebase";
 // import { GoogleAuthProvider } from "firebase/auth";
-import { onAuthStateChanged } from "firebase/auth";
+import {onAuthStateChanged} from "firebase/auth";
 
 const AuthContext = React.createContext();
 
@@ -10,7 +10,7 @@ export function useAuth() {//
     return useContext(AuthContext); //the return value is the result of calling useContext (by providing this AuthContext as an argument)
 }
 
-export function AuthProvider({ children }) {
+export function AuthProvider({children}) {
     const [currentUser, setCurrentUser] = useState(null);
     const [userLoggedIn, setUserLoggedIn] = useState(false);//if the user will be logged in then this will be set to True //otherwise this will be set to its default value which is false
     // const [isEmailUser, setIsEmailUser] = useState(false);
@@ -20,7 +20,7 @@ export function AuthProvider({ children }) {
 
 
     useEffect(() => {//we subscribe to the AuthStateChanged event so whenever the authentication state is going to be changed (such as if the user is logging in) (or if a user is logging out)-> then we want to subscribe to those event changes {by simply listening to them}
-                        //for that we need to import line 2
+        //for that we need to import line 2
         const unsubscribe = onAuthStateChanged(auth, initializeUser);//initializeUser is a call back function that will be called to handle when we receive any user info
         //this unsubscribe can be used for cleanup (so when the Auth provider component is going to be unmounted then we can simply return this unsubscribe function)
         return unsubscribe;
@@ -31,7 +31,7 @@ export function AuthProvider({ children }) {
     */
     async function initializeUser(user) {
         if (user) {
-            setCurrentUser({ ...user });//by simply spreading out the users properties into a new object (so that we are not maintaining any references to this user argument)
+            setCurrentUser({...user});//by simply spreading out the users properties into a new object (so that we are not maintaining any references to this user argument)
 
             /*
             since we have set the Current User (by setCurrentUser function) -> then we can also be sure that the user has logged in, so we can simply call setUserLoggedIn(true);

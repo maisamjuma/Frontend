@@ -26,14 +26,12 @@
 }
 
 
-
 .main-content {
     flex: 1;
     padding: 20px;
     overflow-y: hidden;
     background-color: #ffffff;
 }
-
 
 
 .projects-container {

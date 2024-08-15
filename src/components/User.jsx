@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { createUser, getUser } from "../Services/UserService";
-import { useNavigate, useParams } from "react-router-dom";
+import React, {useEffect, useState} from 'react';
+import {createUser, getUser} from "../Services/UserService";
+import {useNavigate, useParams} from "react-router-dom";
 import "./User.css"
+
 const User = () => {
     const navigator = useNavigate();
-    const { id } = useParams();
+    const {id} = useParams();
 
     useEffect(() => {
         if (id) {
@@ -57,7 +58,7 @@ const User = () => {
     const saveUser = (e) => {
         e.preventDefault();
         if (validateForm()) {
-            const user = { username, email, password, firstName, lastName, role, isTeamLeader, createdAt, updatedAt };
+            const user = {username, email, password, firstName, lastName, role, isTeamLeader, createdAt, updatedAt};
             console.log(user);
             createUser(user).then((response) => {
                 console.log(response.data);
@@ -68,7 +69,7 @@ const User = () => {
 
     const validateForm = () => {
         let valid = true;
-        const errorsCopy = { ...errors };
+        const errorsCopy = {...errors};
 
         if (!username.trim()) {
             errorsCopy.username = 'Username is required';

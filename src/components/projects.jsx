@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate, useParams, useLocation } from 'react-router-dom';
+import React, {useState, useEffect, useRef} from 'react';
+import {useNavigate, useParams, useLocation} from 'react-router-dom';
 import './projects.css';
 import Members from "./Member/Members.jsx";
 import AddMember from "./AddMember.jsx";
@@ -8,9 +8,9 @@ import defaultProjectIcon from '../assets/projectIcon.png'; // Adjust the path t
 const Projects = () => {
     const [image, setImage] = useState(defaultProjectIcon); // State for the image source
     const navigate = useNavigate();
-    const { projectName } = useParams();
+    const {projectName} = useParams();
     const location = useLocation();
-    const { projectId,projectDescription } = location.state || {};
+    const {projectId, projectDescription} = location.state || {};
     const [projectMembers, setProjectMembers] = useState(
         JSON.parse(localStorage.getItem(projectName + '-members')) || []
     );
@@ -22,13 +22,13 @@ const Projects = () => {
     const containerRef = useRef(null);
 
     const availableMembers = [
-        { id: 1, name: 'Maisam', role: 'Frontend Developer' },
-        { id: 2, name: 'Osaid', role: 'Backend Developer' },
-        { id: 3, name: 'Rami', role: 'QA Engineer' },
-        { id: 4, name: 'Ali', role: 'Frontend Developer' },
-        { id: 5, name: 'Reema', role: 'Backend Developer' },
-        { id: 6, name: 'Mona', role: 'Frontend Developer' },
-        { id: 7, name: 'Daher', role: 'Backend Developer' },
+        {id: 1, name: 'Maisam', role: 'Frontend Developer'},
+        {id: 2, name: 'Osaid', role: 'Backend Developer'},
+        {id: 3, name: 'Rami', role: 'QA Engineer'},
+        {id: 4, name: 'Ali', role: 'Frontend Developer'},
+        {id: 5, name: 'Reema', role: 'Backend Developer'},
+        {id: 6, name: 'Mona', role: 'Frontend Developer'},
+        {id: 7, name: 'Daher', role: 'Backend Developer'},
     ];
 
     const handleAddMember = (newMembers) => {
@@ -72,7 +72,7 @@ const Projects = () => {
 
     const handleButtonClick = () => {
         navigate(`/main/workspace/${projectName}`, {
-            state: { projectDescription,projectId, projectMembers }
+            state: {projectDescription, projectId, projectMembers}
         });
     };
 

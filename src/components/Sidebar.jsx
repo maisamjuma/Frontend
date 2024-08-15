@@ -53,7 +53,7 @@ const Sidebar = ({onMenuAction}) => {
         }
     };
 
-    const handleCheckboxChange = (e,project) => {
+    const handleCheckboxChange = (e, project) => {
         e.stopPropagation();
         setSelectedProjects(prevSelected =>
             prevSelected.includes(project.id)
@@ -199,7 +199,7 @@ const Sidebar = ({onMenuAction}) => {
                                     <input
                                         type="checkbox"
                                         checked={selectedProjects.includes(project.id)}
-                                        onChange={(e) => handleCheckboxChange(e,project)}
+                                        onChange={(e) => handleCheckboxChange(e, project)}
                                     />
                                 )}
                                 {project.name}
@@ -207,7 +207,8 @@ const Sidebar = ({onMenuAction}) => {
                             </li>
                         ))}
                         {isDeleteMode && (
-                            <button onClick={handleDeleteSelected} disabled={selectedProjects.length === 0}>Delete Selected Projects</button>
+                            <button onClick={handleDeleteSelected} disabled={selectedProjects.length === 0}>Delete
+                                Selected Projects</button>
                         )}
                     </ul>
                 )}

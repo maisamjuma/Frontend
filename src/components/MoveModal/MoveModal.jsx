@@ -1,29 +1,29 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import './MoveModal.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faTimes} from '@fortawesome/free-solid-svg-icons';
 
-const MoveModal = ({ statuses = [], task = {}, onClose, onMoveTask }) => {
+const MoveModal = ({statuses = [], task = {}, onClose, onMoveTask}) => {
     const [selectedBoard, setSelectedBoard] = useState('');
     const [selectedStatus, setSelectedStatus] = useState('');
     const [selectedPriority, setSelectedPriority] = useState('');
 
     // Fixed board options
     const boards = [
-        { id: 'back', name: 'Back' },
-        { id: 'front', name: 'Front' },
-        { id: 'qa', name: 'QA' }
+        {id: 'back', name: 'Back'},
+        {id: 'front', name: 'Front'},
+        {id: 'qa', name: 'QA'}
     ];
 
     // Default statuses without boardId field
     const defaultStatuses = [
-        { id: 1, title: 'unassigned tasks' },
-        { id: 2, title: 'To Do' },
-        { id: 3, title: 'Doing' },
-        { id: 4, title: 'Ready to Review' },
-        { id: 5, title: 'Reviewing' },
-        { id: 6, title: 'Complete' }
+        {id: 1, title: 'unassigned tasks'},
+        {id: 2, title: 'To Do'},
+        {id: 3, title: 'Doing'},
+        {id: 4, title: 'Ready to Review'},
+        {id: 5, title: 'Reviewing'},
+        {id: 6, title: 'Complete'}
     ];
 
     // Combine default statuses with additional statuses

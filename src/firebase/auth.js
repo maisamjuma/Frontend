@@ -1,6 +1,6 @@
 //this will contain all the functions for authentication
 
-import { auth } from "./firebase";
+import {auth} from "./firebase";
 
 /*
 we will be adding the individual functions to:

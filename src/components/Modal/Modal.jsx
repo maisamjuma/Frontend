@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import './Modal.css'; // Add styling for the modal
 
-const Modal = ({ isOpen, onClose, addProject }) => {
+const Modal = ({isOpen, onClose, addProject}) => {
     const [projectName, setProjectName] = useState('');
 
     const handleSubmit = (e) => {

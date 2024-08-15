@@ -25,7 +25,7 @@ class BoardService {
         const url = `${BOARDS_API_BASE_URL}/${roleId}`;
 
         // Construct the body with only the projectId
-        return axios.post(url, { projectId });
+        return axios.post(url, {projectId});
     }
 
     // Update an existing board by its ID

@@ -21,9 +21,10 @@
     color: #dcdde1;
 }
 
-.move-title{
+.move-title {
     font-size: 20px;
 }
+
 .move-modal-close {
     position: absolute;
     top: 10px;
@@ -34,6 +35,7 @@
 .move-modal-content h2 {
     margin-top: 0;
 }
+
 .move-modal-buttons {
     display: flex;
     gap: 10px; /* Adjust space between buttons */

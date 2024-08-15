@@ -112,6 +112,7 @@ button:hover {
 .project-header button {
     flex-shrink: 0;
 }
+
 /* src/components/Projects.css */
 
 .delete-members-popup {
