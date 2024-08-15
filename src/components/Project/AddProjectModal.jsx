@@ -1,26 +1,32 @@
 import './AddProjectModal.css'; // Create a CSS file for modal styles
-import React, {useState} from 'react';
-// import {useNavigate} from 'react-router-dom';
+import React, { useState, useRef, useEffect } from 'react';
 import ProjectService from '../../Services/ProjectService.js';
 import PropTypes from "prop-types";
 
-
-
-const AddProjectModal = ({isVisible, onClose, onAddProject}) => {
-    // const navigate = useNavigate();
-
+const AddProjectModal = ({ isVisible, onClose, onAddProject }) => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
 
+    const modalRef = useRef(null);
 
-    // useEffect(() => {
-    //     ProjectService.getProjectById().then((res) => {
-    //         let project = res.data;
-    //         setName(project.name);
-    //         setDescription(project.description);
-    //     });
-    // }, []);
+    const handleClickOutside = (e) => {
+        if (modalRef.current && !modalRef.current.contains(e.target)) {
+            onClose();
+        }
+    };
+
+    useEffect(() => {
+        if (isVisible) {
+            document.addEventListener('mousedown', handleClickOutside);
+        } else {
+            document.removeEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [isVisible]);
 
     const handleAddProject = (e) => {
         e.preventDefault();
@@ -33,28 +39,17 @@ const AddProjectModal = ({isVisible, onClose, onAddProject}) => {
                 description,
             };
 
-            console.log('project => ' + JSON.stringify(project));
-
             ProjectService.createProject(JSON.stringify(project)).then(() => {
                 setSuccessMessage('Project added successfully!');
-                // setName("");
-                // setDescription("");
             }).catch(error => {
                 console.error('There was an error adding the project!', error);
             });
 
             setName('');
             setDescription('');
-            onClose(); // Close the modal after adding the project
-
+            // onClose(); // Remove this line to prevent modal from closing on Save
         }
-
-
     };
-
-    // const cancel = () => {
-    //     navigate('/projects');
-    // };
 
     const getTitle = () => {
         return <h3 className="text-center">Add Project</h3>;
@@ -63,17 +58,12 @@ const AddProjectModal = ({isVisible, onClose, onAddProject}) => {
     return (
         isVisible && (
             <div className="modal-overlay">
-                <br/>
-                <div className="modal-content">
-                    {/*<h2>Add New Project</h2>*/}
-
-
+                <div className="modal-content" ref={modalRef}>
                     {getTitle()}
-
                     {successMessage && <div className="alert alert-success">{successMessage}</div>}
                     <form>
                         <div className="form-group">
-                            <label> Name: </label>
+                            <label>Name:</label>
                             <input
                                 placeholder="Project Name"
                                 name="name"
@@ -83,7 +73,7 @@ const AddProjectModal = ({isVisible, onClose, onAddProject}) => {
                             />
                         </div>
                         <div className="form-group">
-                            <label> Description: </label>
+                            <label>Description:</label>
                             <textarea
                                 placeholder="Project Description"
                                 name="description"
@@ -92,16 +82,11 @@ const AddProjectModal = ({isVisible, onClose, onAddProject}) => {
                                 onChange={(e) => setDescription(e.target.value)}
                             />
                         </div>
-                        <h1></h1>
                         <button className="btn btn-success" onClick={handleAddProject}>Save</button>
-                        <button className="btn btn-danger" onClick={onClose}
-                            style={{marginLeft: "10px"}}>Cancel
-                    </button>
-                </form>
-
-
+                        <button className="btn btn-danger" onClick={onClose} style={{ marginLeft: "10px" }}>Cancel</button>
+                    </form>
+                </div>
             </div>
-</div>
         )
     );
 };
@@ -109,7 +94,7 @@ const AddProjectModal = ({isVisible, onClose, onAddProject}) => {
 AddProjectModal.propTypes = {
     isVisible: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
-    onAddProject: PropTypes.func.isRequired
+    onAddProject: PropTypes.func.isRequired,
 };
 
 export default AddProjectModal;
