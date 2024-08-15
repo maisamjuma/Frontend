@@ -53,7 +53,6 @@ const Sidebar = ({onMenuAction}) => {
         }
     };
 
-
     const handleCheckboxChange = (e,project) => {
         e.stopPropagation();
         setSelectedProjects(prevSelected =>
@@ -63,11 +62,8 @@ const Sidebar = ({onMenuAction}) => {
         );
     };
 
-
-
-
     const handleCloseModal = () => {
-        setIsAddProjectModalVisible(true);
+        setIsAddProjectModalVisible(false);
     };
 
     const handleClickOutside = (event) => {
