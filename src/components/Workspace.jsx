@@ -10,8 +10,7 @@ import RoleService from '../Services/RoleService';  // Import RoleService to fet
 import BoardService from '../Services/BoardService';
 // import ProjectService from "../Services/ProjectService.js";  // Adjust import path as necessary
 
-const Workspace = ({isVisible, onClose}) => {
-
+const Workspace = ({ isVisible }) => {
     const [roles, setRoles] = useState([]);
     const [selected_roleId, setSelected_roleId] = useState(null);
     const [projectId, setProjectId] = useState(null); // Assuming you have a way to set the projectId
@@ -35,7 +34,7 @@ const Workspace = ({isVisible, onClose}) => {
             setProjectId(projectId);
             setProjectDescription(projectDescription);
         }
-        fetchRoles();
+        // fetchRoles();
     }, [location.state]);
 
 
@@ -46,16 +45,22 @@ const Workspace = ({isVisible, onClose}) => {
 
 
     useEffect(() => {
-        if (isVisible) {
+        // if (isVisible) {
             fetchRoles();
-        }
+        // }
     }, [isVisible]);
 
     const fetchRoles = async () => {
         try {
             const response = await RoleService.getAllRoles();
+            console.log('API Response:', response);
+
+            if (!Array.isArray(response.data)) {
+                throw new Error('Response data is not an array');
+            }
+
             const rolesWithIds = response.data.map(role => ({
-                ...role,
+                // ...role,
                 id: role.roleId,  // Assuming `id` is the correct field from the database
 
                 roleName: role.roleName  // Use roleName as `roleName`
@@ -92,14 +97,18 @@ const Workspace = ({isVisible, onClose}) => {
     // };
 
 
-    const handleAddBoard = () => {
+    const handleAddBoard = async () => {
         if (!projectId || !selected_roleId) return;
 
-        BoardService.createBoard(projectId, selected_roleId)
-            .then(() => {
-                // Notify parent component about the new board
-                // onAddBoard({projectId, roleId: selectedRole});
-                const ourRole = roles.find(role => role.roleId === selected_roleId);
+        try {
+            // Fetch the role details by ID
+            const response = await RoleService.getRoleById(selected_roleId);
+            const role = response.data;
+
+            if (!role) {
+                console.error('Role not found for the selected role ID:', selected_roleId);
+                return;
+            }
 
                 const newBoard = {
                     // id: selectedRole, // Use the role ID as the board ID
@@ -107,26 +116,25 @@ const Workspace = ({isVisible, onClose}) => {
                     // name: roles.find(role => role.id === selected_roleId)?.roleName || 'New Board'
                     // name: roles.find().roleName
                     //name: means board name
-                    name: ourRole ? ourRole.roleName : 'New Board'
+                    // name: ourRole ? ourRole.roleName : 'New Board'
                     // name: selected_roleId || 'New Board'
+                    id: selected_roleId,
+                    name: role.roleName || 'New Board',
                 };
 
-                setBoards([...boards, newBoard]);
+            await BoardService.createBoard(projectId, selected_roleId);
+            setBoards([...boards, newBoard]);
 
-                setSelected_roleId(null);
-                // setProjectId(null);
-                setIsDropdownOpen(false);
-                onClose();
-            })
-            .catch(error => {
-                // setIsDropdownOpen(false);
+            setSelected_roleId(null);
 
-                console.error('Error creating board:', error);
-            });
+            setIsDropdownOpen(false);
+        } catch (error) {
+            console.error('Error creating board:', error);
+        }
     };
     const handleCloseDropdown = () => {
         setIsDropdownOpen(false); // Close the dropdown
-        onClose(); // Perform any additional cleanup if necessary
+        // onClose(); // Perform any additional cleanup if necessary
     };
 
     const handleDeleteBoard = (boardId) => {
@@ -211,7 +219,7 @@ const Workspace = ({isVisible, onClose}) => {
 // Add PropTypes validation
 Workspace.propTypes = {
     isVisible: PropTypes.bool.isRequired,
-    onClose: PropTypes.func.isRequired,
+    // onClose: PropTypes.func.isRequired,
     // onAddBoard: PropTypes.func.isRequired,
 };
 export default Workspace;
