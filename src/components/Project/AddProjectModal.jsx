@@ -82,8 +82,8 @@ const AddProjectModal = ({ isVisible, onClose, onAddProject }) => {
                                 onChange={(e) => setDescription(e.target.value)}
                             />
                         </div>
-                        <button className="btn btn-success" onClick={handleAddProject}>Save</button>
-                        <button className="btn btn-danger" onClick={onClose} style={{ marginLeft: "10px" }}>Cancel</button>
+                        <button type="button" className="btn btn-success" onClick={handleAddProject}>Save</button>
+                        <button type="button" className="btn btn-danger" onClick={onClose} style={{ marginLeft: "10px" }}>Cancel</button>
                     </form>
                 </div>
             </div>
