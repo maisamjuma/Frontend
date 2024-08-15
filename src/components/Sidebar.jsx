@@ -45,7 +45,10 @@ const Sidebar = ({onMenuAction}) => {
     const handleProjectClick = (project) => {
         if (!isDeleteMode) {
             navigate(`/main/${project.name}`, {
-                state: {projectDescription: project.description}
+                state: {
+                    projectDescription: project.description,
+                    projectId: project.id
+                }
             });
         }
     };
@@ -64,7 +67,7 @@ const Sidebar = ({onMenuAction}) => {
 
 
     const handleCloseModal = () => {
-        setIsAddProjectModalVisible(false);
+        setIsAddProjectModalVisible(true);
     };
 
     const handleClickOutside = (event) => {

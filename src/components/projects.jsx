@@ -195,6 +195,10 @@ const Projects = () => {
                         </>
                     )}
                 </div>
+                <p>{projectDescription}</p> {/* Display project description */}
+                <button className="btn btn-primary" onClick={handleButtonClick}>Go to Workspace</button>
+
+
             </div>
 
             {showDeletePopup && (
