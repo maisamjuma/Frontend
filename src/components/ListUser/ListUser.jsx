@@ -3,16 +3,18 @@ import { useNavigate } from "react-router-dom";
 import { listUsers } from "../../Services/UserService.js";
 import RoleService from '../../Services/RoleService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserPlus, faUserShield, faUserTag } from '@fortawesome/free-solid-svg-icons'; // Import specific icons
+import { faUserPlus, faUserShield, faUserTag } from '@fortawesome/free-solid-svg-icons';
 import './ListUser.css';
 
 const ListUser = () => {
     const [users, setUsers] = useState([]);
     const [isAddingRole, setIsAddingRole] = useState(false);
+    const [isAssigning, setIsAssigningTeamLeader] = useState(false);
     const [newRole, setNewRole] = useState('');
-    const navigator = useNavigate();
-
+    const [newTeamLeader, setNewTeamLeader] = useState('');
+    const [selectedRole, setSelectedRole] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
+    const navigator = useNavigate();
 
     useEffect(() => {
         listUsers().then((response) => {
@@ -24,17 +26,24 @@ const ListUser = () => {
         navigator('/main/User');
     }
 
-    function assignTeamLeader() {
-        // navigator('/main/Project/CreateProjectComp');
-    }
-
     function updateUser(id) {
         navigator(`/edit-user/${id}`);
     }
 
     function handleRoleChange(e) {
-        setNewRole(e.target.value);
+        setSelectedRole(e.target.value);
     }
+
+    function handleTeamLeaderChange(e) {
+        setNewTeamLeader(e.target.value);
+    }
+
+    const handleSaveTeamLeader = () => {
+        console.log('Assigning team leader...');
+        console.log('Selected Role:', selectedRole);
+        console.log('Selected Member:', newTeamLeader);
+        // Implement your save logic here, e.g., making an API call to assign the role to the user.
+    };
 
     const handleSaveRole = (e) => {
         e.preventDefault();
@@ -44,13 +53,11 @@ const ListUser = () => {
                 roleName: newRole
             };
 
-            console.log('Role => ' + JSON.stringify(role));
-
             RoleService.createRole(role)
                 .then(() => {
                     setSuccessMessage('Role added successfully!');
                     setNewRole('');
-                    setIsAddingRole(false);
+                    // Optionally close the role addition form
                 })
                 .catch(error => {
                     console.error('There was an error adding the role!', error);
@@ -60,9 +67,25 @@ const ListUser = () => {
         }
     };
 
+    const handleToggleAddRole = () => {
+        if (!isAddingRole) {
+            // Clear success message when opening the add role form
+            setSuccessMessage('');
+        }
+        setIsAddingRole(!isAddingRole);
+    };
+
+    const handleToggleAssignTeamLeader = () => {
+        if (isAssigning) {
+            setNewTeamLeader('');
+            setSelectedRole('');
+            // Optionally clear any relevant success message if needed
+        }
+        setIsAssigningTeamLeader(!isAssigning);
+    };
+
     return (
         <div className='listcontainer'>
-            {/* Video Element */}
             <div className='video-container mb-3 d-flex align-items-center'>
                 <video width="25%" height="10%" autoPlay loop muted>
                     <source src="/videos/H.mp4" type="video/mp4"/>
@@ -72,30 +95,68 @@ const ListUser = () => {
                     <span className="dev fw-bold" style={{fontSize: '24px'}}>Your one-stop platform for seamless </span>
                     <span className="track fw-bold" style={{fontSize: '24px'}}> team collaboration and project management.</span>
                 </div>
-
             </div>
             <div className="home-button-container">
                 <button type='button' className='btnAddUser' onClick={addNewUser}>
-                    <FontAwesomeIcon icon={faUserPlus} /> Add User
+                    <FontAwesomeIcon icon={faUserPlus}/> Add User
                 </button>
-                <button type='button' className='btnAssignTeamLeader' onClick={assignTeamLeader}>
-                    <FontAwesomeIcon icon={faUserShield} /> Assign Team Leaders
+                <button
+                    type='button'
+                    className='btnAssignTeamLeader'
+                    onClick={handleToggleAssignTeamLeader}
+                >
+                    <FontAwesomeIcon icon={faUserShield}/>
+                    {isAssigning ? 'Cancel' : 'Assign Team Leaders'}
                 </button>
+                {isAssigning && (
+                    <div className='Assigncontent'>
+                        <select
+                            value={selectedRole}
+                            onChange={handleRoleChange}
+                            className='form-control mb-2'
+                        >
+                            <option value="">Select Role</option>
+                            <option value="Backend">Backend</option>
+                            <option value="Frontend">Frontend</option>
+                            <option value="QA">QA</option>
+                        </select>
 
+                        <select
+                            value={newTeamLeader}
+                            onChange={handleTeamLeaderChange}
+                            className='form-control mb-2'
+                        >
+                            <option value="">Select Member</option>
+                            {users.map(user => (
+                                <option key={user.userId} value={user.userId}>
+                                    {user.firstName} {user.lastName}
+                                </option>
+                            ))}
+                        </select>
+
+                        <button
+                            type='button'
+                            className='btn btn-primary'
+                            onClick={handleSaveTeamLeader}
+                        >
+                            Save Team Leader
+                        </button>
+                    </div>
+                )}
                 <button
                     type='button'
                     className='btnAddRole'
-                    onClick={() => setIsAddingRole(!isAddingRole)}
+                    onClick={handleToggleAddRole}
                 >
-                    <FontAwesomeIcon icon={faUserTag} /> {isAddingRole ? 'Cancel' : 'Add new role'}
+                    <FontAwesomeIcon icon={faUserTag}/> {isAddingRole ? 'Cancel' : 'Add new role'}
                 </button>
             </div>
             {isAddingRole && (
-                <div className='mb-2'>
+                <div className='rolecontent'>
                     <input
                         type='text'
                         value={newRole}
-                        onChange={handleRoleChange}
+                        onChange={e => setNewRole(e.target.value)}
                         placeholder='Enter new role'
                         className='form-control mb-2'
                     />
