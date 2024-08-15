@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import { useParams } from 'react-router-dom';
 import TaskModal from './TaskModal';
 import './Boards.css';
@@ -23,6 +23,8 @@ const Boards = () => {
     const [showPriorityModal, setShowPriorityModal] = useState(false);
     const [showAddTaskModal, setShowAddTaskModal] = useState(false);
     const [showcalenderModal, setcalendarModal] = useState(false);
+
+
     // Load statuses from localStorage or use default values
     useEffect(() => {
         const loadStatuses = () => {
@@ -92,7 +94,6 @@ const Boards = () => {
         }));
         setStatuses(updatedStatuses);
     };
-
 
     const handleDoubleClick = (taskId) => {
         setEditingTaskId(taskId);
