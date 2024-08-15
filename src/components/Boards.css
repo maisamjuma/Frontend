@@ -4,7 +4,7 @@ html, body {
     padding: 0;
     height: 100%; /* Ensure body takes full height of viewport */
     background-color: #ffffff; /* Set background color to white */
-    overflow-y: hidden; /* Allow horizontal scrolling */
+    overflow-y: hidden;
     overflow-x: auto;
 }
 
@@ -21,13 +21,11 @@ html, body {
 
 
 .backend-container {
-    padding: 0;
-    margin: 0;
-    margin-right: 200px; /* Adjust this value to move the content to the left */
     width: auto;
     min-height: 100vh;
     background-color: #ffffff;
     box-sizing: border-box;
+    overflow-x: auto; /* Prevent horizontal scroll */
 }
 
 /* Status boxes styling */
