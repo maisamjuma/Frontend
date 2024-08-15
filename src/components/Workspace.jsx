@@ -124,7 +124,10 @@ const Workspace = ({isVisible, onClose}) => {
                 console.error('Error creating board:', error);
             });
     };
-
+    const handleCloseDropdown = () => {
+        setIsDropdownOpen(false); // Close the dropdown
+        onClose(); // Perform any additional cleanup if necessary
+    };
 
     const handleDeleteBoard = (boardId) => {
         setBoards(boards.filter((board) => board.id !== boardId)); // Remove the board
@@ -175,8 +178,8 @@ const Workspace = ({isVisible, onClose}) => {
                             {/*<button onClick={handleAddBoard}>Add</button>*/}
 
                             {/*<div className={`modal ${isVisible ? 'visible' : ''}`}>*/}
-                            <h2>Add Board</h2>
-                            <select value={selected_roleId} onChange={handleRoleChange}>
+                            <p>Add Board</p>
+                            <select value={selected_roleId}  onChange={handleRoleChange}>
 
                                 <option value="">Select Role</option>
 
@@ -190,7 +193,7 @@ const Workspace = ({isVisible, onClose}) => {
 
                             </select>
                             <button onClick={handleAddBoard}>Add</button>
-                            <button onClick={onClose}>Cancel</button>
+                            <button onClick={handleCloseDropdown}>Cancel</button>
                             {/*</div>*/}
 
                         </div>
