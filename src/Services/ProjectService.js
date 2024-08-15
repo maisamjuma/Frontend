@@ -14,13 +14,29 @@ class ProjectService {
         return axios.get(`${PROJECTS_API_BASE_URL}/${projectId}`);
     }
 
-    // Create a new project
-    createProject(project) {
-        return axios.post(PROJECTS_API_BASE_URL, project, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
+    // // Create a new project
+    // createProject(project) {
+    //     return axios.post(PROJECTS_API_BASE_URL, project, {
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         }
+    //     });
+    // }
+
+    async createProject(project) {
+        try {
+            const response = await axios.post(PROJECTS_API_BASE_URL, project, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            // Return the full response
+            return response.data;
+        } catch (error) {
+            console.error('Error creating project', error);
+            throw error;
+        }
     }
 
     // Update an existing project by its ID

@@ -44,12 +44,19 @@ const Sidebar = ({onMenuAction}) => {
 
     const handleProjectClick = (project) => {
         if (!isDeleteMode) {
+            console.log('china number one ID::', project.id);
+            project.projectId=project.id;
+            console.log('china number one ID::', project.projectId);
+
+            console.log('china number one description::', project.description);
             navigate(`/main/${project.name}`, {
+
                 state: {
                     projectDescription: project.description,
-                    projectId: project.id
+                    projectId: project.projectId
                 }
             });
+
         }
     };
 
@@ -155,9 +162,9 @@ const Sidebar = ({onMenuAction}) => {
     // };
 //////////////////////Delete/////////////////////////////////////////////////
 
-    const handleAddProject = (projectName, projectDescription) => {
+    const handleAddProject = (projectId,projectName, projectDescription) => {
         // const newProject = {id: Date.now().toString(), name: projectName, description: projectDescription};
-        const newProject = {id: Date.now().toString(), name: projectName, description: projectDescription};
+        const newProject = {id: projectId, name: projectName, description: projectDescription};
 
 
         setProjects([...projects, newProject]);

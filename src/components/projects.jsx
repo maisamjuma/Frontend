@@ -71,6 +71,7 @@ const Projects = () => {
     console.log('Project Description:', projectDescription);
 
     const handleButtonClick = () => {
+        console.log('Project ID before going to workspace:', projectId);
         navigate(`/main/workspace/${projectName}`, {
             state: {projectDescription, projectId, projectMembers}
         });

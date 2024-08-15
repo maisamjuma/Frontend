@@ -28,10 +28,32 @@ const AddProjectModal = ({isVisible, onClose, onAddProject}) => {
         };
     }, [isVisible]);
 
+    // const handleAddProject = (e) => {
+    //     e.preventDefault();
+    //
+    //     onAddProject(name, description);
+    //
+    //     if (name.trim() && description.trim()) {
+    //         const project = {
+    //             name,
+    //             description,
+    //         };
+    //
+    //         ProjectService.createProject(JSON.stringify(project)).then(() => {
+    //             setSuccessMessage('Project added successfully!');
+    //         }).catch(error => {
+    //             console.error('There was an error adding the project!', error);
+    //         });
+    //
+    //         setName('');
+    //         setDescription('');
+    //         // onClose(); // Remove this line to prevent modal from closing on Save
+    //     }
+    // };
+
     const handleAddProject = (e) => {
         e.preventDefault();
 
-        onAddProject(name, description);
 
         if (name.trim() && description.trim()) {
             const project = {
@@ -39,17 +61,31 @@ const AddProjectModal = ({isVisible, onClose, onAddProject}) => {
                 description,
             };
 
-            ProjectService.createProject(JSON.stringify(project)).then(() => {
-                setSuccessMessage('Project added successfully!');
-            }).catch(error => {
-                console.error('There was an error adding the project!', error);
-            });
+            ProjectService.createProject(project)
+                .then((response) => {
+                    // Extract fields from the response
+                    const {projectId, name, description, createdAt, updatedAt} = response;
 
-            setName('');
-            setDescription('');
+                    // Use the extracted variables as needed
+                    console.log('Project created:', {projectId, name, description, createdAt, updatedAt});
+
+                    onAddProject(projectId, name, description);
+
+                    // Set success message or perform other actions
+                    setSuccessMessage('Project added successfully!');
+
+                    // Clear input fields
+                    setName('');
+                    setDescription('');
+                })
+                .catch(error => {
+                    console.error('There was an error adding the project!', error);
+                });
+
             // onClose(); // Remove this line to prevent modal from closing on Save
         }
     };
+
 
     const getTitle = () => {
         return <h3 className="text-center">Add Project</h3>;

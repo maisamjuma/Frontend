@@ -34,8 +34,8 @@ const Layout = ({children, onLogout}) => {
     };
 
     const addProject = (projectName) => {
-        const newProjectId = `project${projects.length + 1}`; // Generate a new project ID
-        setProjects([...projects, {id: newProjectId, name: projectName}]);
+        // const newProjectId = `project${projects.length + 1}`; // Generate a new project ID
+        setProjects([...projects, {name: projectName}]);
     };
 
     const handleMenuAction = (action, selectedProjects) => {

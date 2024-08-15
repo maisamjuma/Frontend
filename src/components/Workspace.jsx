@@ -21,9 +21,9 @@ const Workspace = ({isVisible}) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     // const [newBoardName, setNewBoardName] = useState('');
     const [boards, setBoards] = useState([
-        {id: 'backend', name: 'Backend'},
-        {id: 'frontend', name: 'Frontend'},
-        {id: 'qa', name: 'QA'},
+        // {id: 'backend', name: 'Backend'},
+        // {id: 'frontend', name: 'Frontend'},
+        // {id: 'qa', name: 'QA'},
     ]);
 
     const location = useLocation();
@@ -50,6 +50,13 @@ const Workspace = ({isVisible}) => {
         // }
     }, [isVisible]);
 
+    useEffect(() => {
+        if (projectId) {
+            fetchBoards();
+        }
+    }, [projectId]);
+
+////////////////////////////////////////////////////////Fetches:
     const fetchRoles = async () => {
         try {
             const response = await RoleService.getAllRoles();
@@ -73,6 +80,18 @@ const Workspace = ({isVisible}) => {
         }
     };
 
+    const fetchBoards = async () => {
+        try {
+            const response = await BoardService.getBoardsByProject(projectId);
+            if (response.data && Array.isArray(response.data)) {
+                setBoards(response.data);
+            } else {
+                throw new Error('Unexpected response format');
+            }
+        } catch (error) {
+            console.error('Error fetching boards:', error);
+        }
+    };
 
     const handleRoleChange = (e) => {
         setSelected_roleId(e.target.value);
@@ -170,6 +189,9 @@ const Workspace = ({isVisible}) => {
                             </div>
                         </li>
                     ))}
+
+
+
                     <button onClick={handleAddClick} className="add-board-button">+</button>
                     {isDropdownOpen && (
                         <div className={`
