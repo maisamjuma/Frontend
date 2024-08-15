@@ -3,8 +3,10 @@ import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import './projects.css';
 import Members from "./Member/Members.jsx";
 import AddMember from "./AddMember.jsx";
+import defaultProjectIcon from '../assets/projectIcon.png'; // Adjust the path to your PNG file
 
 const Projects = () => {
+    const [image, setImage] = useState(defaultProjectIcon); // State for the image source
     const navigate = useNavigate();
     const { projectName } = useParams();
     const location = useLocation();
@@ -86,10 +88,29 @@ const Projects = () => {
         };
     }, []);
 
+    const handleImageClick = () => {
+        document.getElementById('fileInput').click(); // Trigger the file input click
+    };
+
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImage(reader.result); // Update the image state
+            };
+            reader.readAsDataURL(file); // Convert the file to a base64 URL
+        }
+    };
+
+    const handleDeleteClick = () => {
+        setImage(defaultProjectIcon); // Reset the image to the initial icon
+    };
+
     return (
         <div ref={containerRef}>
             <nav className="secondary-navbar">
-                <ul className="secondary-nav">
+                <ul className="secondary-nav d-flex flex-row gap-5">
                     <li>
                         <button
                             className={`secondary-nav-button ${!showMembersOnly ? 'active' : ''}`}
@@ -113,20 +134,39 @@ const Projects = () => {
                 </ul>
             </nav>
 
-            <div className="d-flex flex-row align-items-center gap-5">
-                <div className="projectscon">
-                    <div className="project-header">
-                        <div className="flex-row">
-                            <figure className="projectImg">
-                                <img src="/icons.png" alt="Project Logo" />
-                            </figure>
-                            <h1>{projectName}</h1>
-                        </div>
-                    </div>
-                    <p>{projectDescription}</p>
-                    <button className="secondary-nav-button" onClick={handleButtonClick}>Go to Workspace</button>
+            <div className="projectscon d-flex flex-row align-items-center gap-5 ">
+                <div className="flex-row align-items-center">
+                    <figure className="projectIcon">
+                        <img
+                            src={image}
+                            alt="Project Icon"
+                            width={100}
+                            height={100}
+                            onClick={handleImageClick}
+                            style={{cursor: 'pointer'}} // Change cursor to pointer
+                        />
+                        {/* Conditionally render the delete button */}
+                        {image !== defaultProjectIcon && (
+                            <button
+                                className="delete-image-button"
+                                onClick={handleDeleteClick}
+                            >
+                                &times; {/* × character for delete */}
+                            </button>
+                        )}
+                    </figure>
+                    <input
+                        type="file"
+                        id="fileInput"
+                        style={{display: 'none'}} // Hide the file input
+                        accept="image/*" // Accept only image files
+                        onChange={handleFileChange}
+                    />
+                    <h1>{projectName}</h1>
                 </div>
-                <div className="d-flex flex-row gap-5 overflow-x-hidden">
+
+                {/* Render the Members component next to the project name and icon */}
+                <div className="flex-row align-items-center">
                     {showMembersOnly ? (
                         <Members
                             members={projectMembers}

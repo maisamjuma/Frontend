@@ -12,36 +12,30 @@ const CalendarModal = ({ onClose, onSave, onRemoveDate }) => {
 
     const handleSave = () => {
         if (selectedDate) {
-            onSave(selectedDate);
-            onClose();
+            onSave(selectedDate); // Pass the selected date to parent
+            onClose(); // Close modal after saving
         }
     };
 
     const handleRemove = () => {
-        onRemoveDate();
-        onClose();
+        onRemoveDate(); // Notify parent to remove date
+        onClose(); // Close modal after removing
     };
 
     return (
         <div className="calendar-modal-overlay" onClick={(e) => e.target.classList.contains('calendar-modal-overlay') && onClose()}>
             <div className="calendar-modal-content">
-                <button className="calendar-modal-close" onClick={onClose}>
-                    ×
-                </button>
                 <Calendar
                     onChange={handleDateChange}
-                    value={selectedDate || new Date()}
+                    value={selectedDate}
                     tileClassName={({ date }) =>
-                        selectedDate && date.toDateString() === selectedDate.toDateString() ? 'selected-date' : null
+                        selectedDate && date.toDateString() === new Date(selectedDate).toDateString() ? 'selected-date' : null
                     }
                 />
                 <div className="calendar-modal-actions">
-                    <button onClick={handleSave} className="calendar-modal-save-button">
-                        Save
-                    </button>
-                    <button onClick={handleRemove} className="calendar-modal-remove-button">
-                        Remove
-                    </button>
+                    <button onClick={handleSave} className="calendar-modal-save-button">Save</button>
+                    <button onClick={handleRemove} className="calendar-modal-remove-button">Remove Date</button>
+                    <button onClick={onClose} className="calendar-modal-cancel-button">Cancel</button>
                 </div>
             </div>
         </div>
@@ -51,7 +45,7 @@ const CalendarModal = ({ onClose, onSave, onRemoveDate }) => {
 CalendarModal.propTypes = {
     onClose: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired,
-    onRemoveDate: PropTypes.func.isRequired,
+    onRemoveDate: PropTypes.func.isRequired
 };
 
 export default CalendarModal;

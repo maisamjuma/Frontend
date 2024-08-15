@@ -7,7 +7,9 @@ import { FaPen} from 'react-icons/fa';
 import PriorityModal from './PriorityModal';
 import AddTaskModal from "./AddTaskModal"; // Import the new component
 // import PriorityModal from './PriorityModal';
-import MoveModal from "./MoveModal/MoveModal.jsx"; // Import the new component
+import MoveModal from "./MoveModal/MoveModal.jsx";
+import CalendarModal from "./CalendarModal/CalendarModal.jsx";
+
 
 const Boards = () => {
     const { projectName, boardId } = useParams(); // Get projectName and boardId from the route parameters
@@ -20,22 +22,36 @@ const Boards = () => {
     const [showMoveModal, setShowMoveModal] = useState(false);
     const [showPriorityModal, setShowPriorityModal] = useState(false);
     const [showAddTaskModal, setShowAddTaskModal] = useState(false);
+    const [showcalenderModal, setcalendarModal] = useState(false);
     // Load statuses from localStorage or use default values
     useEffect(() => {
         const loadStatuses = () => {
             const savedStatuses = localStorage.getItem(`${projectName}_${boardId}_statuses`);
-            return savedStatuses ? JSON.parse(savedStatuses) : [
+            const defaultStatuses = [
                 { id: 1, title: 'unassigned tasks', tasks: [], backgroundColor: '#f9f9f9' },
                 { id: 2, title: 'To Do', tasks: [], backgroundColor: '#f9f9f9' },
                 { id: 3, title: 'Doing', tasks: [], backgroundColor: '#f9f9f9' },
                 { id: 4, title: 'Ready to Review', tasks: [], backgroundColor: '#f9f9f9' },
                 { id: 5, title: 'Reviewing', tasks: [], backgroundColor: '#f9f9f9' },
-                { id: 6, title: 'Complete', tasks: [], backgroundColor: '#f9f9f9' }
+                { id: 6, title: 'Ready for QA', tasks: [], backgroundColor: '#f9f9f9' },
+                { id: 7, title: 'In Progress', tasks: [], backgroundColor: '#f9f9f9' },
+                { id: 8, title: 'QA Failed', tasks: [], backgroundColor: '#f9f9f9' },
+                { id: 9, title: 'QA Passed', tasks: [], backgroundColor: '#f9f9f9' }
             ];
+            const statuses = savedStatuses ? JSON.parse(savedStatuses) : defaultStatuses;
+
+            if (boardId === 'qa') {
+                return statuses.filter(status => status.id > 5); // Show only statuses with id > 5
+                // eslint-disable-next-line no-dupe-else-if
+            }else if (boardId === 'frontend' || boardId === 'backend') {
+                return statuses.filter(status => status.id <= 5);
+            }
+            return statuses; // Show all statuses for other boards
         };
 
         setStatuses(loadStatuses());
     }, [projectName, boardId]);
+
 
     // Save statuses to localStorage whenever they change
     useEffect(() => {
@@ -49,7 +65,8 @@ const Boards = () => {
                 const newTask = {
                     id: `${projectName}_${boardId}_${statusId}_${status.tasks.length + 1}`,
                     ...task,
-                    statusId: statusId
+                    statusId: statusId,
+                    date: task.date || null, // Add date here if needed
                 };
                 const updatedStatuses = statuses.map(status => {
                     if (status.id === statusId) {
@@ -65,6 +82,7 @@ const Boards = () => {
             }
         }
     };
+
 
 
     const handleDeleteTask = (taskId) => {
@@ -122,10 +140,13 @@ const Boards = () => {
 
     const handleSaveDate = (date) => {
         if (selectedTask) {
+            const adjustedDate = new Date(date);
+            adjustedDate.setDate(adjustedDate.getDate() + 1); // Add one day
+
             const updatedStatuses = statuses.map(status => ({
                 ...status,
                 tasks: status.tasks.map(task =>
-                    task.id === selectedTask.id ? { ...task, date: date instanceof Date ? date : new Date(date) } : task
+                    task.id === selectedTask.id ? { ...task, dueDate: adjustedDate.toISOString().split('T')[0] } : task
                 )
             }));
             setStatuses(updatedStatuses);
@@ -138,7 +159,7 @@ const Boards = () => {
             const updatedStatuses = statuses.map(status => ({
                 ...status,
                 tasks: status.tasks.map(task =>
-                    task.id === selectedTask.id ? { ...task, date: null } : task
+                    task.id === selectedTask.id ? { ...task, dueDate: null } : task
                 )
             }));
             setStatuses(updatedStatuses);
@@ -190,6 +211,10 @@ const Boards = () => {
         setShowPriorityModal(false);
     };
 
+    const handleCloseCalenderModal = () => {
+        setcalendarModal(false);
+    };
+
 
     return (
         <div className={`backend-container ${boardId}`}>
@@ -197,7 +222,7 @@ const Boards = () => {
             <div className="backend-status-container">
                 {statuses.map((status) => (
                     <div key={status.id} className="backend-status-box"
-                         style={{ backgroundColor: status.backgroundColor }}>
+                         style={{backgroundColor: status.backgroundColor}}>
                         <div className="backend-status-header">
                             <span className="backend-status-title">{status.title}</span>
                             <span className="backend-status-menu"
@@ -239,22 +264,13 @@ const Boards = () => {
                                     <div className="task-priority-display priority-${task.priority}">
                                         {/* Display priority name and icon */}
                                         {task.priority === 'high' && (
-                                            <>
-
-                                                <span className="priority-high">High</span>
-                                            </>
+                                            <span className="priority-high">High</span>
                                         )}
                                         {task.priority === 'medium' && (
-                                            <>
-
-                                                <span className="priority-medium">Medium</span>
-                                            </>
+                                            <span className="priority-medium">Medium</span>
                                         )}
                                         {task.priority === 'low' && (
-                                            <>
-
-                                                <span className="priority-low">Low</span>
-                                            </>
+                                            <span className="priority-low">Low</span>
                                         )}
                                     </div>
                                     {editingTaskId === task.id ? (
@@ -266,12 +282,13 @@ const Boards = () => {
                                         />
                                     ) : (
                                         <>
-                                            {task.name}
-                                            {task.date && (
-                                                <div className="task-date">
-                                                    {task.date instanceof Date ? task.date.toDateString() : "Invalid Date"}
-                                                </div>
+                                            <span>{task.name}</span>
+                                            {task.dueDate && (
+                                                <span className="task-due-date">
+                                    {new Date(task.dueDate).toLocaleDateString()}
+                                    </span>
                                             )}
+
                                             <FaPen
                                                 className="backend-pencil-icon"
                                                 onClick={() => handlePencilClick(task)}
@@ -295,6 +312,7 @@ const Boards = () => {
                     </div>
                 ))}
             </div>
+
             {selectedTask && (
                 <TaskModal
                     onDelete={handleDeleteTask}
@@ -325,12 +343,21 @@ const Boards = () => {
                     onSavePriority={handleSavePriority}
                 />
             )}
+            {showcalenderModal && (
+                <CalendarModal
+                    isVisible={showcalenderModal}
+                    onClose={handleCloseCalenderModal}
+                    onSavePriority={handleSaveDate}
+                    onRemoveDate={handleRemoveDate}/>
+            )}
             {showAddTaskModal && (
                 <AddTaskModal
                     isVisible={showAddTaskModal}
                     onClose={() => setShowAddTaskModal(false)}
                     onAddTask={(task) => handleAddTask(currentStatusId, task)}
+                    status={statuses.find(status => status.id === currentStatusId)} // Pass the correct status object
                 />
+
             )}
 
         </div>

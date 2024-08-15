@@ -46,15 +46,15 @@ html, body {
     width: 100%;
     padding: 10px;
     background-color: #ffffff;
-    color: #ff69b4; /* Text color */
-    border: 1px solid #ff69b4; /* Border color */
+    color: darksalmon; /* Text color */
+    border: 1px solid darksalmon; /* Border color */
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s; /* Smooth transition for color changes */
 }
 
 .login-form button:hover {
-    background-color: #ff69b4; /* Background color on hover */
+    background-color: darksalmon; /* Background color on hover */
     color: #ffffff; /* Text color on hover */
-    border: 1px solid #ff69b4; /* Border color */
+    border: 1px solid darksalmon; /* Border color */
 }

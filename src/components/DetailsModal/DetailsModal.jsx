@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './DetailsModal.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faListAlt, faTasks, faTimes} from '@fortawesome/free-solid-svg-icons';
+import { faListAlt, faTasks, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const DetailsModal = ({ task, onClose }) => {
     // Initialize tableData with default structure if task or task.tableData is not available
     const initialTableData = (task && task.tableData && Array.isArray(task.tableData) && task.tableData.length > 0)
         ? task.tableData
-        : [{ Description: "", Comments: "" }];
+        : [{ Description: task.description || "", Comments: "" }];
 
     const [descriptionData, setDescriptionData] = useState(initialTableData.map(row => ({ Description: row.Description })));
     const [commentsData, setCommentsData] = useState(initialTableData.map(row => ({ Comments: row.Comments })));
@@ -45,6 +45,11 @@ const DetailsModal = ({ task, onClose }) => {
         setCommentsData([...commentsData, { Comments: '' }]);
     };
 
+    const handleAddAttachment = () => {
+        // Handle attachment logic here
+        alert("Add Attachment button clicked!");
+    };
+
     return (
         <div className="details-modal-overlay" onClick={handleOverlayClick}>
             <div className="details-modal-content">
@@ -57,25 +62,23 @@ const DetailsModal = ({ task, onClose }) => {
                 </div>
                 <p className="task-status">In Status: {task.statusName}</p>
                 <div className="detailstitle">
-                <FontAwesomeIcon icon={faTasks} className="details-icon"/>
-                <p className="task-description">Description: {task.description}</p>
+                    <FontAwesomeIcon icon={faTasks} className="details-icon"/>
+                    <p className="task-description">Description:</p>
+                    <button className="add-attachment-btn" onClick={handleAddAttachment}>Add Attachment</button>
                 </div>
                 <div className="table-container">
                     {descriptionData.map((row, rowIndex) => (
                         <div key={rowIndex} className="table-row">
-                            {/* Displaying "Members Name" as normal text above each row */}
-
                             <table className="task-details-table">
-
                                 <tbody>
                                 <tr>
                                     <td>
-                                        <textarea
-                                            className="textarea"
-                                            value={row.Description}
-                                            onChange={(e) => handleDescriptionChange(e, rowIndex)}
-                                            rows="10" // Adjust rows as needed
-                                        />
+                                            <textarea
+                                                className="textarea"
+                                                value={row.Description}
+                                                onChange={(e) => handleDescriptionChange(e, rowIndex)}
+                                                rows="10" // Adjust rows as needed
+                                            />
                                     </td>
                                 </tr>
                                 </tbody>
@@ -85,13 +88,12 @@ const DetailsModal = ({ task, onClose }) => {
                 </div>
 
                 <div className="detailstitle">
-                <FontAwesomeIcon icon={faTasks} className="details-icon"/>
-                <p className="task-comment">Comments: {task.comment}</p>
+                    <FontAwesomeIcon icon={faTasks} className="details-icon"/>
+                    <p className="task-comment">Comments:</p>
                 </div>
                 <div className="table-container-comment">
                     {commentsData.map((row, rowIndex) => (
                         <div key={rowIndex} className="table-row">
-                            {/* Displaying "Members Name" as normal text above each row */}
                             <div className="member-name-comment">Member Name:</div>
                             <table className="task-details-table-comment">
                                 <thead>
@@ -102,12 +104,12 @@ const DetailsModal = ({ task, onClose }) => {
                                 <tbody>
                                 <tr>
                                     <td>
-                                        <textarea
-                                            className="textarea-comment"
-                                            value={row.Comments}
-                                            onChange={(e) => handleCommentsChange(e, rowIndex)}
-                                            rows="10" // Adjust rows as needed
-                                        />
+                                            <textarea
+                                                className="textarea-comment"
+                                                value={row.Comments}
+                                                onChange={(e) => handleCommentsChange(e, rowIndex)}
+                                                rows="10" // Adjust rows as needed
+                                            />
                                     </td>
                                 </tr>
                                 </tbody>
