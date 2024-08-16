@@ -103,3 +103,27 @@
     font-weight: normal;
     color: #333;
 }
+.sidebar {
+    position: fixed;
+    padding: 10px;
+    top: 60px; /* Height of the top navbar */
+    left: 0;
+    width: 200px; /* Width of the sidebar */
+    bottom: 0; /* Extend to the bottom */
+    background-color: #fff;
+    z-index: 998;
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+    overflow-y: auto; /* Optional: to handle overflow */
+}
+
+/* Hide scrollbars for Webkit browsers (Chrome, Safari) */
+.sidebar::-webkit-scrollbar {
+    display: none; /* Hide scrollbar */
+}
+
+/* Hide scrollbars for Firefox */
+.sidebar {
+    scrollbar-width: none; /* Hide scrollbar in Firefox */
+}
+
+/* ... rest of your sidebar styles ... */

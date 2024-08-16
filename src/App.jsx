@@ -1,13 +1,12 @@
-import React, {useEffect, useState} from 'react';
-import {Route, Routes, Navigate} from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import Projects from './components/projects';
 import Workspace from './components/Workspace';
 import User from "./components/User";
 import Layout from "./components/Layout/Layout.jsx";
 import Login from "./components/Login/Login.jsx";
 import ListUser from "./components/ListUser/ListUser.jsx";
-
-// import CreateProjectComp from "./components/Project/CreateProjectComp.jsx";
+import Notification from "./components/Notification.jsx";
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -48,7 +47,7 @@ function App() {
                                 <Route path="/" element={<ListUser/>}/>
                                 <Route path="ListUser" element={<ListUser/>}/>
                                 <Route path="User" element={<User/>}/>
-                                {/*<Route path="Project/CreateProjectComp" element={<CreateProjectComp />} />*/}
+                                <Route path="notifications" element={<Notification loggedInUser="JohnDoe" users={["Alice", "Bob", "Charlie"]} />}/> {/* Add Notification route */}
                                 <Route path=":projectName" element={<Projects/>}/> {/* Dynamic route for projects */}
                                 <Route path="workspace/:projectName/*" element={<Workspace/>}/>
                             </Routes>

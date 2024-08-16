@@ -1,11 +1,11 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
-import {Link} from 'react-router-dom';
-import PropTypes from 'prop-types'; // Import PropTypes
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import './navbar.css';
 
-const Navbar = ({onLogout}) => {
+const Navbar = ({ onLogout }) => {
     return (
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
             <div className="container-fluid">
@@ -16,14 +16,13 @@ const Navbar = ({onLogout}) => {
                     </a>
                     <ul className="dropdown-menu" aria-labelledby="dropdownMenuLink">
                         <li><Link className="dropdown-item" to="/">Welcome</Link></li>
+                        <li><hr className="dropdown-divider" /></li>
                         <li>
-                            <hr className="dropdown-divider"/>
+                            <a className="dropdown-item" href="#" onClick={(e) => {
+                                e.preventDefault();
+                                onLogout();
+                            }}>Log Out</a>
                         </li>
-                        <li><a className="dropdown-item" href="#" onClick={(e) => {
-                            e.preventDefault();
-                            onLogout();
-                        }}>Log Out</a></li>
-                        {/* Prevent default behavior */}
                     </ul>
                 </div>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -37,11 +36,9 @@ const Navbar = ({onLogout}) => {
                             <Link className="nav-link active" aria-current="page" to="/">Home</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link" to="/notifications">Notifications</Link>
+                            <Link className="nav-link" to="/main/notifications">Notifications</Link> {/* Updated Path */}
                         </li>
-
                     </ul>
-
                 </div>
             </div>
         </nav>

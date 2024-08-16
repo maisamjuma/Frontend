@@ -1,0 +1,25 @@
+.sidebar {
+    position: fixed;
+    top: 60px; /* Adjust for navbar height */
+    left: 0;
+    width: 200px;
+    height: calc(100vh - 60px); /* Full height minus navbar height */
+    background-color: #fff;
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    overflow-y: auto;
+    z-index: 998; /* Ensure it stays above the main content */
+}
+
+.list-group-item {
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.list-group-item.selected {
+    background-color: #d3d3d3;
+}
+
+.btn-primary {
+    margin-top: 10px;
+}
