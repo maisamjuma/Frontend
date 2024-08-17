@@ -21,9 +21,9 @@ const Workspace = ({isVisible}) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     // const [newBoardName, setNewBoardName] = useState('');
     const [boards, setBoards] = useState([
-        // {id: 'backend', name: 'Backend'},
-        // {id: 'frontend', name: 'Frontend'},
-        // {id: 'qa', name: 'QA'},
+        {id: 'staticBackend', name: 'staticBackend'},
+        {id: 'staticFrontend', name: 'staticFrontend'},
+        {id: 'staticQa', name: 'staticQA'},
     ]);
 
     const location = useLocation();

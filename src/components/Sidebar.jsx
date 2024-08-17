@@ -21,6 +21,13 @@ const Sidebar = ({onMenuAction}) => {
     const sidebarRef = useRef(null);
     const navigate = useNavigate();
 
+    // Define static project
+    const STATIC_PROJECT = {
+        id: 'static-project-id', // Use a unique identifier
+        name: 'Static Project',
+        description: 'A static project that always appears in the sidebar.'
+    };
+
     const toggleProjects = () => {
         setIsProjectsOpen(!isProjectsOpen);
     };
@@ -84,6 +91,8 @@ const Sidebar = ({onMenuAction}) => {
     };
 
     useEffect(() => {
+        setProjects([STATIC_PROJECT]);
+
         fetchProjects();
 
 
