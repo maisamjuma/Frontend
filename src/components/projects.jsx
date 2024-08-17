@@ -112,7 +112,7 @@ const Projects = () => {
     };
 
     return (
-        <div ref={containerRef}>
+        <div className="d-flex flex-row gap-5" ref={containerRef}>
             <nav className="secondary-navbar">
                 <ul className="secondary-nav d-flex flex-row gap-5">
                     <li>
@@ -138,8 +138,8 @@ const Projects = () => {
                 </ul>
             </nav>
 
-            <div className="projectscon d-flex flex-row align-items-center gap-5 ">
-                <div className="flex-row align-items-center">
+            <div className="projectscon ">
+                <div className="flex-row align-items-center  ">
                     <figure className="projectIcon">
                         <img
                             src={image}
@@ -170,6 +170,11 @@ const Projects = () => {
                 </div>
 
                 {/* Render the Members component next to the project name and icon */}
+
+                <p>{projectDescription}</p> {/* Display project description */}
+                <button className="btn btn-primary" onClick={handleButtonClick}>Go to Workspace</button>
+            </div>
+            <div className="projectsconM">
                 <div className="flex-row align-items-center">
                     {showMembersOnly ? (
                         <Members
@@ -199,8 +204,6 @@ const Projects = () => {
                         </>
                     )}
                 </div>
-                <p>{projectDescription}</p> {/* Display project description */}
-                <button className="btn btn-primary" onClick={handleButtonClick}>Go to Workspace</button>
 
 
             </div>
