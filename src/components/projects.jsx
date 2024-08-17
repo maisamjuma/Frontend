@@ -1,16 +1,19 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {useNavigate, useParams, useLocation} from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import './projects.css';
 import Members from "./Member/Members.jsx";
 import AddMember from "./AddMember.jsx";
-import defaultProjectIcon from '../assets/projectIcon.png'; // Adjust the path to your PNG file
+import MemberProfile from "./MemberProfile.jsx";
+import defaultProjectIcon from '../assets/projectIcon.png';
 
 const Projects = () => {
-    const [image, setImage] = useState(defaultProjectIcon); // State for the image source
+    const { projectName } = useParams();
     const navigate = useNavigate();
-    const {projectName} = useParams();
     const location = useLocation();
-    const {projectId, projectDescription} = location.state || {};
+    const { projectId, projectDescription } = location.state || {};
+
+    const [image, setImage] = useState(defaultProjectIcon);
+    const [showProfile, setShowProfile] = useState(null);
     const [projectMembers, setProjectMembers] = useState(
         JSON.parse(localStorage.getItem(projectName + '-members')) || []
     );
@@ -22,17 +25,38 @@ const Projects = () => {
     const containerRef = useRef(null);
 
     const availableMembers = [
-        {id: 1, name: 'Maisam', role: 'Frontend Developer'},
-        {id: 2, name: 'Osaid', role: 'Backend Developer'},
-        {id: 3, name: 'Rami', role: 'QA Engineer'},
-        {id: 4, name: 'Ali', role: 'Frontend Developer'},
-        {id: 5, name: 'Reema', role: 'Backend Developer'},
-        {id: 6, name: 'Mona', role: 'Frontend Developer'},
-        {id: 7, name: 'Daher', role: 'Backend Developer'},
+        {id: 1, username: 'Maisam', email: 'maisam@example.com', password: 'password123', firstName: 'Maisam', lastName: 'Doe', role: 'Frontend Developer'},
+        {id: 2, username: 'Osaid', email: 'osaid@example.com', password: 'password123', firstName: 'Osaid', lastName: 'Doe', role: 'Backend Developer'},
+        {id: 3, username: 'Rami', email: 'rami@example.com', password: 'password123', firstName: 'Rami', lastName: 'Doe', role: 'QA Engineer'},
+        {id: 4, username: 'Ali', email: 'ali@example.com', password: 'password123', firstName: 'Ali', lastName: 'Doe', role: 'Frontend Developer'},
+        {id: 5, username: 'Reema', email: 'reema@example.com', password: 'password123', firstName: 'Reema', lastName: 'Doe', role: 'Backend Developer'},
+        {id: 6, username: 'Mona', email: 'mona@example.com', password: 'password123', firstName: 'Mona', lastName: 'Doe', role: 'Frontend Developer'},
+        {id: 7, username: 'Daher', email: 'daher@example.com', password: 'password123', firstName: 'Daher', lastName: 'Doe', role: 'Backend Developer'},
     ];
 
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
+    const handleMemberClick = (member) => {
+        // Only show the profile if not in delete mode
+        if (!isDeleting) {
+            setShowProfile(member);
+        }
+    };
+
+    const handleCloseProfile = () => {
+        setShowProfile(null);
+    };
+
     const handleAddMember = (newMembers) => {
-        const updatedMembers = [...projectMembers, ...newMembers.filter(newMember => !projectMembers.some(member => member.id === newMember.id))];
+        const updatedMembers = [
+            ...projectMembers,
+            ...newMembers.filter(newMember => !projectMembers.some(member => member.id === newMember.id))
+        ];
         setProjectMembers(updatedMembers);
         localStorage.setItem(projectName + '-members', JSON.stringify(updatedMembers));
     };
@@ -67,13 +91,9 @@ const Projects = () => {
         setShowDeletePopup(false);
     };
 
-    console.log('Project ID:', projectId);
-    console.log('Project Description:', projectDescription);
-
     const handleButtonClick = () => {
-        console.log('Project ID before going to workspace:', projectId);
         navigate(`/main/workspace/${projectName}`, {
-            state: {projectDescription, projectId, projectMembers}
+            state: { projectDescription, projectId, projectMembers }
         });
     };
 
@@ -84,13 +104,6 @@ const Projects = () => {
             setShowMembersOnly(true);
         }
     };
-
-    useEffect(() => {
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, []);
 
     const handleImageClick = () => {
         document.getElementById('fileInput').click(); // Trigger the file input click
@@ -138,8 +151,8 @@ const Projects = () => {
                 </ul>
             </nav>
 
-            <div className="projectscon ">
-                <div className="flex-row align-items-center  ">
+            <div className="projectscon">
+                <div className="flex-row align-items-center">
                     <figure className="projectIcon">
                         <img
                             src={image}
@@ -147,33 +160,31 @@ const Projects = () => {
                             width={100}
                             height={100}
                             onClick={handleImageClick}
-                            style={{cursor: 'pointer'}} // Change cursor to pointer
+                            style={{ cursor: 'pointer' }}
                         />
-                        {/* Conditionally render the delete button */}
                         {image !== defaultProjectIcon && (
                             <button
                                 className="delete-image-button"
                                 onClick={handleDeleteClick}
                             >
-                                &times; {/* × character for delete */}
+                                &times;
                             </button>
                         )}
                     </figure>
                     <input
                         type="file"
                         id="fileInput"
-                        style={{display: 'none'}} // Hide the file input
-                        accept="image/*" // Accept only image files
+                        style={{ display: 'none' }}
+                        accept="image/*"
                         onChange={handleFileChange}
                     />
                     <h1>{projectName}</h1>
                 </div>
 
-                {/* Render the Members component next to the project name and icon */}
-
-                <p>{projectDescription}</p> {/* Display project description */}
+                <p>{projectDescription}</p>
                 <button className="btn btn-primary" onClick={handleButtonClick}>Go to Workspace</button>
             </div>
+
             <div className="projectsconM">
                 <div className="flex-row align-items-center">
                     {showMembersOnly ? (
@@ -182,6 +193,7 @@ const Projects = () => {
                             isDeleting={isDeleting}
                             onCheckboxChange={handleCheckboxChange}
                             selectedMembers={selectedMembers}
+                            onMemberClick={handleMemberClick} // Pass the click handler
                         />
                     ) : (
                         <>
@@ -199,13 +211,12 @@ const Projects = () => {
                                     isDeleting={isDeleting}
                                     onCheckboxChange={handleCheckboxChange}
                                     selectedMembers={selectedMembers}
+                                    onMemberClick={handleMemberClick} // Pass the click handler
                                 />
                             )}
                         </>
                     )}
                 </div>
-
-
             </div>
 
             {showDeletePopup && (
@@ -217,6 +228,7 @@ const Projects = () => {
                             isDeleting={isDeleting}
                             onCheckboxChange={handleCheckboxChange}
                             selectedMembers={selectedMembers}
+                            onMemberClick={handleMemberClick} // Pass the click handler
                         />
                         <button
                             onClick={handleSaveDeletion}
@@ -232,6 +244,10 @@ const Projects = () => {
                         </button>
                     </div>
                 </div>
+            )}
+
+            {showProfile && !isDeleting && (
+                <MemberProfile member={showProfile} onClose={handleCloseProfile} />
             )}
         </div>
     );

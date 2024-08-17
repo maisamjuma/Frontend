@@ -5,7 +5,12 @@ import './SideBarForNoti.css';
 const SideBarForNoti = ({ users, loggedInUser, onSendNotification }) => {
     return (
         <div className="sidebar">
-            <h4>Users</h4>
+            <div className="d-flex flex-row">
+                <h4>Users</h4>
+                <button className="btn btn-primary mt-0 p-0 " onClick={onSendNotification}>
+                    New Message
+                </button>
+            </div>
             <ul className="list-group">
                 {users.map(user => (
                     <li
@@ -16,9 +21,7 @@ const SideBarForNoti = ({ users, loggedInUser, onSendNotification }) => {
                     </li>
                 ))}
             </ul>
-            <button className="btn btn-primary mt-3" onClick={onSendNotification}>
-                New Message
-            </button>
+
         </div>
     );
 };
