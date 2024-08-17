@@ -1,46 +1,15 @@
-import axios from 'axios';
+import axios from "axios";
 
-const USERS_API_BASE_URL = 'http://10.10.30.77:8080/api/users';
+// const REST_API_BASE_URL = process.env.REST_API_URL;
+const REST_API_BASE_URL = 'http://10.10.30.77:8080/api/users';
 
-class UserService {
+/*
+export const listUsers =()=>{
+     return axios.get(REST_API_BASE_URL);
+ }
+*/
 
-    // Fetch all users
-    getAllUsers() {
-        return axios.get(USERS_API_BASE_URL);
-    }
 
-    // Create a new user
-    createUser(user) {
-        return axios.post(USERS_API_BASE_URL, user, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-    }
-
-    // Fetch a user by its ID
-    getUserById(userId) {
-        return axios.get(`${USERS_API_BASE_URL}/${userId}`);
-    }
-
-    // Update a user by its ID
-    updateUser(userId, user) {
-        return axios.put(`${USERS_API_BASE_URL}/${userId}`, user, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-    }
-
-    // Delete a user by its ID
-    deleteUser(userId) {
-        return axios.delete(`${USERS_API_BASE_URL}/${userId}`);
-    }
-
-    // Fetch users by role ID
-    getUsersByRoleId(roleId) {
-        return axios.get(`${USERS_API_BASE_URL}/roles/${roleId}`);
-    }
-}
-
-export default new UserService();
+export const listUsers = () => axios.get(REST_API_BASE_URL);
+export const createUser = (user) => axios.post(REST_API_BASE_URL, user);
+export const getUser = (userId) => axios.get(REST_API_BASE_URL + '/'+ userId);
