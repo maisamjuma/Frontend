@@ -1,19 +1,18 @@
-import React, { useState } from 'react';
+// src/components/Login.jsx
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import './Login.css';
 
-const Login = ({ onLogin = () => {} }) => { // Default to an empty function
+const Login = ({onLogin}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const handleLogin = (e) => {
         e.preventDefault();
-        if (typeof onLogin === 'function') {
-            onLogin();
-        } else {
-            console.error('onLogin is not a function');
-        }
+        // Call the onLogin function to handle login
+        onLogin();
     };
+
 
     return (
         <div className="login-container">
@@ -44,7 +43,7 @@ const Login = ({ onLogin = () => {} }) => { // Default to an empty function
 };
 
 Login.propTypes = {
-    onLogin: PropTypes.func,
+    onLogin: PropTypes.func.isRequired,
 };
 
 export default Login;
