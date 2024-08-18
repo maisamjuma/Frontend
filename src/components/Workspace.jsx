@@ -21,9 +21,9 @@ const Workspace = ({isVisible}) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     // const [newBoardName, setNewBoardName] = useState('');
     const [boards, setBoards] = useState([
-        {id: 'staticBackend', name: 'staticBackend'},
-        {id: 'staticFrontend', name: 'staticFrontend'},
-        {id: 'staticQa', name: 'staticQA'},
+        // {id: 'staticBackend', name: 'staticBackend'},
+        // {id: 'staticFrontend', name: 'staticFrontend'},
+        // {id: 'staticQa', name: 'staticQA'},
     ]);
 
     const location = useLocation();
@@ -33,6 +33,7 @@ const Workspace = ({isVisible}) => {
             const {projectId, projectDescription} = location.state;
             setProjectId(projectId);
             setProjectDescription(projectDescription);
+
         }
         // fetchRoles();
     }, [location.state]);
@@ -40,21 +41,27 @@ const Workspace = ({isVisible}) => {
 
     // const { projectId, projectDescription } = location.state || {};
 
-    console.log('Project ID:', projectId);
-    console.log('Project Description:', projectDescription);
+    console.log('Project ID from workspace:', projectId);
+    console.log('Project Description from workspace:', projectDescription);
 
 
     useEffect(() => {
         // if (isVisible) {
         fetchRoles();
-        // }
-    }, [isVisible]);
 
-    useEffect(() => {
         if (projectId) {
             fetchBoards();
+
         }
-    }, [projectId]);
+
+        // }
+    }, [isVisible,projectId]);
+
+    // useEffect(() => {
+    //     if (projectId) {
+    //         fetchBoards();
+    //     }
+    // }, [projectId]);
 
 ////////////////////////////////////////////////////////Fetches:
     const fetchRoles = async () => {
@@ -81,10 +88,31 @@ const Workspace = ({isVisible}) => {
     };
 
     const fetchBoards = async () => {
+        let newBoard={ boardId: 'staticBackendID', name: 'staticBackend' }
+        setBoards(prevBoards => [...prevBoards, newBoard]);
+
+        newBoard={ boardId: 'staticFrontendID', name: 'staticFrontend' }
+        setBoards(prevBoards => [...prevBoards, newBoard]);
+
+        newBoard={ boardId: 'staticQaID', name: 'staticQA' }
+        setBoards(prevBoards => [...prevBoards, newBoard]);
         try {
             const response = await BoardService.getBoardsByProject(projectId);
             if (response.data && Array.isArray(response.data)) {
-                setBoards(response.data);
+                console.log('fetchBoards API Response:', response);
+
+                const boardsWithIds = response.data.map(board => ({
+                    // ...role,
+                        boardId: board.boardId,  // Assuming `id` is the correct field from the database
+
+                    name: board.name  // Use roleName as `roleName`
+                }
+                ));
+
+
+                setBoards(boardsWithIds);
+                console.log('boards array content after fetchBoards:', boards);
+
             } else {
                 throw new Error('Unexpected response format');
             }

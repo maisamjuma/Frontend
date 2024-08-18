@@ -1,12 +1,14 @@
 import './AddProjectModal.css'; // Create a CSS file for modal styles
 import React, {useState, useRef, useEffect} from 'react';
 import ProjectService from '../../Services/ProjectService.js';
+import BoardService from '../../Services/BoardService.js';
 import PropTypes from "prop-types";
 
 const AddProjectModal = ({isVisible, onClose, onAddProject}) => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState(''); // Added for error handling
 
     const modalRef = useRef(null);
 
@@ -51,7 +53,7 @@ const AddProjectModal = ({isVisible, onClose, onAddProject}) => {
     //     }
     // };
 
-    const handleAddProject = (e) => {
+    const handleAddProject = async (e) => {
         e.preventDefault();
 
 
@@ -61,28 +63,26 @@ const AddProjectModal = ({isVisible, onClose, onAddProject}) => {
                 description,
             };
 
-            ProjectService.createProject(project)
-                .then((response) => {
-                    // Extract fields from the response
-                    const {projectId, name, description, createdAt, updatedAt} = response;
+            try {
+                const response = await ProjectService.createProject(project);
+                const { projectId } = response; // Assuming projectId is in the response
 
-                    // Use the extracted variables as needed
-                    console.log('Project created:', {projectId, name, description, createdAt, updatedAt});
+                // Notify the parent component of the new project
+                onAddProject(projectId, name, description);
 
-                    onAddProject(projectId, name, description);
+                // Add default boards for the new project
+                await BoardService.addDefaultBoards(projectId);
 
-                    // Set success message or perform other actions
-                    setSuccessMessage('Project added successfully!');
-
-                    // Clear input fields
-                    setName('');
-                    setDescription('');
-                })
-                .catch(error => {
-                    console.error('There was an error adding the project!', error);
-                });
-
-            // onClose(); // Remove this line to prevent modal from closing on Save
+                setSuccessMessage('Project and default boards added successfully!');
+                setName('');
+                setDescription('');
+                setErrorMessage(''); // Clear any previous error message
+            } catch (error) {
+                console.error('There was an error adding the project or default boards!', error);
+                setErrorMessage('Failed to add project or default boards. Please try again.');
+            }
+        } else {
+            setErrorMessage('Please fill in all fields.');
         }
     };
 
@@ -97,6 +97,7 @@ const AddProjectModal = ({isVisible, onClose, onAddProject}) => {
                 <div className="modal-content" ref={modalRef}>
                     {getTitle()}
                     {successMessage && <div className="alert alert-success">{successMessage}</div>}
+                    {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
                     <form>
                         <div className="form-group">
                             <label>Name:</label>
