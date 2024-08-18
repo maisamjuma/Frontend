@@ -8,6 +8,20 @@ import OldLogin from './components/Login/Login.jsx'; // old login
 import ListUser from './components/ListUser/ListUser.jsx';
 import Notification from './components/Notification.jsx';
 import HomePage from "./components/HomePage.jsx"; // Adjusted from Home to HomePage
+import User from "./components/User";
+import Layout from "./components/Layout/Layout.jsx";
+
+import OldLogin from "./components/Login/Login.jsx";//old login
+import Login from "./components/_auth/login";
+
+import Register from "./components/_auth/register";
+
+import Header from "./components/_header";
+import Home from "./components/_home";
+import { AuthProvider } from "./contexts/authContext";
+
+import ListUser from "./components/ListUser/ListUser.jsx";
+import Notification from "./components/Notification.jsx";
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
