@@ -2,12 +2,20 @@ import React, {useContext, useState, useEffect} from "react";
 import {auth} from "../../firebase/firebase";
 // import { GoogleAuthProvider } from "firebase/auth";
 import {onAuthStateChanged} from "firebase/auth";
+import PropTypes from 'prop-types'; // Import PropTypes
 
 const AuthContext = React.createContext();
 
 //our Hook:
 export function useAuth() {//
-    return useContext(AuthContext); //the return value is the result of calling useContext (by providing this AuthContext as an argument)
+
+    const context = useContext(AuthContext); //the return value is the result of calling useContext (by providing this AuthContext as an argument)
+
+    if (context === undefined) {
+        throw new Error('useAuth must be used within an AuthProvider');
+    }
+    return context;
+
 }
 
 export function AuthProvider({children}) {
@@ -73,4 +81,10 @@ export function AuthProvider({children}) {
             {!loading && children}
         </AuthContext.Provider>
     );
+
+
 }
+// Add PropTypes validation
+AuthProvider.propTypes = {
+    children: PropTypes.node.isRequired,
+};
