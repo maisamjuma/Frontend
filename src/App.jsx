@@ -42,7 +42,7 @@ function App() {
         },
         {
             path: "/old-login",
-            element: <OldLogin />, // Route to the old login screen
+            element: isAuthenticated ? <Navigate to="/main" /> : <OldLogin onLogin={handleLogin}/>,
         },
         {
             path: "/register",
