@@ -119,7 +119,7 @@ const DetailsModal = ({task, onClose}) => {
                 </div>
 
                 <div className="table-controls-comment">
-                    <button onClick={handleAddCommentsRow}>Add Comments</button>
+                    <button className="addcomment" onClick={handleAddCommentsRow}>Add Comments</button>
                 </div>
             </div>
         </div>

@@ -10,7 +10,10 @@
     justify-content: center;
     align-items: center;
 }
-
+.priorityheader{
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
 .priority-modal-content {
     background: #2f3640;
     padding: 20px;
@@ -21,8 +24,12 @@
 }
 
 .priority-options {
-    margin-top: 20px;
+        display: flex;
+        flex-direction: column; /* Stack buttons vertically */
+        margin-top: 20px;
 }
+
+
 
 .priority-option {
     background: #34495e;
@@ -36,15 +43,15 @@
 }
 
 .priority-option.selected {
-    background: #1abc9c; /* Highlight the selected priority */
+    background: darksalmon; /* Highlight the selected priority */
 }
 
 .priority-option:hover {
-    background: #2f3640;
+    background: darksalmon;
 }
 
 .save-button {
-    background: #1abc9c;
+    background: #7f8fa6;
     color: #dcdde1;
     border: none;
     padding: 10px 20px;
@@ -55,5 +62,5 @@
 }
 
 .save-button:hover {
-    background: #16a085;
+    background: darksalmon;
 }

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import './AddTaskModal.css';
 import Calendar from 'react-calendar';
-
+import { FaPlus } from 'react-icons/fa'; // Import an icon
 // Static list of users
 const usersList = [
     {id: 1, name: 'John Doe'},
@@ -54,9 +54,11 @@ const AddTaskModal = ({isVisible, onClose, onAddTask, status}) => {
     return (
         <>
             {isVisible && (
-                <div className="modal-overlay">
-                    <div className="modal-content">
-                        <h2>Add New Task</h2>
+                <div className="addtask-modal-overlay">
+                    <div className="addtask-modal-content">
+                        <h2>
+                            <FaPlus className="add-icon"/> Add New Task
+                        </h2>
                         <div className="task-info">
                             <input
                                 type="text"
@@ -66,12 +68,7 @@ const AddTaskModal = ({isVisible, onClose, onAddTask, status}) => {
                                 className="modal-task-input"
                             />
                         </div>
-                        <textarea
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                            placeholder="Enter task description"
-                            className="modal-description-textarea"
-                        />
+
 
                         {/* Date Picker */}
                         <div className="date-options">
@@ -83,7 +80,12 @@ const AddTaskModal = ({isVisible, onClose, onAddTask, status}) => {
                                 }
                             />
                         </div>
-
+                        <textarea
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            placeholder="Enter task description"
+                            className="modal-description-textarea"
+                        />
                         {/* Priority Dropdown */}
                         <div className="priority-options">
                             <select

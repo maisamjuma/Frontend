@@ -12,13 +12,14 @@
 }
 
 .calendar-modal-content {
-    background: white; /* Background of the modal */
-    color: black; /* Text color of the modal */
-    padding: 10px; /* Padding inside the modal */
+    background: #2f3640;
+    color: white; /* Text color of the modal */
+    padding: 20px; /* Increased padding inside the modal */
     border-radius: 6px; /* Rounded corners */
     position: relative;
+    height: 430px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 380px; /* Width of the modal */
+    width: 570px; /* Increased width of the modal */
     max-width: 100%; /* Ensure it doesn't exceed viewport width */
 }
 
@@ -26,14 +27,15 @@
 .react-calendar {
     width: 100%; /* Ensure calendar fits within the popup */
     max-width: 100%; /* Prevent exceeding the popup width */
+    align-content: center;
 }
 
 /* Style the date boxes */
 .react-calendar__tile {
-    background: white; /* Background color of the date boxes */
-    color: black; /* Text color of the date boxes */
+    color: white; /* Text color of the date boxes */
+    background-color: #3c4451;
     font-size: 14px; /* Adjust font size for smaller boxes */
-    padding: 5px; /* Padding inside the date boxes */
+    padding: 8px; /* Increased padding inside the date boxes */
     border-radius: 4px; /* Rounded corners */
     border: 1px solid #ddd; /* Border for date boxes */
 }
@@ -53,31 +55,32 @@
 
 /* Style the navigation arrows */
 .react-calendar__navigation button {
-    background: white; /* Background color for the navigation arrows */
-    border: 1px solid #ddd; /* Border for the arrows */
-    color: black; /* Text color of the arrows */
+    background: #3c4451; /* Background color of the navigation arrows */
+    border: 1px solid #3c4451; /* Border for the arrows */
+    color: #ffffff; /* Text color of the arrows */
     font-size: 18px; /* Font size of the arrows */
     cursor: pointer; /* Pointer cursor on hover */
-    padding: 5px; /* Padding around the arrows */
+    padding: 8px; /* Increased padding around the arrows */
     border-radius: 4px; /* Rounded corners for the button */
+    margin-left: 40px;
     transition: background-color 0.3s ease; /* Smooth transition for background color */
 }
 
 .react-calendar__navigation button:hover {
-    background-color: #f0f0f0; /* Light gray background on hover */
+    background-color: #7f8fa6; /* Darker gray background on hover */
 }
 
 /* Style the close button (X) */
 .calendar-modal-close {
     position: absolute;
-    top: 5px; /* Reduced distance from the top */
-    right: 5px; /* Reduced distance from the right */
-    background: white; /* Background color for the close button */
+    top: 10px; /* Adjusted distance from the top */
+    right: 10px; /* Adjusted distance from the right */
+    background-color: #7f8fa6;
     border: 1px solid #ddd; /* Border for the close button */
     color: black; /* Text color for the close button */
-    font-size: 16px; /* Font size for the close button */
+    font-size: 18px; /* Increased font size for the close button */
     cursor: pointer; /* Pointer cursor on hover */
-    padding: 5px; /* Padding inside the close button */
+    padding: 8px; /* Increased padding inside the close button */
     border-radius: 4px; /* Rounded corners */
 }
 
@@ -85,62 +88,70 @@
 .react-calendar__navigation__label {
     font-size: 16px; /* Font size for the month/year label */
     font-weight: bold; /* Bold text for the month/year label */
-    color: black; /* Text color for the month/year label */
-    background: white; /* Background color for the month/year label */
-    padding: 5px; /* Padding inside the label */
+    color: #ffffff; /* Text color for the month/year label */
+    background-color: #3c4451;
+    padding: 8px; /* Increased padding inside the label */
     border-radius: 4px; /* Rounded corners */
+    justify-content: center;
+    align-items: center;
+
+
 }
 
 /* Highlight the selected month/year */
 .react-calendar__navigation__label--active {
-    background-color: #f0f0f0; /* Light gray background for active month/year */
+    background-color: #3c4451;
     border-radius: 4px; /* Rounded corners for the active label */
-    padding: 5px; /* Padding inside the label */
+    padding: 8px; /* Increased padding inside the label */
+
 }
 
 /* Calendar modal actions styles */
 .calendar-modal-actions {
     display: flex;
+    margin-left: 30px;
     justify-content: space-between;
-    margin-top: 10px;
+    margin-top: 15px; /* Increased margin-top */
 }
 
 /* Save button styles */
-.calendar-modal-save-button {
-    padding: 8px 12px;
-    background-color: rgba(220, 99, 147, 0.99); /* Green background */
+.calendar-modal-save-button,
+.calendar-modal-cancel-button {
+    padding: 10px 15px; /* Increased padding */
+    background-color: #7f8fa6; /* Green background */
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 14px;
+    margin-top: 20px;
+    font-size: 16px; /* Increased font size */
     transition: background-color 0.3s ease;
 }
 
 .calendar-modal-save-button:hover {
-    background-color: rgba(220, 99, 147, 0.99); /* Darker green on hover */
+    background-color: darksalmon; /* Darker green on hover */
 }
 
 /* Remove button styles */
 .calendar-modal-remove-button {
-    padding: 8px 12px;
-    background-color: rgba(220, 99, 147, 0.99); /* Red background */
+    padding: 10px 15px; /* Increased padding */
+    background-color: #7f8fa6; /* Red background */
     color: white;
+    margin-top: 20px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 16px; /* Increased font size */
     transition: background-color 0.3s ease;
 }
 
 .calendar-modal-remove-button:hover {
-    background-color: rgba(220, 99, 147, 0.99); /* Darker red on hover */
+    background-color: darksalmon; /* Darker red on hover */
 }
 
 /* Existing CSS remains the same */
 
 .selected-date {
-    background-color: rgba(220, 99, 147, 0.99) !important; /* Pink background for selected date */
-    color: white !important; /* Ensure text is readable on pink background */
-    border-radius: 4px; /* Optionally, make it rounded */
+    background-color: white !important; /* Pink background for selected date */
+    color: black !important; /* Ensure text is readable on pink background */
 }
