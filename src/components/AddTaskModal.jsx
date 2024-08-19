@@ -75,6 +75,7 @@ const AddTaskModal = ({isVisible, onClose, onAddTask, status}) => {
                         />
                         {/* Date Picker */}
                         <div className="date-options">
+                            <p className="paragraph">Due date:</p>
                             <Calendar
                                 onChange={(date) => setDueDate(date)}
                                 value={dueDate}

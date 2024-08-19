@@ -38,7 +38,7 @@
     width: 100%;
     padding: 8px;
     height: 150px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     resize: vertical;
     margin-top: 20px;
     background: #3c4451;
@@ -117,13 +117,11 @@
     color: #dcdde1;
     border: 1px solid #7f8fa6;
 }
-.priority-options
-{
+.priority-options {
     margin-top: 40px;
 }
 .user-options {
     margin-top: 10px;
-
 }
 .paragraph{
     color:white;
