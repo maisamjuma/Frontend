@@ -14,28 +14,37 @@
 }
 
 .addtask-modal-content {
-    background-color: white;
+    background: #2f3640;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     width: 600px;
     max-width: 100%;
     max-height: 90%;
+    color: #dcdde1;
     overflow-y: auto;
 }
 
 .modal-task-input {
     width: 100%;
     padding: 8px;
-    margin-bottom: 10px;
+    margin-top: 30px;
+    background: #3c4451;
+    color: #dcdde1;
+    border: 1px solid #7f8fa6;
 }
 
 .modal-description-textarea {
     width: 100%;
     padding: 8px;
+    height: 150px;
     margin-bottom: 10px;
     resize: vertical;
-    margin-top: 40px;
+    margin-top: 20px;
+    background: #3c4451;
+    color: #dcdde1;
+    border: 1px solid #7f8fa6;
+    text-align: left;
 }
 
 .modal-due-date-input {
@@ -54,6 +63,7 @@
 .modal-actions {
     display: flex;
     justify-content: space-between;
+    margin-top: 30px;
 }
 
 
@@ -65,37 +75,56 @@
 
 
 .modal-add-button {
-    background-color: darksalmon;
-    color: white;
     margin-top: 20px;
+    background-color: #7f8fa6;
+    color: white;
 }
 
 .modal-cancel-button {
-    background-color: rgb(71, 66, 66);
-    color: white;
+
     margin-top: 20px;
+    background-color: #7f8fa6;
+    color: white;
 }
 
 
 .modal-add-button:hover {
-    background-color: #f0f0f0; /* Light gray background on hover */
+    background-color: darksalmon; /* Darker shade for hover effect */
     color: #0b0a0a;
 }
 
 .modal-cancel-button:hover {
-    background-color: #f0f0f0; /* Light gray background on hover */
+    background-color: darksalmon; /* Darker shade for hover effect */
     color: #0b0a0a;
 }
 
-/* Add to AddTaskModal.css */
-
-.assign-to-options {
-    margin-top: 10px;
-}
-
-.assign-to-dropdown {
+.priority-dropdown {
     width: 100%;
     padding: 8px;
-    border: 1px solid #ccc;
     border-radius: 4px;
+    background: #3c4451;
+    color: #dcdde1;
+    border: 1px solid #7f8fa6;
+}
+.custom-calendar {
+    margin-top: 20px; /* Adjust this value to move the calendar down */
+}
+.user-dropdown{
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    background: #3c4451;
+    color: #dcdde1;
+    border: 1px solid #7f8fa6;
+}
+.priority-options
+{
+    margin-top: 40px;
+}
+.user-options {
+    margin-top: 10px;
+
+}
+.paragraph{
+    color:white;
 }
