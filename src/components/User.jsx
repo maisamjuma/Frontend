@@ -11,7 +11,6 @@ import './User.css';
 
 const User = () => {
     const navigate = useNavigate();
-    const { id } = useParams();
 
     const [roles, setRoles] = useState([]);
     const [username, setUsername] = useState('');
@@ -39,22 +38,7 @@ const User = () => {
         }).catch(error => {
             console.error("Error fetching roles", error);
         });
-
-        // If an ID is present, fetch the user details
-        if (id) {
-            UserService.getUserById(id).then(response => {
-                setUsername(response.data.username);
-                setEmail(response.data.email);
-                setPassword(response.data.password);
-                setFirstName(response.data.firstName);
-                setLastName(response.data.lastName);
-                setRole(response.data.role);
-                setIsTeamLeader(response.data.isTeamLeader);
-            }).catch(error => {
-                console.error(error);
-            });
-        }
-    }, [id]);
+    }, []);
 
     const handleUsername = (e) => setUsername(e.target.value);
     const handleEmail = (e) => setEmail(e.target.value);
