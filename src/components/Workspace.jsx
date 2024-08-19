@@ -35,6 +35,7 @@ const Workspace = ({ isVisible }) => {
             setProjectDescription(projectDescription); // Make sure this is correctly set
             setProjectMembers(projectMembers); // Set project members here
             console.log("chinaaaaa",projectId,projectDescription,"memberes:",projectMembers);
+            setProjectDescription(projectDescription);
         }
     }, [location.state]);
 
@@ -162,7 +163,7 @@ const Workspace = ({ isVisible }) => {
     };
 
     const handleDeleteBoard = (boardId) => {
-        setBoards(boards.filter((board) => board.id !== boardId));
+        setBoards(boards.filter((board) => board.boardId !== boardId));
     };
 
 
@@ -170,12 +171,16 @@ const Workspace = ({ isVisible }) => {
         <div className="layout">
             <Navbar onLogout={() => { }} />
             <nav className="secondary-navbar">
+                <ul className="secondary-nav">
+                    {boards.map((board) => (
+                        <li key={board.boardId} className="secondary-nav-item">
                 <ul className="secondary-nav" ref={secondaryNavRef}>
                     {boards.slice(0, 5).map((board) => (
                         <li key={board.id} className="secondary-nav-item">
                             <div className="board-container">
                                 <Link
                                     className="secnav-link"
+                                    to={`/main/workspace/${projectName}/${board.boardId}`}
                                     to={`/main/workspace/${projectName}/${board.boardId}/${board.name}`}
                                     style={{
                                         color: selectedBoard === board.boardId ? 'darksalmon' : 'black',
