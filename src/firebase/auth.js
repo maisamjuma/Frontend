@@ -1,7 +1,7 @@
 //this will contain all the functions for authentication
 
-import {auth} from "./firebase";
-
+import {auth,firestore } from "./firebase";
+import { doc, setDoc } from "firebase/firestore";
 /*
 we will be adding the individual functions to:
 -create a new user with email and password
@@ -16,6 +16,8 @@ also for future work we will implement the functions for
 */
 import {
     createUserWithEmailAndPassword,
+    updateProfile,
+
     signInWithEmailAndPassword,
     sendPasswordResetEmail,
     sendEmailVerification,
@@ -24,8 +26,20 @@ import {
     GoogleAuthProvider,
 } from "firebase/auth";
 
-export const doCreateUserWithEmailAndPassword = async (email, password) => {
-    return createUserWithEmailAndPassword(auth, email, password);
+// Add role to Firestore
+const saveUserRoleInFirestore = async (userId, role) => {
+    const userRef = doc(firestore, "users", userId);
+    await setDoc(userRef, { role }, { merge: true });
+};
+
+export const doCreateUserWithEmailAndPassword = async (email, password, role) => {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+
+    // Save role to Firestore
+    await saveUserRoleInFirestore(user.uid, role);
+
+    return userCredential;
 };
 
 export const doSignInWithEmailAndPassword = (email, password) => {
