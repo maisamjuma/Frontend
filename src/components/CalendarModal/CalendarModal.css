@@ -17,7 +17,7 @@
     padding: 20px; /* Increased padding inside the modal */
     border-radius: 6px; /* Rounded corners */
     position: relative;
-    height: 430px;
+    height: 460px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     width: 570px; /* Increased width of the modal */
     max-width: 100%; /* Ensure it doesn't exceed viewport width */
@@ -33,11 +33,11 @@
 /* Style the date boxes */
 .react-calendar__tile {
     color: white; /* Text color of the date boxes */
-    background-color: #3c4451;
+    background: none;
     font-size: 14px; /* Adjust font size for smaller boxes */
     padding: 8px; /* Increased padding inside the date boxes */
     border-radius: 4px; /* Rounded corners */
-    border: 1px solid #ddd; /* Border for date boxes */
+    /*border: 1px solid #ddd; /* Border for date boxes */
 }
 
 /* Highlight today's date */
@@ -55,14 +55,14 @@
 
 /* Style the navigation arrows */
 .react-calendar__navigation button {
-    background: #3c4451; /* Background color of the navigation arrows */
-    border: 1px solid #3c4451; /* Border for the arrows */
+    background: none;
     color: #ffffff; /* Text color of the arrows */
     font-size: 18px; /* Font size of the arrows */
     cursor: pointer; /* Pointer cursor on hover */
     padding: 8px; /* Increased padding around the arrows */
     border-radius: 4px; /* Rounded corners for the button */
     margin-left: 40px;
+    margin-bottom: 10px;
     transition: background-color 0.3s ease; /* Smooth transition for background color */
 }
 
@@ -94,8 +94,6 @@
     border-radius: 4px; /* Rounded corners */
     justify-content: center;
     align-items: center;
-
-
 }
 
 /* Highlight the selected month/year */
@@ -154,4 +152,10 @@
 .selected-date {
     background-color: white !important; /* Pink background for selected date */
     color: black !important; /* Ensure text is readable on pink background */
+}
+.dates{
+    align-content: center;
+    display: flex;
+    justify-content: center;
+
 }
