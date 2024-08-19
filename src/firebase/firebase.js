@@ -4,7 +4,7 @@ import {getAuth,connectAuthEmulator} from "firebase/auth";
 import {getFirestore, connectFirestoreEmulator} from "firebase/firestore";
 
 // import {getAnalytics} from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
+// TODOAdd SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
@@ -19,20 +19,26 @@ const firebaseConfig = {
     measurementId: "G-QK2D8V0FDC"
 };
 
-function getCustomAuth() {
-    const auth = getAuth()
-    connectAuthEmulator(auth, "http://localhost:9099");
-    return auth
-}
+// function getCustomAuth() {
+//     const auth = getAuth()
+//     connectAuthEmulator(auth, "http://localhost:9099");
+//     return auth
+// }
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+// const db = getFirestore(app);
 // firestoreInstance=db;
-// const auth = getAuth(app)
-const auth = getCustomAuth(app)
-const firestore = getFirestore();
-connectFirestoreEmulator(firestore, 'localhost:',8081);
+// Initialize Firebase Authentication and Firestore
+const auth = getAuth();
+const firestore = getFirestore(app);
+
+// Connect to the Firebase emulators
+if (window.location.hostname === "localhost") {
+    connectAuthEmulator(auth, "http://localhost:9099");
+    connectFirestoreEmulator(firestore, "localhost", 8081);
+}
 // const analytics = getAnalytics(app);
 
-export {app, auth};
+// Export the app, auth, and firestore instances
+export {app, auth, firestore };

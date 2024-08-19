@@ -50,17 +50,34 @@ const User = () => {
             try {
                 // Create user in Firebase
                 const firebaseUser = await createUser({ username, email, password, firstName, lastName, role, isTeamLeader });
+                console.log("firebaseUser:    ",firebaseUser);
+                // Prepare user data to send to backend
+                const user = { username, email, password, firstName, lastName, role, isTeamLeader };
 
-                // If user creation is successful, save user details in backend
-                const user = { username, email, firebaseUserId: firebaseUser.uid, firstName, lastName, role, isTeamLeader };
-                await UserService.createUser(user);
 
-                navigate('/main'); // Update the path to where you want to navigate
+                UserService.createUser(user).then((response) => {
+                    console.log(response.data);
+                    console.log("databaseUser:    ",user);
+
+                    console.log("response.data:    " ,response.data);
+
+                    navigate('/main'); // Update the path to where you want to navigate
+
+                });
+
+                // Save user details in backend
+                // const response = await UserService.createUser(user);
+                // console.log("response.data:    " ,response.data);
+
+                // Navigate to the desired page after successful user creation
+                navigate('/main');
             } catch (error) {
                 console.error("Error saving user:", error);
             }
         }
     };
+
+
 
     const validateForm = () => {
         let valid = true;
