@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
+// import { createUser, getUserById } from '../Services/UserService';
 import UserService from '../Services/UserService';
 import RoleService from "../Services/RoleService";
-import { useNavigate, useParams } from 'react-router-dom';
+import { createUser } from '../Services/FirebaseAuthService'; // Import FirebaseAuthService methods
+import { useNavigate } from 'react-router-dom';
 import './User.css';
 
 const User = () => {
@@ -58,15 +60,21 @@ const User = () => {
     const handleRole = (e) => setRole(e.target.value);
     const handleIsTeamLeader = (e) => setIsTeamLeader(e.target.checked);
 
-    const saveUser = (e) => {
+    const saveUser = async (e) => {
         e.preventDefault();
         if (validateForm()) {
-            const user = { username, email, password, firstName, lastName, role, isTeamLeader };
-            console.log(user);
-            UserService.createUser(user).then((response) => {
-                console.log(response.data);
+            try {
+                // Create user in Firebase
+                const firebaseUser = await createUser({ username, email, password, firstName, lastName, role, isTeamLeader });
+
+                // If user creation is successful, save user details in backend
+                const user = { username, email, firebaseUserId: firebaseUser.uid, firstName, lastName, role, isTeamLeader };
+                await UserService.createUser(user);
+
                 navigate('/main'); // Update the path to where you want to navigate
-            });
+            } catch (error) {
+                console.error("Error saving user:", error);
+            }
         }
     };
 
@@ -126,18 +134,10 @@ const User = () => {
         return valid;
     };
 
-    const pageTitle = () => {
-        return id ? (
-            <h2 className="card-header">Update User</h2>
-        ) : (
-            <h2 className="card-header">Add User</h2>
-        );
-    };
-
     return (
         <div className="full-screen-center">
             <div className="card">
-                {pageTitle()}
+                <h2 className="card-header">Add User</h2>
                 <div className="card-body">
                     <form onSubmit={saveUser}>
                         <div className="form-row">
