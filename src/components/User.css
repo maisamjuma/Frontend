@@ -5,7 +5,7 @@
     align-items: center;
     min-height: 100vh; /* Full viewport height */
     padding: 0; /* Remove default padding */
-    margin-left: 300px;
+    margin-left: 100px;
     margin-top: -70px;
 }
 
@@ -59,8 +59,22 @@
     display: block;
     color: #333;
 }
+/* Checkbox container style */
+.checkbox-container {
+    display: flex;
+    margin-top: 10px;
+    align-items: center;
+    margin-right: 600px/* Align checkbox and label vertically */
+}
 
-/* Input and textarea styles */
+/* Label styles */
+.teamleaderlabel {
+    font-weight: bold;
+    color: #333;
+   /* Adjust spacing between label and checkbox */
+}
+
+/* Input and select styles */
 .form-control {
     border: 1px solid #ced4da;
     border-radius: 0.25rem;
@@ -81,6 +95,19 @@
     display: block;
     color: #dc3545;
     font-size: 0.875rem;
+}
+
+
+
+/* Checkbox styles */
+.form-check-input {
+    width: 10px; /* Ensure checkbox does not stretch */
+    margin-right: 0.5rem; /* Space between checkbox and label */
+}
+
+/* Label margin-left for checkbox */
+.ml-2 {
+    margin-left: 0.5rem; /* Adjust spacing as needed */
 }
 
 /* Button styles */
@@ -107,4 +134,18 @@
 /* Form control sizes */
 input[type="datetime-local"] {
     padding: 0.5rem;
+}
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+}
+/* Style for the vertical group of fields */
+.vertical-group {
+    flex: 1; /* Adjust this value as needed */
+    margin-right: 1rem;
+}
+/* Style for the horizontal group of fields */
+.horizontal-group {
+    flex: 1; /* Adjust this value as needed */
+    margin-right: 1rem;
 }

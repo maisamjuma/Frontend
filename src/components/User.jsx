@@ -140,94 +140,102 @@ const User = () => {
                 {pageTitle()}
                 <div className="card-body">
                     <form onSubmit={saveUser}>
-                        <div className="form-group mb-2">
-                            <label className='form-label'>Username:</label>
-                            <input
-                                type="text"
-                                placeholder="Enter a Username for The Employee"
-                                name="username"
-                                value={username}
-                                className={`form-control ${errors.username ? 'is-invalid' : ''}`}
-                                onChange={handleUsername}
-                            />
-                            {errors.username && <div className='invalid-feedback'>{errors.username}</div>}
+                        <div className="form-row">
+                            <div className="form-group mb-2 vertical-group">
+                                <label className='form-label'>Username:</label>
+                                <input
+                                    type="text"
+                                    placeholder="Enter a Username for The Employee"
+                                    name="username"
+                                    value={username}
+                                    className={`form-control ${errors.username ? 'is-invalid' : ''}`}
+                                    onChange={handleUsername}
+                                />
+                                {errors.username && <div className='invalid-feedback'>{errors.username}</div>}
+                            </div>
+                            <div className="form-group mb-2 vertical-group">
+                                <label className='form-label'>Email:</label>
+                                <input
+                                    type="email"
+                                    placeholder="Enter Employee Email"
+                                    name="email"
+                                    value={email}
+                                    className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+                                    onChange={handleEmail}
+                                />
+                                {errors.email && <div className='invalid-feedback'>{errors.email}</div>}
+                            </div>
+                            <div className="form-group mb-2 vertical-group">
+                                <label className='form-label'>Password:</label>
+                                <input
+                                    type="password"
+                                    placeholder="Enter Password"
+                                    name="password"
+                                    value={password}
+                                    className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+                                    onChange={handlePassword}
+                                />
+                                {errors.password && <div className='invalid-feedback'>{errors.password}</div>}
+                            </div>
+                        </div>
+                        <div className="form-row">
+                            <div className="form-group mb-2 horizontal-group">
+                                <label className='form-label'>First Name:</label>
+                                <input
+                                    type="text"
+                                    placeholder="Enter First Name"
+                                    name="firstName"
+                                    value={firstName}
+                                    className={`form-control ${errors.firstName ? 'is-invalid' : ''}`}
+                                    onChange={handleFirstName}
+                                />
+                                {errors.firstName && <div className='invalid-feedback'>{errors.firstName}</div>}
+                            </div>
+                            <div className="form-group mb-2 horizontal-group">
+                                <label className='form-label'>Last Name:</label>
+                                <input
+                                    type="text"
+                                    placeholder="Enter Last Name"
+                                    name="lastName"
+                                    value={lastName}
+                                    className={`form-control ${errors.lastName ? 'is-invalid' : ''}`}
+                                    onChange={handleLastName}
+                                />
+                                {errors.lastName && <div className='invalid-feedback'>{errors.lastName}</div>}
+                            </div>
+                            <div className="form-group mb-2 horizontal-group">
+                                <label className='form-label'>Role:</label>
+                                <select
+                                    name="role"
+                                    value={role}
+                                    className={`form-control ${errors.role ? 'is-invalid' : ''}`}
+                                    onChange={handleRole}
+                                >
+                                    <option value="">Select a role</option>
+                                    {roles.map((role) => (
+                                        <option key={role.roleId} value={role.roleId}>
+                                            {role.roleName}
+                                        </option>
+                                    ))}
+                                </select>
+                                {errors.role && <div className='invalid-feedback'>{errors.role}</div>}
+                            </div>
                         </div>
                         <div className="form-group mb-2">
-                            <label className='form-label'>Email:</label>
-                            <input
-                                type="email"
-                                placeholder="Enter Employee Email"
-                                name="email"
-                                value={email}
-                                className={`form-control ${errors.email ? 'is-invalid' : ''}`}
-                                onChange={handleEmail}
-                            />
-                            {errors.email && <div className='invalid-feedback'>{errors.email}</div>}
-                        </div>
-                        <div className="form-group mb-2">
-                            <label className='form-label'>Password:</label>
-                            <input
-                                type="password"
-                                placeholder="Enter Password"
-                                name="password"
-                                value={password}
-                                className={`form-control ${errors.password ? 'is-invalid' : ''}`}
-                                onChange={handlePassword}
-                            />
-                            {errors.password && <div className='invalid-feedback'>{errors.password}</div>}
-                        </div>
-                        <div className="form-group mb-2">
-                            <label className='form-label'>First Name:</label>
-                            <input
-                                type="text"
-                                placeholder="Enter First Name"
-                                name="firstName"
-                                value={firstName}
-                                className={`form-control ${errors.firstName ? 'is-invalid' : ''}`}
-                                onChange={handleFirstName}
-                            />
-                            {errors.firstName && <div className='invalid-feedback'>{errors.firstName}</div>}
-                        </div>
-                        <div className="form-group mb-2">
-                            <label className='form-label'>Last Name:</label>
-                            <input
-                                type="text"
-                                placeholder="Enter Last Name"
-                                name="lastName"
-                                value={lastName}
-                                className={`form-control ${errors.lastName ? 'is-invalid' : ''}`}
-                                onChange={handleLastName}
-                            />
-                            {errors.lastName && <div className='invalid-feedback'>{errors.lastName}</div>}
-                        </div>
-                        <div className="form-group mb-2">
-                            <label className='form-label'>Role:</label>
-                            <select
-                                name="role"
-                                value={role}
-                                className={`form-control ${errors.role ? 'is-invalid' : ''}`}
-                                onChange={handleRole}
-                            >
-                                <option value="">Select a role</option>
-                                {roles.map((role) => (
-                                    <option key={role.roleId} value={role.roleId}>
-                                        {role.roleName}
-                                    </option>
-                                ))}
-                            </select>
-                            {errors.role && <div className='invalid-feedback'>{errors.role}</div>}
-                        </div>
-                        <div className="form-group mb-2">
-                            <label className='form-label'>Is Team Leader:</label>
-                            <input
-                                type="checkbox"
-                                name="isTeamLeader"
-                                checked={isTeamLeader}
-                                onChange={handleIsTeamLeader}
-                            />
+                            <div className="checkbox-container">
+                                <label className='teamleaderlabel'>Is Team Leader:</label>
+                                <input
+                                    type="checkbox"
+                                    name="isTeamLeader"
+                                    checked={isTeamLeader}
+
+                                    onChange={handleIsTeamLeader}
+                                />
+                            </div>
                         </div>
                         <button type="submit" className="btn btn-primary">Save</button>
                     </form>
+
                 </div>
             </div>
         </div>
