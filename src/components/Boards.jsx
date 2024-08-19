@@ -9,6 +9,7 @@ import AddTaskModal from "./AddTaskModal"; // Import the new component
 // import PriorityModal from './PriorityModal';
 import MoveModal from "./MoveModal/MoveModal.jsx";
 import CalendarModal from "./CalendarModal/CalendarModal.jsx";
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 
 const Boards = () => {
@@ -51,13 +52,87 @@ const Boards = () => {
         };
 
         setStatuses(loadStatuses());
-    }, [projectName, boardId,name]);
+    }, [projectName, boardId, name]);
+
+    const onDragEnd = (result) => {
+        const { source, destination } = result;
+
+        // Check if the task was dropped outside any droppable area
+        if (!destination) {
+            return;
+        }
+
+        const sourceStatusId = parseInt(source.droppableId, 10);
+        const destinationStatusId = parseInt(destination.droppableId, 10);
+
+        // Check if the task was dropped in the same place
+        if (
+            source.droppableId === destination.droppableId &&
+            source.index === destination.index
+        ) {
+            return;
+        }
+
+        // Find source and destination status objects
+        const sourceStatus = statuses.find(status => status.id === sourceStatusId);
+        const destinationStatus = statuses.find(status => status.id === destinationStatusId);
+
+        if (!sourceStatus || !destinationStatus) {
+            return;
+        }
+
+        // Handle reordering within the same status
+        if (sourceStatusId === destinationStatusId) {
+            const reorderedTasks = Array.from(sourceStatus.tasks);
+            const [movedTask] = reorderedTasks.splice(source.index, 1);
+            reorderedTasks.splice(destination.index, 0, movedTask);
+
+            const updatedStatuses = statuses.map(status => {
+                if (status.id === sourceStatusId) {
+                    return {
+                        ...status,
+                        tasks: reorderedTasks
+                    };
+                }
+                return status;
+            });
+
+            setStatuses(updatedStatuses);
+            return;
+        }
+
+        // Handle moving tasks between different statuses
+        const task = sourceStatus.tasks[source.index];
+
+        const updatedSourceTasks = Array.from(sourceStatus.tasks);
+        updatedSourceTasks.splice(source.index, 1);
+
+        const updatedDestinationTasks = Array.from(destinationStatus.tasks);
+        updatedDestinationTasks.splice(destination.index, 0, task);
+
+        const updatedStatuses = statuses.map(status => {
+            if (status.id === sourceStatusId) {
+                return {
+                    ...status,
+                    tasks: updatedSourceTasks,
+                };
+            } else if (status.id === destinationStatusId) {
+                return {
+                    ...status,
+                    tasks: updatedDestinationTasks,
+                };
+            }
+            return status;
+        });
+
+        setStatuses(updatedStatuses);
+    };
 
 
     // Save statuses to localStorage whenever they change
     useEffect(() => {
         localStorage.setItem(`${projectName}_${boardId}_${name}_statuses`, JSON.stringify(statuses));
-    }, [statuses, projectName, boardId,name]);
+    }, [statuses, projectName, boardId, name]);
 
     const handleAddTask = (statusId, task) => {
         if (task.name.trim()) {
@@ -216,150 +291,183 @@ const Boards = () => {
 
 
     return (
-        <div className={`backend-container ${boardId}`}>
-            <h1>{name}</h1>
-            <div className="backend-status-container">
-                {statuses.map((status) => (
-                    <div key={status.id} className="backend-status-box"
-                         style={{backgroundColor: status.backgroundColor}}>
-                        <div className="backend-status-header">
-                            <span className="backend-status-title">{status.title}</span>
-                            <span className="backend-status-menu"
-                                  onClick={() => setDropdownStatusId(dropdownStatusId === status.id ? null : status.id)}>...</span>
-                            {dropdownStatusId === status.id && (
-                                <div className="backend-dropdown-menu">
-                                    <div className="backend-dropdown-item"
-                                         onClick={() => handleDeleteStatus(status.id)}>Delete Status
-                                    </div>
-                                    <div className="backend-dropdown-separator"/>
-                                    <div className="backend-dropdown-color-picker">
-                                        <div className="backend-color-box" style={{backgroundColor: '#a729ca'}}
-                                             onClick={() => handleChangeColor(status.id, '#a729ca')}/>
-                                        <div className="backend-color-box" style={{backgroundColor: '#1148cc'}}
-                                             onClick={() => handleChangeColor(status.id, '#1148cc')}/>
-                                        <div className="backend-color-box" style={{backgroundColor: '#ffcccc'}}
-                                             onClick={() => handleChangeColor(status.id, '#ffcccc')}/>
-                                        <div className="backend-color-box" style={{backgroundColor: '#ccffcc'}}
-                                             onClick={() => handleChangeColor(status.id, '#ccffcc')}/>
-                                        <div className="backend-color-box" style={{backgroundColor: '#c3a838'}}
-                                             onClick={() => handleChangeColor(status.id, '#c3a838')}/>
-                                        <div className="backend-color-box" style={{backgroundColor: '#6ab54d'}}
-                                             onClick={() => handleChangeColor(status.id, '#6ab54d')}/>
-                                        <div className="backend-color-box" style={{backgroundColor: '#ccccff'}}
-                                             onClick={() => handleChangeColor(status.id, '#ccccff')}/>
-                                        <div className="backend-color-box" style={{backgroundColor: '#ffffcc'}}
-                                             onClick={() => handleChangeColor(status.id, '#ffffcc')}/>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                        <div className="backend-tasks-container">
-                            {status.tasks.map((task) => (
-                                <div
-                                    key={task.id}
-                                    className={`backend-task-box ${highlightedTaskId === task.id ? 'highlighted' : ''}`}
-                                    onDoubleClick={() => handleDoubleClick(task.id)}
-                                >
-                                    <div className="task-priority-display priority-${task.priority}">
-                                        {/* Display priority name and icon */}
-                                        {task.priority === 'high' && (
-                                            <span className="priority-high">High</span>
-                                        )}
-                                        {task.priority === 'medium' && (
-                                            <span className="priority-medium">Medium</span>
-                                        )}
-                                        {task.priority === 'low' && (
-                                            <span className="priority-low">Low</span>
-                                        )}
-                                    </div>
-                                    {editingTaskId === task.id ? (
-                                        <input
-                                            type="text"
-                                            defaultValue={task.name}
-                                            onBlur={(e) => handleBlur(status.id, task.id, e.target.value)}
-                                            className="backend-task-input"
-                                        />
-                                    ) : (
-                                        <>
-                                            <span>{task.name}</span>
-                                            {task.dueDate && (
-                                                <span className="task-due-date">
-                                    {new Date(task.dueDate).toLocaleDateString()}
-                                    </span>
+        <DragDropContext onDragEnd={onDragEnd}>
+            <div className={`backend-container ${boardId}`}>
+                <h1>{name}</h1>
+                <Droppable droppableId="all-statuses" direction="horizontal">
+                    {(provided) => (
+                        <div
+                            className="backend-status-container"
+                            {...provided.droppableProps}
+                            ref={provided.innerRef}
+                        >
+                            {statuses.map((status) => (
+                                <Droppable key={status.id} droppableId={status.id.toString()} type="TASK">
+                                    {(provided) => (
+                                        <div
+                                            className="backend-status-box"
+                                            style={{backgroundColor: status.backgroundColor}}
+                                            ref={provided.innerRef}
+                                            {...provided.droppableProps}
+                                        >
+                                            <div className="backend-status-header">
+                                                <span className="backend-status-title">
+                                                    {status.title}
+                                                </span>
+                                                <span className="backend-status-menu"
+                                                      onClick={() => setDropdownStatusId(dropdownStatusId === status.id ? null : status.id)}>...</span>
+                                                {dropdownStatusId === status.id && (
+                                                    <div className="backend-dropdown-menu">
+                                                        <div className="backend-dropdown-item"
+                                                             onClick={() => handleDeleteStatus(status.id)}>Delete Status
+                                                        </div>
+                                                        <div className="backend-dropdown-separator"/>
+                                                        <div className="backend-dropdown-color-picker">
+                                                            <div className="backend-color-box"
+                                                                 style={{backgroundColor: '#a729ca'}}
+                                                                 onClick={() => handleChangeColor(status.id, '#a729ca')}/>
+                                                            <div className="backend-color-box"
+                                                                 style={{backgroundColor: '#1148cc'}}
+                                                                 onClick={() => handleChangeColor(status.id, '#1148cc')}/>
+                                                            <div className="backend-color-box"
+                                                                 style={{backgroundColor: '#ffcccc'}}
+                                                                 onClick={() => handleChangeColor(status.id, '#ffcccc')}/>
+                                                            <div className="backend-color-box"
+                                                                 style={{backgroundColor: '#ccffcc'}}
+                                                                 onClick={() => handleChangeColor(status.id, '#ccffcc')}/>
+                                                            <div className="backend-color-box"
+                                                                 style={{backgroundColor: '#c3a838'}}
+                                                                 onClick={() => handleChangeColor(status.id, '#c3a838')}/>
+                                                            <div className="backend-color-box"
+                                                                 style={{backgroundColor: '#6ab54d'}}
+                                                                 onClick={() => handleChangeColor(status.id, '#6ab54d')}/>
+                                                            <div className="backend-color-box"
+                                                                 style={{backgroundColor: '#ccccff'}}
+                                                                 onClick={() => handleChangeColor(status.id, '#ccccff')}/>
+                                                            <div className="backend-color-box"
+                                                                 style={{backgroundColor: '#ffffcc'}}
+                                                                 onClick={() => handleChangeColor(status.id, '#ffffcc')}/>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
+                                            <div className="backend-tasks-container">
+                                                {status.tasks.map((task, taskIndex) => (
+                                                    <Draggable key={task.id} draggableId={task.id} index={taskIndex}>
+                                                        {(provided) => (
+                                                            <div
+                                                                className={`backend-task-box ${highlightedTaskId === task.id ? 'highlighted' : ''}`}
+                                                                {...provided.draggableProps}
+                                                                {...provided.dragHandleProps}
+                                                                ref={provided.innerRef}
+                                                                onDoubleClick={() => handleDoubleClick(task.id)}
+                                                            >
+                                                                <div
+                                                                    className="task-priority-display priority-${task.priority}">
+                                                                    {task.priority === 'high' && (
+                                                                        <span className="priority-high">High</span>
+                                                                    )}
+                                                                    {task.priority === 'medium' && (
+                                                                        <span className="priority-medium">Medium</span>
+                                                                    )}
+                                                                    {task.priority === 'low' && (
+                                                                        <span className="priority-low">Low</span>
+                                                                    )}
+                                                                </div>
+                                                                {editingTaskId === task.id ? (
+                                                                    <input
+                                                                        type="text"
+                                                                        defaultValue={task.name}
+                                                                        onBlur={(e) => handleBlur(status.id, task.id, e.target.value)}
+                                                                        className="backend-task-input"
+                                                                    />
+                                                                ) : (
+                                                                    <>
+                                                                        <span>{task.name}</span>
+                                                                        {task.dueDate && (
+                                                                            <span className="task-due-date">
+                                                                            {new Date(task.dueDate).toLocaleDateString()}
+                                                                        </span>
+                                                                        )}
+                                                                        <FaPen
+                                                                            className="backend-pencil-icon"
+                                                                            onClick={() => handlePencilClick(task)}
+                                                                        />
+                                                                    </>
+                                                                )}
+                                                            </div>
+                                                        )}
+                                                    </Draggable>
+                                                ))}
+                                                {provided.placeholder}
+                                            </div>
+                                            {(status.id === 1 || status.id === 2) && (
+                                                <button
+                                                    onClick={() => {
+                                                        setCurrentStatusId(status.id);
+                                                        setShowAddTaskModal(true);
+                                                    }}
+                                                    className="backend-show-add-task"
+                                                >
+                                                    + Add Task
+                                                </button>
                                             )}
-
-                                            <FaPen
-                                                className="backend-pencil-icon"
-                                                onClick={() => handlePencilClick(task)}
-                                            />
-                                        </>
+                                        </div>
                                     )}
-                                </div>
+                                </Droppable>
                             ))}
+                            {provided.placeholder}
                         </div>
-                        {(status.id === 1 || status.id === 2) && (
-                            <button
-                                onClick={() => {
-                                    setCurrentStatusId(status.id);
-                                    setShowAddTaskModal(true);
-                                }}
-                                className="backend-show-add-task"
-                            >
-                                + Add Task
-                            </button>
-                        )}
-                    </div>
-                ))}
+                    )}
+                </Droppable>
+                {selectedTask && (
+                    <TaskModal
+                        onDelete={handleDeleteTask}
+                        task={selectedTask}
+                        onClose={handleCloseModal}
+                        boards={statuses}
+                        statuses={statuses}
+                        onSaveDate={handleSaveDate}
+                        onRemoveDate={handleRemoveDate}
+                        onSavePriority={handleSavePriority}
+                    />
+                )}
+                {showMoveModal && selectedTask && (
+                    <MoveModal
+                        task={selectedTask}
+                        statuses={statuses}
+                        onClose={() => setShowMoveModal(false)}
+                        onMove={(task, newStatusId) => {
+                            handleMoveTask(task, newStatusId);
+                            setShowMoveModal(false);
+                        }}
+                    />
+                )}
+                {showPriorityModal && (
+                    <PriorityModal
+                        isVisible={showPriorityModal}
+                        onClose={handleClosePriorityModal}
+                        onSavePriority={handleSavePriority}
+                    />
+                )}
+                {showcalenderModal && (
+                    <CalendarModal
+                        isVisible={showcalenderModal}
+                        onClose={handleCloseCalenderModal}
+                        onSavePriority={handleSaveDate}
+                        onRemoveDate={handleRemoveDate}/>
+                )}
+                {showAddTaskModal && (
+                    <AddTaskModal
+                        isVisible={showAddTaskModal}
+                        onClose={() => setShowAddTaskModal(false)}
+                        onAddTask={(task) => handleAddTask(currentStatusId, task)}
+                        status={statuses.find(status => status.id === currentStatusId)} // Pass the correct status object
+                    />
+
+                )}
             </div>
-
-            {selectedTask && (
-                <TaskModal
-                    onDelete={handleDeleteTask}
-                    task={selectedTask}
-                    onClose={handleCloseModal}
-                    boards={statuses}
-                    statuses={statuses}
-                    onSaveDate={handleSaveDate}
-                    onRemoveDate={handleRemoveDate}
-                    onSavePriority={handleSavePriority}
-                />
-            )}
-            {showMoveModal && selectedTask && (
-                <MoveModal
-                    task={selectedTask}
-                    statuses={statuses}
-                    onClose={() => setShowMoveModal(false)}
-                    onMove={(task, newStatusId) => {
-                        handleMoveTask(task, newStatusId);
-                        setShowMoveModal(false);
-                    }}
-                />
-            )}
-            {showPriorityModal && (
-                <PriorityModal
-                    isVisible={showPriorityModal}
-                    onClose={handleClosePriorityModal}
-                    onSavePriority={handleSavePriority}
-                />
-            )}
-            {showcalenderModal && (
-                <CalendarModal
-                    isVisible={showcalenderModal}
-                    onClose={handleCloseCalenderModal}
-                    onSavePriority={handleSaveDate}
-                    onRemoveDate={handleRemoveDate}/>
-            )}
-            {showAddTaskModal && (
-                <AddTaskModal
-                    isVisible={showAddTaskModal}
-                    onClose={() => setShowAddTaskModal(false)}
-                    onAddTask={(task) => handleAddTask(currentStatusId, task)}
-                    status={statuses.find(status => status.id === currentStatusId)} // Pass the correct status object
-                />
-
-            )}
-
-        </div>
+        </DragDropContext>
     );
 };
 
