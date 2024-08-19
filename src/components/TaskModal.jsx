@@ -8,7 +8,8 @@ import {
     faCalendar,
     faArrowsAlt,
     faTrash,
-    faClipboard
+    faClipboard,
+    faArrowUp
 } from '@fortawesome/free-solid-svg-icons';
 import PriorityModal from './PriorityModal';
 import MoveModal from "./MoveModal/MoveModal.jsx";
@@ -53,7 +54,8 @@ const TaskModal = ({task, onClose, onDelete, boards, statuses, onSaveDate, onRem
                     <button onClick={() => setIsDetailsModalOpen(true)}>
                         <FontAwesomeIcon icon={faClipboard}/> Show Details
                     </button>
-                    <button onClick={() => setIsPriorityModalOpen(true)}>Edit Priority</button>
+                    <button onClick={() => setIsPriorityModalOpen(true)}>
+                        <FontAwesomeIcon icon={faArrowUp}/>  Edit Priority</button>
                     <button>
                         <FontAwesomeIcon icon={faUser}/> Change Member
                     </button>

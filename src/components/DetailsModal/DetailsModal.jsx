@@ -1,24 +1,30 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './DetailsModal.css';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faListAlt, faTasks, faTimes} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faListAlt, faTasks, faTimes } from '@fortawesome/free-solid-svg-icons';
 
-const DetailsModal = ({task, onClose}) => {
-    // Initialize tableData with default structure if task or task.tableData is not available
+const DetailsModal = ({ task, onClose }) => {
     const initialTableData = (task && task.tableData && Array.isArray(task.tableData) && task.tableData.length > 0)
         ? task.tableData
-        : [{Description: task.description || "", Comments: ""}];
+        : [{ Description: task.description || "", Comments: "" }];
 
-    const [descriptionData, setDescriptionData] = useState(initialTableData.map(row => ({Description: row.Description})));
-    const [commentsData, setCommentsData] = useState(initialTableData.map(row => ({Comments: row.Comments})));
+    const [descriptionData, setDescriptionData] = useState(initialTableData.map(row => ({ Description: row.Description })));
+    const [commentsData, setCommentsData] = useState(initialTableData.map(row => ({ Comments: row.Comments })));
+    const [statusName, setStatusName] = useState(task.statusName);
 
     useEffect(() => {
         if (task && task.tableData && Array.isArray(task.tableData)) {
-            setDescriptionData(task.tableData.map(row => ({Description: row.Description})));
-            setCommentsData(task.tableData.map(row => ({Comments: row.Comments})));
+            setDescriptionData(task.tableData.map(row => ({ Description: row.Description })));
+            setCommentsData(task.tableData.map(row => ({ Comments: row.Comments })));
         }
     }, [task]);
+
+    useEffect(() => {
+        if (task.statusName) {
+            setStatusName(task.statusName);
+        }
+    }, [task.statusName]);
 
     if (!task) return null;
 
@@ -40,9 +46,8 @@ const DetailsModal = ({task, onClose}) => {
         setCommentsData(updatedData);
     };
 
-
     const handleAddCommentsRow = () => {
-        setCommentsData([...commentsData, {Comments: ''}]);
+        setCommentsData([...commentsData, { Comments: '' }]);
     };
 
     const handleAddAttachment = () => {
@@ -55,14 +60,14 @@ const DetailsModal = ({task, onClose}) => {
             <div className="details-modal-content">
                 <div className="details-modal-header">
                     <div className="details-modal-title">
-                        <FontAwesomeIcon icon={faListAlt} className="details-icon"/>
+                        <FontAwesomeIcon icon={faListAlt} className="details-icon" />
                         <h2>{task.name}</h2>
                     </div>
-                    <FontAwesomeIcon icon={faTimes} className="close-icon" onClick={onClose}/>
+                    <FontAwesomeIcon icon={faTimes} className="close-icon" onClick={onClose} />
                 </div>
-                <p className="task-status">In Status: {task.statusName}</p>
+                <p className="task-status">In Status: {statusName}</p>
                 <div className="detailstitle">
-                    <FontAwesomeIcon icon={faTasks} className="details-icon"/>
+                    <FontAwesomeIcon icon={faTasks} className="details-icon" />
                     <p className="task-description">Description:</p>
                     <button className="add-attachment-btn" onClick={handleAddAttachment}>Add Attachment</button>
                 </div>
@@ -73,12 +78,12 @@ const DetailsModal = ({task, onClose}) => {
                                 <tbody>
                                 <tr>
                                     <td>
-                                            <textarea
-                                                className="textarea"
-                                                value={row.Description}
-                                                onChange={(e) => handleDescriptionChange(e, rowIndex)}
-                                                rows="10" // Adjust rows as needed
-                                            />
+                                        <textarea
+                                            className="textarea"
+                                            value={row.Description}
+                                            onChange={(e) => handleDescriptionChange(e, rowIndex)}
+                                            rows="10"
+                                        />
                                     </td>
                                 </tr>
                                 </tbody>
@@ -88,7 +93,7 @@ const DetailsModal = ({task, onClose}) => {
                 </div>
 
                 <div className="detailstitle">
-                    <FontAwesomeIcon icon={faTasks} className="details-icon"/>
+                    <FontAwesomeIcon icon={faTasks} className="details-icon" />
                     <p className="task-comment">Comments:</p>
                 </div>
                 <div className="table-container-comment">
@@ -104,12 +109,12 @@ const DetailsModal = ({task, onClose}) => {
                                 <tbody>
                                 <tr>
                                     <td>
-                                            <textarea
-                                                className="textarea-comment"
-                                                value={row.Comments}
-                                                onChange={(e) => handleCommentsChange(e, rowIndex)}
-                                                rows="10" // Adjust rows as needed
-                                            />
+                                        <textarea
+                                            className="textarea-comment"
+                                            value={row.Comments}
+                                            onChange={(e) => handleCommentsChange(e, rowIndex)}
+                                            rows="10"
+                                        />
                                     </td>
                                 </tr>
                                 </tbody>
@@ -128,6 +133,7 @@ const DetailsModal = ({task, onClose}) => {
 
 DetailsModal.propTypes = {
     task: PropTypes.shape({
+        id: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
         statusName: PropTypes.string.isRequired,
         date: PropTypes.instanceOf(Date),
