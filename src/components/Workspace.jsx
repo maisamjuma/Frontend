@@ -35,6 +35,7 @@ const Workspace = ({isVisible}) => {
             setProjectDescription(projectDescription); // Make sure this is correctly set
             setProjectMembers(projectMembers); // Set project members here
            // console.log("chinaaaaa", projectId, projectDescription, "memberes:", projectMembers, "project member:", projectName);
+            setProjectDescription(projectDescription);
         }
     }, [location.state]);
 
