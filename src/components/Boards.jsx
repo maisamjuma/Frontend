@@ -12,7 +12,7 @@ import CalendarModal from "./CalendarModal/CalendarModal.jsx";
 
 
 const Boards = () => {
-    const {projectName, boardId} = useParams(); // Get projectName and boardId from the route parameters
+    const {projectName, boardId, name} = useParams(); // Get boardName from the route parameters
     const [statuses, setStatuses] = useState([]);
     const [currentStatusId, setCurrentStatusId] = useState(null);
     const [editingTaskId, setEditingTaskId] = useState(null);
@@ -24,11 +24,10 @@ const Boards = () => {
     const [showAddTaskModal, setShowAddTaskModal] = useState(false);
     const [showcalenderModal, setcalendarModal] = useState(false);
 
-
     // Load statuses from localStorage or use default values
     useEffect(() => {
         const loadStatuses = () => {
-            const savedStatuses = localStorage.getItem(`${projectName}_${boardId}_statuses`);
+            const savedStatuses = localStorage.getItem(`${projectName}_${boardId}_${name}_statuses`);
             const defaultStatuses = [
                 {id: 1, title: 'unassigned tasks', tasks: [], backgroundColor: '#f9f9f9'},
                 {id: 2, title: 'To Do', tasks: [], backgroundColor: '#f9f9f9'},
@@ -42,30 +41,30 @@ const Boards = () => {
             ];
             const statuses = savedStatuses ? JSON.parse(savedStatuses) : defaultStatuses;
 
-            if (boardId === 'qa') {
+            if (name === 'QA') {
                 return statuses.filter(status => status.id > 5); // Show only statuses with id > 5
                 // eslint-disable-next-line no-dupe-else-if
-            } else if (boardId === 'frontend' || boardId === 'backend') {
+            } else if (name === 'Backend' || name === 'Frontend') {
                 return statuses.filter(status => status.id <= 5);
             }
             return statuses; // Show all statuses for other boards
         };
 
         setStatuses(loadStatuses());
-    }, [projectName, boardId]);
+    }, [projectName, boardId,name]);
 
 
     // Save statuses to localStorage whenever they change
     useEffect(() => {
-        localStorage.setItem(`${projectName}_${boardId}_statuses`, JSON.stringify(statuses));
-    }, [statuses, projectName, boardId]);
+        localStorage.setItem(`${projectName}_${boardId}_${name}_statuses`, JSON.stringify(statuses));
+    }, [statuses, projectName, boardId,name]);
 
     const handleAddTask = (statusId, task) => {
         if (task.name.trim()) {
             const status = statuses.find(status => status.id === statusId);
             if (status) {
                 const newTask = {
-                    id: `${projectName}_${boardId}_${statusId}_${status.tasks.length + 1}`,
+                    id: `${projectName}_${boardId}_${name}_${statusId}_${status.tasks.length + 1}`,
                     ...task,
                     statusId: statusId,
                     date: task.date || null, // Add date here if needed
@@ -218,7 +217,7 @@ const Boards = () => {
 
     return (
         <div className={`backend-container ${boardId}`}>
-            <h1>{boardId.charAt(0).toUpperCase() + boardId.slice(1)}</h1>
+            <h1>{name}</h1>
             <div className="backend-status-container">
                 {statuses.map((status) => (
                     <div key={status.id} className="backend-status-box"

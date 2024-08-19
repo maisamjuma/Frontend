@@ -199,18 +199,18 @@ const Workspace = ({isVisible}) => {
                             <div className="board-container">
                                 <Link
                                     className="secnav-link"
-                                    to={`/main/workspace/${projectName}/${board.id}`}
+                                    to={`/main/workspace/${projectName}/${board.boardId}/${board.name}`}
                                     style={{
-                                        color: selectedBoard === board.id ? 'darksalmon' : 'black',
-                                        fontWeight: selectedBoard === board.id ? "bold" : "normal"
+                                        color: selectedBoard === board.boardId ? 'darksalmon' : 'black',
+                                        fontWeight: selectedBoard === board.boardId ? "bold" : "normal"
                                     }}
-                                    onClick={() => handleBoardClick(board.id)}
+                                    onClick={() => handleBoardClick(board.boardId)}
                                 >
                                     {board.name}
                                 </Link>
                                 <button
                                     className="delete-board-button"
-                                    onClick={() => handleDeleteBoard(board.id)}
+                                    onClick={() => handleDeleteBoard(board.boardId)}
                                 >
                                     Delete
                                 </button>
@@ -260,7 +260,7 @@ const Workspace = ({isVisible}) => {
             </nav>
             <div className="main-content">
                 <Routes>
-                    <Route path="/:boardId" element={<Boards/>}/>
+                    <Route path="/:boardId/:name" element={<Boards/>}/>
                 </Routes>
             </div>
         </div>
