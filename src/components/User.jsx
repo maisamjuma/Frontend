@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import UserService from "../Services/UserService";
+import UserService from '../Services/UserService';
 import RoleService from "../Services/RoleService";
-import { useNavigate, useParams } from "react-router-dom";
-import "./User.css";
+import { useNavigate, useParams } from 'react-router-dom';
+import './User.css';
 
 const User = () => {
     const navigate = useNavigate();
@@ -228,14 +228,12 @@ const User = () => {
                                     type="checkbox"
                                     name="isTeamLeader"
                                     checked={isTeamLeader}
-
                                     onChange={handleIsTeamLeader}
                                 />
                             </div>
                         </div>
                         <button type="submit" className="btn btn-primary">Save</button>
                     </form>
-
                 </div>
             </div>
         </div>
