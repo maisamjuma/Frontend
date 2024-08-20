@@ -42,7 +42,14 @@ class BoardService {
         return axios.delete(`${BOARDS_API_BASE_URL}/${boardId}`);
     }
 
+    // Add default boards to a project
+    addDefaultBoards(projectId) {
+        // Construct the URL with the projectId
+        const url = `${BOARDS_API_BASE_URL}/projects/${projectId}/default`;
 
+        // Make a POST request to the endpoint
+        return axios.post(url);
+    }
 
 }
 

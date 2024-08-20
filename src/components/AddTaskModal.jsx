@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import './AddTaskModal.css';
 import Calendar from 'react-calendar';
-
 // Static list of users
 const usersList = [
     {id: 1, name: 'John Doe'},
@@ -54,9 +53,11 @@ const AddTaskModal = ({isVisible, onClose, onAddTask, status}) => {
     return (
         <>
             {isVisible && (
-                <div className="modal-overlay">
-                    <div className="modal-content">
-                        <h2>Add New Task</h2>
+                <div className="addtask-modal-overlay">
+                    <div className="addtask-modal-content">
+                        <h3>
+                            Add New Task
+                        </h3>
                         <div className="task-info">
                             <input
                                 type="text"
@@ -72,20 +73,24 @@ const AddTaskModal = ({isVisible, onClose, onAddTask, status}) => {
                             placeholder="Enter task description"
                             className="modal-description-textarea"
                         />
-
                         {/* Date Picker */}
                         <div className="date-options">
+                            <p className="paragraph">Due date:</p>
                             <Calendar
                                 onChange={(date) => setDueDate(date)}
                                 value={dueDate}
                                 tileClassName={({date}) =>
-                                    dueDate && date.toDateString() === new Date(dueDate).toDateString() ? 'selected-date' : null
+                                    dueDate && date.toDateString() === new Date(dueDate).toDateString()
+                                        ? 'selected-date'
+                                        : null
                                 }
+                                className="custom-calendar" /* Apply custom class here */
                             />
                         </div>
 
                         {/* Priority Dropdown */}
                         <div className="priority-options">
+                            <p className="paragraph">Priority:</p>
                             <select
                                 value={priority}
                                 onChange={(e) => setPriority(e.target.value)}
@@ -101,6 +106,7 @@ const AddTaskModal = ({isVisible, onClose, onAddTask, status}) => {
                         {/* eslint-disable-next-line react/prop-types */}
                         {status.id === 2 && (
                             <div className="user-options">
+                                <p className="paragraph">Assign To:</p>
                                 <select
                                     value={assignedUser}
                                     onChange={(e) => setAssignedUser(e.target.value)}

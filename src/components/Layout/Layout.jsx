@@ -19,13 +19,11 @@ const Layout = ({children, onLogout}) => {
     }, [navigate]);
 
     useEffect(() => {
-        // Load projects from local storage when the component mounts
         const savedProjects = JSON.parse(localStorage.getItem('projects')) || [];
         setProjects(savedProjects);
     }, []);
 
     useEffect(() => {
-        // Save projects to local storage whenever the projects state changes
         localStorage.setItem('projects', JSON.stringify(projects));
     }, [projects]);
 
@@ -34,7 +32,6 @@ const Layout = ({children, onLogout}) => {
     };
 
     const addProject = (projectName) => {
-        // const newProjectId = `project${projects.length + 1}`; // Generate a new project ID
         setProjects([...projects, {name: projectName}]);
     };
 
@@ -54,21 +51,29 @@ const Layout = ({children, onLogout}) => {
     };
 
     return (
-        <div className="layout1">
-            <Navbar onLogout={onLogout}/> {/* Pass onLogout to Navbar */}
-            <div className="main">
-                <Sidebar
-                    projects={projects}
-                    onProjectClick={handleProjectClick}
-                    onAddProject={addProject}
-                    onMenuAction={handleMenuAction}
-                />
+        <div className="layout-container">
+            {/* First Row: Navbar */}
+            <div className="navbar">
+                <Navbar onLogout={onLogout}/> {/* Pass onLogout to Navbar */}
+            </div>
+
+            {/* Second Row: Two Columns */}
+            <div className="content-row">
+                {/* Left Column: Sidebar */}
+                <div className="sidebar">
+                    <Sidebar
+                        projects={projects}
+                        onProjectClick={handleProjectClick}
+                        onAddProject={addProject}
+                        onMenuAction={handleMenuAction}
+                    />
+                </div>
+                {/* Right Column: Main Content */}
                 <div className="main-content">
-                    <div className="content">
-                        {children}
-                    </div>
+                    {children}
                 </div>
             </div>
+
             {/* Render the Modal component */}
             <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} addProject={addProject}/>
         </div>

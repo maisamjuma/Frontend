@@ -20,7 +20,7 @@ const PriorityModal = ({onClose, onSave}) => {
     return (
         <div className="priority-modal-overlay" onClick={onClose}>
             <div className="priority-modal-content" onClick={(e) => e.stopPropagation()}>
-                <h2>Select Priority</h2>
+                <h2 className="priorityheader">Select Priority</h2>
                 <div className="priority-options">
                     <button
                         className={`priority-option ${selectedPriority === 'high' ? 'selected' : ''}`}

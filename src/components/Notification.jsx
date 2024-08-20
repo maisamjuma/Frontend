@@ -58,12 +58,13 @@ const Notification = ({ loggedInUser, users }) => {
         <div>
             <Navbar />
             <nav className="secondary-navbarN">
+                <h4>Notifications</h4>
                 <div
                     className="filterIcon"
                     onMouseEnter={handleFilterIconMouseEnter}
                     onMouseLeave={handleFilterIconMouseLeave}
                 >
-                    <Filter />
+                    <Filter/>
                     {filterPopupVisible && (
                         <div
                             className="search-popup active"
@@ -91,13 +92,12 @@ const Notification = ({ loggedInUser, users }) => {
                 </div>
             </nav>
             <div className="d-flex">
-                <SideBarForNoti
+            <SideBarForNoti
                     users={users}
                     loggedInUser={loggedInUser}
                     onSendNotification={() => setShowPopup(true)}
                 />
                 <div className="main-contentN">
-                    <h4>Notifications</h4>
                     <div className="message-list">
                         {filteredMessages.map((msg, index) => (
                             <div key={index} className="message-item" onClick={() => setShowPopup(msg)}>
