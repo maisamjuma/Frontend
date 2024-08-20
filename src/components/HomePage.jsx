@@ -1,10 +1,9 @@
-import React, {useEffect, useState} from 'react';
-import {useNavigate} from "react-router-dom";
-// import {listUsers} from "../../Services/UserService.js";
+import React, { useEffect, useState, useRef } from 'react';
+import { useNavigate } from "react-router-dom";
 import UserService from "../Services/UserService.js";
 import RoleService from '../Services/RoleService';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faUserPlus, faUserShield, faUserTag} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserPlus, faUserShield, faUserTag } from '@fortawesome/free-solid-svg-icons';
 import './HomePage.css';
 
 const HomePage = () => {
@@ -17,6 +16,10 @@ const HomePage = () => {
     const [successMessage, setSuccessMessage] = useState('');
     const navigator = useNavigate();
 
+    // Refs for scrolling
+    const assignContentRef = useRef(null);
+    const roleContentRef = useRef(null);
+
     useEffect(() => {
         UserService.getAllUsers().then((response) => {
             setUsers(response.data);
@@ -26,10 +29,6 @@ const HomePage = () => {
     function addNewUser() {
         navigator('/main/User');
     }
-
-    // function updateUser(id) {
-    //     navigator(`/edit-user/${id}`);
-    // }
 
     function handleRoleChange(e) {
         setSelectedRole(e.target.value);
@@ -74,6 +73,9 @@ const HomePage = () => {
             setSuccessMessage('');
         }
         setIsAddingRole(!isAddingRole);
+        if (!isAddingRole && roleContentRef.current) {
+            roleContentRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
     };
 
     const handleToggleAssignTeamLeader = () => {
@@ -83,13 +85,16 @@ const HomePage = () => {
             // Optionally clear any relevant success message if needed
         }
         setIsAssigningTeamLeader(!isAssigning);
+        if (!isAssigning && assignContentRef.current) {
+            assignContentRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
     };
 
     return (
         <div className="forScroll">
         <div className='listcontainer'>
             <div className='video-container mb-3 d-flex align-items-center'>
-                <video width="25%" height="10%" autoPlay loop muted>
+                <video width="20%" height="10%" autoPlay loop muted>
                     <source src="/videos/H.mp4" type="video/mp4"/>
                     Your browser does not support the video tag.
                 </video>
@@ -111,7 +116,7 @@ const HomePage = () => {
                     {isAssigning ? 'Cancel' : 'Assign Team Leaders'}
                 </button>
                 {isAssigning && (
-                    <div className='Assigncontent'>
+                    <div className='Assigncontent' ref={assignContentRef}>
                         <select
                             value={selectedRole}
                             onChange={handleRoleChange}
@@ -154,7 +159,7 @@ const HomePage = () => {
                 </button>
             </div>
             {isAddingRole && (
-                <div className='rolecontent'>
+                <div className='rolecontent' ref={roleContentRef}>
                     <input
                         type='text'
                         value={newRole}
