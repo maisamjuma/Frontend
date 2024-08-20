@@ -23,7 +23,7 @@
     overflow: auto;
     flex-grow: 1;
     width: 900px;
-
+    margin-bottom: 330px;
 }
 
 .secondary-navbarN {
@@ -134,11 +134,18 @@
 }
 
 .popup-content {
+    word-break: break-word;
+    word-wrap: break-word;
+    white-space: wrap;
     background: white;
     padding: 17px;
     border-radius: 8px;
     width: 400px;
     height: 450px;
+    overflow-y: auto;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+    overflow-x: hidden;
 }
 
 .user-selection {

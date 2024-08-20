@@ -1,13 +1,21 @@
 .listcontainer {
-    max-height: 120vh; /* Limits the container height to the viewport */
-    overflow-y: auto; /* Enables vertical scrolling */
+    max-height: 1200px; /* Limits the container height to the viewport */
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
     overflow-x: hidden;
+
 }
 
 .listcontainer::-webkit-scrollbar {
     display: none; /* Hides the scrollbar in WebKit-based browsers (Chrome, Safari) */
+}
+.forScroll{
+    overflow-y: auto; /* Allows scrolling only within this area */
+    scrollbar-width: none; /* Hide scrollbar in Firefox */
+
+}
+.forScroll::-webkit-scrollbar {
+    display: none;
 }
 
 .video-container {

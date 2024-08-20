@@ -12,7 +12,7 @@ const Members = ({ members, isDeleting, onCheckboxChange, selectedMembers, onMem
                     onClick={() => onMemberClick(member)} // Ensure this is passing the full member object
                 >
                     {isDeleting && (
-                        <div className="checkbox-container">
+                        <div>
                             <input
                                 type="checkbox"
                                 checked={selectedMembers.includes(member.id)}

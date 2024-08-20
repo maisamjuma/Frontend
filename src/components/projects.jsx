@@ -99,8 +99,8 @@ const Projects = () => {
 
     const handleClickOutside = (event) => {
         if (containerRef.current && !containerRef.current.contains(event.target)) {
-            setShowDeletePopup(false);
-            setIsDeleting(false);
+            // setShowDeletePopup(false);
+            // setIsDeleting(false);
             setShowMembersOnly(true);
         }
     };
@@ -123,7 +123,13 @@ const Projects = () => {
     const handleDeleteClick = () => {
         setImage(defaultProjectIcon); // Reset the image to the initial icon
     };
+    useEffect(() => {
+        console.log("showMembersOnly changed:", showMembersOnly);
+        console.log("isDeleting changed:", isDeleting);
+        console.log("projectMembers changed:", projectMembers);
 
+        // Other effect logic
+    }, [showMembersOnly, isDeleting, projectMembers]);
     return (
         <div className="d-flex flex-row gap-5" ref={containerRef}>
             <nav className="secondary-navbar">

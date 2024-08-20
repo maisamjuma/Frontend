@@ -61,13 +61,13 @@ const AddMember = ({ availableMembers, onAddMember, onSave, onDeleteMode, isDele
                             className={`member-item ${selectedMembers.includes(member.id) ? 'selected' : ''}`}
                             onClick={() => handleMemberClick(member)}
                         >
-                            {isDeleting && (
-                                <input
-                                    type="checkbox"
-                                    checked={selectedMembers.includes(member.id)}
-                                    onChange={() => handleMemberClick(member)}
-                                />
-                            )}
+                            {/*{isDeleting && (*/}
+                            {/*    <input*/}
+                            {/*        type="checkbox"*/}
+                            {/*        checked={selectedMembers.includes(member.id)}*/}
+                            {/*        onChange={() => handleMemberClick(member)}*/}
+                            {/*    />*/}
+                            {/*)}*/}
                             <div className="member-name">{member.username}</div>
                             <div className="member-role">{member.role}</div>
                         </div>

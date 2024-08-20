@@ -98,7 +98,7 @@ const Notification = ({ loggedInUser, users }) => {
                     onSendNotification={() => setShowPopup(true)}
                 />
                 <div className="main-contentN">
-                    <div className="message-list">
+                    <div className="message-list border-2">
                         {filteredMessages.map((msg, index) => (
                             <div key={index} className="message-item" onClick={() => setShowPopup(msg)}>
                                 <strong>From:</strong> {msg.from}<br />
@@ -114,7 +114,7 @@ const Notification = ({ loggedInUser, users }) => {
                         {typeof showPopup === 'object' ? (
                             <>
                                 <h4>Message Details</h4>
-                                <p><strong>From:</strong> {showPopup.from}</p>
+                                <p className="border-1"><strong>From:</strong> {showPopup.from}</p>
                                 <p><strong>To:</strong> {showPopup.to.join(', ')}</p>
                                 <p><strong>Message:</strong> {showPopup.message}</p>
                                 <button className="btn btn-secondary" onClick={() => setShowPopup(false)}>Close</button>
