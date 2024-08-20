@@ -25,7 +25,7 @@
     background-color: #555;
     color: black;
     position: fixed;
-    top: 60px; /* Aligns below the navbar */
+    top: 20px; /* Aligns below the navbar */
     left: 0;
     height: calc(100vh - 60px); /* Takes up remaining vertical space */
     z-index: 900;
@@ -35,10 +35,11 @@
 .content-row {
     display: flex;
     flex: 1;
-    margin-top: 60px; /* Aligns below the navbar */
+    margin-top: 50px;
     margin-left: 200px; /* Shifts content right to account for the sidebar */
     justify-content: center;
     align-items: center;
+
 }
 
 /* Main content styling */
