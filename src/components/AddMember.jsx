@@ -10,6 +10,7 @@ const AddMember = ({ availableMembers, onAddMember, onSave, onDeleteMode, isDele
     const handleSearchChange = (e) => {
         const term = e.target.value.toLowerCase();
         setSearchTerm(term);
+        // eslint-disable-next-line react/prop-types
         const filtered = availableMembers.filter((member) =>
             member.username.toLowerCase().includes(term) // Update to 'username'
         );
@@ -27,6 +28,7 @@ const AddMember = ({ availableMembers, onAddMember, onSave, onDeleteMode, isDele
 
     const handleSave = () => {
         if (onAddMember) {
+            // eslint-disable-next-line react/prop-types
             const membersToAdd = availableMembers.filter(member => selectedMembers.includes(member.id));
             onAddMember(membersToAdd);
         }
