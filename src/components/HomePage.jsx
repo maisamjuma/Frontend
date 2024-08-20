@@ -86,6 +86,7 @@ const HomePage = () => {
     };
 
     return (
+        <div className="forScroll">
         <div className='listcontainer'>
             <div className='video-container mb-3 d-flex align-items-center'>
                 <video width="25%" height="10%" autoPlay loop muted>
@@ -172,6 +173,7 @@ const HomePage = () => {
                 </div>
             )}
 
+        </div>
         </div>
     );
 }

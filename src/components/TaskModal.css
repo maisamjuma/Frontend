@@ -56,3 +56,9 @@
     display: block; /* Ensure date appears on a new line */
 }
 
+.task-modal-content {
+    border-radius: 8px;
+    padding: 20px;
+    color: white;
+    transition: background-color 0.3s ease;
+}

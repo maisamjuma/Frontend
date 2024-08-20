@@ -1,29 +1,30 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './MoveModal.css';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faTimes} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
-const MoveModal = ({statuses = [], task = {}, onClose, onMoveTask}) => {
+const MoveModal = ({ statuses = [], task = {}, onClose, onMoveTask }) => {
     const [selectedBoard, setSelectedBoard] = useState('');
     const [selectedStatus, setSelectedStatus] = useState('');
     const [selectedPriority, setSelectedPriority] = useState('');
 
     // Fixed board options
     const boards = [
-        {id: 'back', name: 'Back'},
-        {id: 'front', name: 'Front'},
-        {id: 'qa', name: 'QA'}
+        { id: 'back', name: 'Back' },
+        { id: 'front', name: 'Front' },
+        { id: 'qa', name: 'QA' }
     ];
 
     // Default statuses without boardId field
     const defaultStatuses = [
-        {id: 1, title: 'unassigned tasks'},
-        {id: 2, title: 'To Do'},
-        {id: 3, title: 'Doing'},
-        {id: 4, title: 'Ready to Review'},
-        {id: 5, title: 'Reviewing'},
-        {id: 6, title: 'Complete'}
+        { id: 1, title: 'unassigned tasks' },
+        { id: 2, title: 'To Do' },
+        { id: 3, title: 'Doing' },
+        { id: 4, title: 'Ready to Review' },
+        { id: 5, title: 'Reviewing' },
+        { id: 6, title: 'Complete' }
     ];
 
     // Combine default statuses with additional statuses
@@ -39,39 +40,79 @@ const MoveModal = ({statuses = [], task = {}, onClose, onMoveTask}) => {
     };
 
     const handleMove = () => {
-        if (selectedBoard && selectedStatus) {
-            onMoveTask(task, selectedBoard, selectedStatus, selectedPriority);
-            onClose();
+        console.log('Selected Board:', selectedBoard);
+        console.log('Selected Status:', selectedStatus);
+        console.log('Selected Priority:', selectedPriority);
+
+        if (typeof onMoveTask === 'function') {
+            if (selectedBoard && selectedStatus) {
+                onMoveTask(task, selectedBoard, selectedStatus, selectedPriority);
+                onClose();
+            } else {
+                console.log('Board or Status not selected');
+            }
         }
+    };
+
+    const onDragEnd = (result) => {
+        // Logic to handle drag-and-drop results
+        const { source, destination } = result;
+
+        if (!destination) return;
+
+        if (source.droppableId === destination.droppableId && source.index === destination.index) {
+            return;
+        }
+
+        // Handle moving tasks here, if needed
     };
 
     return (
         <div className="move-modal-overlay" onClick={handleOverlayClick}>
             <div className="move-modal-content">
                 <span className="move-modal-close" onClick={onClose}>
-                    <FontAwesomeIcon icon={faTimes}/>
+                    <FontAwesomeIcon icon={faTimes} />
                 </span>
                 <div className="move-title">
                     <h2>Move Task</h2>
                     <p>Select Destination</p>
                 </div>
-                <div className="move-modal-section">
-                    <h3>Board</h3>
-                    <select
-                        value={selectedBoard}
-                        onChange={(e) => {
-                            setSelectedBoard(e.target.value);
-                            setSelectedStatus(''); // Reset status selection when board changes
-                        }}
-                    >
-                        <option value="">Select a board</option>
-                        {boards.map(board => (
-                            <option key={board.id} value={board.id}>
-                                {board.name}
-                            </option>
-                        ))}
-                    </select>
-                </div>
+                <DragDropContext onDragEnd={onDragEnd}>
+                    <Droppable droppableId="boards" direction="horizontal">
+                        {(provided) => (
+                            <div
+                                className="move-modal-section"
+                                ref={provided.innerRef}
+                                {...provided.droppableProps}
+                            >
+                                <h3>Board</h3>
+                                <select
+                                    value={selectedBoard}
+                                    onChange={(e) => {
+                                        setSelectedBoard(e.target.value);
+                                        setSelectedStatus(''); // Reset status selection when board changes
+                                    }}
+                                >
+                                    <option value="">Select a board</option>
+                                    {boards.map((board, index) => (
+                                        <Draggable key={board.id} draggableId={board.id} index={index}>
+                                            {(provided) => (
+                                                <option
+                                                    ref={provided.innerRef}
+                                                    {...provided.draggableProps}
+                                                    {...provided.dragHandleProps}
+                                                    value={board.id}
+                                                >
+                                                    {board.name}
+                                                </option>
+                                            )}
+                                        </Draggable>
+                                    ))}
+                                </select>
+                            </div>
+                        )}
+                    </Droppable>
+                </DragDropContext>
 
                 <div className="move-modal-section">
                     <h3>Status</h3>
@@ -116,7 +157,7 @@ MoveModal.propTypes = {
     statuses: PropTypes.array.isRequired,
     task: PropTypes.object.isRequired,
     onClose: PropTypes.func.isRequired,
-    onMoveTask: PropTypes.func,
+    onMoveTask: PropTypes.func.isRequired, // Ensure this is required
 };
 
 export default MoveModal;

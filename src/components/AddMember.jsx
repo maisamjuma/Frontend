@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import './AddMember.css';
 
 // eslint-disable-next-line react/prop-types
-const AddMember = ({availableMembers, onAddMember, onSave, onDeleteMode, isDeleting}) => {
+const AddMember = ({ availableMembers, onAddMember, onSave, onDeleteMode, isDeleting }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredMembers, setFilteredMembers] = useState(availableMembers);
     const [selectedMembers, setSelectedMembers] = useState([]);
@@ -11,10 +11,11 @@ const AddMember = ({availableMembers, onAddMember, onSave, onDeleteMode, isDelet
         const term = e.target.value.toLowerCase();
         setSearchTerm(term);
         const filtered = availableMembers.filter((member) =>
-            member.name.toLowerCase().includes(term)
+            member.username.toLowerCase().includes(term) // Update to 'username'
         );
         setFilteredMembers(filtered);
     };
+
 
     const handleMemberClick = (member) => {
         if (selectedMembers.includes(member.id)) {
@@ -26,9 +27,8 @@ const AddMember = ({availableMembers, onAddMember, onSave, onDeleteMode, isDelet
 
     const handleSave = () => {
         if (onAddMember) {
-            // eslint-disable-next-line react/prop-types
             const membersToAdd = availableMembers.filter(member => selectedMembers.includes(member.id));
-            onAddMember(membersToAdd);  // Pass all selected members
+            onAddMember(membersToAdd);
         }
         setSelectedMembers([]);
         onSave();
@@ -61,14 +61,14 @@ const AddMember = ({availableMembers, onAddMember, onSave, onDeleteMode, isDelet
                             className={`member-item ${selectedMembers.includes(member.id) ? 'selected' : ''}`}
                             onClick={() => handleMemberClick(member)}
                         >
-                            {isDeleting && (
-                                <input
-                                    type="checkbox"
-                                    checked={selectedMembers.includes(member.id)}
-                                    onChange={() => handleMemberClick(member)}
-                                />
-                            )}
-                            <div className="member-name">{member.name}</div>
+                            {/*{isDeleting && (*/}
+                            {/*    <input*/}
+                            {/*        type="checkbox"*/}
+                            {/*        checked={selectedMembers.includes(member.id)}*/}
+                            {/*        onChange={() => handleMemberClick(member)}*/}
+                            {/*    />*/}
+                            {/*)}*/}
+                            <div className="member-name">{member.username}</div>
                             <div className="member-role">{member.role}</div>
                         </div>
                     ))}

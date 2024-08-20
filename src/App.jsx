@@ -12,14 +12,6 @@ import HomePage from "./components/HomePage.jsx";
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-    const handleLogin = () => {
-        setIsAuthenticated(true);
-    };
-
-    const handleLogout = () => {
-        setIsAuthenticated(false);
-    };
-
     useEffect(() => {
         const styledTitle = document.getElementById('styled-title');
         if (styledTitle) {
@@ -27,15 +19,18 @@ function App() {
         }
     }, []);
 
+    const handleLogin = () => setIsAuthenticated(true);
+    const handleLogout = () => setIsAuthenticated(false);
+
     return (
         <Routes>
             <Route
                 path="/login"
                 element={
                     isAuthenticated ? (
-                        <Navigate to="/main"/>
+                        <Navigate to="/main" />
                     ) : (
-                        <Login onLogin={handleLogin}/>
+                        <Login onLogin={handleLogin} />
                     )
                 }
             />
@@ -51,14 +46,32 @@ function App() {
                                 <Route path="notifications" element={<Notification loggedInUser="JohnDoe" users={["Alice", "Bob", "Charlie"]} />}/> {/* Add Notification route */}
                                 <Route path=":projectName" element={<Projects/>}/> {/* Dynamic route for projects */}
                                 <Route path="workspace/:projectName/*" element={<Workspace/>}/>
+                                <Route path="/" element={<ListUser />} />
+                                <Route path="listuser" element={<ListUser />} />
+                                <Route path="user" element={<User />} />
+                                <Route
+                                    path="notifications"
+                                    element={
+                                        <Notification
+                                            loggedInUser="Roaa Gh"
+                                            users={[
+                                                "Rami", "Reema", "Osaid", "Maisam",
+                                                "Rama", "Hadi", "Ahmad", "Jana",
+                                                "Hanan", "Ghannam"
+                                            ]}
+                                        />
+                                    }
+                                />
+                                <Route path=":projectName" element={<Projects />} />
+                                <Route path="workspace/:projectName/*" element={<Workspace />} />
                             </Routes>
                         </Layout>
                     ) : (
-                        <Navigate to="/login"/>
+                        <Navigate to="/login" />
                     )
                 }
             />
-            <Route path="/" element={<Navigate to="/login"/>}/>
+            <Route path="/" element={<Navigate to="/login" />} />
         </Routes>
     );
 }
