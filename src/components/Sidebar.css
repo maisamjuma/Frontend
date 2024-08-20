@@ -10,7 +10,40 @@
     background-color: #fff;
     z-index: 998;
     box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
-    overflow-y: auto; /* Optional: to handle overflow */
+    overflow-y: hidden; /* Optional: to handle overflow */
+    overflow-x: hidden; /* Prevents horizontal scrolling */
+
+}
+
+.dropdown-list li {
+    white-space: normal;
+    word-wrap: break-word;
+    word-break: break-word;
+    padding: 8px 12px;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+    border-radius: 4px;
+}
+
+/* Hover effect for project names */
+.dropdown-list li:hover {
+    transform: scale(1.05); /* Slightly enlarge the project name */
+    background-color: #f0f0f0; /* Change the background color */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a shadow for a popping effect */
+}
+
+/* Styles for the three dots next to project names */
+.menu-toggle {
+    display: inline-block;
+    transform: scale(1.2); /* Slightly enlarge the three dots */
+    transition: transform 0.2s ease, color 0.2s ease;
+    cursor: pointer; /* Change cursor to pointer on hover */
+    margin-bottom: 7px;
+}
+
+/* Hover effect for the three dots */
+.menu-toggle:hover {
+    transform: scale(1.4); /* Slightly enlarge the three dots */
+    color: #0b0a0a; /* Change the color of the dots */
 }
 
 /* Hide scrollbars for Webkit browsers (Chrome, Safari) */
@@ -127,3 +160,26 @@
 }
 
 /* ... rest of your sidebar styles ... */
+/* Style for the container that holds the list of projects */
+.projects-list-container {
+    max-height: 250px; /* Adjust the height as needed */
+    overflow-y: auto; /* Enable vertical scrolling */
+    padding-right: 5px; /* Space to accommodate scrollbar if visible */
+}
+
+/* Optional: hide the scrollbar for Webkit browsers */
+.projects-list-container::-webkit-scrollbar {
+    width: 5px;
+}
+
+.projects-list-container::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 10px;
+}
+
+/* Hide scrollbars for Firefox */
+.projects-list-container {
+    scrollbar-width: thin;
+    scrollbar-color: #ccc transparent;
+}
+
