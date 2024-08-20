@@ -12,7 +12,6 @@
     box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
     overflow-y: hidden; /* Optional: to handle overflow */
     overflow-x: hidden; /* Prevents horizontal scrolling */
-
 }
 
 .dropdown-list li {
@@ -71,7 +70,10 @@
 .sidebar ul li {
     padding: 10px;
     cursor: pointer;
+    border-radius: 4px; /* Rounded corners for the hover effect */
+    transition: background-color 0.3s, transform 0.3s; /* Smooth transition for background color and scaling */
 }
+
 
 /* Line above the "Settings" item */
 .settings-line {
@@ -101,9 +103,16 @@
     background: white;
     border: 1px solid #ccc;
     padding: 10px;
+    border-radius: 5px; /* Makes the ends of the list item round */
+
     list-style: none;
 }
-
+.addpro:hover{
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Adds a shadow to emphasize the pop-up */
+}
+.deletepro:hover{
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Adds a shadow to emphasize the pop-up */
+}
 .dropdown-list {
     padding-left: 20px;
 }
@@ -136,28 +145,8 @@
     font-weight: normal;
     color: #333;
 }
-.sidebar {
-    position: fixed;
-    padding: 10px;
-    top: 60px; /* Height of the top navbar */
-    left: 0;
-    width: 200px; /* Width of the sidebar */
-    bottom: 0; /* Extend to the bottom */
-    background-color: #fff;
-    z-index: 998;
-    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
-    overflow-y: auto; /* Optional: to handle overflow */
-}
 
-/* Hide scrollbars for Webkit browsers (Chrome, Safari) */
-.sidebar::-webkit-scrollbar {
-    display: none; /* Hide scrollbar */
-}
 
-/* Hide scrollbars for Firefox */
-.sidebar {
-    scrollbar-width: none; /* Hide scrollbar in Firefox */
-}
 
 /* ... rest of your sidebar styles ... */
 /* Style for the container that holds the list of projects */
@@ -183,3 +172,18 @@
     scrollbar-color: #ccc transparent;
 }
 
+/* Highlight effect specifically for the "Users List" item */
+.user-lists:hover {
+    color: #0b0a0a; /* Change text color on hover */
+    font-weight: bold; /* Make text bold */
+}
+
+/* Highlight effect specifically for the "Settings" item */
+.Settings:hover {
+    color: #0b0a0a; /* Change text color on hover */
+    font-weight: bold; /* Make text bold */
+}
+.projects-text:hover{
+    color: #0b0a0a; /* Change text color on hover */
+    font-weight: bold; /* Make text bold */
+}

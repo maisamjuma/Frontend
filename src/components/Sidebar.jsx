@@ -192,17 +192,18 @@ const Sidebar = ({onMenuAction}) => {
                 </li>
                 <hr/>
                 <li className="projects-container" onClick={toggleProjects}>
-                <span className="d-flex gap-2">Projects
-                    <div className={isProjectsOpen && "rotate-180 mt-1"}>
+                <span className="d-flex gap-2">
+                <span className="projects-text">Projects</span>
+                <div className={isProjectsOpen && "rotate-180 mt-1"}>
                         <ArrowDownIcon/>
-                    </div>
-                </span>
+                </div>
+                 </span>
                     <div className="menu-container">
                         <span className="menu-toggle" onClick={toggleMenu}>...</span>
                         {isMenuOpen && (
                             <ul className="menu-list" onClick={(e) => e.stopPropagation()}>
-                                <li onClick={() => handleMenuAction('Add')}>Add</li>
-                                <li onClick={() => handleMenuAction('Delete')}>Delete</li>
+                                <li className="addpro" onClick={() => handleMenuAction('Add')}>Add</li>
+                                <li className="deletepro" onClick={() => handleMenuAction('Delete')}>Delete</li>
                             </ul>
                         )}
                     </div>
@@ -231,8 +232,8 @@ const Sidebar = ({onMenuAction}) => {
                     </div>
                 )}
                 <div className="line-above-settings"/>
-                <li onClick={handleUsersListClick}>Users List</li>
-                <li>Settings</li>
+                <li className="user-lists" onClick={handleUsersListClick}>Users List</li>
+                <li className="Settings">Settings</li>
             </ul>
             <AddProjectModal
                 isVisible={isAddProjectModalVisible}
