@@ -63,6 +63,7 @@ html, body {
 
 /* Task container styles */
 .backend-tasks-container {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 10px; /* Space between tasks */
@@ -77,6 +78,34 @@ html, body {
     overflow-x: hidden; /* Hide horizontal scrolling if any */
 }
 
+.topClass, .MiddleClass {
+    display: flex;
+    justify-content: space-around;
+    flex: 1;
+}
+
+.topClass {
+    position: relative;
+}
+
+.topTop{
+    display: flex;
+    flex-direction: row;
+    gap: 70px;
+    justify-content: space-around;
+    flex: 1;
+    margin-right: 10px;
+}
+
+.topClass2 {
+    display: flex;
+    margin-left: 0px;
+    margin-right: 10px;
+
+}
+
+
+
 /* Individual task styles */
 .backend-task-box {
     position: relative; /* Ensure positioning context for popup */
@@ -85,8 +114,13 @@ html, body {
     border-radius: 8px;
     margin: 8px 0; /* Equal top and bottom margin, no left and right margin */
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
-    align-items: center;
+    align-items: baseline;
+    gap: 5px;
+    box-sizing: border-box;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+
 }
 
 .backend-task-box.highlighted {
@@ -290,26 +324,40 @@ html, body {
     display: flex; /* Show when active */
 }
 
-
 .task-priority-display {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 4px;
     display: flex;
     align-items: center;
     border: 1px solid #ddd;
-    border-radius: 4px; /* Rounded edges for the priority display */
+    border-radius: 6px; /* Rounded edges for the priority display */
     font-size: 0.8rem; /* Reduce font size */
     color: #fff; /* Adjust color as needed */
 }
 
 .priority-high {
-    background-color: #ff4d4d; /* Red for high priority */
+    background-color: #ae2e24; /* Red for high priority */
+    color: #fbfafd;
+    width: 80px;
+    text-align: center;
+    border-radius: 6px;
 }
 
 .priority-medium {
-    background-color: #ffcc00; /* Yellow for medium priority */
+    background-color: #7f5f01; /* Yellow for medium priority */
+    width: 80px;
+    text-align: center;
+    border-radius: 6px;
 }
 
 .priority-low {
-    background-color: #66cc66; /* Green for low priority */
+    background-color: #216e4e; /* Green for low priority */
+    color: #e9f6fd;
+    width: 80px;
+    text-align: center;
+    border-radius: 6px;
 }
 
 
@@ -319,4 +367,40 @@ html, body {
     margin-bottom: 10px;
     position: relative;
     border-radius: 4px;
+}
+.MiddleClass{
+    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 10px;
+    font-weight: bold;
+    color: #34495e;
+
+}
+.nameCss{
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    width: 180px;
+    padding-left: 5px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    word-break: break-word;
+    word-wrap: break-word;
+    white-space: wrap;
+    word-spacing: 3px;
+
+
+}
+.nameCss:hover{
+    background-color: #dfc2c4;
+}
+.dateCss{
+    width: 180px;
+    padding-left: 5px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    word-break: break-word;
+    word-wrap: break-word;
+    white-space: wrap;
+    word-spacing: 3px;
+    transform: scale(0.8);
 }

@@ -9,7 +9,7 @@ import AddTaskModal from "./AddTaskModal"; // Import the new component
 // import PriorityModal from './PriorityModal';
 import MoveModal from "./MoveModal/MoveModal.jsx";
 import CalendarModal from "./CalendarModal/CalendarModal.jsx";
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
 
 
 const Boards = () => {
@@ -55,7 +55,7 @@ const Boards = () => {
     }, [projectName, boardId, name]);
 
     const onDragEnd = (result) => {
-        const { source, destination } = result;
+        const {source, destination} = result;
 
         // Check if the task was dropped outside any droppable area
         if (!destination) {
@@ -362,39 +362,57 @@ const Boards = () => {
                                                                 ref={provided.innerRef}
                                                                 onDoubleClick={() => handleDoubleClick(task.id)}
                                                             >
-                                                                <div
-                                                                    className="task-priority-display priority-${task.priority}">
-                                                                    {task.priority === 'high' && (
-                                                                        <span className="priority-high">High</span>
-                                                                    )}
-                                                                    {task.priority === 'medium' && (
-                                                                        <span className="priority-medium">Medium</span>
-                                                                    )}
-                                                                    {task.priority === 'low' && (
-                                                                        <span className="priority-low">Low</span>
-                                                                    )}
-                                                                </div>
-                                                                {editingTaskId === task.id ? (
-                                                                    <input
-                                                                        type="text"
-                                                                        defaultValue={task.name}
-                                                                        onBlur={(e) => handleBlur(status.id, task.id, e.target.value)}
-                                                                        className="backend-task-input"
-                                                                    />
-                                                                ) : (
-                                                                    <>
-                                                                        <span>{task.name}</span>
-                                                                        {task.dueDate && (
-                                                                            <span className="task-due-date">
-                                                                            {new Date(task.dueDate).toLocaleDateString()}
-                                                                        </span>
-                                                                        )}
+                                                                <div className="topTop">
+                                                                    <div className="topClass">
+                                                                        <div
+                                                                            className="task-priority-display priority-${task.priority}">
+                                                                            {task.priority === 'high' && (
+                                                                                <span
+                                                                                    className="priority-high">High</span>
+                                                                            )}
+                                                                            {task.priority === 'medium' && (
+                                                                                <span
+                                                                                    className="priority-medium">Medium</span>
+                                                                            )}
+                                                                            {task.priority === 'low' && (
+                                                                                <span
+                                                                                    className="priority-low">Low</span>
+                                                                            )}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="topClass2">
                                                                         <FaPen
                                                                             className="backend-pencil-icon"
                                                                             onClick={() => handlePencilClick(task)}
                                                                         />
-                                                                    </>
-                                                                )}
+                                                                    </div>
+                                                                </div>
+                                                                <div className="MiddleClass">
+                                                                    {editingTaskId === task.id ? (
+                                                                        <input
+                                                                            type="text"
+                                                                            defaultValue={task.name}
+                                                                            onBlur={(e) => handleBlur(status.id, task.id, e.target.value)}
+                                                                            className="backend-task-input"
+                                                                        />
+                                                                    ) : (
+                                                                        <>
+                                                                            <div className="nameCss">
+                                                                                <span>{task.name}</span>
+                                                                            </div>
+                                                                            <div className="dateCss">
+                                                                                {task.dueDate && (
+                                                                                    <span className="task-due-date">
+                                                                                        Due date: {new Date(task.dueDate).toLocaleDateString()}
+                                                                            </span>
+
+
+                                                                                )}
+                                                                            </div>
+
+                                                                        </>
+                                                                    )}
+                                                                </div>
                                                             </div>
                                                         )}
                                                     </Draggable>
