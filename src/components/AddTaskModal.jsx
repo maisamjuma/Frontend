@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import './AddTaskModal.css';
 import Calendar from 'react-calendar';
+import PropTypes from "prop-types";
 // Static list of users
 const usersList = [
     {id: 1, name: 'John Doe'},
@@ -25,13 +26,10 @@ const AddTaskModal = ({isVisible, onClose, onAddTask, status}) => {
 
     const handleAddTask = () => {
         if (taskName.trim()) {
-            const adjustedDate = new Date(dueDate);
-            adjustedDate.setDate(adjustedDate.getDate() + 1);
-
             const newTask = {
                 name: taskName,
                 description,
-                dueDate: adjustedDate.toISOString().split('T')[0],
+                dueDate: dueDate.toISOString().split('T')[0], // Use selected date directly
                 priority,
                 // eslint-disable-next-line react/prop-types
                 status: status.title, // Use status title
@@ -132,5 +130,13 @@ const AddTaskModal = ({isVisible, onClose, onAddTask, status}) => {
         </>
     );
 };
-
+AddTaskModal.propTypes = {
+    isVisible: PropTypes.bool.isRequired,
+    onClose: PropTypes.func.isRequired,
+    onAddTask: PropTypes.func.isRequired,
+    status: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        title: PropTypes.string.isRequired
+    }).isRequired
+};
 export default AddTaskModal;

@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Calendar from 'react-calendar';
 import './CalendarModal.css';
 
-const CalendarModal = ({onClose, onSave, onRemoveDate}) => {
+const CalendarModal = ({ onClose, onSave, onRemoveDate }) => {
     const [selectedDate, setSelectedDate] = useState(null);
 
     const handleDateChange = (date) => {
@@ -12,7 +12,9 @@ const CalendarModal = ({onClose, onSave, onRemoveDate}) => {
 
     const handleSave = () => {
         if (selectedDate) {
-            onSave(selectedDate); // Pass the selected date to parent
+            // Convert date to ISO string in UTC format
+            const utcDate = new Date(Date.UTC(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate()));
+            onSave(utcDate); // Pass UTC date to parent
             onClose(); // Close modal after saving
         }
     };
@@ -30,8 +32,10 @@ const CalendarModal = ({onClose, onSave, onRemoveDate}) => {
                 <Calendar
                     onChange={handleDateChange}
                     value={selectedDate}
-                    tileClassName={({date}) =>
-                        selectedDate && date.toDateString() === new Date(selectedDate).toDateString() ? 'selected-date' : null
+                    tileClassName={({ date }) =>
+                        selectedDate && date.toDateString() === new Date(selectedDate).toDateString()
+                            ? 'selected-date'
+                            : null
                     }
                 />
                 <div className="calendar-modal-actions">

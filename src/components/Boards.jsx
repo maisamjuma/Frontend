@@ -215,7 +215,7 @@ const Boards = () => {
     const handleSaveDate = (date) => {
         if (selectedTask) {
             const adjustedDate = new Date(date);
-            adjustedDate.setDate(adjustedDate.getDate()); // Add one day
+            //adjustedDate.setDate(adjustedDate.getDate()); // Add one day
 
             const updatedStatuses = statuses.map(status => ({
                 ...status,
