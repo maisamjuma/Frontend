@@ -165,3 +165,18 @@ html, body {
 .delete-board-button:hover {
     background-color: darksalmon; /* Darker red on hover */
 }
+.show-more-button {
+    margin-left: 25px;
+    padding: 5px 10px;
+    background: darksalmon;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.show-more-button:hover {
+    background: #0b0a0a;
+    color: #ffffff;
+}
