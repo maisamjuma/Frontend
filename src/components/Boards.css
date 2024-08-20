@@ -44,7 +44,13 @@ html, body {
     gap: 10px; /* Space between items */
     box-sizing: border-box; /* Include padding and border in element's total width and height */
     position: relative; /* Position for dropdown menu */
+
 }
+/* Hide the scrollbar but allow scrolling */
+.backend-tasks-container::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for Chrome, Safari, and Opera */
+}
+
 
 /* Status header styling */
 .backend-status-header {
@@ -62,13 +68,14 @@ html, body {
     gap: 10px; /* Space between tasks */
     max-height: 200px; /* Set a maximum height for the tasks container */
     padding: 0 10px; /* Add padding for equal margin on both sides */
-    overflow-y: auto; /* Enable vertical scrolling */
     background-color: #ffffff; /* Ensure background color remains white */
     border-radius: 8px;
     box-sizing: border-box; /* Include padding and border in element's total width and height */
+    -ms-overflow-style: none;  /* Hide scrollbar for Internet Explorer and Edge */
+    scrollbar-width: none;  /* Hide scrollbar for Firefox */
+    overflow-y: scroll; /* Allow vertical scrolling */
+    overflow-x: hidden; /* Hide horizontal scrolling if any */
 }
-
-
 
 /* Individual task styles */
 .backend-task-box {
