@@ -52,7 +52,7 @@ const Sidebar = ({onMenuAction}) => {
     const handleProjectClick = (project) => {
         if (!isDeleteMode) {
             console.log('china number one ID::', project.id);
-            project.projectId=project.id;
+            project.projectId = project.id;
             console.log('china number one ID::', project.projectId);
 
             console.log('china number one description::', project.description);
@@ -159,7 +159,9 @@ const Sidebar = ({onMenuAction}) => {
         }
 
     };
-
+    const handleUsersListClick = () => {
+        navigate('/main/ListUser');
+    };
     // const handleDelete = async (projectId) => {
     //     try {
     //         await deleteProject(projectId);
@@ -171,14 +173,13 @@ const Sidebar = ({onMenuAction}) => {
     // };
 //////////////////////Delete/////////////////////////////////////////////////
 
-    const handleAddProject = (projectId,projectName, projectDescription) => {
+    const handleAddProject = (projectId, projectName, projectDescription) => {
         // const newProject = {id: Date.now().toString(), name: projectName, description: projectDescription};
         const newProject = {id: projectId, name: projectName, description: projectDescription};
 
 
         setProjects([...projects, newProject]);
     };
-
 
     return (
         <div className="sidebar" ref={sidebarRef}>
@@ -191,13 +192,13 @@ const Sidebar = ({onMenuAction}) => {
                 </li>
                 <hr/>
                 <li className="projects-container" onClick={toggleProjects}>
-                    <span className="d-flex gap-2">Projects
-                        <div className={isProjectsOpen && "rotate-180 mt-1"}>
-                            <ArrowDownIcon/>
-                        </div>
-                    </span>
+                <span className="d-flex gap-2">Projects
+                    <div className={isProjectsOpen && "rotate-180 mt-1"}>
+                        <ArrowDownIcon/>
+                    </div>
+                </span>
                     <div className="menu-container">
-                        <span className="menu-toggle " onClick={toggleMenu}>...</span>
+                        <span className="menu-toggle" onClick={toggleMenu}>...</span>
                         {isMenuOpen && (
                             <ul className="menu-list" onClick={(e) => e.stopPropagation()}>
                                 <li onClick={() => handleMenuAction('Add')}>Add</li>
@@ -207,41 +208,41 @@ const Sidebar = ({onMenuAction}) => {
                     </div>
                 </li>
                 {isProjectsOpen && (
-                    <ul className="dropdown-list">
-                        {projects.map((project) => (
-                            <li key={project.projectId} onClick={() => handleProjectClick(project)}>
-                                {isDeleteMode && (
-
-                                    <input
-                                        type="checkbox"
-                                        checked={selectedProjects.includes(project.id)}
-                                        onChange={(e) => handleCheckboxChange(e, project)}
-                                    />
-                                )}
-                                {project.name}
-
-                            </li>
-                        ))}
-                        {isDeleteMode && (
-                            <button onClick={handleDeleteSelected} disabled={selectedProjects.length === 0}>Delete
-                                Selected Projects</button>
-                        )}
-                    </ul>
+                    <div className="projects-list-container">
+                        <ul className="dropdown-list">
+                            {projects.map((project) => (
+                                <li key={project.projectId} onClick={() => handleProjectClick(project)}>
+                                    {isDeleteMode && (
+                                        <input
+                                            type="checkbox"
+                                            checked={selectedProjects.includes(project.id)}
+                                            onChange={(e) => handleCheckboxChange(e, project)}
+                                        />
+                                    )}
+                                    {project.name}
+                                </li>
+                            ))}
+                            {isDeleteMode && (
+                                <button onClick={handleDeleteSelected} disabled={selectedProjects.length === 0}>
+                                    Delete Selected Projects
+                                </button>
+                            )}
+                        </ul>
+                    </div>
                 )}
                 <div className="line-above-settings"/>
-                {/* Line above Settings */}
+                <li onClick={handleUsersListClick}>Users List</li>
                 <li>Settings</li>
             </ul>
             <AddProjectModal
                 isVisible={isAddProjectModalVisible}
                 onClose={handleCloseModal}
-                onAddProject={handleAddProject} // Pass the handler function to the modal
+                onAddProject={handleAddProject}
             />
         </div>
     );
 };
-
-Sidebar.propTypes = {
+    Sidebar.propTypes = {
     projects: PropTypes.arrayOf(
         PropTypes.shape({
             id: PropTypes.string.isRequired,
