@@ -1,0 +1,80 @@
+.listcontainer {
+    max-height: 120vh; /* Limits the container height to the viewport */
+    overflow-y: auto; /* Enables vertical scrolling */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+    overflow-x: hidden;
+}
+
+.listcontainer::-webkit-scrollbar {
+    display: none; /* Hides the scrollbar in WebKit-based browsers (Chrome, Safari) */
+}
+
+.video-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0; /* Adjust the margin as needed */
+}
+
+.video-container video {
+    max-width: 30%;
+    height: 10%;
+    border-radius: 8px; /* Optional: Adds rounded corners to the video */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Adds shadow for better visibility */
+}
+
+.track {
+    color: darksalmon;
+}
+
+.home-button-container {
+    display: flex;
+    gap: 10px; /* Adjust as needed for space between buttons */
+    margin-top: 60px; /* Adjust as needed */
+    margin-left: 200px;
+}
+
+.btnAddUser,
+.btnAddRole,
+.btnAssignTeamLeader {
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    background: rgb(11, 10, 10);
+    width: 170px;
+    height: 100px;
+}
+
+.btnAddUser:hover,
+.btnAddRole:hover,
+.btnAssignTeamLeader:hover {
+    background: darksalmon;
+}
+
+.text-bg-dark {
+    margin-top: 20px;
+}
+
+.Assigncontent {
+    margin-left: -191px;
+    margin-top: 130px; /* Space between the button and dropdowns */
+}
+
+.assign-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Consistent space between dropdowns and button */
+}
+
+.rolecontent {
+    margin-top: 30px;
+}
+
+.btn {
+    background: darksalmon;
+    margin-left: 15px;
+}
+
+.btn:hover {
+    background: black;
+    border: 2px solid black;
+}
