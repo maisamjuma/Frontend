@@ -7,6 +7,7 @@ import Layout from "./components/Layout/Layout.jsx";
 import Login from "./components/Login/Login.jsx";
 import ListUser from "./components/ListUser/ListUser.jsx";
 import Notification from "./components/Notification.jsx";
+import HomePage from "./components/HomePage.jsx";
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -44,7 +45,7 @@ function App() {
                     isAuthenticated ? (
                         <Layout onLogout={handleLogout}>
                             <Routes>
-                                <Route path="/" element={<ListUser/>}/>
+                                <Route path="/" element={<HomePage/>}/>
                                 <Route path="ListUser" element={<ListUser/>}/>
                                 <Route path="User" element={<User/>}/>
                                 <Route path="notifications" element={<Notification loggedInUser="JohnDoe" users={["Alice", "Bob", "Charlie"]} />}/> {/* Add Notification route */}
