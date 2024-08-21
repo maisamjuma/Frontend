@@ -16,13 +16,17 @@ import MoveModal from "./MoveModal/MoveModal.jsx";
 import CalendarModal from "./CalendarModal/CalendarModal.jsx";
 import DetailsModal from "./DetailsModal/DetailsModal.jsx";
 import LabelModal from "./LabelModal.jsx";
+import ChangeMemberModal from './ChangeMemberModal';
 
-const TaskModal = ({ task, onClose, onDelete, boards, statuses, labels = [], onSaveDate, onRemoveDate, onSavePriority, onSaveLabels }) => {
+// eslint-disable-next-line react/prop-types
+const TaskModal = ({ task, onClose, onDelete, boards, statuses, labels = [], onSaveDate, onRemoveDate, onSavePriority, onSaveLabels, members, onChangeMember ,projectId, projectDescription, projectMembers, setProjectId, setProjectDescription, setProjectMembers }) => {
     const [isMoveModalOpen, setIsMoveModalOpen] = useState(false);
     const [isCalendarModalOpen, setIsCalendarModalOpen] = useState(false);
     const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
     const [isPriorityModalOpen, setIsPriorityModalOpen] = useState(false);
     const [isLabelModalOpen, setIsLabelModalOpen] = useState(false);
+    const [isChangeMemberModalOpen, setIsChangeMemberModalOpen] = useState(false);
+    console.log("projectId:",projectId,"projectDescription:",projectDescription,"projectMembers:",projectMembers);
 
     if (!task) return null;
 
@@ -52,25 +56,25 @@ const TaskModal = ({ task, onClose, onDelete, boards, statuses, labels = [], onS
             <div className="task-modal-content" style={{ backgroundColor: getTaskBackgroundColor() }}>
                 <div className="task-modal-actions">
                     <button onClick={() => setIsDetailsModalOpen(true)}>
-                        <FontAwesomeIcon icon={faClipboard} /> Show Details
+                        <FontAwesomeIcon icon={faClipboard}/> Show Details
                     </button>
                     <button onClick={() => setIsPriorityModalOpen(true)}>
-                        <FontAwesomeIcon icon={faArrowUp} /> Edit Priority
+                        <FontAwesomeIcon icon={faArrowUp}/> Edit Priority
                     </button>
-                    <button>
-                        <FontAwesomeIcon icon={faUser} /> Change Member
+                    <button onClick={() => setIsChangeMemberModalOpen(true)}>
+                        <FontAwesomeIcon icon={faUser}/> Change Member
                     </button>
                     <button onClick={() => setIsCalendarModalOpen(true)}>
-                        <FontAwesomeIcon icon={faCalendar} /> Edit Dates
+                        <FontAwesomeIcon icon={faCalendar}/> Edit Dates
                     </button>
                     <button onClick={() => setIsMoveModalOpen(true)}>
-                        <FontAwesomeIcon icon={faArrowsAlt} /> Move
+                        <FontAwesomeIcon icon={faArrowsAlt}/> Move
                     </button>
                     <button onClick={() => setIsLabelModalOpen(true)}>
-                        <FontAwesomeIcon icon={faTag} /> Edit Labels
+                        <FontAwesomeIcon icon={faTag}/> Edit Labels
                     </button>
                     <button onClick={handleDeleteClick}>
-                        <FontAwesomeIcon icon={faTrash} /> Delete
+                        <FontAwesomeIcon icon={faTrash}/> Delete
                     </button>
                 </div>
                 <div className="task-status">
@@ -120,7 +124,28 @@ const TaskModal = ({ task, onClose, onDelete, boards, statuses, labels = [], onS
                     onSave={onSaveLabels}
                 />
             )}
+            {isChangeMemberModalOpen && (
+                <ChangeMemberModal
+                    onClose={() => setIsChangeMemberModalOpen(false)}
+                    availableMembers={members} // Pass available members
+                    selectedMember={task.memberId} // Assuming you have a memberId in the task object
+                    onSelectMember={(memberId) => {
+                        onChangeMember(memberId);
+                        setIsChangeMemberModalOpen(false);
+                    }}
+
+                    projectId={projectId}
+                    projectDescription={projectDescription}
+                    projectMembers={projectMembers}
+                    setProjectId={setProjectId}
+                    setProjectDescription={setProjectDescription}
+                    setProjectMembers={setProjectMembers}
+                />
+            )}
+
         </div>
+
+
     );
 };
 
@@ -132,6 +157,7 @@ TaskModal.propTypes = {
         date: PropTypes.instanceOf(Date),
         priority: PropTypes.string,
         labels: PropTypes.arrayOf(PropTypes.string),
+        memberId: PropTypes.string, // Added if you are using memberId
     }),
     onClose: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
@@ -151,7 +177,11 @@ TaskModal.propTypes = {
     onSaveDate: PropTypes.func.isRequired,
     onRemoveDate: PropTypes.func.isRequired,
     onSavePriority: PropTypes.func.isRequired,
-    onSaveLabels: PropTypes.func.isRequired,
+    members: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        username: PropTypes.string.isRequired,
+    })).isRequired,
+    onChangeMember: PropTypes.func.isRequired,
 };
 
 export default TaskModal;

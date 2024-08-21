@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {useParams} from 'react-router-dom';
+import {useLocation, useParams} from 'react-router-dom';
 import TaskModal from './TaskModal';
 import './Boards.css';
 import {FaPen} from 'react-icons/fa';
@@ -10,9 +10,10 @@ import AddTaskModal from "./AddTaskModal"; // Import the new component
 import MoveModal from "./MoveModal/MoveModal.jsx";
 import CalendarModal from "./CalendarModal/CalendarModal.jsx";
 import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
+import PropTypes from "prop-types";
 
 
-const Boards = () => {
+const Boards = ({ projectId, projectDescription, projectMembers, setProjectId, setProjectDescription, setProjectMembers }) => {
     const {projectName, boardId, name} = useParams(); // Get boardName from the route parameters
     const [statuses, setStatuses] = useState([]);
     const [currentStatusId, setCurrentStatusId] = useState(null);
@@ -24,6 +25,28 @@ const Boards = () => {
     const [showPriorityModal, setShowPriorityModal] = useState(false);
     const [showAddTaskModal, setShowAddTaskModal] = useState(false);
     const [showcalenderModal, setcalendarModal] = useState(false);
+
+    console.log("projectId:",projectId,"projectDescription:",projectDescription,"projectMembers:",projectMembers);
+
+    // const location = useLocation();
+    // const [projectId, setProjectId] = useState(null);
+    // const [projectDescription, setProjectDescription] = useState(null);
+    // const [projectMembers, setProjectMembers] = useState([]); // State for project members
+    // useEffect(() => {
+    //     console.log("chinaaaaa","memberes:");
+    //
+    //     if (location.state) {
+    //         const { projectId, projectDescription,projectMembers } = location.state;
+    //         setProjectId(projectId);
+    //         setProjectDescription(projectDescription); // Make sure this is correctly set
+    //         setProjectMembers(projectMembers); // Set project members here
+    //         console.log("chinaaaaa",projectId,projectDescription,"memberes:",projectMembers);
+    //     }
+    // }, [location.state]);
+
+    // console.log("Project Description:", projectDescription);
+    // console.log("Project ID:", projectId);
+    // console.log("Project Members:", projectMembers);
 
     // Load statuses from localStorage or use default values
     useEffect(() => {
@@ -448,6 +471,14 @@ const Boards = () => {
                         onSaveDate={handleSaveDate}
                         onRemoveDate={handleRemoveDate}
                         onSavePriority={handleSavePriority}
+
+
+                        projectId={projectId}
+                        projectDescription={projectDescription}
+                        projectMembers={projectMembers}
+                        setProjectId={setProjectId}
+                        setProjectDescription={setProjectDescription}
+                        setProjectMembers={setProjectMembers}
                     />
                 )}
                 {showMoveModal && selectedTask && (
@@ -476,17 +507,46 @@ const Boards = () => {
                         onRemoveDate={handleRemoveDate}/>
                 )}
                 {showAddTaskModal && (
+
                     <AddTaskModal
+
                         isVisible={showAddTaskModal}
                         onClose={() => setShowAddTaskModal(false)}
                         onAddTask={(task) => handleAddTask(currentStatusId, task)}
                         status={statuses.find(status => status.id === currentStatusId)} // Pass the correct status object
+
+                        projectId={projectId}
+                        projectDescription={projectDescription}
+                        projectMembers={projectMembers}
+                        setProjectId={setProjectId}
+                        setProjectDescription={setProjectDescription}
+                        setProjectMembers={setProjectMembers}
                     />
 
                 )}
+
             </div>
         </DragDropContext>
-    );
-};
 
+
+
+    );
+
+};
+Boards.propTypes = {
+
+projectId: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+]),
+    projectDescription: PropTypes.string,
+    projectMembers: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired, // or PropTypes.string if ids are strings
+    username: PropTypes.string.isRequired,
+})),
+    setProjectId: PropTypes.func.isRequired,
+    setProjectDescription: PropTypes.func.isRequired,
+    setProjectMembers: PropTypes.func.isRequired,
+
+};
 export default Boards;

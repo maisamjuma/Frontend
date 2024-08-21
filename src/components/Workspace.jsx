@@ -6,28 +6,35 @@ import Navbar from "./Navbar/Navbar.jsx";
 import PropTypes from 'prop-types';
 import RoleService from '../Services/RoleService';
 import BoardService from '../Services/BoardService';
+import TaskModal from "./TaskModal.jsx";
 
 const Workspace = ({ isVisible }) => {
     const [roles, setRoles] = useState([]);
     const [selected_roleId, setSelected_roleId] = useState(null);
     const [projectId, setProjectId] = useState(null);
     const [projectDescription, setProjectDescription] = useState(null);
+    const [projectMembers, setProjectMembers] = useState([]); // State for project members
+
     const { projectName } = useParams();
     const [selectedBoard, setSelectedBoard] = useState(null);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isboardsDropdownOpen, setIsboardsDropdownOpen] = useState(false);
     const [boards, setBoards] = useState([]);
     const [showMore, setShowMore] = useState(false);
-    const secondaryNavRef = useRef(null);
     const [dropdownBoards, setDropdownBoards] = useState([]);
 
+    const secondaryNavRef = useRef(null);
+    const dropdownRef = useRef(null);
+    const boardsDropdownRef = useRef(null);
     const location = useLocation();
 
     useEffect(() => {
         if (location.state) {
-            const { projectId, projectDescription } = location.state;
+            const { projectId, projectDescription,projectMembers } = location.state;
             setProjectId(projectId);
             setProjectDescription(projectDescription); // Make sure this is correctly set
+            setProjectMembers(projectMembers); // Set project members here
+            console.log("chinaaaaa",projectId,projectDescription,"memberes:",projectMembers);
         }
     }, [location.state]);
 
@@ -37,6 +44,29 @@ const Workspace = ({ isVisible }) => {
             fetchBoards();
         }
     }, [isVisible, projectId]);
+
+
+    useEffect(() => {
+        const handleClickOutsideDropdown = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setIsDropdownOpen(false);
+            }
+        };
+
+        const handleClickOutsideBoardsDropdown = (event) => {
+            if (boardsDropdownRef.current && !boardsDropdownRef.current.contains(event.target)) {
+                setIsboardsDropdownOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutsideDropdown);
+        document.addEventListener('mousedown', handleClickOutsideBoardsDropdown);
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutsideDropdown);
+            document.removeEventListener('mousedown', handleClickOutsideBoardsDropdown);
+        };
+    }, []);
 
     const fetchRoles = async () => {
         try {
@@ -50,6 +80,7 @@ const Workspace = ({ isVisible }) => {
             console.error('Error fetching roles:', error);
         }
     };
+    console.log(projectMembers)
     console.log(projectDescription)
     const fetchBoards = async () => {
         // Example boards added for testing
@@ -134,6 +165,7 @@ const Workspace = ({ isVisible }) => {
         setBoards(boards.filter((board) => board.id !== boardId));
     };
 
+
     return (
         <div className="layout">
             <Navbar onLogout={() => { }} />
@@ -164,15 +196,19 @@ const Workspace = ({ isVisible }) => {
                     ))}
 
                     {showMore && (
-                        <div className="more-boards-dropdown">
-                            <button onClick={handleshowClick} className="show-more-button">Show More</button>
+                        <div className="more-boards-dropdown" ref={boardsDropdownRef}>
+                            <button onClick={handleshowClick} className="show-more-button"> &#x25BC;  {/* Two down arrows using Unicode */}</button>
                             {isboardsDropdownOpen && (
                                 <ul className="dropdown-content">
                                     {dropdownBoards.map((board) => (
                                         <li key={board.id} className="secondary-nav-item">
                                             <Link
-                                                className="secnav-link"
+                                                className="secnav-links"
                                                 to={`/main/workspace/${projectName}/${board.boardId}/${board.name}`}
+                                                style={{
+                                                    color: selectedBoard === board.boardId ? 'darksalmon' : 'black',
+                                                    fontWeight: selectedBoard === board.boardId ? "bold" : "normal"
+                                                }}
                                                 onClick={() => handleBoardClick(board.boardId)}
                                             >
                                                 {board.name}
@@ -186,7 +222,7 @@ const Workspace = ({ isVisible }) => {
 
                     <button onClick={handleAddClick} className="add-board-button">+</button>
                     {isDropdownOpen && (
-                        <div className={`dropdownaddboard ${isVisible ? 'visible' : ''}`}>
+                        <div className={`dropdownaddboard ${isVisible ? 'visible' : ''}`} ref={dropdownRef}>
                             <p>Add Board</p>
                             <select value={selected_roleId} onChange={handleRoleChange}>
                                 <option value="">Select Role</option>
@@ -207,7 +243,16 @@ const Workspace = ({ isVisible }) => {
                     <Route path="/:boardId/:name" element={<Boards />} />
                 </Routes>
             </div>
+            <Boards
+                projectId={projectId}
+                projectDescription={projectDescription}
+                projectMembers={projectMembers}
+                setProjectId={setProjectId}
+                setProjectDescription={setProjectDescription}
+                setProjectMembers={setProjectMembers}
+            />
         </div>
+
     );
 };
 

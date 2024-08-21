@@ -1,0 +1,86 @@
+/* Ensure the overlay covers the entire screen */
+.change-member-modal-overlay-new {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent; /* No background color */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1050; /* Ensure it is above other content but below the modal */
+}
+
+/* Modal content styling */
+.change-member-modal-content-new {
+    background: white; /* Background color for the modal */
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    height: 600px;
+    max-height: 80%;
+    overflow-y: auto;
+    position: relative;
+    z-index: 1060; /* Ensure it is above the overlay */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Adds a shadow for better visibility */
+}
+
+/* Header styling */
+.change-member-modal-header-new {
+    display: flex;
+    justify-content: center; /* Center content horizontally */
+    align-items: center;
+    margin-bottom: 15px;
+    position: relative; /* Allows absolute positioning of the close button */
+}
+
+/* Title styling */
+.change-member-modal-title-new {
+    font-size: 18px;
+    font-weight: bold;
+    position: absolute; /* Position it absolutely within the header */
+    left: 50%; /* Center it horizontally */
+    transform: translateX(-50%); /* Adjust for exact centering */
+}
+
+/* Close button styling */
+.change-member-close-button-new {
+    position: absolute; /* Position it absolutely within the header */
+    top: 0;
+    color: black;
+    background: none;
+    border: none;
+    margin-top: -2px;
+    right: -5px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.change-member-close-button-new:hover{
+    background: none;
+}
+/* Search input styling */
+.change-member-search-input-new {
+    width: 100%;
+    padding: 8px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* List styling */
+.change-member-list-new {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.change-member-list-new li {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.change-member-list-new li:hover {
+    background-color: #f0f0f0;
+}

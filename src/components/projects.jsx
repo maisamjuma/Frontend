@@ -1,3 +1,4 @@
+// Projects.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import './projects.css';
@@ -5,6 +6,7 @@ import Members from "./Member/Members.jsx";
 import AddMember from "./AddMember.jsx";
 import MemberProfile from "./MemberProfile.jsx";
 import defaultProjectIcon from '../assets/projectIcon.png';
+import ChangeMemberModal from "./ChangeMemberModal.jsx";
 
 const Projects = () => {
     const { projectName } = useParams();
@@ -22,17 +24,24 @@ const Projects = () => {
     const [isDeleting, setIsDeleting] = useState(false);
     const [selectedMembers, setSelectedMembers] = useState([]);
     const [showDeletePopup, setShowDeletePopup] = useState(false);
+    const [availableMembers, setAvailableMembers] = useState([]); // State for available members
+    const [selectedMemberForChange, setSelectedMemberForChange] = useState(null);
+    const [showChangeMemberModal, setShowChangeMemberModal] = useState(false); // State for modal visibility
+
     const containerRef = useRef(null);
 
-    const availableMembers = [
-        {id: 1, username: 'Maisam', email: 'maisam@example.com', password: 'password123', firstName: 'Maisam', lastName: 'Doe', role: 'Frontend Developer'},
-        {id: 2, username: 'Osaid', email: 'osaid@example.com', password: 'password123', firstName: 'Osaid', lastName: 'Doe', role: 'Backend Developer'},
-        {id: 3, username: 'Rami', email: 'rami@example.com', password: 'password123', firstName: 'Rami', lastName: 'Doe', role: 'QA Engineer'},
-        {id: 4, username: 'Ali', email: 'ali@example.com', password: 'password123', firstName: 'Ali', lastName: 'Doe', role: 'Frontend Developer'},
-        {id: 5, username: 'Reema', email: 'reema@example.com', password: 'password123', firstName: 'Reema', lastName: 'Doe', role: 'Backend Developer'},
-        {id: 6, username: 'Mona', email: 'mona@example.com', password: 'password123', firstName: 'Mona', lastName: 'Doe', role: 'Frontend Developer'},
-        {id: 7, username: 'Daher', email: 'daher@example.com', password: 'password123', firstName: 'Daher', lastName: 'Doe', role: 'Backend Developer'},
-    ];
+    useEffect(() => {
+        // Initialize available members here
+        setAvailableMembers([
+            {id: 1, username: 'Maisam', email: 'maisam@example.com', password: 'password123', firstName: 'Maisam', lastName: 'Doe', role: 'Frontend Developer'},
+            {id: 2, username: 'Osaid', email: 'osaid@example.com', password: 'password123', firstName: 'Osaid', lastName: 'Doe', role: 'Backend Developer'},
+            {id: 3, username: 'Rami', email: 'rami@example.com', password: 'password123', firstName: 'Rami', lastName: 'Doe', role: 'QA Engineer'},
+            {id: 4, username: 'Ali', email: 'ali@example.com', password: 'password123', firstName: 'Ali', lastName: 'Doe', role: 'Frontend Developer'},
+            {id: 5, username: 'Reema', email: 'reema@example.com', password: 'password123', firstName: 'Reema', lastName: 'Doe', role: 'Backend Developer'},
+            {id: 6, username: 'Mona', email: 'mona@example.com', password: 'password123', firstName: 'Mona', lastName: 'Doe', role: 'Frontend Developer'},
+            {id: 7, username: 'Daher', email: 'daher@example.com', password: 'password123', firstName: 'Daher', lastName: 'Doe', role: 'Backend Developer'},
+        ]);
+    }, []);
 
     useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
@@ -42,7 +51,6 @@ const Projects = () => {
     }, []);
 
     const handleMemberClick = (member) => {
-        // Only show the profile if not in delete mode
         if (!isDeleting) {
             setShowProfile(member);
         }
@@ -99,14 +107,12 @@ const Projects = () => {
 
     const handleClickOutside = (event) => {
         if (containerRef.current && !containerRef.current.contains(event.target)) {
-            // setShowDeletePopup(false);
-            // setIsDeleting(false);
             setShowMembersOnly(true);
         }
     };
 
     const handleImageClick = () => {
-        document.getElementById('fileInput').click(); // Trigger the file input click
+        document.getElementById('fileInput').click();
     };
 
     const handleFileChange = (event) => {
@@ -114,22 +120,27 @@ const Projects = () => {
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
-                setImage(reader.result); // Update the image state
+                setImage(reader.result);
             };
-            reader.readAsDataURL(file); // Convert the file to a base64 URL
+            reader.readAsDataURL(file);
         }
     };
 
     const handleDeleteClick = () => {
-        setImage(defaultProjectIcon); // Reset the image to the initial icon
+        setImage(defaultProjectIcon);
     };
+
+    const handleSelectMember = (memberId) => {
+        setSelectedMemberForChange(memberId);
+        setShowChangeMemberModal(true);
+    };
+
     useEffect(() => {
         console.log("showMembersOnly changed:", showMembersOnly);
         console.log("isDeleting changed:", isDeleting);
         console.log("projectMembers changed:", projectMembers);
-
-        // Other effect logic
     }, [showMembersOnly, isDeleting, projectMembers]);
+
     return (
         <div className="d-flex flex-row gap-5" ref={containerRef}>
             <nav className="secondary-navbar">
@@ -199,7 +210,7 @@ const Projects = () => {
                             isDeleting={isDeleting}
                             onCheckboxChange={handleCheckboxChange}
                             selectedMembers={selectedMembers}
-                            onMemberClick={handleMemberClick} // Pass the click handler
+                            onMemberClick={handleMemberClick}
                         />
                     ) : (
                         <>
@@ -217,44 +228,35 @@ const Projects = () => {
                                     isDeleting={isDeleting}
                                     onCheckboxChange={handleCheckboxChange}
                                     selectedMembers={selectedMembers}
-                                    onMemberClick={handleMemberClick} // Pass the click handler
+                                    onMemberClick={handleMemberClick}
                                 />
                             )}
                         </>
                     )}
                 </div>
-            </div>
 
-            {showDeletePopup && (
-                <div className="overlay show" onClick={handleClickOutside}>
-                    <div className="delete-members-popup" onClick={(e) => e.stopPropagation()}>
-                        <h3>Delete Members</h3>
-                        <Members
-                            members={projectMembers}
-                            isDeleting={isDeleting}
-                            onCheckboxChange={handleCheckboxChange}
-                            selectedMembers={selectedMembers}
-                            onMemberClick={handleMemberClick} // Pass the click handler
-                        />
-                        <button
-                            onClick={handleSaveDeletion}
-                            className="delete-members-button"
-                        >
-                            Save Deletion
-                        </button>
-                        <button
-                            onClick={() => setShowDeletePopup(false)}
-                            className="secondary-nav-button"
-                        >
-                            Cancel
-                        </button>
+                {showChangeMemberModal && (
+                    <ChangeMemberModal
+                        availableMembers={availableMembers}
+                        selectedMemberId={selectedMemberForChange}
+                        onClose={() => setShowChangeMemberModal(false)}
+                        onSelectMember={handleSelectMember}
+                    />
+                )}
+                {showDeletePopup && (
+                    <div className="delete-popup">
+                        <p>Are you sure you want to delete the selected members?</p>
+                        <button onClick={handleSaveDeletion}>Yes</button>
+                        <button onClick={() => setShowDeletePopup(false)}>No</button>
                     </div>
-                </div>
-            )}
-
-            {showProfile && !isDeleting && (
-                <MemberProfile member={showProfile} onClose={handleCloseProfile} />
-            )}
+                )}
+                {showProfile && (
+                    <MemberProfile
+                        member={showProfile}
+                        onClose={handleCloseProfile}
+                    />
+                )}
+            </div>
         </div>
     );
 };
