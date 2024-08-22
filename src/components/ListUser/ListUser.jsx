@@ -26,7 +26,7 @@ const ListUser = () => {
     return (
         <div>
             <h2 className='text-bg-dark'>List of Users</h2>
-            <div className="table-container">
+            <div className="user-table-container">
                 <table className="table table-striped table-bordered">
                     <thead>
                     <tr>
