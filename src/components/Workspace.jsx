@@ -6,7 +6,7 @@ import Navbar from "./Navbar/Navbar.jsx";
 import PropTypes from 'prop-types';
 import RoleService from '../Services/RoleService';
 import BoardService from '../Services/BoardService';
-import TaskModal from "./TaskModal.jsx";
+//import TaskModal from "./TaskModal.jsx";
 
 const Workspace = ({ isVisible }) => {
     const [roles, setRoles] = useState([]);
@@ -243,14 +243,16 @@ const Workspace = ({ isVisible }) => {
                     <Route path="/:boardId/:name" element={<Boards />} />
                 </Routes>
             </div>
-            <Boards
-                projectId={projectId}
-                projectDescription={projectDescription}
-                projectMembers={projectMembers}
-                setProjectId={setProjectId}
-                setProjectDescription={setProjectDescription}
-                setProjectMembers={setProjectMembers}
-            />
+            {selectedBoard && (
+                <Boards
+                    projectId={projectId}
+                    projectDescription={projectDescription}
+                    projectMembers={projectMembers}
+                    setProjectId={setProjectId}
+                    setProjectDescription={setProjectDescription}
+                    setProjectMembers={setProjectMembers}
+                />
+            )}
         </div>
 
     );

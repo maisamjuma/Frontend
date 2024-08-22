@@ -64,15 +64,18 @@ const ChangeMemberModal = ({ availableMembers = [], selectedMember, onClose, onS
                     onChange={handleSearchChange}
                     className="change-member-search-input-new"
                 />
-                <ul>
+                <ul className="change-member-list-new">
                     {filteredMembers.length > 0 ? (
                         filteredMembers.map(member => (
                             <li
                                 key={member.id}
                                 onClick={() => handleMemberClick(member.id)}
-                                className={member.id === selectedMember ? 'selected-member' : ''}
+                                className={`change-member-list-item ${member.id === selectedMember ? 'selected-member' : ''}`}
                             >
-                                {member.username}
+                <span className="member-initial-circle">
+                  {member.username.charAt(0).toUpperCase()}
+                </span>
+                                {member.username} {member.lastName}
                             </li>
                         ))
                     ) : (
