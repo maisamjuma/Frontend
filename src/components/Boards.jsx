@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {useLocation, useParams} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import TaskModal from './TaskModal';
 import './Boards.css';
 import {FaPen} from 'react-icons/fa';
@@ -11,7 +11,7 @@ import MoveModal from "./MoveModal/MoveModal.jsx";
 import CalendarModal from "./CalendarModal/CalendarModal.jsx";
 import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
 import PropTypes from "prop-types";
-import members from "./Member/Members.jsx";
+// import members from "./Member/Members.jsx";
 
 
 const Boards = ({ projectId, projectDescription, projectMembers, setProjectId, setProjectDescription, setProjectMembers }) => {
@@ -89,6 +89,7 @@ const Boards = ({ projectId, projectDescription, projectMembers, setProjectId, s
         const sourceStatusId = parseInt(source.droppableId, 10);
         const destinationStatusId = parseInt(destination.droppableId, 10);
 
+
         // Check if the task was dropped in the same place
         if (
             source.droppableId === destination.droppableId &&
@@ -133,6 +134,11 @@ const Boards = ({ projectId, projectDescription, projectMembers, setProjectId, s
 
         const updatedDestinationTasks = Array.from(destinationStatus.tasks);
         updatedDestinationTasks.splice(destination.index, 0, task);
+
+        if(destinationStatusId === 1 && sourceStatusId >= 2){
+            alert("You cannot move tasks from a higher status back to the unassigned tasks.");
+            return;
+        }
 
         const updatedStatuses = statuses.map(status => {
             if (status.id === sourceStatusId) {
