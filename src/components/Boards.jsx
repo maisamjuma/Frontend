@@ -11,6 +11,7 @@ import MoveModal from "./MoveModal/MoveModal.jsx";
 import CalendarModal from "./CalendarModal/CalendarModal.jsx";
 import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
 import PropTypes from "prop-types";
+import members from "./Member/Members.jsx";
 
 
 const Boards = ({ projectId, projectDescription, projectMembers, setProjectId, setProjectDescription, setProjectMembers }) => {
@@ -423,13 +424,18 @@ const Boards = ({ projectId, projectDescription, projectMembers, setProjectId, s
                                                                             <div className="nameCss">
                                                                                 <span>{task.name}</span>
                                                                             </div>
-                                                                            <div className="dateCss">
-                                                                                {task.dueDate && (
-                                                                                    <span className="task-due-date">
-                                                                                        Due date: {new Date(task.dueDate).toLocaleDateString()}
-                                                                            </span>
-
-
+                                                                            <div className="dateWithName">
+                                                                                <div className="dateCss">
+                                                                                    {task.dueDate && (
+                                                                                        <span className="task-due-date">
+                                                                                            Due date: {new Date(task.dueDate).toLocaleDateString()}
+                                                                                        </span>
+                                                                                    )}
+                                                                                </div>
+                                                                                {(status.id >= 2) && (
+                                                                                    <div className="nameCircle">
+                                                                                        {task.name.charAt(0).toUpperCase()}{/*neeeeeeeeeeeeeeeeed changeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee*/}
+                                                                                    </div>
                                                                                 )}
                                                                             </div>
 

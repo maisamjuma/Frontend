@@ -29,6 +29,7 @@ html, body {
     margin-right: 30px;
     overflow-x: auto; /* Prevent horizontal scroll */
 }
+
 /* Status boxes styling */
 .backend-status-box {
     margin-top: 10px;
@@ -46,6 +47,7 @@ html, body {
     position: relative; /* Position for dropdown menu */
 
 }
+
 /* Hide the scrollbar but allow scrolling */
 .backend-tasks-container::-webkit-scrollbar {
     display: none; /* Hide scrollbar for Chrome, Safari, and Opera */
@@ -72,8 +74,8 @@ html, body {
     background-color: #ffffff; /* Ensure background color remains white */
     border-radius: 8px;
     box-sizing: border-box; /* Include padding and border in element's total width and height */
-    -ms-overflow-style: none;  /* Hide scrollbar for Internet Explorer and Edge */
-    scrollbar-width: none;  /* Hide scrollbar for Firefox */
+    -ms-overflow-style: none; /* Hide scrollbar for Internet Explorer and Edge */
+    scrollbar-width: none; /* Hide scrollbar for Firefox */
     overflow-y: scroll; /* Allow vertical scrolling */
     overflow-x: hidden; /* Hide horizontal scrolling if any */
 }
@@ -84,11 +86,32 @@ html, body {
     flex: 1;
 }
 
+.dateWithName {
+    display: flex;
+    justify-content: space-around;
+    flex: 1;
+    padding-right: 10px;
+}
+
+.nameCircle {
+    width: 30px;
+    height: 30px;
+    background-color: darksalmon;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    margin-left: -23px;
+}
+
 .topClass {
     position: relative;
 }
 
-.topTop{
+.topTop {
     display: flex;
     flex-direction: row;
     gap: 70px;
@@ -103,7 +126,6 @@ html, body {
     margin-right: 10px;
 
 }
-
 
 
 /* Individual task styles */
@@ -368,7 +390,8 @@ html, body {
     position: relative;
     border-radius: 4px;
 }
-.MiddleClass{
+
+.MiddleClass {
     flex-wrap: wrap;
     flex-direction: column;
     gap: 10px;
@@ -376,7 +399,8 @@ html, body {
     color: #34495e;
 
 }
-.nameCss{
+
+.nameCss {
     border: 2px solid #ccc;
     border-radius: 8px;
     width: 180px;
@@ -390,17 +414,21 @@ html, body {
 
 
 }
-.nameCss:hover{
+
+.nameCss:hover {
     background-color: #dfc2c4;
 }
-.dateCss{
-    width: 180px;
-    padding-left: 5px;
+
+.dateCss {
+    width: 170px;
+    padding-left: 0px;
     padding-top: 3px;
     padding-bottom: 3px;
     word-break: break-word;
     word-wrap: break-word;
     white-space: wrap;
     word-spacing: 3px;
+    margin-right: 10px;
+    margin-left: -10px;
     transform: scale(0.8);
 }
