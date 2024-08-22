@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 // import { createUser, getUserById } from '../Services/UserService';
 import UserService from '../Services/UserService';
 import RoleService from "../Services/RoleService";
-import { createUser } from '../Services/FirebaseAuthService'; // Import FirebaseAuthService methods
+import { createUser,checkUserRoles } from '../Services/authService.js'; // Import from FirebaseAuthService
+// import { checkUserRoles } from '../firebase/auth.js'; // Import from auth.js (update the path accordingly)
 import { useNavigate } from 'react-router-dom';
 import './User.css';
 
@@ -68,9 +69,10 @@ const User = () => {
                 const firebaseUser = await createUser({ username, email, password, firstName, lastName, role, isTeamLeader });
                 console.log("firebaseUser:    ",firebaseUser);
                 // Prepare user data to send to backend
+                // const user = { username, email, firebaseUserId: firebaseUser.uid, firstName, lastName, role, isTeamLeader };
                 const user = { username, email, password, firstName, lastName, role, isTeamLeader };
 
-
+                // Save user details in backend
                 UserService.createUser(user).then((response) => {
                     console.log(response.data);
                     console.log("databaseUser:    ",user);
@@ -81,9 +83,9 @@ const User = () => {
 
                 });
 
-                // Save user details in backend
-                // const response = await UserService.createUser(user);
-                // console.log("response.data:    " ,response.data);
+                // Optionally check roles (example: checking the role of the newly created user)
+                const userRoles = await checkUserRoles(firebaseUser.uid);
+                console.log("User Roles: ", userRoles);
 
                 // Navigate to the desired page after successful user creation
                 navigate('/main');

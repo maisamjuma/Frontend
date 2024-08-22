@@ -1,3 +1,4 @@
+// src/firebase/firebaseConfig.js
 // Import the functions you need from the SDKs you need
 import {initializeApp} from "firebase/app";
 import {getAuth,connectAuthEmulator} from "firebase/auth";
@@ -30,7 +31,8 @@ const app = initializeApp(firebaseConfig);
 // const db = getFirestore(app);
 // firestoreInstance=db;
 // Initialize Firebase Authentication and Firestore
-const auth = getAuth();
+// const auth = getAuth();
+const auth = getAuth(app);
 const firestore = getFirestore(app);
 
 // Connect to the Firebase emulators
