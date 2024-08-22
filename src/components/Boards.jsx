@@ -98,6 +98,7 @@ const Boards = ({ projectId, projectDescription, projectMembers, setProjectId, s
         const sourceStatusId = parseInt(source.droppableId, 10);
         const destinationStatusId = parseInt(destination.droppableId, 10);
 
+
         // Check if the task was dropped in the same place
         if (
             source.droppableId === destination.droppableId &&
@@ -142,6 +143,11 @@ const Boards = ({ projectId, projectDescription, projectMembers, setProjectId, s
 
         const updatedDestinationTasks = Array.from(destinationStatus.tasks);
         updatedDestinationTasks.splice(destination.index, 0, task);
+
+        if(destinationStatusId === 1 && sourceStatusId >= 2){
+            alert("You cannot move tasks from a higher status back to the unassigned tasks.");
+            return;
+        }
 
         const updatedStatuses = statuses.map(status => {
             if (status.id === sourceStatusId) {
@@ -192,6 +198,7 @@ const Boards = ({ projectId, projectDescription, projectMembers, setProjectId, s
             }
         }
     };
+
 
     const handleDeleteTask = (taskId) => {
         const updatedStatuses = statuses.map(status => ({
@@ -576,10 +583,12 @@ const Boards = ({ projectId, projectDescription, projectMembers, setProjectId, s
                 {showAddTaskModal && (
 
                     <AddTaskModal
+
                         isVisible={showAddTaskModal}
                         onClose={() => setShowAddTaskModal(false)}
                         onAddTask={(task) => handleAddTask(currentStatusId, task)}
                         status={statuses.find(status => status.id === currentStatusId)} // Pass the correct status object
+
                         projectId={projectId}
                         projectDescription={projectDescription}
                         projectMembers={projectMembers} // Add this line
@@ -602,6 +611,7 @@ const Boards = ({ projectId, projectDescription, projectMembers, setProjectId, s
                         setProjectDescription={setProjectDescription}
                         setProjectMembers={setProjectMembers}
                     />
+
                 )}
 
             </div>
@@ -613,6 +623,7 @@ const Boards = ({ projectId, projectDescription, projectMembers, setProjectId, s
 
 };
 Boards.propTypes = {
+
 projectId: PropTypes.oneOfType([
     PropTypes.number,
     PropTypes.string,
