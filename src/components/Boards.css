@@ -432,3 +432,33 @@ html, body {
     margin-left: -10px;
     transform: scale(0.8);
 }
+.members-list-container {
+    padding: 10px;
+    border: 1px solid #ddd;
+    background: #f9f9f9;
+    border-radius: 5px;
+}
+
+.members-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.change-member-list-item {
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.change-member-list-item:hover {
+    background-color: #e0e0e0;
+}
+
+
+
+.selected-member {
+    background-color: #b3d9ff;
+}

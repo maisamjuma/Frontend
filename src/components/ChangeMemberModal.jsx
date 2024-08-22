@@ -1,49 +1,37 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './ChangeMemberModal.css';
-// import { useLocation } from 'react-router-dom';
 
-const ChangeMemberModal = ({ availableMembers = [], selectedMember, onClose, onSelectMember ,projectId, projectDescription, projectMembers, setProjectId, setProjectDescription, setProjectMembers}) => {
+const ChangeMemberModal = ({
+                               availableMembers = [],
+                               onSave,
+                               onClose,
+                               projectId,
+                               projectDescription,
+                               projectMembers,
+                               setProjectId,
+                               setProjectDescription,
+                               setProjectMembers
+                           }) => {
     const [searchTerm, setSearchTerm] = useState('');
-    // const location = useLocation();
-    // const [projectId, setProjectId] = useState(null);
-    // const [projectDescription, setProjectDescription] = useState(null);
-    // const [projectMembers, setProjectMembers] = useState([]); // State for project members
-    console.log("projectId:",projectId,"projectDescription:",projectDescription,"projectMembers:",projectMembers);
+    const [selectedMember, setSelectedMember] = useState(null);
 
-    availableMembers=projectMembers;
-    // useEffect(() => {
-    //     console.log("chinaaaaa","memberes:");
-    //
-    //     if (location.state) {
-    //         const { projectId, projectDescription,projectMembers } = location.state;
-    //         setProjectId(projectId);
-    //         setProjectDescription(projectDescription); // Make sure this is correctly set
-    //         setProjectMembers(projectMembers); // Set project members here
-    //         console.log("chinaaaaa",projectId,projectDescription,"memberes:",projectMembers);
-    //     }
-    // }, [location.state]);
+    // Use projectMembers if availableMembers is not provided
+    const membersToDisplay = availableMembers.length > 0 ? availableMembers : projectMembers;
 
-    // console.log("Project Description:", projectDescription);
-    // console.log("Project ID:", projectId);
-    // console.log("Project Members:", projectMembers);
-    //
-    // console.log('Available Members:', availableMembers);
-    // console.log('Search Term:', searchTerm);
-
-    // console.log("projectId:",projectId,"projectDescription:",projectDescription,"projectMembers:",projectMembers);
-
-
-    const filteredMembers = availableMembers.filter(member =>
+    const filteredMembers = membersToDisplay.filter(member =>
         member.username.toLowerCase().includes(searchTerm.toLowerCase())
-
     );
 
-
+    const handleSave = () => {
+        if (selectedMember) {
+            onSave(selectedMember); // Pass selected member to parent
+            onClose(); // Close modal after saving
+        }
+    };
 
     const handleMemberClick = (memberId) => {
-        onSelectMember(memberId);
-        onClose();
+        setSelectedMember(memberId);
     };
 
     const handleSearchChange = (e) => {
@@ -56,6 +44,7 @@ const ChangeMemberModal = ({ availableMembers = [], selectedMember, onClose, onS
                 <div className="change-member-modal-header-new">
                     <h5>Select a Member</h5>
                     <button className="change-member-close-button-new" onClick={onClose}>X</button>
+                    <button onClick={handleSave}>hi</button>
                 </div>
                 <input
                     type="text"
@@ -72,9 +61,9 @@ const ChangeMemberModal = ({ availableMembers = [], selectedMember, onClose, onS
                                 onClick={() => handleMemberClick(member.id)}
                                 className={`change-member-list-item ${member.id === selectedMember ? 'selected-member' : ''}`}
                             >
-                <span className="member-initial-circle">
-                  {member.username.charAt(0).toUpperCase()}
-                </span>
+                                <span className="member-initial-circle">
+                                    {member.username.charAt(0).toUpperCase()}
+                                </span>
                                 {member.username} {member.lastName}
                             </li>
                         ))
@@ -89,20 +78,18 @@ const ChangeMemberModal = ({ availableMembers = [], selectedMember, onClose, onS
 
 ChangeMemberModal.propTypes = {
     availableMembers: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.number.isRequired, // or PropTypes.string if ids are strings
+        id: PropTypes.number.isRequired,
         username: PropTypes.string.isRequired,
-    })).isRequired,
-    selectedMember: PropTypes.number, // or PropTypes.string if ids are strings
+    })),
     onClose: PropTypes.func.isRequired,
-    onSelectMember: PropTypes.func.isRequired,
-
+    onSave: PropTypes.func.isRequired,
     projectId: PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string,
     ]),
     projectDescription: PropTypes.string,
     projectMembers: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.number.isRequired, // or PropTypes.string if ids are strings
+        id: PropTypes.number.isRequired,
         username: PropTypes.string.isRequired,
     })),
     setProjectId: PropTypes.func.isRequired,

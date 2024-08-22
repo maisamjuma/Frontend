@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {useLocation, useParams} from 'react-router-dom';
+import { useParams} from 'react-router-dom';
 import TaskModal from './TaskModal';
 import './Boards.css';
 import {FaPen} from 'react-icons/fa';
@@ -11,7 +11,9 @@ import MoveModal from "./MoveModal/MoveModal.jsx";
 import CalendarModal from "./CalendarModal/CalendarModal.jsx";
 import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
 import PropTypes from "prop-types";
-import members from "./Member/Members.jsx";
+import ChangeMemberModal from "./ChangeMemberModal.jsx";
+//import members from "./Member/Members.jsx";
+//import members from "./Member/Members.jsx";
 
 
 const Boards = ({ projectId, projectDescription, projectMembers, setProjectId, setProjectDescription, setProjectMembers }) => {
@@ -26,9 +28,16 @@ const Boards = ({ projectId, projectDescription, projectMembers, setProjectId, s
     const [showPriorityModal, setShowPriorityModal] = useState(false);
     const [showAddTaskModal, setShowAddTaskModal] = useState(false);
     const [showcalenderModal, setcalendarModal] = useState(false);
+    const [showchangememberModal, setshowchangememberModal] = useState(false);
 
-    console.log("projectId:",projectId,"projectDescription:",projectDescription,"projectMembers:",projectMembers);
+    const [selectedMember, setSelectedMember] = useState('');
 
+    // console.log("projectId:",projectId,"projectDescription:",projectDescription,"projectMembers:",projectMembers);
+    // console.log("assignedUser:",assignedUser);
+    // const handleSelectMember = (memberId) => {
+    //     setSelectedMember(memberId); // Update the state with the selected member's ID
+    //     console.log("Selected member ID:", memberId);
+    // };
     // const location = useLocation();
     // const [projectId, setProjectId] = useState(null);
     // const [projectDescription, setProjectDescription] = useState(null);
@@ -167,6 +176,7 @@ const Boards = ({ projectId, projectDescription, projectMembers, setProjectId, s
                     ...task,
                     statusId: statusId,
                     date: task.date || null, // Add date here if needed
+                    assignedUserId: task.assignedUserId || null, // Add this line
                 };
                 const updatedStatuses = statuses.map(status => {
                     if (status.id === statusId) {
@@ -183,7 +193,6 @@ const Boards = ({ projectId, projectDescription, projectMembers, setProjectId, s
         }
     };
 
-
     const handleDeleteTask = (taskId) => {
         const updatedStatuses = statuses.map(status => ({
             ...status,
@@ -195,6 +204,44 @@ const Boards = ({ projectId, projectDescription, projectMembers, setProjectId, s
     const handleDoubleClick = (taskId) => {
         setEditingTaskId(taskId);
     };
+    // const handleSaveMember = (selectedMemberId) => {
+    //     const member = projectMembers.find(member => member.id === selectedMemberId);
+    //     if (member) {
+    //         const initial = member.username.charAt(0).toUpperCase();
+    //         setSelectedMember(initial);
+    //     } else {
+    //         console.log('Member not found');
+    //     }
+    // };
+
+    const handleChangeMember = (memberId) => {
+        if (selectedTask) {
+
+            // Find the member by ID
+            const member = projectMembers.find(member => member.id === memberId);
+
+            if (member) {
+                // Extract the first letter of the member's name and convert to uppercase
+                const initial = member.username.charAt(0).toUpperCase();
+                setSelectedMember(initial);
+                console.log("123")
+                // Update statuses with the new member ID for the selected task
+                const updatedStatuses = statuses.map(status => ({
+                    ...status,
+                    tasks: status.tasks.map(task =>
+                        task.id === selectedTask.id ? { ...task, assignedUserId: memberId,memberInitials: initial } : task
+                    )
+                }));
+                setStatuses(updatedStatuses);
+            } else {
+                console.log('Member not found');
+            }
+            setshowchangememberModal(false);
+        } else {
+            console.log('No task selected');
+        }
+    };
+
 
     const handleBlur = (statusId, taskId, newName) => {
         const updatedStatuses = statuses.map(status => ({
@@ -312,6 +359,13 @@ const Boards = ({ projectId, projectDescription, projectMembers, setProjectId, s
     const handleCloseCalenderModal = () => {
         setcalendarModal(false);
     };
+
+    // const getMemberInitial = (memberId) => {
+    //     const member = projectMembers.find(member => member.id === memberId);
+    //     console.log('Found member:', member); // Debugging line
+    //     return member ? member.username.charAt(0).toUpperCase() : 'N';
+    // };
+
 
 
     return (
@@ -434,7 +488,11 @@ const Boards = ({ projectId, projectDescription, projectMembers, setProjectId, s
                                                                                 </div>
                                                                                 {(status.id >= 2) && (
                                                                                     <div className="nameCircle">
-                                                                                        {task.name.charAt(0).toUpperCase()}{/*neeeeeeeeeeeeeeeeed changeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee*/}
+                                                                                        {task.assignedUserId && (
+                                                                                            <span className="taskMember">
+                                                                                            {task.memberInitials}
+                                                                                        </span>
+                                                                                        )}
                                                                                     </div>
                                                                                 )}
                                                                             </div>
@@ -469,16 +527,17 @@ const Boards = ({ projectId, projectDescription, projectMembers, setProjectId, s
                 </Droppable>
                 {selectedTask && (
                     <TaskModal
+                        selectedMember={selectedMember}
                         onDelete={handleDeleteTask}
                         task={selectedTask}
                         onClose={handleCloseModal}
                         boards={statuses}
                         statuses={statuses}
                         onSaveDate={handleSaveDate}
+                        onSaveMember={handleChangeMember}
                         onRemoveDate={handleRemoveDate}
                         onSavePriority={handleSavePriority}
-
-
+                        members={projectMembers}
                         projectId={projectId}
                         projectDescription={projectDescription}
                         projectMembers={projectMembers}
@@ -505,30 +564,44 @@ const Boards = ({ projectId, projectDescription, projectMembers, setProjectId, s
                         onSavePriority={handleSavePriority}
                     />
                 )}
-                {showcalenderModal && (
+                {
+                    showcalenderModal && (
                     <CalendarModal
                         isVisible={showcalenderModal}
                         onClose={handleCloseCalenderModal}
                         onSavePriority={handleSaveDate}
                         onRemoveDate={handleRemoveDate}/>
-                )}
+                )
+                }
                 {showAddTaskModal && (
 
                     <AddTaskModal
-
                         isVisible={showAddTaskModal}
                         onClose={() => setShowAddTaskModal(false)}
                         onAddTask={(task) => handleAddTask(currentStatusId, task)}
                         status={statuses.find(status => status.id === currentStatusId)} // Pass the correct status object
-
                         projectId={projectId}
                         projectDescription={projectDescription}
-                        projectMembers={projectMembers}
+                        projectMembers={projectMembers} // Add this line
                         setProjectId={setProjectId}
                         setProjectDescription={setProjectDescription}
                         setProjectMembers={setProjectMembers}
                     />
 
+                )}
+                {showchangememberModal && (
+                    <ChangeMemberModal
+                        isVisible={showchangememberModal}
+                        availableMembers={projectMembers}
+                        onClose={() => setshowchangememberModal(false)}
+                        onSave={handleChangeMember}
+                        projectId={projectId}
+                        projectDescription={projectDescription}
+                        projectMembers={projectMembers} // Add this line
+                        setProjectId={setProjectId}
+                        setProjectDescription={setProjectDescription}
+                        setProjectMembers={setProjectMembers}
+                    />
                 )}
 
             </div>
@@ -540,19 +613,20 @@ const Boards = ({ projectId, projectDescription, projectMembers, setProjectId, s
 
 };
 Boards.propTypes = {
-
 projectId: PropTypes.oneOfType([
     PropTypes.number,
     PropTypes.string,
 ]),
     projectDescription: PropTypes.string,
     projectMembers: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired, // or PropTypes.string if ids are strings
+    id: PropTypes.string.isRequired, // or PropTypes.string if ids are strings
     username: PropTypes.string.isRequired,
 })),
     setProjectId: PropTypes.func.isRequired,
     setProjectDescription: PropTypes.func.isRequired,
     setProjectMembers: PropTypes.func.isRequired,
+    memberId: PropTypes.string, // Added if you are using memberId
 
 };
+
 export default Boards;
