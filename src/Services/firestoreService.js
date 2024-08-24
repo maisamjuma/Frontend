@@ -1,3 +1,5 @@
+
+/*
 // src/firebase/firestoreService.js
 import { firestore } from '../firebase/firebaseConfig';
 import { collection, addDoc, query, where, onSnapshot } from 'firebase/firestore';
@@ -23,3 +25,5 @@ export const addEvent = async (event) => {
     const eventsCollection = collection(firestore, 'events');
     await addDoc(eventsCollection, event);
 };
+
+ */

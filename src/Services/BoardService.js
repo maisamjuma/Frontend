@@ -1,26 +1,36 @@
 import axios from 'axios';
 
-const BOARDS_API_BASE_URL = "http://10.10.30.77:8080/api/boards"; // Adjust the URL to match your API
+// const BOARDS_API_BASE_URL = "http://10.10.30.77:8080/api/boards"; // Adjust the URL to match your API
+const BOARDS_API_BASE_URL = "http://localhost:8080/api/boards"; // Adjust the URL to match your API
 
 class BoardService {
 
     // Fetch all boards
     getAllBoards() {
+        const token = localStorage.getItem("token");
+
         return axios.get(BOARDS_API_BASE_URL);
+
     }
 
     // Fetch a board by its ID
     getBoardById(boardId) {
+        const token = localStorage.getItem("token");
+
         return axios.get(`${BOARDS_API_BASE_URL}/${boardId}`);
     }
 
     // Fetch boards by project ID
     getBoardsByProject(projectId) {
+        const token = localStorage.getItem("token");
+
         return axios.get(`${BOARDS_API_BASE_URL}/projects/${projectId}`);
     }
 
     // Create a new board
     createBoard(projectId, roleId) {
+        const token = localStorage.getItem("token");
+
         // Construct the URL with the roleId
         const url = `${BOARDS_API_BASE_URL}/${roleId}`;
 
@@ -30,6 +40,8 @@ class BoardService {
 
     // Update an existing board by its ID
     updateBoard(boardId, updatedBoard) {
+        const token = localStorage.getItem("token");
+
         return axios.put(`${BOARDS_API_BASE_URL}/${boardId}`, updatedBoard, {
             headers: {
                 'Content-Type': 'application/json'
@@ -39,11 +51,15 @@ class BoardService {
 
     // Delete a board by its ID
     deleteBoard(boardId) {
+        const token = localStorage.getItem("token");
+
         return axios.delete(`${BOARDS_API_BASE_URL}/${boardId}`);
     }
 
     // Add default boards to a project
     addDefaultBoards(projectId) {
+        const token = localStorage.getItem("token");
+
         // Construct the URL with the projectId
         const url = `${BOARDS_API_BASE_URL}/projects/${projectId}/default`;
 
