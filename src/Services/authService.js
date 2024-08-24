@@ -1,3 +1,4 @@
+/*
 // src/Services/authService.js
 import { auth, firestore } from '../firebase/firebaseConfig.js';
 import { updateProfile,sendPasswordResetEmail,sendEmailVerification,updatePassword,createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
@@ -167,3 +168,6 @@ const saveUserRoleInFirestore = async (userId, role) => {
     const userRef = doc(firestore, "users", userId);
     await setDoc(userRef, { role }, { merge: true });
 };
+
+
+ */

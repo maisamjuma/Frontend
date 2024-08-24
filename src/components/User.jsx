@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 // import { createUser, getUserById } from '../Services/UserService';
 import UserService from '../Services/UserService';
 import RoleService from "../Services/RoleService";
-import { createUser,checkUserRoles } from '../Services/authService.js'; // Import from FirebaseAuthService
+// import { createUser,checkUserRoles } from '../Services/authService.js'; // Import from FirebaseAuthService
 // import { checkUserRoles } from '../firebase/auth.js'; // Import from auth.js (update the path accordingly)
 import { useNavigate } from 'react-router-dom';
 import './User.css';
@@ -18,6 +18,7 @@ const User = () => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [role, setRole] = useState('');
+    const [functionalRoleId, setFunctionalRoleId] = useState('');
     const [isTeamLeader, setIsTeamLeader] = useState(false);
     const [errors, setErrors] = useState({
         username: '',
@@ -66,26 +67,29 @@ const User = () => {
         if (validateForm()) {
             try {
                 // Create user in Firebase
-                const firebaseUser = await createUser({ username, email, password, firstName, lastName, role, isTeamLeader });
-                console.log("firebaseUser:    ",firebaseUser);
+
+                // const firebaseUser = await createUser({ username, email, password, firstName, lastName, role, isTeamLeader });
+                // console.log("firebaseUser:    ",firebaseUser);
+
                 // Prepare user data to send to backend
                 // const user = { username, email, firebaseUserId: firebaseUser.uid, firstName, lastName, role, isTeamLeader };
-                const user = { username, email, password, firstName, lastName, role, isTeamLeader };
+                // const user = { username, email, password, firstName, lastName, role, isTeamLeader };
+                const user = { username, email, password, firstName, lastName, functionalRoleId, isTeamLeader };
 
                 // Save user details in backend
                 UserService.createUser(user).then((response) => {
-                    console.log(response.data);
-                    console.log("databaseUser:    ",user);
+                    // console.log(response.data);
+                    console.log("china databaseUser:    ",user);
 
-                    console.log("response.data:    " ,response.data);
+                    console.log("china response.data:    " ,response.data);
 
                     navigate('/main'); // Update the path to where you want to navigate
 
                 });
 
                 // Optionally check roles (example: checking the role of the newly created user)
-                const userRoles = await checkUserRoles(firebaseUser.uid);
-                console.log("User Roles: ", userRoles);
+                // const userRoles = await checkUserRoles(firebaseUser.uid);
+                // console.log("User Roles: ", userRoles);
 
                 // Navigate to the desired page after successful user creation
                 navigate('/main');

@@ -1,3 +1,5 @@
+/*
+
 // src/firebase/firebaseConfig.js
 // Import the functions you need from the SDKs you need
 import {initializeApp} from "firebase/app";
@@ -38,9 +40,11 @@ const firestore = getFirestore(app);
 // Connect to the Firebase emulators
 if (window.location.hostname === "localhost") {
     connectAuthEmulator(auth, "http://localhost:9099");
-    connectFirestoreEmulator(firestore, "localhost", 8081);
+    connectFirestoreEmulator(firestore, "localhost", 8082);
 }
 // const analytics = getAnalytics(app);
 
 // Export the app, auth, and firestore instances
 export {app, auth, firestore };
+
+*/

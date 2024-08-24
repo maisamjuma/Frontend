@@ -106,9 +106,11 @@ const Sidebar = ({onMenuAction}) => {
 
     const fetchProjects = async () => {
         try {
-            const response = await ProjectService.getAllProjects();
+            const token = localStorage.getItem("token");
 
-            const projectsWithIds = response.data.map(project => ({
+            const response = await ProjectService.getAllProjects(token);
+
+            const projectsWithIds = response.map(project => ({
                 ...project,
                 id: project.projectId  // Assuming `id` is the correct field from the database
             }));
