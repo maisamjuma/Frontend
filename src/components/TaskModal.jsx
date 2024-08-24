@@ -19,7 +19,7 @@ import LabelModal from "./LabelModal.jsx";
 import ChangeMemberModal from './ChangeMemberModal';
 
 // eslint-disable-next-line react/prop-types
-const TaskModal = ({ task, onClose, onDelete, boards, statuses, labels = [], onSaveDate, onRemoveDate, onSavePriority, onSaveLabels, members, onChangeMember ,projectId, projectDescription, projectMembers, setProjectId, setProjectDescription, setProjectMembers }) => {
+const TaskModal = ({ selectedMember,task, onClose, onDelete, boards, statuses, labels = [],onSaveMember, onSaveDate, onRemoveDate, onSavePriority, onSaveLabels, members ,projectId, projectDescription, projectMembers, setProjectId, setProjectDescription, setProjectMembers }) => {
     const [isMoveModalOpen, setIsMoveModalOpen] = useState(false);
     const [isCalendarModalOpen, setIsCalendarModalOpen] = useState(false);
     const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
@@ -27,7 +27,7 @@ const TaskModal = ({ task, onClose, onDelete, boards, statuses, labels = [], onS
     const [isLabelModalOpen, setIsLabelModalOpen] = useState(false);
     const [isChangeMemberModalOpen, setIsChangeMemberModalOpen] = useState(false);
     console.log("projectId:",projectId,"projectDescription:",projectDescription,"projectMembers:",projectMembers);
-
+    console.log("hhghg",selectedMember)
     if (!task) return null;
 
     const status = statuses.find(status => status.id === task.statusId) || {};
@@ -50,6 +50,12 @@ const TaskModal = ({ task, onClose, onDelete, boards, statuses, labels = [], onS
             onClose();
         }
     };
+    // const handleSaveMember = (memberId) => {
+    //     console.log('Selected member ID:', memberId);
+    //     // Handle the logic to save the selected member
+    //     // For example, update the task with the new member ID
+    //     // updateTaskMember(task.id, memberId);
+    // };
 
     return (
         <div className="task-modal-overlay" onClick={handleOverlayClick}>
@@ -125,31 +131,29 @@ const TaskModal = ({ task, onClose, onDelete, boards, statuses, labels = [], onS
                 />
             )}
             {isChangeMemberModalOpen && (
+
                 <ChangeMemberModal
                     onClose={() => setIsChangeMemberModalOpen(false)}
                     availableMembers={members} // Pass available members
-                    selectedMember={task.memberId} // Assuming you have a memberId in the task object
-                    onSelectMember={(memberId) => {
-                        onChangeMember(memberId);
-                        setIsChangeMemberModalOpen(false);
-                    }}
-
+                    onSave={onSaveMember} // Pass the function to handle saving the member
                     projectId={projectId}
                     projectDescription={projectDescription}
                     projectMembers={projectMembers}
                     setProjectId={setProjectId}
                     setProjectDescription={setProjectDescription}
                     setProjectMembers={setProjectMembers}
+
                 />
             )}
+
 
         </div>
 
 
     );
 };
-
 TaskModal.propTypes = {
+    selectedMember: PropTypes.string, // Assuming selectedMember is a string or use the correct type
     task: PropTypes.shape({
         name: PropTypes.string.isRequired,
         id: PropTypes.string.isRequired,
@@ -175,13 +179,14 @@ TaskModal.propTypes = {
         color: PropTypes.string,
     })).isRequired,
     onSaveDate: PropTypes.func.isRequired,
+    onSaveMember: PropTypes.func.isRequired,
     onRemoveDate: PropTypes.func.isRequired,
     onSavePriority: PropTypes.func.isRequired,
     members: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.string.isRequired,
         username: PropTypes.string.isRequired,
     })).isRequired,
-    onChangeMember: PropTypes.func.isRequired,
 };
+
 
 export default TaskModal;

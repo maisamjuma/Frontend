@@ -40,6 +40,9 @@ const Projects = () => {
             {id: 5, username: 'Reema', email: 'reema@example.com', password: 'password123', firstName: 'Reema', lastName: 'Doe', role: 'Backend Developer'},
             {id: 6, username: 'Mona', email: 'mona@example.com', password: 'password123', firstName: 'Mona', lastName: 'Doe', role: 'Frontend Developer'},
             {id: 7, username: 'Daher', email: 'daher@example.com', password: 'password123', firstName: 'Daher', lastName: 'Doe', role: 'Backend Developer'},
+            {id: 8, username: 'samarah', email: 'samarah@example.com', password: 'password123', firstName: 'Daher', lastName: 'Doe', role: 'Backend Developer'},
+            {id: 9, username: 'Mohammad', email: 'Mohammad@example.com', password: 'password123', firstName: 'Mohammad', lastName: 'Doe', role: 'Backend Developer'},
+
         ]);
     }, []);
 

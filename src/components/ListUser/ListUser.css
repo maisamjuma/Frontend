@@ -1,4 +1,4 @@
-.table-container {
+.user-table-container {
     overflow: auto;
     max-height: 400px; /* Adjust this value as needed */
     border: 1px solid #ddd; /* Optional: to add a border around the scrollable area */

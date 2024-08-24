@@ -1,22 +1,15 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import './AddTaskModal.css';
 import Calendar from 'react-calendar';
 import PropTypes from "prop-types";
-// Static list of users
-const usersList = [
-    {id: 1, name: 'John Doe'},
-    {id: 2, name: 'Jane Smith'},
-    {id: 3, name: 'Alice Johnson'},
-    {id: 4, name: 'Bob Brown'}
-];
+//import Boards from "./Boards.jsx";
 
-// eslint-disable-next-line react/prop-types
-const AddTaskModal = ({isVisible, onClose, onAddTask, status}) => {
+const AddTaskModal = ({ isVisible, onClose, onAddTask, status, projectId, projectDescription, projectMembers, setProjectId, setProjectDescription, setProjectMembers }) => {
     const [taskName, setTaskName] = useState('');
     const [description, setDescription] = useState('');
     const [dueDate, setDueDate] = useState(new Date());
     const [priority, setPriority] = useState('medium');
-    const [assignedUser, setAssignedUser] = useState(''); // State for selected user
+    const [assignedUser, setAssignedUser] = useState(''); // Local state for selected user
 
     useEffect(() => {
         if (isVisible) {
@@ -31,9 +24,7 @@ const AddTaskModal = ({isVisible, onClose, onAddTask, status}) => {
                 description,
                 dueDate: dueDate.toISOString().split('T')[0], // Use selected date directly
                 priority,
-                // eslint-disable-next-line react/prop-types
                 status: status.title, // Use status title
-                // eslint-disable-next-line react/prop-types
                 assignedUser: status.id === 2 ? assignedUser : '' // Assign user only if status.id is 2
             };
             onAddTask(newTask);
@@ -47,15 +38,14 @@ const AddTaskModal = ({isVisible, onClose, onAddTask, status}) => {
             alert('Task name is required.');
         }
     };
+    console.log("assignedUser",assignedUser)
 
     return (
         <>
             {isVisible && (
                 <div className="addtask-modal-overlay">
                     <div className="addtask-modal-content">
-                        <h3>
-                            Add New Task
-                        </h3>
+                        <h3>Add New Task</h3>
                         <div className="task-info">
                             <input
                                 type="text"
@@ -77,7 +67,7 @@ const AddTaskModal = ({isVisible, onClose, onAddTask, status}) => {
                             <Calendar
                                 onChange={(date) => setDueDate(date)}
                                 value={dueDate}
-                                tileClassName={({date}) =>
+                                tileClassName={({ date }) =>
                                     dueDate && date.toDateString() === new Date(dueDate).toDateString()
                                         ? 'selected-date'
                                         : null
@@ -101,7 +91,6 @@ const AddTaskModal = ({isVisible, onClose, onAddTask, status}) => {
                         </div>
 
                         {/* Conditionally Render User Dropdown */}
-                        {/* eslint-disable-next-line react/prop-types */}
                         {status.id === 2 && (
                             <div className="user-options">
                                 <p className="paragraph">Assign To:</p>
@@ -110,12 +99,19 @@ const AddTaskModal = ({isVisible, onClose, onAddTask, status}) => {
                                     onChange={(e) => setAssignedUser(e.target.value)}
                                     className="user-dropdown"
                                 >
-                                    <option value="">Assign to...</option>
-                                    {usersList.map(user => (
-                                        <option key={user.id} value={user.name}>
-                                            {user.name}
-                                        </option>
-                                    ))}
+                                    <option value="">Select a user</option>
+                                    {projectMembers.length > 0 ? (
+                                        projectMembers.map(member => (
+                                            <option
+                                                key={member.id}
+                                                value={member.id}
+                                            >
+                                                {member.username} {member.lastName}
+                                            </option>
+                                        ))
+                                    ) : (
+                                        <option value="">No members found</option>
+                                    )}
                                 </select>
                             </div>
                         )}
@@ -127,6 +123,16 @@ const AddTaskModal = ({isVisible, onClose, onAddTask, status}) => {
                     </div>
                 </div>
             )}
+            {/*<Boards*/}
+            {/*    assignedUser={assignedUser}*/}
+            {/*    setAssignedUser={setAssignedUser}*/}
+            {/*    projectId={projectId}*/}
+            {/*    projectDescription={projectDescription}*/}
+            {/*    projectMembers={projectMembers}*/}
+            {/*    setProjectId={setProjectId}*/}
+            {/*    setProjectDescription={setProjectDescription}*/}
+            {/*    setProjectMembers={setProjectMembers}*/}
+            {/*/>*/}
         </>
     );
 };
@@ -137,6 +143,17 @@ AddTaskModal.propTypes = {
     status: PropTypes.shape({
         id: PropTypes.number.isRequired,
         title: PropTypes.string.isRequired
-    }).isRequired
+    }).isRequired,
+    projectId: PropTypes.string.isRequired,
+    projectDescription: PropTypes.string.isRequired,
+    projectMembers: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        username: PropTypes.string.isRequired,
+        lastName: PropTypes.string,
+    })),
+    setProjectId: PropTypes.func.isRequired,
+    setProjectDescription: PropTypes.func.isRequired,
+    setProjectMembers: PropTypes.func.isRequired
 };
+
 export default AddTaskModal;
