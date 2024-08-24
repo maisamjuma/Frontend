@@ -48,41 +48,68 @@ const LabelModal = ({ onClose, labels, selectedLabels, onSave }) => {
     const handleOverlayClick = (e) => {
         if (e.target === e.currentTarget) onClose();
     };
+    const [showEditLabelModal, setShowEditLabelModal] = useState(false);
 
+    // Function to handle opening the Edit Label Modal
+    const handleCreateLabel = () => {
+        setShowEditLabelModal(true);
+    };
+
+    // Function to handle closing the Edit Label Modal
+    const closeEditLabelModal = () => {
+        setShowEditLabelModal(false);
+    };
+    const handleSaveNewLabel = (newLabel) => {
+        // Logic to save the new label
+        console.log('New label saved:', newLabel);
+        closeEditLabelModal();
+    };
     return (
         <div className="label-modal-overlay" onClick={handleOverlayClick}>
-            <div className="label-modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="label-modal" onClick={(e) => e.stopPropagation()}>
                 {!editingLabel ? (
                     <>
-                        <input
-                            type="text"
-                            placeholder="Search labels..."
-                            value={searchTerm}
-                            onChange={handleSearchChange}
-                            className="label-search"
-                        />
-                        <div className="label-list">
-                            {filteredLabels.map((label) => (
-                                <div key={label.id} className="label-item-container">
-                                    <input
-                                        type="checkbox"
-                                        checked={currentLabels.includes(label.id)}
-                                        onChange={() => handleLabelClick(label)}
-                                    />
-                                    <div
-                                        className="label-item"
-                                        style={{ backgroundColor: label.color }}
-                                        onClick={() => handleLabelClick(label)}
-                                    >
-                                        {label.name}
-                                    </div>
-                                    <button className="edit-button" onClick={() => handleEditLabel(label)}>✏️</button>
+                            <div className="label-modal-header">
+                                <span>Labels</span>
+                                <button className="close-button">×</button>
+                            </div>
+                            <div className="label-search">
+                                <input type="text" placeholder="Search labels..."/>
+                            </div>
+                            <div className="labels-list">
+                                <div className="label-item">
+                                    <input type="checkbox" id="backend"/>
+                                    <label htmlFor="backend" className="label-color backend">Backend</label>
+                                    <button className="edit-button">✎</button>
                                 </div>
-                            ))}
-                        </div>
-                        <button onClick={handleSave}>Save Labels</button>
-                        <button onClick={onClose}>Cancel</button>
-                        <button onClick={() => setEditingLabel({ id: null, name: '', color: '#000000' })}>Create a new label</button>
+                                <div className="label-item">
+                                    <input type="checkbox" id="frontend" checked/>
+                                    <label htmlFor="frontend" className="label-color frontend">Frontend</label>
+                                    <button className="edit-button">✎</button>
+                                </div>
+                                <div className="label-item">
+                                    <input type="checkbox" id="label-3"/>
+                                    <label htmlFor="label-3" className="label-color label-3">Label 3</label>
+                                    <button className="edit-button">✎</button>
+                                </div>
+                                <div className="label-item">
+                                    <input type="checkbox" id="label-4"/>
+                                    <label htmlFor="label-4" className="label-color label-4">Label 4</label>
+                                    <button className="edit-button">✎</button>
+                                </div>
+                                <div className="label-item">
+                                    <input type="checkbox" id="label-5"/>
+                                    <label htmlFor="label-5" className="label-color label-5">Label 5</label>
+                                    <button className="edit-button">✎</button>
+                                </div>
+                            </div>
+                            <div className="label-actions">
+                                <button className="create-label">Create a new label</button>
+                                <button className="colorblind-mode">Enable colorblind friendly mode</button>
+                            </div>
+
+
+
                     </>
                 ) : (
                     <div className="edit-label-container">
@@ -98,7 +125,7 @@ const LabelModal = ({ onClose, labels, selectedLabels, onSave }) => {
                                 <div
                                     key={color}
                                     className={`color-swatch ${editingLabel.color === color ? 'selected' : ''}`}
-                                    style={{ backgroundColor: color }}
+                                    style={{backgroundColor: color}}
                                     onClick={() => handleColorChange(color)}
                                 />
                             ))}
