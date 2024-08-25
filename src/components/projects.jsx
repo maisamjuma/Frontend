@@ -247,7 +247,8 @@ const Projects = () => {
                     />
                 )}
                 {showDeletePopup && (
-                    <div className="delete-popup">
+                    <div className="delete-popup ">
+
                         <p>Are you sure you want to delete the selected members?</p>
                         <button onClick={handleSaveDeletion}>Yes</button>
                         <button onClick={() => setShowDeletePopup(false)}>No</button>

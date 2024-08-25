@@ -19,6 +19,7 @@
 .projectsconM {
     /*display: flex;*/
     /*justify-content: flex-end; !* Aligns items to the right *!*/
+    overflow-y: scroll;
 
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: #333;
@@ -32,6 +33,7 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
     width: 350px;
 }
+
 .flex-row {
     display: flex;
     align-items: center;
@@ -145,6 +147,7 @@ button:hover {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    height: 700px;
 }
 
 .delete-members-button {

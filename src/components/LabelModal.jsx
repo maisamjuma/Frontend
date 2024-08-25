@@ -6,6 +6,8 @@ const LabelModal = ({ onClose, labels, selectedLabels, onSave }) => {
     const [currentLabels, setCurrentLabels] = useState(selectedLabels);
     const [searchTerm, setSearchTerm] = useState('');
     const [editingLabel, setEditingLabel] = useState(null);
+    const [showCreateLabelForm, setShowCreateLabelForm] = useState(false);
+    const [newLabel, setNewLabel] = useState({ name: '', color: '#FF6F61' }); // Default color
 
     const handleLabelClick = (label) => {
         setCurrentLabels((prevLabels) =>
@@ -28,111 +30,103 @@ const LabelModal = ({ onClose, labels, selectedLabels, onSave }) => {
         label.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    const handleEditLabel = (label) => {
-        setEditingLabel(label);
+    const handleCreateLabel = () => {
+        setShowCreateLabelForm(true);
     };
 
-    const handleLabelChange = (e) => {
-        setEditingLabel({ ...editingLabel, name: e.target.value });
+    const handleCancelCreateLabel = () => {
+        setShowCreateLabelForm(false);
+        setNewLabel({ name: '', color: '#FF6F61' }); // Reset form
     };
 
-    const handleColorChange = (color) => {
-        setEditingLabel({ ...editingLabel, color });
+    const handleNewLabelChange = (e) => {
+        setNewLabel({ ...newLabel, name: e.target.value });
     };
 
-    const handleSaveEdit = () => {
-        // Implement label save logic here, updating the labels list
-        setEditingLabel(null);
+    const handleNewLabelColorChange = (color) => {
+        setNewLabel({ ...newLabel, color });
+    };
+
+    const handleSaveNewLabel = () => {
+        if (newLabel.name.trim()) {
+            const newLabelWithId = { ...newLabel, id: `label-${Date.now()}` }; // Generate a unique ID
+            labels.push(newLabelWithId); // Update labels list
+            setCurrentLabels([...currentLabels, newLabelWithId.id]); // Select the new label
+            handleCancelCreateLabel(); // Close the form
+        }
     };
 
     const handleOverlayClick = (e) => {
         if (e.target === e.currentTarget) onClose();
     };
-    const [showEditLabelModal, setShowEditLabelModal] = useState(false);
 
-    // Function to handle opening the Edit Label Modal
-    const handleCreateLabel = () => {
-        setShowEditLabelModal(true);
-    };
-
-    // Function to handle closing the Edit Label Modal
-    const closeEditLabelModal = () => {
-        setShowEditLabelModal(false);
-    };
-    const handleSaveNewLabel = (newLabel) => {
-        // Logic to save the new label
-        console.log('New label saved:', newLabel);
-        closeEditLabelModal();
-    };
     return (
         <div className="label-modal-overlay" onClick={handleOverlayClick}>
             <div className="label-modal" onClick={(e) => e.stopPropagation()}>
-                {!editingLabel ? (
-                    <>
-                            <div className="label-modal-header">
-                                <span>Labels</span>
-                                <button className="close-button">×</button>
-                            </div>
-                            <div className="label-search">
-                                <input type="text" placeholder="Search labels..."/>
-                            </div>
-                            <div className="labels-list">
-                                <div className="label-item">
-                                    <input type="checkbox" id="backend"/>
-                                    <label htmlFor="backend" className="label-color backend">Backend</label>
-                                    <button className="edit-button">✎</button>
-                                </div>
-                                <div className="label-item">
-                                    <input type="checkbox" id="frontend" checked/>
-                                    <label htmlFor="frontend" className="label-color frontend">Frontend</label>
-                                    <button className="edit-button">✎</button>
-                                </div>
-                                <div className="label-item">
-                                    <input type="checkbox" id="label-3"/>
-                                    <label htmlFor="label-3" className="label-color label-3">Label 3</label>
-                                    <button className="edit-button">✎</button>
-                                </div>
-                                <div className="label-item">
-                                    <input type="checkbox" id="label-4"/>
-                                    <label htmlFor="label-4" className="label-color label-4">Label 4</label>
-                                    <button className="edit-button">✎</button>
-                                </div>
-                                <div className="label-item">
-                                    <input type="checkbox" id="label-5"/>
-                                    <label htmlFor="label-5" className="label-color label-5">Label 5</label>
-                                    <button className="edit-button">✎</button>
-                                </div>
-                            </div>
-                            <div className="label-actions">
-                                <button className="create-label">Create a new label</button>
-                                <button className="colorblind-mode">Enable colorblind friendly mode</button>
-                            </div>
-
-
-
-                    </>
-                ) : (
+                {showCreateLabelForm ? (
                     <div className="edit-label-container">
-                        <h3>Edit label</h3>
+                        <h3>Create New Label</h3>
                         <input
                             type="text"
-                            value={editingLabel.name}
-                            onChange={handleLabelChange}
                             placeholder="Label title"
+                            value={newLabel.name}
+                            onChange={handleNewLabelChange}
                         />
                         <div className="color-picker">
-                            {['#FF6F61', '#6B5B95', '#88B04B', '#F7CAC9'].map((color) => (
+                            {['#FF6F61', '#6B5B95', '#88B04B', '#F7CAC9','#f2d53c','#2d545e', '#ffa8B6','#c2edda','#51e2f5','#edf756','#ffb766','#a28089','#8458B3','#ff1d58','#59ce8f','#f75990','#12343b','#feb300','#f9c5bd','#7c677f','#39a0ca','#ff414e','#9bc400','#eb1736'].map((color) => (
                                 <div
                                     key={color}
-                                    className={`color-swatch ${editingLabel.color === color ? 'selected' : ''}`}
-                                    style={{backgroundColor: color}}
-                                    onClick={() => handleColorChange(color)}
+                                    className={`color-swatch ${newLabel.color === color ? 'selected' : ''}`}
+                                    style={{ backgroundColor: color }}
+                                    onClick={() => handleNewLabelColorChange(color)}
                                 />
                             ))}
                         </div>
-                        <button onClick={handleSaveEdit}>Save</button>
-                        <button onClick={() => setEditingLabel(null)}>Cancel</button>
+                        <div className="create-label-actions">
+                            <button onClick={handleSaveNewLabel}>Save</button>
+                            <button onClick={handleCancelCreateLabel}>Cancel</button>
+                        </div>
                     </div>
+                ) : (
+                    <>
+                        <div className="label-modal-header">
+                            <span>Labels</span>
+                            <button className="close-button" onClick={onClose}>×</button>
+                        </div>
+                        <div className="label-search">
+                            <input
+                                type="text"
+                                placeholder="Search labels..."
+                                value={searchTerm}
+                                onChange={handleSearchChange}
+                            />
+                        </div>
+                        <div className="labels-list">
+                            {filteredLabels.map((label) => (
+                                <div className="label-item" key={label.id}>
+                                    <input
+                                        type="checkbox"
+                                        id={label.id}
+                                        checked={currentLabels.includes(label.id)}
+                                        onChange={() => handleLabelClick(label)}
+                                    />
+                                    <label htmlFor={label.id} className="label-color"
+                                           style={{backgroundColor: label.color}}>
+                                        {label.name}
+                                    </label>
+                                    <button className="edit-button">✎</button>
+                                </div>
+                            ))}
+                        </div>
+                        <div className="label-actions">
+                            <button className="create-label" onClick={handleCreateLabel}>
+                                Create a new label
+                            </button>
+                        </div>
+                        <div className="label-save-actions">
+                            <button onClick={onClose}>Cancel</button>
+                        </div>
+                    </>
                 )}
             </div>
         </div>
