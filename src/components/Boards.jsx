@@ -201,7 +201,7 @@ const Boards = ({ projectId, projectDescription, projectMembers, setProjectId, s
         if (selectedTask) {
 
             // Find the member by ID
-            const member = projectMembers.find(member => member.id === memberId);
+            const member = projectMembers.find(member => member.userId === memberId);
 
             if (member) {
                 // Extract the first letter of the member's name and convert to uppercase
@@ -604,9 +604,12 @@ projectId: PropTypes.oneOfType([
 ]),
     projectDescription: PropTypes.string,
     projectMembers: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string.isRequired, // or PropTypes.string if ids are strings
-    username: PropTypes.string.isRequired,
-})),
+        userId: PropTypes.number.isRequired,
+        projectMemberId: PropTypes.number.isRequired,
+        projectId: PropTypes.number.isRequired,
+        joinedAt: PropTypes.string.isRequired,
+    })),
+
     setProjectId: PropTypes.func.isRequired,
     setProjectDescription: PropTypes.func.isRequired,
     setProjectMembers: PropTypes.func.isRequired,

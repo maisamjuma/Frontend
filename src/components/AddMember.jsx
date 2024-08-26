@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import './AddMember.css';
 import UserService from "../Services/UserService.js";
-import ProjectMemberService from "../Services/ProjectMemberService.js"; // Import the service
+//import ProjectMemberService from "../Services/ProjectMemberService.js"; // Import the service
 
 // eslint-disable-next-line react/prop-types
 const AddMember = ({ projectId,onAddMember, onSave, onDeleteMode, isDeleting }) => {
@@ -33,32 +33,25 @@ const AddMember = ({ projectId,onAddMember, onSave, onDeleteMode, isDeleting }) 
     };
 
     const handleMemberClick = (member) => {
-        if (selectedMembers.includes(member.id)) {
-            setSelectedMembers(selectedMembers.filter(id => id !== member.id));
+        if (selectedMembers.includes(member.userId)) {
+            setSelectedMembers(selectedMembers.filter(id => id !== member.userId));
         } else {
-            setSelectedMembers([...selectedMembers, member.id]);
+            setSelectedMembers([...selectedMembers, member.userId]);
         }
     };
+
 
     const handleSave = async () => {
         if (onAddMember) {
             // console.log("hi",projectId);
-            const membersToAdd = availableMembers.filter(member => selectedMembers.includes(member.id));
 
-            // Loop through selected members and add each one to the project
+            const membersToAdd = availableMembers.filter(member => selectedMembers.includes(member.userId));
+            console.log("membersToAdd:",membersToAdd)
+
+            // Loop through selected users and add each one to the project
             try {
-                for (const member of membersToAdd) {
-                    // console.log("hi",member);
-                    const response = await ProjectMemberService.addMemberToProject({
-                        projectId: projectId, // Pass the projectId
-                        userId: member.userId // Pass the member ID
-                    });
 
-                    // Optionally, update the member object to include the projectMemberId
-                    const { projectMemberId } = response.data;
-                    console.log(projectMemberId);
-                }
-                onAddMember(membersToAdd); // Optionally update the UI
+                onAddMember(membersToAdd); // Optionally update the UI //users
                 onSave(); // Close the modal or perform any additional actions
             } catch (error) {
                 console.error('Error adding members to the project:', error);
@@ -91,8 +84,8 @@ const AddMember = ({ projectId,onAddMember, onSave, onDeleteMode, isDeleting }) 
                 <div className="member-list">
                     {availableMembers.map((member) => (
                         <div
-                            key={member.id}
-                            className={`member-item ${selectedMembers.includes(member.id) ? 'selected' : ''}`}
+                            key={member.userId}
+                            className={`member-item ${selectedMembers.includes(member.userId) ? 'selected' : ''}`}
                             onClick={() => handleMemberClick(member)}
                         >
                             <div className="member-name">{member.username}</div>
