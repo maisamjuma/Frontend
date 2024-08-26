@@ -21,7 +21,7 @@ const Members = ({ members, isDeleting, onCheckboxChange, selectedMembers, onMem
                         </div>
                     )}
                     <div className="member-name">{member.username}</div>
-                    <div className="member-role">{member.role}</div>
+                    {/*<div className="member-role">{member.role}</div>*/}
                 </div>
             ))}
         </div>

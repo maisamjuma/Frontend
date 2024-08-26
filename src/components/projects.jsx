@@ -7,6 +7,7 @@ import AddMember from "./AddMember.jsx";
 import MemberProfile from "./MemberProfile.jsx";
 import defaultProjectIcon from '../assets/projectIcon.png';
 import ChangeMemberModal from "./ChangeMemberModal.jsx";
+import ProjectMemberService from '../Services/ProjectMemberService'; // Import your service
 
 const Projects = () => {
     const { projectName } = useParams();
@@ -16,9 +17,7 @@ const Projects = () => {
 
     const [image, setImage] = useState(defaultProjectIcon);
     const [showProfile, setShowProfile] = useState(null);
-    const [projectMembers, setProjectMembers] = useState(
-        JSON.parse(localStorage.getItem(projectName + '-members')) || []
-    );
+    const [projectMembers, setProjectMembers] = useState([]);
     const [showMembersOnly, setShowMembersOnly] = useState(true);
     const [isEditing, setIsEditing] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
@@ -29,7 +28,19 @@ const Projects = () => {
     const [showChangeMemberModal, setShowChangeMemberModal] = useState(false); // State for modal visibility
 
     const containerRef = useRef(null);
+    // Fetch project members from the database
+    useEffect(() => {
+        const fetchProjectMembers = async () => {
+            try {
+                const response = await ProjectMemberService.getProjectMembersByProjectId(projectId);
+                setProjectMembers(response.data);
+            } catch (error) {
+                console.error('Error fetching project members:', error);
+            }
+        };
 
+        fetchProjectMembers();
+    }, [projectId]);
     useEffect(() => {
         // Initialize available members here
         setAvailableMembers([
@@ -63,13 +74,39 @@ const Projects = () => {
         setShowProfile(null);
     };
 
-    const handleAddMember = (newMembers) => {
+    const handleAddMember = async (newMembers) => {
         const updatedMembers = [
             ...projectMembers,
             ...newMembers.filter(newMember => !projectMembers.some(member => member.id === newMember.id))
         ];
+
         setProjectMembers(updatedMembers);
-        localStorage.setItem(projectName + '-members', JSON.stringify(updatedMembers));
+       // localStorage.setItem(projectName + '-members', JSON.stringify(updatedMembers));
+
+        // Adding new members to the database
+        try {
+            for (const member of newMembers) {
+                // Check if the member is already in the project
+                if (!projectMembers.some(existingMember => existingMember.id === member.id)) {
+                    const response = await ProjectMemberService.addMemberToProject({
+                        projectId: projectId, // Pass the projectId
+                        userId: member.userId // Pass the member ID
+                    });
+
+                    // Print the projectMemberId from the response
+
+
+                    // Optionally, update the member object to include the projectMemberId
+                    const { projectMemberId } = response.data;
+                    console.log("helloeeeeeee",projectMemberId);
+
+                }
+            }
+
+            console.log('Members added successfully to the project.');
+        } catch (error) {
+            console.error('Error adding members to the project:', error);
+        }
     };
 
     const handleSaveMembers = () => {
@@ -85,6 +122,7 @@ const Projects = () => {
     };
 
     const handleCheckboxChange = (memberId) => {
+        console.log('Checkbox changed for memberId:', memberId); // Debugging line
         setSelectedMembers((prevSelected) =>
             prevSelected.includes(memberId)
                 ? prevSelected.filter(id => id !== memberId)
@@ -92,15 +130,32 @@ const Projects = () => {
         );
     };
 
-    const handleSaveDeletion = () => {
+
+
+    const handleSaveDeletion = async () => {
+        console.log('Selected members for deletion:', selectedMembers); // Debugging line
         const updatedMembers = projectMembers.filter(member => !selectedMembers.includes(member.id));
         setProjectMembers(updatedMembers);
-        localStorage.setItem(projectName + '-members', JSON.stringify(updatedMembers));
         setSelectedMembers([]);
+
+        try {
+            for (const memberId of selectedMembers) {
+                if (memberId) { // Ensure memberId is not undefined
+                    console.log('Deleting member with ID:', memberId); // Debugging line
+                    await ProjectMemberService.deleteMemberFromProject(memberId, projectId);
+                } else {
+                    console.error('Member ID is undefined'); // Log error if ID is undefined
+                }
+            }
+        } catch (error) {
+            console.error('Error deleting members:', error);
+        }
+
         setIsDeleting(false);
         setShowMembersOnly(true);
         setShowDeletePopup(false);
     };
+
 
     const handleButtonClick = () => {
         navigate(`/main/workspace/${projectName}`, {
@@ -219,7 +274,7 @@ const Projects = () => {
                         <>
                             {isEditing ? (
                                 <AddMember
-                                    availableMembers={availableMembers}
+                                    projectId={projectId}  // Pass projectId here
                                     onAddMember={handleAddMember}
                                     onSave={handleSaveMembers}
                                     isDeleting={isDeleting}

@@ -32,33 +32,6 @@ const Boards = ({ projectId, projectDescription, projectMembers, setProjectId, s
 
     const [selectedMember, setSelectedMember] = useState('');
 
-    // console.log("projectId:",projectId,"projectDescription:",projectDescription,"projectMembers:",projectMembers);
-    // console.log("assignedUser:",assignedUser);
-    // const handleSelectMember = (memberId) => {
-    //     setSelectedMember(memberId); // Update the state with the selected member's ID
-    //     console.log("Selected member ID:", memberId);
-    // };
-    // const location = useLocation();
-    // const [projectId, setProjectId] = useState(null);
-    // const [projectDescription, setProjectDescription] = useState(null);
-    // const [projectMembers, setProjectMembers] = useState([]); // State for project members
-    // useEffect(() => {
-    //     console.log("chinaaaaa","memberes:");
-    //
-    //     if (location.state) {
-    //         const { projectId, projectDescription,projectMembers } = location.state;
-    //         setProjectId(projectId);
-    //         setProjectDescription(projectDescription); // Make sure this is correctly set
-    //         setProjectMembers(projectMembers); // Set project members here
-    //         console.log("chinaaaaa",projectId,projectDescription,"memberes:",projectMembers);
-    //     }
-    // }, [location.state]);
-
-    // console.log("Project Description:", projectDescription);
-    // console.log("Project ID:", projectId);
-    // console.log("Project Members:", projectMembers);
-
-    // Load statuses from localStorage or use default values
     useEffect(() => {
         const loadStatuses = () => {
             const savedStatuses = localStorage.getItem(`${projectName}_${boardId}_${name}_statuses`);
@@ -75,7 +48,7 @@ const Boards = ({ projectId, projectDescription, projectMembers, setProjectId, s
             ];
             const statuses = savedStatuses ? JSON.parse(savedStatuses) : defaultStatuses;
 
-            if (name === 'QA') {
+            if (name === "QA" || name === "qa") {
                 return statuses.filter(status => status.id > 5); // Show only statuses with id > 5
                 // eslint-disable-next-line no-dupe-else-if
             } else if (name === 'Backend' || name === 'Frontend') {
@@ -177,13 +150,19 @@ const Boards = ({ projectId, projectDescription, projectMembers, setProjectId, s
         if (task.name.trim()) {
             const status = statuses.find(status => status.id === statusId);
             if (status) {
+
+
                 const newTask = {
                     id: `${projectName}_${boardId}_${name}_${statusId}_${status.tasks.length + 1}`,
                     ...task,
                     statusId: statusId,
                     date: task.date || null, // Add date here if needed
-                    assignedUserId: task.assignedUserId || null, // Add this line
+                    assignedUserLetter: task.assignedUserLetter || null, // Add this line
+                    // memberInitials: task.initial || null,
+                    assignedUserId: task.assignedUserId, // Assign user only if status.id is 2
+
                 };
+
                 const updatedStatuses = statuses.map(status => {
                     if (status.id === statusId) {
                         return {
@@ -193,9 +172,13 @@ const Boards = ({ projectId, projectDescription, projectMembers, setProjectId, s
                     }
                     return status;
                 });
+                console.log(status.tasks)
                 setStatuses(updatedStatuses);
                 setShowAddTaskModal(false);
             }
+            console.log("Updated task:", task.name);
+            console.log("Member:", task.assignedUserId);
+
         }
     };
 
@@ -211,17 +194,10 @@ const Boards = ({ projectId, projectDescription, projectMembers, setProjectId, s
     const handleDoubleClick = (taskId) => {
         setEditingTaskId(taskId);
     };
-    // const handleSaveMember = (selectedMemberId) => {
-    //     const member = projectMembers.find(member => member.id === selectedMemberId);
-    //     if (member) {
-    //         const initial = member.username.charAt(0).toUpperCase();
-    //         setSelectedMember(initial);
-    //     } else {
-    //         console.log('Member not found');
-    //     }
-    // };
 
-    const handleChangeMember = (memberId) => {
+    const handleChangeMember = (memberId,memberUsername) => {
+        console.log("Board memberId:",memberId)
+        console.log("Board memberUsername:",memberUsername)
         if (selectedTask) {
 
             // Find the member by ID
@@ -229,18 +205,22 @@ const Boards = ({ projectId, projectDescription, projectMembers, setProjectId, s
 
             if (member) {
                 // Extract the first letter of the member's name and convert to uppercase
-                const initial = member.username.charAt(0).toUpperCase();
+                // const initial = member.username.charAt(0).toUpperCase();
+                const initial = memberUsername.charAt(0).toUpperCase();
                 setSelectedMember(initial);
-                console.log("123")
+
                 // Update statuses with the new member ID for the selected task
+
                 const updatedStatuses = statuses.map(status => ({
                     ...status,
                     tasks: status.tasks.map(task =>
-                        task.id === selectedTask.id ? { ...task, assignedUserId: memberId,memberInitials: initial } : task
+                        // task.id === selectedTask.id ? { ...task,memberInitials: task.assignedUserId } : task
+                        task.id === selectedTask.id ? { ...task,assignedUserLetter: initial,assignedUserId: memberId} : task
                     )
                 }));
                 setStatuses(updatedStatuses);
-            } else {
+            }
+            else {
                 console.log('Member not found');
             }
             setshowchangememberModal(false);
@@ -367,18 +347,11 @@ const Boards = ({ projectId, projectDescription, projectMembers, setProjectId, s
         setcalendarModal(false);
     };
 
-    // const getMemberInitial = (memberId) => {
-    //     const member = projectMembers.find(member => member.id === memberId);
-    //     console.log('Found member:', member); // Debugging line
-    //     return member ? member.username.charAt(0).toUpperCase() : 'N';
-    // };
-
-
 
     return (
         <DragDropContext onDragEnd={onDragEnd}>
             <div className={`backend-container ${boardId}`}>
-                <h1>{name}</h1>
+                <div><h1>{name}</h1></div>
                 <Droppable droppableId="all-statuses" direction="horizontal">
                     {(provided) => (
                         <div
@@ -497,7 +470,8 @@ const Boards = ({ projectId, projectDescription, projectMembers, setProjectId, s
                                                                                     <div className="nameCircle">
                                                                                         {task.assignedUserId && (
                                                                                             <span className="taskMember">
-                                                                                            {task.memberInitials}
+                                                                                            {/*{task.memberInitials} /!* we need it for the old tasks*!/*/}
+                                                                                            {task.assignedUserLetter}{/* we need it for add user*/}
                                                                                         </span>
                                                                                         )}
                                                                                     </div>

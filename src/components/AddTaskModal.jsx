@@ -9,7 +9,8 @@ const AddTaskModal = ({ isVisible, onClose, onAddTask, status, projectId, projec
     const [description, setDescription] = useState('');
     const [dueDate, setDueDate] = useState(new Date());
     const [priority, setPriority] = useState('medium');
-    const [assignedUser, setAssignedUser] = useState(''); // Local state for selected user
+    const [assignedUserLetter, setAssignedUserLetter] = useState(''); // Local state for selected user
+    const [assignedUserId, setAssignedUserId] = useState(''); // Local state for selected user
 
     useEffect(() => {
         if (isVisible) {
@@ -19,26 +20,30 @@ const AddTaskModal = ({ isVisible, onClose, onAddTask, status, projectId, projec
 
     const handleAddTask = () => {
         if (taskName.trim()) {
+            setAssignedUserId();
             const newTask = {
                 name: taskName,
                 description,
                 dueDate: dueDate.toISOString().split('T')[0], // Use selected date directly
                 priority,
                 status: status.title, // Use status title
-                assignedUser: status.id === 2 ? assignedUser : '' // Assign user only if status.id is 2
+                assignedUserLetter: assignedUserLetter, // Assign user only if status.id is 2
+                assignedUserId: assignedUserId, // Assign user only if status.id is 2
+
             };
             onAddTask(newTask);
             setTaskName('');
             setDescription('');
             setDueDate(new Date());
             setPriority('medium');
-            setAssignedUser(''); // Reset user selection
+            setAssignedUserLetter(''); // Reset user selection
+            setAssignedUserId(''); // Reset user selection
             onClose();
         } else {
             alert('Task name is required.');
         }
     };
-    console.log("assignedUser",assignedUser)
+    console.log("assignedUserId",assignedUserId)
 
     return (
         <>
@@ -95,8 +100,15 @@ const AddTaskModal = ({ isVisible, onClose, onAddTask, status, projectId, projec
                             <div className="user-options">
                                 <p className="paragraph">Assign To:</p>
                                 <select
-                                    value={assignedUser}
-                                    onChange={(e) => setAssignedUser(e.target.value)}
+                                    value={assignedUserLetter}
+                                    onChange={(e) => {
+                                        const selectedUsername = e.target.value;
+                                        const selectedMember = projectMembers.find(member => member.username.charAt(0).toUpperCase() === selectedUsername);
+                                        if (selectedMember) {
+                                            setAssignedUserId(selectedMember.id);
+                                        }
+                                        setAssignedUserLetter(selectedUsername);
+                                    }}
                                     className="user-dropdown"
                                 >
                                     <option value="">Select a user</option>
@@ -104,7 +116,7 @@ const AddTaskModal = ({ isVisible, onClose, onAddTask, status, projectId, projec
                                         projectMembers.map(member => (
                                             <option
                                                 key={member.id}
-                                                value={member.id}
+                                                value={member.username.charAt(0).toUpperCase()}
                                             >
                                                 {member.username} {member.lastName}
                                             </option>

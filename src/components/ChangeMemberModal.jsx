@@ -14,7 +14,8 @@ const ChangeMemberModal = ({
                                setProjectMembers
                            }) => {
     const [searchTerm, setSearchTerm] = useState('');
-    const [selectedMember, setSelectedMember] = useState(null);
+    const [selectedMemberId, setSelectedMemberId] = useState('');
+    const [selectedMemberUsername, setSelectedMemberUsername] = useState('');
 
     // Use projectMembers if availableMembers is not provided
     const membersToDisplay = availableMembers.length > 0 ? availableMembers : projectMembers;
@@ -24,14 +25,18 @@ const ChangeMemberModal = ({
     );
 
     const handleSave = () => {
-        if (selectedMember) {
-            onSave(selectedMember); // Pass selected member to parent
+        if (selectedMemberId) {
+            onSave(selectedMemberId,selectedMemberUsername); // Pass selected member to parent
+            console.log("onSave(memberUsername):",selectedMemberUsername)
             onClose(); // Close modal after saving
         }
     };
 
-    const handleMemberClick = (memberId) => {
-        setSelectedMember(memberId);
+    const handleMemberClick = (memberId,memberUsername) => {
+        console.log("Member clicked:", memberId);
+
+        setSelectedMemberId(memberId);
+        setSelectedMemberUsername(memberUsername);
     };
 
     const handleSearchChange = (e) => {
@@ -58,8 +63,8 @@ const ChangeMemberModal = ({
                         filteredMembers.map(member => (
                             <li
                                 key={member.id}
-                                onClick={() => handleMemberClick(member.id)}
-                                className={`change-member-list-item ${member.id === selectedMember ? 'selected-member' : ''}`}
+                                onClick={() => handleMemberClick(member.id,member.username)}
+                                className={`change-member-list-item ${member.id === selectedMemberId ? 'selected-member' : ''}`}
                             >
                                 <span className="member-initial-circle">
                                     {member.username.charAt(0).toUpperCase()}

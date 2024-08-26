@@ -1,22 +1,36 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import './AddMember.css';
+import UserService from "../Services/UserService.js";
+import ProjectMemberService from "../Services/ProjectMemberService.js"; // Import the service
 
 // eslint-disable-next-line react/prop-types
-const AddMember = ({ availableMembers, onAddMember, onSave, onDeleteMode, isDeleting }) => {
+const AddMember = ({ projectId,onAddMember, onSave, onDeleteMode, isDeleting }) => {
     const [searchTerm, setSearchTerm] = useState('');
-    const [filteredMembers, setFilteredMembers] = useState(availableMembers);
-    const [selectedMembers, setSelectedMembers] = useState([]);
+    const [availableMembers, setAvailableMembers] = useState([]); // Initialize availableMembers state
+    const [filteredMembers, setFilteredMembers] = useState([]); // Initialize filteredMembers state
+    const [selectedMembers, setSelectedMembers] = useState([]); // Initialize selectedMembers state
+
+    useEffect(() => {
+        const fetchUsers = async () => {
+            try {
+                const response = await UserService.getAllUsers();
+                setAvailableMembers(response.data);
+            } catch (error) {
+                console.error('Error fetching users:', error);
+            }
+        };
+        fetchUsers();
+    }, []);
+
 
     const handleSearchChange = (e) => {
         const term = e.target.value.toLowerCase();
         setSearchTerm(term);
-        // eslint-disable-next-line react/prop-types
         const filtered = availableMembers.filter((member) =>
-            member.username.toLowerCase().includes(term) // Update to 'username'
+            member.username.toLowerCase().includes(term)
         );
         setFilteredMembers(filtered);
     };
-
 
     const handleMemberClick = (member) => {
         if (selectedMembers.includes(member.id)) {
@@ -26,11 +40,29 @@ const AddMember = ({ availableMembers, onAddMember, onSave, onDeleteMode, isDele
         }
     };
 
-    const handleSave = () => {
+    const handleSave = async () => {
         if (onAddMember) {
-            // eslint-disable-next-line react/prop-types
+            // console.log("hi",projectId);
             const membersToAdd = availableMembers.filter(member => selectedMembers.includes(member.id));
-            onAddMember(membersToAdd);
+
+            // Loop through selected members and add each one to the project
+            try {
+                for (const member of membersToAdd) {
+                    // console.log("hi",member);
+                    const response = await ProjectMemberService.addMemberToProject({
+                        projectId: projectId, // Pass the projectId
+                        userId: member.userId // Pass the member ID
+                    });
+
+                    // Optionally, update the member object to include the projectMemberId
+                    const { projectMemberId } = response.data;
+                    console.log(projectMemberId);
+                }
+                onAddMember(membersToAdd); // Optionally update the UI
+                onSave(); // Close the modal or perform any additional actions
+            } catch (error) {
+                console.error('Error adding members to the project:', error);
+            }
         }
         setSelectedMembers([]);
         onSave();
@@ -57,19 +89,12 @@ const AddMember = ({ availableMembers, onAddMember, onSave, onDeleteMode, isDele
                     <button className="m-0 pb-2 pt-2 fw-semibold" onClick={() => onSave(true)}>X</button>
                 </div>
                 <div className="member-list">
-                    {filteredMembers.map((member) => (
+                    {availableMembers.map((member) => (
                         <div
                             key={member.id}
                             className={`member-item ${selectedMembers.includes(member.id) ? 'selected' : ''}`}
                             onClick={() => handleMemberClick(member)}
                         >
-                            {/*{isDeleting && (*/}
-                            {/*    <input*/}
-                            {/*        type="checkbox"*/}
-                            {/*        checked={selectedMembers.includes(member.id)}*/}
-                            {/*        onChange={() => handleMemberClick(member)}*/}
-                            {/*    />*/}
-                            {/*)}*/}
                             <div className="member-name">{member.username}</div>
                             <div className="member-role">{member.role}</div>
                         </div>
