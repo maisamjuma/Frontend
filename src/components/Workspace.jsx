@@ -34,7 +34,7 @@ const Workspace = ({ isVisible }) => {
             setProjectId(projectId);
             setProjectDescription(projectDescription); // Make sure this is correctly set
             setProjectMembers(projectMembers); // Set project members here
-            console.log("chinaaaaa",projectId,projectDescription,"memberes:",projectMembers);
+            console.log("chinaaaaa",projectId,projectDescription,"memberes:",projectMembers,"project member:",projectName);
         }
     }, [location.state]);
 
@@ -82,19 +82,22 @@ const Workspace = ({ isVisible }) => {
     };
     console.log(projectMembers)
     console.log(projectDescription)
+    console.log("hiiiiiii",projectId)
+    console.log("selectedBoard",selectedBoard)
+
     const fetchBoards = async () => {
-        // Example boards added for testing
-        let newBoard = { boardId: 'staticBackendID', name: 'staticBackend' };
-        setBoards(prevBoards => [...prevBoards, newBoard]);
-
-        newBoard = { boardId: 'staticFrontendID', name: 'staticFrontend' };
-        setBoards(prevBoards => [...prevBoards, newBoard]);
-
-        newBoard = { boardId: 'staticQaID', name: 'staticQA' };
-        setBoards(prevBoards => [...prevBoards, newBoard]);
-
-        newBoard = { boardId: 'staticFrontendID', name: 'staticFrontend' };
-        setBoards(prevBoards => [...prevBoards, newBoard]);
+        // // Example boards added for testing
+        // let newBoard = { boardId: 'staticBackendID', name: 'staticBackend' };
+        // setBoards(prevBoards => [...prevBoards, newBoard]);
+        //
+        // newBoard = { boardId: 'staticFrontendID', name: 'staticFrontend' };
+        // setBoards(prevBoards => [...prevBoards, newBoard]);
+        //
+        // newBoard = { boardId: 'staticQaID', name: 'staticQA' };
+        // setBoards(prevBoards => [...prevBoards, newBoard]);
+        //
+        // newBoard = { boardId: 'staticFrontendID', name: 'staticFrontend' };
+        // setBoards(prevBoards => [...prevBoards, newBoard]);
 
         try {
             const response = await BoardService.getBoardsByProject(projectId);
@@ -104,6 +107,7 @@ const Workspace = ({ isVisible }) => {
                     name: board.name
                 }));
                 setBoards(boardsWithIds);
+                console.log(boardsWithIds)
             } else {
                 throw new Error('Unexpected response format');
             }
@@ -126,9 +130,11 @@ const Workspace = ({ isVisible }) => {
         setSelected_roleId(e.target.value);
     };
 
-    const handleBoardClick = (boardId) => {
-        setSelectedBoard(boardId);
+    const handleBoardClick = (board) => {
+        console.log(" handleBoardClick board",board)
+        setSelectedBoard(board);
     };
+
 
     const handleAddClick = () => {
         setIsDropdownOpen(!isDropdownOpen);
@@ -172,16 +178,16 @@ const Workspace = ({ isVisible }) => {
             <nav className="secondary-navbar">
                 <ul className="secondary-nav" ref={secondaryNavRef}>
                     {boards.slice(0, 5).map((board) => (
-                        <li key={board.id} className="secondary-nav-item">
+                        <li key={board.boardId} className="secondary-nav-item">
                             <div className="board-container">
                                 <Link
                                     className="secnav-link"
-                                    to={`/main/workspace/${projectName}/${board.boardId}/${board.name}`}
+                                    to={`/main/workspace/${projectId}/${board.boardId}/${board.name}`}
                                     style={{
-                                        color: selectedBoard === board.boardId ? 'darksalmon' : 'black',
-                                        fontWeight: selectedBoard === board.boardId ? "bold" : "normal"
+                                        color: selectedBoard === board ? 'darksalmon' : 'black',
+                                        fontWeight: selectedBoard === board ? "bold" : "normal"
                                     }}
-                                    onClick={() => handleBoardClick(board.boardId)}
+                                    onClick={() => handleBoardClick(board)}
                                 >
                                     {board.name}
                                 </Link>
@@ -201,15 +207,15 @@ const Workspace = ({ isVisible }) => {
                             {isboardsDropdownOpen && (
                                 <ul className="dropdown-content">
                                     {dropdownBoards.map((board) => (
-                                        <li key={board.id} className="secondary-nav-item">
+                                        <li key={board.boardId} className="secondary-nav-item">
                                             <Link
                                                 className="secnav-links"
-                                                to={`/main/workspace/${projectName}/${board.boardId}/${board.name}`}
+                                                to={`/main/workspace/${projectId}/${board.boardId}/${board.name}`}
                                                 style={{
-                                                    color: selectedBoard === board.boardId ? 'darksalmon' : 'black',
-                                                    fontWeight: selectedBoard === board.boardId ? "bold" : "normal"
+                                                    color: selectedBoard === board ? 'darksalmon' : 'black',
+                                                    fontWeight: selectedBoard === board ? "bold" : "normal"
                                                 }}
-                                                onClick={() => handleBoardClick(board.boardId)}
+                                                onClick={() => handleBoardClick(board)}
                                             >
                                                 {board.name}
                                             </Link>
@@ -251,6 +257,7 @@ const Workspace = ({ isVisible }) => {
                     setProjectId={setProjectId}
                     setProjectDescription={setProjectDescription}
                     setProjectMembers={setProjectMembers}
+                    board={selectedBoard} // Pass selectedBoard here
                 />
             )}
         </div>

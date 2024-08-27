@@ -13,6 +13,9 @@ const AddTaskModal = ({ isVisible, onClose, onAddTask, status, projectId, projec
     const [assignedUserLetter, setAssignedUserLetter] = useState(''); // Local state for selected user
     const [assignedUserId, setAssignedUserId] = useState(''); // Local state for selected user
     const [userDetails,setuserDetails]= useState('');
+
+    console.log(projectId)
+
     console.log("helllllll", projectMembers)
     useEffect(() => {
         if (isVisible) {
