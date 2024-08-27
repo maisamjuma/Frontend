@@ -1,37 +1,29 @@
 /* src/components/projects.css */
 
 .projectscon {
-    /*display: flex;*/
-    /*justify-content: flex-end; !* Aligns items to the right *!*/
-
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: #333;
     padding: 20px;
     max-width: 1200px;
     height: 400px;
-
     margin: auto;
-    background-color: #f4f4f9; /* Light background for better contrast */
+    background-color: #f4f4f9;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-    width: 500px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    width: 600px;
 }
 .projectsconM {
-    /*display: flex;*/
-    /*justify-content: flex-end; !* Aligns items to the right *!*/
-    overflow-y: scroll;
 
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: #333;
     padding: 20px;
     max-width: 500px;
     height: 400px;
-
     margin: 20px;
-    background-color: #f4f4f9; /* Light background for better contrast */
+    background-color: #f4f4f9;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-    width: 350px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    width: 400px;
 }
 
 .flex-row {
@@ -128,7 +120,6 @@ button:hover {
     flex-shrink: 0;
 }
 
-/* src/components/Projects.css */
 
 .delete-members-popup {
     padding: 20px;
@@ -186,13 +177,13 @@ button:hover {
 }
 
 .projectIcon img {
-    display: block; /* Ensure there is no extra space around the image */
+    display: block;
 }
 
 .delete-image-button {
     position: absolute;
     top: 0;
-    right: -10px; /* Adjust this value to move the button further to the right */
+    right: -10px;
     background: rgba(255, 255, 255, 0.7);
     border: none;
     border-radius: 50%;
@@ -204,12 +195,12 @@ button:hover {
     cursor: pointer;
     font-size: 13px;
     color: #333;
-    opacity: 0; /* Hide button by default */
+    opacity: 0;
     transition: opacity 0.3s, background 0.3s;
 }
 
 .projectIcon:hover .delete-image-button {
-    opacity: 1; /* Show button when hovering over the image */
+    opacity: 1;
 }
 
 .delete-image-button:hover {
@@ -225,4 +216,88 @@ button:hover {
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 999;
     display: none;
+}
+.secondary-nav-button {
+    margin: 0 1px;
+    background-color: #e9ecef;
+    color: darksalmon;
+    padding: 3px;
+    font-weight: bolder;
+    letter-spacing: 1px;
+}
+
+.secondary-nav-button:hover {
+    background-color: #7f8fa6;
+    color: #333333;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 1px 4px;
+
+}
+.btn-primaryForProject{
+    position: absolute;
+    margin-top: 30px;
+    margin-left: 350px;
+}
+.secondary-navbarForPro {
+    position: fixed;
+    top: 60px; /* Adjust based on navbar height */
+    left: 200px; /* Width of the sidebar */
+    right: 0;
+    background-color: #e9ecef;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    padding: 10px ; /* Adjust for vertical padding */
+    list-style: none;
+    margin: 0;
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+}
+.descriptionPar{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f4f4f9;
+    box-shadow: 0 2px 2px rgba(0.2, 0.2, 0.2, 0.2);
+    transition: background-color 0.3s, box-shadow 0.3s;
+    width: 500px;
+    word-break: break-word;
+    word-wrap: break-word;
+    white-space: wrap;
+    overflow: auto;
+}
+.descriptionPar::-webkit-scrollbar {
+    display: none;
+}
+
+.descriptionPar{
+    scrollbar-width: none;
+}
+.projectTitle{
+    word-break: break-word;
+    word-wrap: break-word;
+    white-space: wrap;
+}
+.serachForPopup{
+    display: flex;
+    gap: 15px;
+    margin-bottom: 10px;
+    margin-top: 5px;
+
+}
+.search-bar{
+    background-color: #f4f4f4;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-color: #7f8fa6;
+    width: 200px;
+    color: black;
+
+}
+.titleAndx{
+   position: absolute;
+    right: 20px;
+    margin: 10px;
 }

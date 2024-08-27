@@ -3,20 +3,19 @@ import PropTypes from 'prop-types';
 import './DeleteMember.css';
 
 const DeleteMember = ({
-                                 members = [], // Default to an empty array if members is undefined
-                                 userDetails = [], // Default to an empty array if userDetails is undefined
-                                 selectedMembers = [], // Default value
-                                 onMemberClick,
-                                 onCheckboxChange,
-                             }) => {
-    // Create a map of userDetails for quick lookup, only if userDetails is defined
+                          members = [],
+                          userDetails = [],
+                          selectedMembers = [],
+                          onMemberClick,
+
+                      }) => {
     const userDetailMap = userDetails.reduce((acc, user) => {
         acc[user.userId] = user;
         return acc;
     }, {});
 
     return (
-        <div className="delete-member-overlay">
+        <div>
             {members.length === 0 ? (
                 <div>No members to delete.</div>
             ) : (
@@ -33,14 +32,11 @@ const DeleteMember = ({
                             className={`member-item ${selectedMembers.includes(member.userId) ? 'selected' : ''}`}
                             onClick={() => onMemberClick(member)}
                         >
-                            <input
-                                type="checkbox"
-                                checked={selectedMembers.includes(member.userId)}
-                                onChange={() => onCheckboxChange(member.userId)}
-                            />
+
                             <div className="member-name">{user.username}</div>
                             <div className="member-role">{user.role}</div>
                         </div>
+
                     );
                 })
             )}
@@ -64,7 +60,7 @@ DeleteMember.propTypes = {
             email: PropTypes.string.isRequired,
             firstName: PropTypes.string.isRequired,
             lastName: PropTypes.string.isRequired,
-            role: PropTypes.string.isRequired, // Assuming role is a string, not a number
+            role: PropTypes.string.isRequired,
         })
     ),
     selectedMembers: PropTypes.arrayOf(PropTypes.number),

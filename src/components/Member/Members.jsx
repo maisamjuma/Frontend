@@ -5,8 +5,6 @@ import './Members.css';
 const Members = ({
                      members,
                      userDetails,
-                     isDeleting,
-                     onCheckboxChange,
                      selectedMembers = [], // Default value added here
                      onMemberClick
                  }) => {
@@ -34,15 +32,7 @@ const Members = ({
                             className={`member-item ${selectedMembers.includes(member.userId) ? 'selected' : ''}`}
                             onClick={() => onMemberClick(member)} // Ensure this is passing the full member object
                         >
-                            {isDeleting && (
-                                <div>
-                                    <input
-                                        type="checkbox"
-                                        checked={selectedMembers.includes(member.userId)}
-                                        onChange={() => onCheckboxChange(member.userId)}
-                                    />
-                                </div>
-                            )}
+
                             <div className="member-name">{user.username}</div>
                             <div className="member-role">{user.role}</div>
                         </div>

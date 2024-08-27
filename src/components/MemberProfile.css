@@ -49,7 +49,7 @@
     border: none;
     border-radius: 8px;
     background-color: indianred;
-    color: #fff;
+    color: black;
     font-size: 1em;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.2s;
@@ -77,12 +77,12 @@ body {
 }
 
 .profile-card {
-    background-color: #2d2d2d;
+    background-color: #f4f4f9;
     border-radius: 10px;
     width: 400px;
     height: 300px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    color: white;
+    color: black;
 }
 
 .profile-header {
@@ -98,12 +98,12 @@ body {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    background-color: #004d40;
+    background-color: darksalmon;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 24px;
-    color: white;
+    color: black;
     margin-right: 10px;
 }
 
@@ -115,7 +115,7 @@ body {
 .profile-info p {
     margin: 0;
     font-size: 14px;
-    color: white;
+    color: black;
 }
 
 .close-btn {
@@ -136,25 +136,24 @@ body {
     gap: 10px;
 }
 
-.profile-actions button {
-    background-color: #2d2d2d;
-    color: white;
-    padding: 10px;
-    text-align: left;
-    font-size: 14px;
-    cursor: pointer;
-    border: 1px solid #444;
-}
 
-.profile-actions button:hover {
-    background-color: #444;
-}
 .fontColor{
-    color: white;
+    color: black;
 }
 .usernameFont{
+}
+.secondary-nav-button {
+    margin: 0 1px;
+    background-color: #e9ecef;
+    color: darksalmon;
+    padding: 3px;
     font-weight: bolder;
-    letter-spacing: 2px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 30px;
+    letter-spacing: 1px;
+}
+
+.secondary-nav-button:hover {
+    background-color: #7f8fa6;
+    color: #333333;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 1px 4px;
+
 }

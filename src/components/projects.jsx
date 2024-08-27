@@ -64,6 +64,11 @@ const Projects = () => {
         setIsDeleting(true);
         setShowDeletePopup(true);
     };
+    const handleCancelDelete = () => {
+        setIsDeleting(false);
+        setShowDeletePopup(false);
+    };
+
 
     const handleDeleteMembers = async () => {
         const projectMemberIdsToDelete = projectMembers
@@ -115,8 +120,8 @@ const Projects = () => {
 
     return (
         <div className="d-flex flex-row gap-5" ref={containerRef}>
-            <nav className="secondary-navbar">
-                <ul className="secondary-nav d-flex flex-row gap-5">
+            <nav className="secondary-navbarForPro d-flex flex-row gap-5">
+                <ul className="secondary-navbarForPro">
                     <li>
                         <button
                             className={`secondary-nav-button ${!showMembersOnly ? 'active' : ''}`}
@@ -146,8 +151,8 @@ const Projects = () => {
                         <img
                             src={image}
                             alt="Project Icon"
-                            width={100}
-                            height={100}
+                            width={90}
+                            height={90}
                             onClick={handleImageClick}
                             style={{ cursor: 'pointer' }}
                         />
@@ -164,11 +169,11 @@ const Projects = () => {
                         accept="image/*"
                         onChange={handleImageChange}
                     />
-                    <h1>{projectName}</h1>
+                    <h2 className="projectTitle">{projectName}</h2>
                 </div>
 
-                <p>{projectDescription}</p>
-                <button className="btn btn-primary" onClick={navigateToWorkspace}>
+                <div className="descriptionPar">{projectDescription}</div>
+                <button className="btn-primaryForProject" onClick={navigateToWorkspace}>
                     Go to Workspace
                 </button>
             </div>
@@ -208,17 +213,6 @@ const Projects = () => {
                     ) : null}
                 </div>
 
-                {showDeletePopup && (
-                    <DeleteMember
-                        members={projectMembers}
-                        userDetails={userDetails}
-                        selectedMembers={selectedMembers}
-                        onCheckboxChange={handleCheckboxChange}
-                        onDelete={handleDeleteMembers}
-                        onClose={() => setShowDeletePopup(false)}
-                    />
-                )}
-
                 {showProfile && (
                     <MemberProfile
                         member={showProfile}
@@ -227,7 +221,47 @@ const Projects = () => {
                     />
                 )}
             </div>
+
+            {showDeletePopup && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <div className="mb-1  d-flex flex-row gap-5 ">
+                            <h3>Delete Members</h3>
+                            <button className="titleAndx" onClick={handleCancelDelete}>X</button>
+                        </div>
+
+
+                        <div className="serachForPopup">
+
+                        <input
+                                type="text"
+                                placeholder="Search members..."
+                                className="search-bar w-100 "
+                            />
+
+                        </div>
+
+                        <DeleteMember
+                            members={projectMembers}
+                            userDetails={userDetails}
+                            selectedMembers={selectedMembers}
+                            onMemberClick={(member) => handleCheckboxChange(member.userId)}
+                            onCheckboxChange={handleCheckboxChange}
+
+                        />
+
+                        <button className="secondary-nav-button" onClick={handleDeleteMembers}>
+                            Confirm Deletion
+                        </button>
+
+                    </div>
+
+                </div>
+
+            )}
+
         </div>
+
     );
 };
 

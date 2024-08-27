@@ -22,7 +22,7 @@ const MemberProfile = ({ member,userDetails, onClose }) => {
                     <span>{firstLetter}</span>
                 </div>
                 <div className="profile-info">
-                    <p className="usernameFont">{user.username}</p>
+                    <h2 className="usernameFont">{user.username}</h2>
 
                 </div>
 
@@ -31,7 +31,7 @@ const MemberProfile = ({ member,userDetails, onClose }) => {
                 <p className="fontColor"><strong>Last Name: </strong> {user.lastName}</p>
                 <p className="fontColor"><strong>Email: </strong> {user.email}</p>
                 <p className="fontColor"><strong>Role: </strong> {user.role}</p>
-                <button onClick={onClose}>Close</button>
+                <button className="secondary-nav-button d-flex justify-content-center" onClick={onClose}>Close</button>
             </div>
         </div>
         </div>
