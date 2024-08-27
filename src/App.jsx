@@ -43,7 +43,7 @@ function App() {
                                 <Route path="/" element={<HomePage/>}/>
                                 <Route path="ListUser" element={<ListUser/>}/>
                                 <Route path="User" element={<User/>}/>
-                                <Route path="notifications" element={<Notification loggedInUser="JohnDoe" users={["Alice", "Bob", "Charlie"]} />}/> {/* Add Notification route */}
+                                <Route path="notifications" element={<Notification loggedInUser="JohnDoe"  />}/> {/* Add Notification route */}
                                 <Route path=":projectName" element={<Projects/>}/> {/* Dynamic route for projects */}
                                 <Route path="workspace/:projectName/*" element={<Workspace/>}/>
                                 <Route path="/" element={<ListUser />} />
@@ -51,14 +51,11 @@ function App() {
                                 <Route path="user" element={<User />} />
                                 <Route
                                     path="notifications"
+
                                     element={
                                         <Notification
                                             loggedInUser="Roaa Gh"
-                                            users={[
-                                                "Rami", "Reema", "Osaid", "Maisam",
-                                                "Rama", "Hadi", "Ahmad", "Jana",
-                                                "Hanan", "Ghannam"
-                                            ]}
+
                                         />
                                     }
                                 />
