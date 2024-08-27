@@ -180,7 +180,7 @@ html, body {
     cursor: pointer;
 }
 .show-more-button:hover{
-    color: #ffffff;
+    background: darksalmon;
 }
 .dropdown-content {
     display: block;

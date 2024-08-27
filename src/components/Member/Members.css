@@ -79,3 +79,6 @@
         font-size: 12px;
     }
 }
+.member-item.selected {
+    background-color: #f0f0f0; /* Light gray, for example */
+}

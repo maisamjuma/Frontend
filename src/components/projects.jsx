@@ -1,12 +1,13 @@
-// Projects.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import './projects.css';
-import Members from "./Member/Members.jsx";
-import AddMember from "./AddMember.jsx";
-import MemberProfile from "./MemberProfile.jsx";
+import Members from './Member/Members.jsx';
+import AddMember from './AddMember.jsx';
+import MemberProfile from './MemberProfile.jsx';
+import DeleteMember from './DeleteMember.jsx';
 import defaultProjectIcon from '../assets/projectIcon.png';
-import ChangeMemberModal from "./ChangeMemberModal.jsx";
+import ProjectMemberService from '../Services/ProjectMemberService';
+import UserService from '../Services/UserService.js';
 
 const Projects = () => {
     const { projectName } = useParams();
@@ -16,133 +17,101 @@ const Projects = () => {
 
     const [image, setImage] = useState(defaultProjectIcon);
     const [showProfile, setShowProfile] = useState(null);
-    const [projectMembers, setProjectMembers] = useState(
-        JSON.parse(localStorage.getItem(projectName + '-members')) || []
-    );
+    const [projectMembers, setProjectMembers] = useState([]);
+    const [userDetails, setUserDetails] = useState([]);
     const [showMembersOnly, setShowMembersOnly] = useState(true);
     const [isEditing, setIsEditing] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
     const [selectedMembers, setSelectedMembers] = useState([]);
     const [showDeletePopup, setShowDeletePopup] = useState(false);
-    const [availableMembers, setAvailableMembers] = useState([]); // State for available members
-    const [selectedMemberForChange, setSelectedMemberForChange] = useState(null);
-    const [showChangeMemberModal, setShowChangeMemberModal] = useState(false); // State for modal visibility
 
     const containerRef = useRef(null);
 
     useEffect(() => {
-        // Initialize available members here
-        setAvailableMembers([
-            {id: 1, username: 'Maisam', email: 'maisam@example.com', password: 'password123', firstName: 'Maisam', lastName: 'Doe', role: 'Frontend Developer'},
-            {id: 2, username: 'Osaid', email: 'osaid@example.com', password: 'password123', firstName: 'Osaid', lastName: 'Doe', role: 'Backend Developer'},
-            {id: 3, username: 'Rami', email: 'rami@example.com', password: 'password123', firstName: 'Rami', lastName: 'Doe', role: 'QA Engineer'},
-            {id: 4, username: 'Ali', email: 'ali@example.com', password: 'password123', firstName: 'Ali', lastName: 'Doe', role: 'Frontend Developer'},
-            {id: 5, username: 'Reema', email: 'reema@example.com', password: 'password123', firstName: 'Reema', lastName: 'Doe', role: 'Backend Developer'},
-            {id: 6, username: 'Mona', email: 'mona@example.com', password: 'password123', firstName: 'Mona', lastName: 'Doe', role: 'Frontend Developer'},
-            {id: 7, username: 'Daher', email: 'daher@example.com', password: 'password123', firstName: 'Daher', lastName: 'Doe', role: 'Backend Developer'},
-            {id: 8, username: 'samarah', email: 'samarah@example.com', password: 'password123', firstName: 'Daher', lastName: 'Doe', role: 'Backend Developer'},
-            {id: 9, username: 'Mohammad', email: 'Mohammad@example.com', password: 'password123', firstName: 'Mohammad', lastName: 'Doe', role: 'Backend Developer'},
+        const fetchProjectMembers = async () => {
+            try {
+                const response = await ProjectMemberService.getProjectMembersByProjectId(projectId);
+                setProjectMembers(response.data);
+            } catch (error) {
+                console.error('Error fetching project members:', error);
+            }
+        };
 
-        ]);
-    }, []);
+        fetchProjectMembers();
+    }, [projectId]);
 
     useEffect(() => {
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
+        const fetchUserDetails = async () => {
+            try {
+                const userDetailsArray = await Promise.all(
+                    projectMembers.map(async (member) => {
+                        const response = await UserService.getUserById(member.userId);
+                        return response.data;
+                    })
+                );
+                setUserDetails(userDetailsArray);
+            } catch (error) {
+                console.error('Error fetching user details:', error);
+            }
         };
-    }, []);
 
-    const handleMemberClick = (member) => {
-        if (!isDeleting) {
-            setShowProfile(member);
+        if (projectMembers.length > 0) {
+            fetchUserDetails();
         }
-    };
-
-    const handleCloseProfile = () => {
-        setShowProfile(null);
-    };
-
-    const handleAddMember = (newMembers) => {
-        const updatedMembers = [
-            ...projectMembers,
-            ...newMembers.filter(newMember => !projectMembers.some(member => member.id === newMember.id))
-        ];
-        setProjectMembers(updatedMembers);
-        localStorage.setItem(projectName + '-members', JSON.stringify(updatedMembers));
-    };
-
-    const handleSaveMembers = () => {
-        setIsEditing(false);
-        setShowMembersOnly(true);
-    };
+    }, [projectMembers]);
 
     const handleDeleteMode = () => {
-        setShowDeletePopup(true);
         setIsDeleting(true);
-        setShowMembersOnly(false);
-        setIsEditing(false);
+        setShowDeletePopup(true);
     };
 
-    const handleCheckboxChange = (memberId) => {
-        setSelectedMembers((prevSelected) =>
-            prevSelected.includes(memberId)
-                ? prevSelected.filter(id => id !== memberId)
-                : [...prevSelected, memberId]
-        );
-    };
+    const handleDeleteMembers = async () => {
+        const projectMemberIdsToDelete = projectMembers
+            .filter((member) => selectedMembers.includes(member.userId))
+            .map((member) => member.projectMemberId);
 
-    const handleSaveDeletion = () => {
-        const updatedMembers = projectMembers.filter(member => !selectedMembers.includes(member.id));
-        setProjectMembers(updatedMembers);
-        localStorage.setItem(projectName + '-members', JSON.stringify(updatedMembers));
+        try {
+            for (const projectMemberId of projectMemberIdsToDelete) {
+                await ProjectMemberService.deleteMemberFromProject(projectMemberId, projectId);
+            }
+            setProjectMembers((prevMembers) =>
+                prevMembers.filter((member) => !projectMemberIdsToDelete.includes(member.projectMemberId))
+            );
+        } catch (error) {
+            console.error('Error deleting members:', error);
+        }
+
         setSelectedMembers([]);
         setIsDeleting(false);
-        setShowMembersOnly(true);
         setShowDeletePopup(false);
     };
 
-    const handleButtonClick = () => {
-        navigate(`/main/workspace/${projectName}`, {
-            state: { projectDescription, projectId, projectMembers }
-        });
+    const handleCheckboxChange = (userId) => {
+        setSelectedMembers((prevSelected) =>
+            prevSelected.includes(userId)
+                ? prevSelected.filter((id) => id !== userId)
+                : [...prevSelected, userId]
+        );
     };
 
-    const handleClickOutside = (event) => {
-        if (containerRef.current && !containerRef.current.contains(event.target)) {
-            setShowMembersOnly(true);
-        }
-    };
-
-    const handleImageClick = () => {
-        document.getElementById('fileInput').click();
-    };
-
-    const handleFileChange = (event) => {
+    const handleImageChange = (event) => {
         const file = event.target.files[0];
         if (file) {
             const reader = new FileReader();
-            reader.onloadend = () => {
-                setImage(reader.result);
-            };
+            reader.onloadend = () => setImage(reader.result);
             reader.readAsDataURL(file);
         }
     };
 
-    const handleDeleteClick = () => {
-        setImage(defaultProjectIcon);
-    };
+    const handleImageClick = () => document.getElementById('fileInput').click();
 
-    const handleSelectMember = (memberId) => {
-        setSelectedMemberForChange(memberId);
-        setShowChangeMemberModal(true);
-    };
+    const handleDeleteImageClick = () => setImage(defaultProjectIcon);
 
-    useEffect(() => {
-        console.log("showMembersOnly changed:", showMembersOnly);
-        console.log("isDeleting changed:", isDeleting);
-        console.log("projectMembers changed:", projectMembers);
-    }, [showMembersOnly, isDeleting, projectMembers]);
+    const navigateToWorkspace = () => {
+        navigate(`/main/workspace/${projectName}`, {
+            state: { projectDescription, projectId, projectMembers },
+        });
+    };
 
     return (
         <div className="d-flex flex-row gap-5" ref={containerRef}>
@@ -157,7 +126,7 @@ const Projects = () => {
                                 setIsDeleting(false);
                             }}
                         >
-                            {isEditing ? "Edit Member" : "Add Member"}
+                            {isEditing ? 'Edit Member' : 'Add Member'}
                         </button>
                     </li>
                     <li>
@@ -183,10 +152,7 @@ const Projects = () => {
                             style={{ cursor: 'pointer' }}
                         />
                         {image !== defaultProjectIcon && (
-                            <button
-                                className="delete-image-button"
-                                onClick={handleDeleteClick}
-                            >
+                            <button className="delete-image-button" onClick={handleDeleteImageClick}>
                                 &times;
                             </button>
                         )}
@@ -196,13 +162,15 @@ const Projects = () => {
                         id="fileInput"
                         style={{ display: 'none' }}
                         accept="image/*"
-                        onChange={handleFileChange}
+                        onChange={handleImageChange}
                     />
                     <h1>{projectName}</h1>
                 </div>
 
                 <p>{projectDescription}</p>
-                <button className="btn btn-primary" onClick={handleButtonClick}>Go to Workspace</button>
+                <button className="btn btn-primary" onClick={navigateToWorkspace}>
+                    Go to Workspace
+                </button>
             </div>
 
             <div className="projectsconM">
@@ -210,54 +178,52 @@ const Projects = () => {
                     {showMembersOnly ? (
                         <Members
                             members={projectMembers}
+                            userDetails={userDetails}
                             isDeleting={isDeleting}
-                            onCheckboxChange={handleCheckboxChange}
-                            selectedMembers={selectedMembers}
-                            onMemberClick={handleMemberClick}
+                            onMemberClick={(member) => {
+                                if (!isDeleting) {
+                                    setShowProfile(member);
+                                }
+                            }}
                         />
-                    ) : (
-                        <>
-                            {isEditing ? (
-                                <AddMember
-                                    availableMembers={availableMembers}
-                                    onAddMember={handleAddMember}
-                                    onSave={handleSaveMembers}
-                                    isDeleting={isDeleting}
-                                    onDeleteMode={handleSaveDeletion}
-                                />
-                            ) : (
-                                <Members
-                                    members={projectMembers}
-                                    isDeleting={isDeleting}
-                                    onCheckboxChange={handleCheckboxChange}
-                                    selectedMembers={selectedMembers}
-                                    onMemberClick={handleMemberClick}
-                                />
-                            )}
-                        </>
-                    )}
+                    ) : isEditing ? (
+                        <AddMember
+                            projectId={projectId}
+                            onAddMember={async (newMembers) => {
+                                for (const member of newMembers) {
+                                    try {
+                                        const response = await ProjectMemberService.addMemberToProject({
+                                            projectId,
+                                            userId: member.userId,
+                                        });
+                                        setProjectMembers((prevMembers) => [...prevMembers, response.data]);
+                                    } catch (error) {
+                                        console.error('Error adding members to the project:', error);
+                                    }
+                                }
+                                setShowMembersOnly(true);
+                            }}
+                            onSave={() => setShowMembersOnly(true)}
+                        />
+                    ) : null}
                 </div>
 
-                {showChangeMemberModal && (
-                    <ChangeMemberModal
-                        availableMembers={availableMembers}
-                        selectedMemberId={selectedMemberForChange}
-                        onClose={() => setShowChangeMemberModal(false)}
-                        onSelectMember={handleSelectMember}
+                {showDeletePopup && (
+                    <DeleteMember
+                        members={projectMembers}
+                        userDetails={userDetails}
+                        selectedMembers={selectedMembers}
+                        onCheckboxChange={handleCheckboxChange}
+                        onDelete={handleDeleteMembers}
+                        onClose={() => setShowDeletePopup(false)}
                     />
                 )}
-                {showDeletePopup && (
-                    <div className="delete-popup ">
 
-                        <p>Are you sure you want to delete the selected members?</p>
-                        <button onClick={handleSaveDeletion}>Yes</button>
-                        <button onClick={() => setShowDeletePopup(false)}>No</button>
-                    </div>
-                )}
                 {showProfile && (
                     <MemberProfile
                         member={showProfile}
-                        onClose={handleCloseProfile}
+                        userDetails={userDetails}
+                        onClose={() => setShowProfile(null)}
                     />
                 )}
             </div>

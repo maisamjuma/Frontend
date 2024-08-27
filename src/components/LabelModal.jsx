@@ -22,9 +22,7 @@ const LabelModal = ({ onClose, labels, selectedLabels, onSave }) => {
         onClose();
     };
 
-    const handleSearchChange = (e) => {
-        setSearchTerm(e.target.value);
-    };
+
 
     const filteredLabels = labels.filter((label) =>
         label.name.toLowerCase().includes(searchTerm.toLowerCase())

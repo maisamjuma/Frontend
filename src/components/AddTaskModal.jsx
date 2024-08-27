@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './AddTaskModal.css';
 import Calendar from 'react-calendar';
 import PropTypes from "prop-types";
+import UserService from "../Services/UserService.js";
 //import Boards from "./Boards.jsx";
 
 const AddTaskModal = ({ isVisible, onClose, onAddTask, status, projectId, projectDescription, projectMembers, setProjectId, setProjectDescription, setProjectMembers }) => {
@@ -9,36 +10,65 @@ const AddTaskModal = ({ isVisible, onClose, onAddTask, status, projectId, projec
     const [description, setDescription] = useState('');
     const [dueDate, setDueDate] = useState(new Date());
     const [priority, setPriority] = useState('medium');
-    const [assignedUser, setAssignedUser] = useState(''); // Local state for selected user
-
+    const [assignedUserLetter, setAssignedUserLetter] = useState(''); // Local state for selected user
+    const [assignedUserId, setAssignedUserId] = useState(''); // Local state for selected user
+    const [userDetails,setuserDetails]= useState('');
+    console.log("helllllll", projectMembers)
     useEffect(() => {
         if (isVisible) {
             setDueDate(new Date());
         }
     }, [isVisible]);
 
+
+    useEffect(() => {
+        const fetchUserDetails = async () => {
+            try {
+                const userDetailsArray = await Promise.all(
+                    projectMembers.map(async (member) => {
+                        const response = await UserService.getUserById(member.userId);
+                        return response.data;
+                    })
+                );
+                setuserDetails(userDetailsArray);
+                console.log(userDetailsArray)
+            } catch (error) {
+                console.error('Error fetching user details:', error);
+            }
+        };
+
+        if (projectMembers.length > 0) {
+            fetchUserDetails();
+        }
+    }, [projectMembers]);
+
+
     const handleAddTask = () => {
         if (taskName.trim()) {
+            setAssignedUserId();
             const newTask = {
                 name: taskName,
                 description,
                 dueDate: dueDate.toISOString().split('T')[0], // Use selected date directly
                 priority,
                 status: status.title, // Use status title
-                assignedUser: status.id === 2 ? assignedUser : '' // Assign user only if status.id is 2
+                assignedUserLetter: assignedUserLetter, // Assign user only if status.id is 2
+                assignedUserId: assignedUserId, // Assign user only if status.id is 2
+
             };
             onAddTask(newTask);
             setTaskName('');
             setDescription('');
             setDueDate(new Date());
             setPriority('medium');
-            setAssignedUser(''); // Reset user selection
+            setAssignedUserLetter(''); // Reset user selection
+            setAssignedUserId(''); // Reset user selection
             onClose();
         } else {
             alert('Task name is required.');
         }
     };
-    console.log("assignedUser",assignedUser)
+   // console.log("assignedUserId",assignedUserId)
 
     return (
         <>
@@ -95,18 +125,25 @@ const AddTaskModal = ({ isVisible, onClose, onAddTask, status, projectId, projec
                             <div className="user-options">
                                 <p className="paragraph">Assign To:</p>
                                 <select
-                                    value={assignedUser}
-                                    onChange={(e) => setAssignedUser(e.target.value)}
+                                    value={assignedUserLetter}
+                                    onChange={(e) => {
+                                        const selectedUsername = e.target.value;
+                                        const selectedUser = userDetails.find(user => user.username.charAt(0).toUpperCase() === selectedUsername);
+                                        if (selectedUser) {
+                                            setAssignedUserId(selectedUser.userId);
+                                        }
+                                        setAssignedUserLetter(selectedUsername);
+                                    }}
                                     className="user-dropdown"
                                 >
                                     <option value="">Select a user</option>
-                                    {projectMembers.length > 0 ? (
-                                        projectMembers.map(member => (
+                                    {userDetails.length > 0 ? (
+                                        userDetails.map(user => (
                                             <option
-                                                key={member.id}
-                                                value={member.id}
+                                                key={user.userId}
+                                                value={user.username.charAt(0).toUpperCase()}
                                             >
-                                                {member.username} {member.lastName}
+                                                {user.username} {user.lastName}
                                             </option>
                                         ))
                                     ) : (
@@ -123,16 +160,6 @@ const AddTaskModal = ({ isVisible, onClose, onAddTask, status, projectId, projec
                     </div>
                 </div>
             )}
-            {/*<Boards*/}
-            {/*    assignedUser={assignedUser}*/}
-            {/*    setAssignedUser={setAssignedUser}*/}
-            {/*    projectId={projectId}*/}
-            {/*    projectDescription={projectDescription}*/}
-            {/*    projectMembers={projectMembers}*/}
-            {/*    setProjectId={setProjectId}*/}
-            {/*    setProjectDescription={setProjectDescription}*/}
-            {/*    setProjectMembers={setProjectMembers}*/}
-            {/*/>*/}
         </>
     );
 };
@@ -147,9 +174,10 @@ AddTaskModal.propTypes = {
     projectId: PropTypes.string.isRequired,
     projectDescription: PropTypes.string.isRequired,
     projectMembers: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        username: PropTypes.string.isRequired,
-        lastName: PropTypes.string,
+        userId: PropTypes.number.isRequired,
+        projectMemberId: PropTypes.number.isRequired,
+        projectId: PropTypes.number.isRequired,
+        joinedAt: PropTypes.string.isRequired,
     })),
     setProjectId: PropTypes.func.isRequired,
     setProjectDescription: PropTypes.func.isRequired,
