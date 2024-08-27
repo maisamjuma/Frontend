@@ -5,11 +5,12 @@ import './SideBarForNoti.css';
 const SideBarForNoti = ({ users, loggedInUser, onSendNotification }) => {
     return (
         <div className="sidebar">
-            <div className="d-flex flex-row">
-                <h4>Users</h4>
-                <button className="btn btn-primary mt-0 p-0" onClick={onSendNotification}>
+            <div className="d-flex flex-column align-items-center justify-content-center">
+                <button className="btn-primary" onClick={onSendNotification}>
                     New Message
                 </button>
+                <h4>Users</h4>
+
             </div>
             <ul className="list-group">
                 {users.map(user => (
