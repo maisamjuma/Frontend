@@ -19,7 +19,7 @@ import LabelModal from "./LabelModal.jsx";
 import ChangeMemberModal from './ChangeMemberModal';
 
 // eslint-disable-next-line react/prop-types
-const TaskModal = ({ selectedMember,task, onClose, onDelete, boards, statuses, labels = [],onSaveMember, onSaveDate, onRemoveDate, onSavePriority, onSaveLabels, members ,projectId, projectDescription, projectMembers, setProjectId, setProjectDescription, setProjectMembers }) => {
+const TaskModal = ({ selectedMember,task, onClose, onDelete, boards, statuses, labels = [],onSaveMember, onSaveDate, onRemoveDate, onSavePriority, onSaveLabels ,projectId, projectDescription, projectMembers, setProjectId, setProjectDescription, setProjectMembers }) => {
     const [isMoveModalOpen, setIsMoveModalOpen] = useState(false);
     const [isCalendarModalOpen, setIsCalendarModalOpen] = useState(false);
     const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
@@ -134,7 +134,6 @@ const TaskModal = ({ selectedMember,task, onClose, onDelete, boards, statuses, l
 
                 <ChangeMemberModal
                     onClose={() => setIsChangeMemberModalOpen(false)}
-                    availableMembers={members} // Pass available members
                     onSave={onSaveMember} // Pass the function to handle saving the member
                     projectId={projectId}
                     projectDescription={projectDescription}

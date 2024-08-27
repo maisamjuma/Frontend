@@ -226,7 +226,7 @@ const Projects = () => {
                 <div className="modal-overlay">
                     <div className="modal-content">
                         <div className="mb-1  d-flex flex-row gap-5 ">
-                            <h3>Delete Members</h3>
+                            <h3>Delete Member</h3>
                             <button className="titleAndx" onClick={handleCancelDelete}>X</button>
                         </div>
 

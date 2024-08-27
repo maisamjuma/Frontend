@@ -4,7 +4,7 @@ import './ChangeMemberModal.css';
 import UserService from "../Services/UserService.js";
 
 const ChangeMemberModal = ({
-                               availableMembers = [],
+
                                onSave,
                                onClose,
                                projectId,
@@ -108,10 +108,7 @@ const ChangeMemberModal = ({
 };
 
 ChangeMemberModal.propTypes = {
-    availableMembers: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        username: PropTypes.string.isRequired,
-    })),
+
     onClose: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired,
     projectId: PropTypes.oneOfType([
