@@ -6,14 +6,13 @@ import Navbar from "./Navbar/Navbar.jsx";
 import PropTypes from 'prop-types';
 import RoleService from '../Services/RoleService';
 import BoardService from '../Services/BoardService';
-//import TaskModal from "./TaskModal.jsx";
 
 const Workspace = ({ isVisible }) => {
     const [roles, setRoles] = useState([]);
     const [selected_roleId, setSelected_roleId] = useState(null);
     const [projectId, setProjectId] = useState(null);
     const [projectDescription, setProjectDescription] = useState(null);
-    const [projectMembers, setProjectMembers] = useState([]); // State for project members
+    const [projectMembers, setProjectMembers] = useState([]);
 
     const { projectName } = useParams();
     const [selectedBoard, setSelectedBoard] = useState(null);
@@ -30,12 +29,11 @@ const Workspace = ({ isVisible }) => {
 
     useEffect(() => {
         if (location.state) {
-            const { projectId, projectDescription,projectMembers } = location.state;
+            const { projectId, projectDescription, projectMembers } = location.state;
             setProjectId(projectId);
-            setProjectDescription(projectDescription); // Make sure this is correctly set
-            setProjectMembers(projectMembers); // Set project members here
-            console.log("chinaaaaa",projectId,projectDescription,"memberes:",projectMembers);
             setProjectDescription(projectDescription);
+            setProjectMembers(projectMembers);
+            console.log("Project ID:", projectId, "Description:", projectDescription, "Members:", projectMembers);
         }
     }, [location.state]);
 
@@ -45,7 +43,6 @@ const Workspace = ({ isVisible }) => {
             fetchBoards();
         }
     }, [isVisible, projectId]);
-
 
     useEffect(() => {
         const handleClickOutsideDropdown = (event) => {
@@ -81,21 +78,8 @@ const Workspace = ({ isVisible }) => {
             console.error('Error fetching roles:', error);
         }
     };
-    console.log(projectMembers)
-    console.log(projectDescription)
+
     const fetchBoards = async () => {
-        // Example boards added for testing
-        let newBoard = { boardId: 'staticBackendID', name: 'staticBackend' };
-        setBoards(prevBoards => [...prevBoards, newBoard]);
-
-        newBoard = { boardId: 'staticFrontendID', name: 'staticFrontend' };
-        setBoards(prevBoards => [...prevBoards, newBoard]);
-
-        newBoard = { boardId: 'staticQaID', name: 'staticQA' };
-        setBoards(prevBoards => [...prevBoards, newBoard]);
-
-        newBoard = { boardId: 'staticFrontendID', name: 'staticFrontend' };
-        setBoards(prevBoards => [...prevBoards, newBoard]);
 
         try {
             const response = await BoardService.getBoardsByProject(projectId);
@@ -134,24 +118,34 @@ const Workspace = ({ isVisible }) => {
     const handleAddClick = () => {
         setIsDropdownOpen(!isDropdownOpen);
     };
-    const handleshowClick = () => {
+
+    const handleShowClick = () => {
         setIsboardsDropdownOpen(!isboardsDropdownOpen);
     };
+
     const handleAddBoard = async () => {
         if (!projectId || !selected_roleId) return;
 
         try {
+            // Fetch the role details by ID
             const response = await RoleService.getRoleById(selected_roleId);
             const role = response.data;
 
+            if (!role) {
+                console.error('Role not found for the selected role ID:', selected_roleId);
+                return;
+            }
+
             const newBoard = {
-                id: selected_roleId,
+                boardId: selected_roleId,
                 name: role.roleName || 'New Board',
             };
 
             await BoardService.createBoard(projectId, selected_roleId);
             setBoards([...boards, newBoard]);
+
             setSelected_roleId(null);
+
             setIsDropdownOpen(false);
         } catch (error) {
             console.error('Error creating board:', error);
@@ -166,21 +160,16 @@ const Workspace = ({ isVisible }) => {
         setBoards(boards.filter((board) => board.boardId !== boardId));
     };
 
-
     return (
         <div className="layout">
             <Navbar onLogout={() => { }} />
             <nav className="secondary-navbar">
                 <ul className="secondary-nav">
-                    {boards.map((board) => (
-                        <li key={board.boardId} className="secondary-nav-item">
-                <ul className="secondary-nav" ref={secondaryNavRef}>
                     {boards.slice(0, 5).map((board) => (
-                        <li key={board.id} className="secondary-nav-item">
+                        <li key={board.boardId} className="secondary-nav-item">
                             <div className="board-container">
                                 <Link
                                     className="secnav-link"
-                                    to={`/main/workspace/${projectName}/${board.boardId}`}
                                     to={`/main/workspace/${projectName}/${board.boardId}/${board.name}`}
                                     style={{
                                         color: selectedBoard === board.boardId ? 'darksalmon' : 'black',
@@ -202,13 +191,13 @@ const Workspace = ({ isVisible }) => {
 
                     {showMore && (
                         <div className="more-boards-dropdown" ref={boardsDropdownRef}>
-                            <button onClick={handleshowClick} className="show-more-button"> &#x25BC;  {/* Two down arrows using Unicode */}</button>
+                            <button onClick={handleShowClick} className="show-more-button"> &#x25BC; </button>
                             {isboardsDropdownOpen && (
                                 <ul className="dropdown-content">
                                     {dropdownBoards.map((board) => (
-                                        <li key={board.id} className="secondary-nav-item">
+                                        <li key={board.boardId} className="secondary-nav-item">
                                             <Link
-                                                className="secnav-links"
+                                                className="secnav-link"
                                                 to={`/main/workspace/${projectName}/${board.boardId}/${board.name}`}
                                                 style={{
                                                     color: selectedBoard === board.boardId ? 'darksalmon' : 'black',
@@ -259,7 +248,6 @@ const Workspace = ({ isVisible }) => {
                 />
             )}
         </div>
-
     );
 };
 
