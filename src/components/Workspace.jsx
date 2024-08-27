@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useParams, Link, Route, Routes, useLocation } from 'react-router-dom';
+import React, {useState, useEffect, useRef} from 'react';
+import {useParams, Link, Route, Routes, useLocation} from 'react-router-dom';
 import './Workspace.css';
 import Boards from './Boards';
 import Navbar from "./Navbar/Navbar.jsx";
@@ -8,14 +8,14 @@ import RoleService from '../Services/RoleService';
 import BoardService from '../Services/BoardService';
 //import TaskModal from "./TaskModal.jsx";
 
-const Workspace = ({ isVisible }) => {
+const Workspace = ({isVisible}) => {
     const [roles, setRoles] = useState([]);
     const [selected_roleId, setSelected_roleId] = useState(null);
     const [projectId, setProjectId] = useState(null);
     const [projectDescription, setProjectDescription] = useState(null);
     const [projectMembers, setProjectMembers] = useState([]); // State for project members
 
-    const { projectName } = useParams();
+    const {projectName} = useParams();
     const [selectedBoard, setSelectedBoard] = useState(null);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isboardsDropdownOpen, setIsboardsDropdownOpen] = useState(false);
@@ -30,11 +30,11 @@ const Workspace = ({ isVisible }) => {
 
     useEffect(() => {
         if (location.state) {
-            const { projectId, projectDescription,projectMembers } = location.state;
+            const {projectId, projectDescription, projectMembers} = location.state;
             setProjectId(projectId);
             setProjectDescription(projectDescription); // Make sure this is correctly set
             setProjectMembers(projectMembers); // Set project members here
-            console.log("chinaaaaa",projectId,projectDescription,"memberes:",projectMembers,"project member:",projectName);
+            console.log("chinaaaaa", projectId, projectDescription, "memberes:", projectMembers, "project member:", projectName);
         }
     }, [location.state]);
 
@@ -82,8 +82,8 @@ const Workspace = ({ isVisible }) => {
     };
     console.log(projectMembers)
     console.log(projectDescription)
-    console.log("hiiiiiii",projectId)
-    console.log("selectedBoard",selectedBoard)
+    console.log("hiiiiiii", projectId)
+    console.log("selectedBoard", selectedBoard)
 
     const fetchBoards = async () => {
         // // Example boards added for testing
@@ -131,7 +131,7 @@ const Workspace = ({ isVisible }) => {
     };
 
     const handleBoardClick = (board) => {
-        console.log(" handleBoardClick board",board)
+        console.log(" handleBoardClick board", board)
         setSelectedBoard(board);
     };
 
@@ -167,14 +167,22 @@ const Workspace = ({ isVisible }) => {
         setIsDropdownOpen(false);
     };
 
-    const handleDeleteBoard = (boardId) => {
-        setBoards(boards.filter((board) => board.id !== boardId));
+    const handleDeleteBoard = async (boardId) => {
+        try {
+            await BoardService.deleteBoard(boardId);
+            setBoards(boards.filter((board) => board.boardId !== boardId));
+        } catch (error) {
+            console.error('Error deleting board:', error);
+            // Optionally handle errors, e.g., show a notification to the user
+        }
     };
+
 
 
     return (
         <div className="layout">
-            <Navbar onLogout={() => { }} />
+            <Navbar onLogout={() => {
+            }}/>
             <nav className="secondary-navbar">
                 <ul className="secondary-nav" ref={secondaryNavRef}>
                     {boards.slice(0, 5).map((board) => (
@@ -203,7 +211,8 @@ const Workspace = ({ isVisible }) => {
 
                     {showMore && (
                         <div className="more-boards-dropdown" ref={boardsDropdownRef}>
-                            <button onClick={handleshowClick} className="show-more-button"> &#x25BC;  {/* Two down arrows using Unicode */}</button>
+                            <button onClick={handleshowClick}
+                                    className="show-more-button"> &#x25BC;  {/* Two down arrows using Unicode */}</button>
                             {isboardsDropdownOpen && (
                                 <ul className="dropdown-content">
                                     {dropdownBoards.map((board) => (
@@ -246,20 +255,23 @@ const Workspace = ({ isVisible }) => {
             </nav>
             <div className="main-content">
                 <Routes>
-                    <Route path="/:boardId/:name" element={<Boards />} />
+                    <Route
+                        path="/:boardId/:name"
+                        element={
+                            <Boards
+                                projectId={projectId}
+                                projectDescription={projectDescription}
+                                projectMembers={projectMembers}
+                                setProjectId={setProjectId}
+                                setProjectDescription={setProjectDescription}
+                                setProjectMembers={setProjectMembers}
+                                board={selectedBoard} // Pass selectedBoard here
+                            />
+                        }
+                    />
                 </Routes>
             </div>
-            {selectedBoard && (
-                <Boards
-                    projectId={projectId}
-                    projectDescription={projectDescription}
-                    projectMembers={projectMembers}
-                    setProjectId={setProjectId}
-                    setProjectDescription={setProjectDescription}
-                    setProjectMembers={setProjectMembers}
-                    board={selectedBoard} // Pass selectedBoard here
-                />
-            )}
+
         </div>
 
     );

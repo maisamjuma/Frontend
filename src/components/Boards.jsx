@@ -21,8 +21,8 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
     // const { board} = useParams(); // Get boardName from the route parameters
     // const [boardName, setBoardName] = useState(null);
     // const { boardId, name } = board;
-    // const boardId = board?.boardId || 'No ID';
-    // const name = board?.name || 'No Name';
+    const boardId = board?.boardId || 'No ID';
+    const name = board?.name || 'No Name';
 
     const [statuses, setStatuses] = useState([]);
     const [currentStatusId, setCurrentStatusId] = useState(null);
@@ -233,11 +233,12 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
     const handleChangeMember = (memberId,memberUsername) => {
         console.log("Board memberId:",memberId)
         console.log("Board memberUsername:",memberUsername)
+
         if (selectedTask) {
+            console.log("selectedTask: ",selectedTask)
 
-            // Find the member by ID
-            const member = projectMembers.find(member => member.id === memberId);
-
+            const member = projectMembers.find(member => member.userId === memberId);
+            // console.log("member :",member)
             if (member) {
                 // Extract the first letter of the member's name and convert to uppercase
                 // const initial = member.username.charAt(0).toUpperCase();
@@ -610,7 +611,6 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
                 {showchangememberModal && (
                     <ChangeMemberModal
                         isVisible={showchangememberModal}
-                        availableMembers={projectMembers}
                         onClose={() => setshowchangememberModal(false)}
                         onSave={handleChangeMember}
                         projectId={projectId}
@@ -635,7 +635,7 @@ Boards.propTypes = {
 projectId: PropTypes.oneOfType([
     PropTypes.number,
     PropTypes.string,
-]),
+]).isRequired,
     projectDescription: PropTypes.string,
     projectMembers: PropTypes.arrayOf(PropTypes.shape({
         userId: PropTypes.number.isRequired,
@@ -647,12 +647,10 @@ projectId: PropTypes.oneOfType([
     setProjectDescription: PropTypes.func.isRequired,
     setProjectMembers: PropTypes.func.isRequired,
     memberId: PropTypes.string, // Added if you are using memberId
-    // board: PropTypes.isRequired // Add boardId prop
     board: PropTypes.shape({
         boardId: PropTypes.number.isRequired,
         name: PropTypes.string.isRequired
     }).isRequired, // Ensure board prop is defined and required
-
 };
 
 export default Boards;

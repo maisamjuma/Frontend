@@ -174,7 +174,11 @@ AddTaskModal.propTypes = {
         id: PropTypes.number.isRequired,
         title: PropTypes.string.isRequired
     }).isRequired,
-    projectId: PropTypes.string.isRequired,
+
+    projectId: PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.string,
+    ]).isRequired,
     projectDescription: PropTypes.string.isRequired,
     projectMembers: PropTypes.arrayOf(PropTypes.shape({
         userId: PropTypes.number.isRequired,
