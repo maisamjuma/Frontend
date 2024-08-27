@@ -8,7 +8,6 @@
     background: transparent; /* No background color */
     display: flex;
     align-items: center;
-
     justify-content: center;
     z-index: 1050; /* Ensure it is above other content but below the modal */
 }
@@ -49,18 +48,30 @@
 /* Close button styling */
 .change-member-close-button-new {
     position: absolute; /* Position it absolutely within the header */
-    top: 0;
+    top: -7px;
     color: white;
     background: none;
     border: none;
-    margin-top: -2px;
-    right: -5px;
+    margin-top: 5px;
+    right: -10px;
     font-size: 15px;
     cursor: pointer;
 }
 
 .change-member-close-button-new:hover {
-    background: none;
+    background: darksalmon;
+}
+
+.saveButton{
+    position: absolute;
+    right: 5px;
+    bottom: 15px;
+    padding-right: 10px;
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+
+
 }
 
 /* Search input styling */
@@ -77,9 +88,17 @@
     list-style: none; /* Remove default list styling */
     padding: 0;
     color: white;
-    max-height: 300px; /* Adjust as needed to fit the modal */
+    max-height: 380px; /* Adjust as needed to fit the modal */
     overflow-y: auto; /* Allow vertical scrolling */
     margin: 0;
+}
+.change-member-list-new::-webkit-scrollbar {
+    display: none; /* Hide scrollbar */
+}
+
+/* Hide scrollbars for Firefox */
+.change-member-list-new {
+    scrollbar-width: none; /* Hide scrollbar in Firefox */
 }
 
 .change-member-list-new li {
@@ -112,7 +131,7 @@
     height: 27px;
     margin-right: 10px;
     border-radius: 50%;
-    background-color: #007bff;
+    background-color: darksalmon;
     color: white;
     font-size: 14px;
     font-weight: bold;

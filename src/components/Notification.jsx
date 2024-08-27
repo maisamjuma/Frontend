@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+// Notification.jsx
+import React, { useState, useEffect } from 'react';
 import Navbar from "./Navbar/Navbar.jsx";
 import './Notification.css';
+import PropTypes from 'prop-types'; // Import PropTypes
 import SideBarForNoti from "./SideBarForNoti.jsx";
 import { Filter } from "./SVGIcons.jsx";
+import UserService from '../Services/UserService.js'; // Import your UserService
 
-const Notification = ({ loggedInUser, users }) => {
+const Notification = ({ loggedInUser }) => {
     const [showPopup, setShowPopup] = useState(false);
     const [selectedUsers, setSelectedUsers] = useState([]);
     const [message, setMessage] = useState('');
@@ -12,6 +15,20 @@ const Notification = ({ loggedInUser, users }) => {
     const [filterPopupVisible, setFilterPopupVisible] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedUserForFilter, setSelectedUserForFilter] = useState('');
+    const [users, setUsers] = useState([]); // State to store fetched users
+
+    useEffect(() => {
+        const fetchUsers = async () => {
+            try {
+                const response = await UserService.getAllUsers(); // Fetch users from the database
+                setUsers(response.data); // Update state with fetched users
+            } catch (error) {
+                console.error('Error fetching users:', error);
+            }
+        };
+
+        fetchUsers();
+    }, []);
 
     const handleSendNotification = () => {
         if (selectedUsers.length && message) {
@@ -44,7 +61,7 @@ const Notification = ({ loggedInUser, users }) => {
     };
 
     const filteredUsers = users.filter(user =>
-        user.toLowerCase().includes(searchQuery.toLowerCase())
+        user.username.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
     // Filter messages based on the selected user
@@ -64,7 +81,7 @@ const Notification = ({ loggedInUser, users }) => {
                     onMouseEnter={handleFilterIconMouseEnter}
                     onMouseLeave={handleFilterIconMouseLeave}
                 >
-                    <Filter/>
+                    <Filter />
                     {filterPopupVisible && (
                         <div
                             className="search-popup active"
@@ -79,11 +96,11 @@ const Notification = ({ loggedInUser, users }) => {
                             <ul className="user-list">
                                 {filteredUsers.map(user => (
                                     <li
-                                        key={user}
+                                        key={user.userId} // Ensure this is a unique identifier
                                         className="user-item"
-                                        onClick={() => handleUserFilterClick(user)}
+                                        onClick={() => handleUserFilterClick(user.username)}
                                     >
-                                        {user}
+                                        {user.username} {/* Assuming 'username' is the property */}
                                     </li>
                                 ))}
                             </ul>
@@ -92,13 +109,13 @@ const Notification = ({ loggedInUser, users }) => {
                 </div>
             </nav>
             <div className="d-flex">
-            <SideBarForNoti
-                    users={users}
+                <SideBarForNoti
+                    users={users} // Pass users to SideBarForNoti
                     loggedInUser={loggedInUser}
                     onSendNotification={() => setShowPopup(true)}
                 />
                 <div className="main-contentN">
-                    <div className="message-list border-2">
+                    <div className="message-list border-2 d-flex flex-row g-5">
                         {filteredMessages.map((msg, index) => (
                             <div key={index} className="message-item" onClick={() => setShowPopup(msg)}>
                                 <strong>From:</strong> {msg.from}<br />
@@ -127,11 +144,11 @@ const Notification = ({ loggedInUser, users }) => {
                                     <ul className="user-selection">
                                         {users.map(user => (
                                             <li
-                                                key={user}
-                                                className={`list-group-item ${selectedUsers.includes(user) ? 'selected' : ''}`}
-                                                onClick={() => handleUserSelection(user)}
+                                                key={user.userId} // Ensure this is a unique identifier
+                                                className={`list-group-item ${selectedUsers.includes(user.username) ? 'selected' : ''}`}
+                                                onClick={() => handleUserSelection(user.username)} // Use username for selection
                                             >
-                                                {user}
+                                                {user.username} {/* Display username */}
                                             </li>
                                         ))}
                                     </ul>
@@ -147,7 +164,7 @@ const Notification = ({ loggedInUser, users }) => {
                                 </div>
                                 <div className="d-flex justify-content-between mt-3">
                                     <button className="btn btn-primary" onClick={handleSendNotification}>Send</button>
-                                    <button className="btn btn-secondary" onClick={() => setShowPopup(false)}>Cancel</button>
+                                    <button className="cancelButton" onClick={() => setShowPopup(false)}>Cancel</button>
                                 </div>
                             </>
                         )}
@@ -156,6 +173,10 @@ const Notification = ({ loggedInUser, users }) => {
             )}
         </div>
     );
+};
+// Define prop types for validation
+Notification.propTypes = {
+    loggedInUser: PropTypes.string.isRequired
 };
 
 export default Notification;

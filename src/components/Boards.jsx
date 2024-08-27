@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { useParams} from 'react-router-dom';
+// import { useParams} from 'react-router-dom';
 import TaskModal from './TaskModal';
 import './Boards.css';
 import {FaPen} from 'react-icons/fa';
@@ -12,12 +12,18 @@ import CalendarModal from "./CalendarModal/CalendarModal.jsx";
 import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
 import PropTypes from "prop-types";
 import ChangeMemberModal from "./ChangeMemberModal.jsx";
+// import BoardService from "../Services/BoardService.js";
 //import members from "./Member/Members.jsx";
 //import members from "./Member/Members.jsx";
 
 
-const Boards = ({ projectId, projectDescription, projectMembers, setProjectId, setProjectDescription, setProjectMembers }) => {
-    const {projectName, boardId, name} = useParams(); // Get boardName from the route parameters
+const Boards = ({ board, projectId, projectDescription, projectMembers, setProjectId, setProjectDescription, setProjectMembers }) => {
+    // const { board} = useParams(); // Get boardName from the route parameters
+    // const [boardName, setBoardName] = useState(null);
+    // const { boardId, name } = board;
+    const boardId = board?.boardId || 'No ID';
+    const name = board?.name || 'No Name';
+
     const [statuses, setStatuses] = useState([]);
     const [currentStatusId, setCurrentStatusId] = useState(null);
     const [editingTaskId, setEditingTaskId] = useState(null);
@@ -29,63 +35,65 @@ const Boards = ({ projectId, projectDescription, projectMembers, setProjectId, s
     const [showAddTaskModal, setShowAddTaskModal] = useState(false);
     const [showcalenderModal, setcalendarModal] = useState(false);
     const [showchangememberModal, setshowchangememberModal] = useState(false);
-
     const [selectedMember, setSelectedMember] = useState('');
 
-    // console.log("projectId:",projectId,"projectDescription:",projectDescription,"projectMembers:",projectMembers);
-    // console.log("assignedUser:",assignedUser);
-    // const handleSelectMember = (memberId) => {
-    //     setSelectedMember(memberId); // Update the state with the selected member's ID
-    //     console.log("Selected member ID:", memberId);
-    // };
-    // const location = useLocation();
-    // const [projectId, setProjectId] = useState(null);
-    // const [projectDescription, setProjectDescription] = useState(null);
-    // const [projectMembers, setProjectMembers] = useState([]); // State for project members
+    console.log(projectMembers)
+    console.log("boardId ccccccccccccccccccccc",boardId)
+    console.log("name ccccccccccccccccccc",name)
+
     // useEffect(() => {
-    //     console.log("chinaaaaa","memberes:");
+    //     const fetchBoardName = async () => {
+    //         try {
+    //             const response = await BoardService.getBoardById(board.id);
+    //             const board = response.data;
+    //             console.log(board)
+    //             if (board && board.name) {
+    //                 setBoardName(board.name);
+    //             } else {
+    //                 throw new Error('Board name not available');
+    //             }
+    //         } catch (error) {
+    //             console.error('Error fetching board name:', error);
+    //         }
+    //     };
     //
-    //     if (location.state) {
-    //         const { projectId, projectDescription,projectMembers } = location.state;
-    //         setProjectId(projectId);
-    //         setProjectDescription(projectDescription); // Make sure this is correctly set
-    //         setProjectMembers(projectMembers); // Set project members here
-    //         console.log("chinaaaaa",projectId,projectDescription,"memberes:",projectMembers);
-    //     }
-    // }, [location.state]);
+    //     fetchBoardName();
+    // }, [board]);
 
-    // console.log("Project Description:", projectDescription);
-    // console.log("Project ID:", projectId);
-    // console.log("Project Members:", projectMembers);
 
-    // Load statuses from localStorage or use default values
     useEffect(() => {
         const loadStatuses = () => {
-            const savedStatuses = localStorage.getItem(`${projectName}_${boardId}_${name}_statuses`);
+            const savedStatuses = localStorage.getItem(`${projectId}_${boardId}_${name}_statuses`);
             const defaultStatuses = [
-                {id: 1, title: 'unassigned tasks', tasks: [], backgroundColor: '#f9f9f9'},
-                {id: 2, title: 'To Do', tasks: [], backgroundColor: '#f9f9f9'},
-                {id: 3, title: 'Doing', tasks: [], backgroundColor: '#f9f9f9'},
-                {id: 4, title: 'Ready to Review', tasks: [], backgroundColor: '#f9f9f9'},
-                {id: 5, title: 'Reviewing', tasks: [], backgroundColor: '#f9f9f9'},
-                {id: 6, title: 'Ready for QA', tasks: [], backgroundColor: '#f9f9f9'},
-                {id: 7, title: 'In Progress', tasks: [], backgroundColor: '#f9f9f9'},
-                {id: 8, title: 'QA Failed', tasks: [], backgroundColor: '#f9f9f9'},
-                {id: 9, title: 'QA Passed', tasks: [], backgroundColor: '#f9f9f9'}
+                { id: 1, title: 'unassigned tasks', tasks: [], backgroundColor: '#f9f9f9' },
+                { id: 2, title: 'To Do', tasks: [], backgroundColor: '#f9f9f9' },
+                { id: 3, title: 'Doing', tasks: [], backgroundColor: '#f9f9f9' },
+                { id: 4, title: 'Ready to Review', tasks: [], backgroundColor: '#f9f9f9' },
+                { id: 5, title: 'Reviewing', tasks: [], backgroundColor: '#f9f9f9' },
+                { id: 6, title: 'Ready for QA', tasks: [], backgroundColor: '#f9f9f9' },
+                { id: 7, title: 'In Progress', tasks: [], backgroundColor: '#f9f9f9' },
+                { id: 8, title: 'QA Failed', tasks: [], backgroundColor: '#f9f9f9' },
+                { id: 9, title: 'QA Passed', tasks: [], backgroundColor: '#f9f9f9' }
             ];
-            const statuses = savedStatuses ? JSON.parse(savedStatuses) : defaultStatuses;
 
-            if (name === 'QA') {
-                return statuses.filter(status => status.id > 5); // Show only statuses with id > 5
-                // eslint-disable-next-line no-dupe-else-if
+            let statuses = savedStatuses ? JSON.parse(savedStatuses) : defaultStatuses;
+
+            // Filter statuses based on boardName
+            if (name === 'QA' || name === 'qa') {
+                // Show only the last four statuses
+                statuses = statuses.filter(status => status.id > 5);
             } else if (name === 'Backend' || name === 'Frontend') {
-                return statuses.filter(status => status.id <= 5);
+                // Show only the first five statuses
+                statuses = statuses.filter(status => status.id <= 5);
             }
-            return statuses; // Show all statuses for other boards
+
+            return statuses;
         };
 
-        setStatuses(loadStatuses());
-    }, [projectName, boardId, name]);
+        if (name) {
+            setStatuses(loadStatuses());
+        }
+    }, [projectId, boardId, name]);
 
     const onDragEnd = (result) => {
         const {source, destination} = result;
@@ -170,20 +178,26 @@ const Boards = ({ projectId, projectDescription, projectMembers, setProjectId, s
 
     // Save statuses to localStorage whenever they change
     useEffect(() => {
-        localStorage.setItem(`${projectName}_${boardId}_${name}_statuses`, JSON.stringify(statuses));
-    }, [statuses, projectName, boardId, name]);
+        localStorage.setItem(`${projectId}_${boardId}_${name}_statuses`, JSON.stringify(statuses));
+    }, [statuses, projectId, boardId, name]);
 
     const handleAddTask = (statusId, task) => {
         if (task.name.trim()) {
             const status = statuses.find(status => status.id === statusId);
             if (status) {
+
+
                 const newTask = {
-                    id: `${projectName}_${boardId}_${name}_${statusId}_${status.tasks.length + 1}`,
+                    id: `${projectId}_${boardId}_${name}_${statusId}_${status.tasks.length + 1}`,
                     ...task,
                     statusId: statusId,
                     date: task.date || null, // Add date here if needed
-                    assignedUserId: task.assignedUserId || null, // Add this line
+                    assignedUserLetter: task.assignedUserLetter || null, // Add this line
+                    // memberInitials: task.initial || null,
+                    assignedUserId: task.assignedUserId, // Assign user only if status.id is 2
+
                 };
+
                 const updatedStatuses = statuses.map(status => {
                     if (status.id === statusId) {
                         return {
@@ -193,9 +207,13 @@ const Boards = ({ projectId, projectDescription, projectMembers, setProjectId, s
                     }
                     return status;
                 });
+                console.log(status.tasks)
                 setStatuses(updatedStatuses);
                 setShowAddTaskModal(false);
             }
+            console.log("Updated task:", task.name);
+            console.log("Member:", task.assignedUserId);
+
         }
     };
 
@@ -211,36 +229,34 @@ const Boards = ({ projectId, projectDescription, projectMembers, setProjectId, s
     const handleDoubleClick = (taskId) => {
         setEditingTaskId(taskId);
     };
-    // const handleSaveMember = (selectedMemberId) => {
-    //     const member = projectMembers.find(member => member.id === selectedMemberId);
-    //     if (member) {
-    //         const initial = member.username.charAt(0).toUpperCase();
-    //         setSelectedMember(initial);
-    //     } else {
-    //         console.log('Member not found');
-    //     }
-    // };
 
-    const handleChangeMember = (memberId) => {
+    const handleChangeMember = (memberId,memberUsername) => {
+        console.log("Board memberId:",memberId)
+        console.log("Board memberUsername:",memberUsername)
+
         if (selectedTask) {
+            console.log("selectedTask: ",selectedTask)
 
-            // Find the member by ID
-            const member = projectMembers.find(member => member.id === memberId);
-
+            const member = projectMembers.find(member => member.userId === memberId);
+            // console.log("member :",member)
             if (member) {
                 // Extract the first letter of the member's name and convert to uppercase
-                const initial = member.username.charAt(0).toUpperCase();
+                // const initial = member.username.charAt(0).toUpperCase();
+                const initial = memberUsername.charAt(0).toUpperCase();
                 setSelectedMember(initial);
-                console.log("123")
+
                 // Update statuses with the new member ID for the selected task
+
                 const updatedStatuses = statuses.map(status => ({
                     ...status,
                     tasks: status.tasks.map(task =>
-                        task.id === selectedTask.id ? { ...task, assignedUserId: memberId,memberInitials: initial } : task
+                        // task.id === selectedTask.id ? { ...task,memberInitials: task.assignedUserId } : task
+                        task.id === selectedTask.id ? { ...task,assignedUserLetter: initial,assignedUserId: memberId} : task
                     )
                 }));
                 setStatuses(updatedStatuses);
-            } else {
+            }
+            else {
                 console.log('Member not found');
             }
             setshowchangememberModal(false);
@@ -367,18 +383,11 @@ const Boards = ({ projectId, projectDescription, projectMembers, setProjectId, s
         setcalendarModal(false);
     };
 
-    // const getMemberInitial = (memberId) => {
-    //     const member = projectMembers.find(member => member.id === memberId);
-    //     console.log('Found member:', member); // Debugging line
-    //     return member ? member.username.charAt(0).toUpperCase() : 'N';
-    // };
-
-
 
     return (
         <DragDropContext onDragEnd={onDragEnd}>
-            <div className={`backend-container ${boardId}`}>
-                <h1>{name}</h1>
+            <div className={` ${boardId}`}>
+                <div><h1>{name}</h1></div>
                 <Droppable droppableId="all-statuses" direction="horizontal">
                     {(provided) => (
                         <div
@@ -497,7 +506,8 @@ const Boards = ({ projectId, projectDescription, projectMembers, setProjectId, s
                                                                                     <div className="nameCircle">
                                                                                         {task.assignedUserId && (
                                                                                             <span className="taskMember">
-                                                                                            {task.memberInitials}
+                                                                                            {/*{task.memberInitials} /!* we need it for the old tasks*!/*/}
+                                                                                            {task.assignedUserLetter}{/* we need it for add user*/}
                                                                                         </span>
                                                                                         )}
                                                                                     </div>
@@ -601,7 +611,6 @@ const Boards = ({ projectId, projectDescription, projectMembers, setProjectId, s
                 {showchangememberModal && (
                     <ChangeMemberModal
                         isVisible={showchangememberModal}
-                        availableMembers={projectMembers}
                         onClose={() => setshowchangememberModal(false)}
                         onSave={handleChangeMember}
                         projectId={projectId}
@@ -623,21 +632,25 @@ const Boards = ({ projectId, projectDescription, projectMembers, setProjectId, s
 
 };
 Boards.propTypes = {
-
 projectId: PropTypes.oneOfType([
     PropTypes.number,
     PropTypes.string,
-]),
+]).isRequired,
     projectDescription: PropTypes.string,
     projectMembers: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string.isRequired, // or PropTypes.string if ids are strings
-    username: PropTypes.string.isRequired,
+        userId: PropTypes.number.isRequired,
+        projectMemberId: PropTypes.number.isRequired,
+        projectId: PropTypes.number.isRequired,
+        joinedAt: PropTypes.string.isRequired,
 })),
     setProjectId: PropTypes.func.isRequired,
     setProjectDescription: PropTypes.func.isRequired,
     setProjectMembers: PropTypes.func.isRequired,
     memberId: PropTypes.string, // Added if you are using memberId
-
+    board: PropTypes.shape({
+        boardId: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired
+    }).isRequired, // Ensure board prop is defined and required
 };
 
 export default Boards;
