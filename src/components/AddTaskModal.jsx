@@ -13,6 +13,9 @@ const AddTaskModal = ({ isVisible, onClose, onAddTask, status, projectId, projec
     const [assignedUserLetter, setAssignedUserLetter] = useState(''); // Local state for selected user
     const [assignedUserId, setAssignedUserId] = useState(''); // Local state for selected user
     const [userDetails,setuserDetails]= useState('');
+
+    console.log(projectId)
+
     console.log("helllllll", projectMembers)
     useEffect(() => {
         if (isVisible) {
@@ -171,7 +174,11 @@ AddTaskModal.propTypes = {
         id: PropTypes.number.isRequired,
         title: PropTypes.string.isRequired
     }).isRequired,
-    projectId: PropTypes.string.isRequired,
+
+    projectId: PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.string,
+    ]).isRequired,
     projectDescription: PropTypes.string.isRequired,
     projectMembers: PropTypes.arrayOf(PropTypes.shape({
         userId: PropTypes.number.isRequired,

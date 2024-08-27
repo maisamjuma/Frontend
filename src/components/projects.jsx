@@ -25,27 +25,29 @@ const Projects = () => {
     const [isDeleting, setIsDeleting] = useState(false);
     const [selectedMembers, setSelectedMembers] = useState([]);
     const [showDeletePopup, setShowDeletePopup] = useState(false);
-    const [availableMembers, setAvailableMembers] = useState([]); // State for available members
+   // const [availableMembers, setAvailableMembers] = useState([]); // State for available members
     const [selectedMemberForChange, setSelectedMemberForChange] = useState(null);
     const [showChangeMemberModal, setShowChangeMemberModal] = useState(false); // State for modal visibility
 
     const containerRef = useRef(null);
 
 
-    useEffect(() => {
-        // Initialize available members here
-        setAvailableMembers([
-            {id: 1, username: 'Maisam', email: 'maisam@example.com', password: 'password123', firstName: 'Maisam', lastName: 'Doe', role: 'Frontend Developer'},
-            {id: 2, username: 'Osaid', email: 'osaid@example.com', password: 'password123', firstName: 'Osaid', lastName: 'Doe', role: 'Backend Developer'},
-            {id: 3, username: 'Rami', email: 'rami@example.com', password: 'password123', firstName: 'Rami', lastName: 'Doe', role: 'QA Engineer'},
-            {id: 4, username: 'Ali', email: 'ali@example.com', password: 'password123', firstName: 'Ali', lastName: 'Doe', role: 'Frontend Developer'},
-            {id: 5, username: 'Reema', email: 'reema@example.com', password: 'password123', firstName: 'Reema', lastName: 'Doe', role: 'Backend Developer'},
-            {id: 6, username: 'Mona', email: 'mona@example.com', password: 'password123', firstName: 'Mona', lastName: 'Doe', role: 'Frontend Developer'},
-            {id: 7, username: 'Daher', email: 'daher@example.com', password: 'password123', firstName: 'Daher', lastName: 'Doe', role: 'Backend Developer'},
-            {id: 8, username: 'samarah', email: 'samarah@example.com', password: 'password123', firstName: 'Daher', lastName: 'Doe', role: 'Backend Developer'},
-            {id: 9, username: 'Mohammad', email: 'Mohammad@example.com', password: 'password123', firstName: 'Mohammad', lastName: 'Doe', role: 'Backend Developer'},
-        ]);
-    }, []);
+    // useEffect(() => {
+    //     // Initialize available members here
+    //     setAvailableMembers([
+    //         {id: 1, username: 'Maisam', email: 'maisam@example.com', password: 'password123', firstName: 'Maisam', lastName: 'Doe', role: 'Frontend Developer'},
+    //         {id: 2, username: 'Osaid', email: 'osaid@example.com', password: 'password123', firstName: 'Osaid', lastName: 'Doe', role: 'Backend Developer'},
+    //         {id: 3, username: 'Rami', email: 'rami@example.com', password: 'password123', firstName: 'Rami', lastName: 'Doe', role: 'QA Engineer'},
+    //         {id: 4, username: 'Ali', email: 'ali@example.com', password: 'password123', firstName: 'Ali', lastName: 'Doe', role: 'Frontend Developer'},
+    //         {id: 5, username: 'Reema', email: 'reema@example.com', password: 'password123', firstName: 'Reema', lastName: 'Doe', role: 'Backend Developer'},
+    //         {id: 6, username: 'Mona', email: 'mona@example.com', password: 'password123', firstName: 'Mona', lastName: 'Doe', role: 'Frontend Developer'},
+    //         {id: 7, username: 'Daher', email: 'daher@example.com', password: 'password123', firstName: 'Daher', lastName: 'Doe', role: 'Backend Developer'},
+    //         {id: 8, username: 'samarah', email: 'samarah@example.com', password: 'password123', firstName: 'Daher', lastName: 'Doe', role: 'Backend Developer'},
+    //         {id: 9, username: 'Mohammad', email: 'Mohammad@example.com', password: 'password123', firstName: 'Mohammad', lastName: 'Doe', role: 'Backend Developer'},
+    //     ]);
+    // }, []);
+    //
+
     useEffect(() => {
         const fetchProjectMembers = async () => {
             try {
@@ -344,7 +346,6 @@ const Projects = () => {
 
                 {showChangeMemberModal && (
                     <ChangeMemberModal
-                        availableMembers={availableMembers}
                         selectedMemberId={selectedMemberForChange}
                         onClose={() => setShowChangeMemberModal(false)}
                         onSelectMember={handleSelectMember}
