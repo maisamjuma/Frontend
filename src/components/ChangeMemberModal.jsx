@@ -62,40 +62,48 @@ const ChangeMemberModal = ({
     };
 
     return (
-        <div className="change-member-modal-overlay-new" onClick={onClose}>
-            <div className="change-member-modal-content-new" onClick={(e) => e.stopPropagation()}>
-                <div className="change-member-modal-header-new">
-                    <h5>Select a Member</h5>
-                    <button className="change-member-close-button-new" onClick={onClose}>X</button>
-                    <button onClick={handleSave}>Save</button>
-                </div>
-                <input
-                    type="text"
-                    placeholder="Search members..."
-                    value={searchTerm}
-                    onChange={handleSearchChange}
-                    className="change-member-search-input-new"
-                />
-                <ul className="change-member-list-new">
-                    {filteredMembers.length > 0 ? (
-                        filteredMembers.map(member => (
-                            <li
-                                key={member.userId}
-                                onClick={() => handleMemberClick(member.userId, member.username)}
-                                className={`change-member-list-item ${member.userId === selectedMemberId ? 'selected-member' : ''}`}
-                            >
+        <>
+            <div className="change-member-modal-overlay-new" onClick={onClose}>
+                <div className="change-member-modal-content-new" onClick={(e) => e.stopPropagation()}>
+                    <div className="change-member-modal-header-new">
+                        <h5>Select a Member</h5>
+                        <button className="change-member-close-button-new" onClick={onClose}>X</button>
+                    </div>
+                    <input
+                        type="text"
+                        placeholder="Search members..."
+                        value={searchTerm}
+                        onChange={handleSearchChange}
+                        className="change-member-search-input-new"
+                    />
+                    <ul className="change-member-list-new">
+                        {filteredMembers.length > 0 ? (
+                            filteredMembers.map(member => (
+                                <li
+                                    key={member.userId}
+                                    onClick={() => handleMemberClick(member.userId, member.username)}
+                                    className={`change-member-list-item ${member.userId === selectedMemberId ? 'selected-member' : ''}`}
+                                >
                                 <span className="member-initial-circle">
                                     {member.username.charAt(0).toUpperCase()}
                                 </span>
-                                {member.username} {member.lastName}
-                            </li>
-                        ))
-                    ) : (
-                        <li>No members found</li>
-                    )}
-                </ul>
+                                    {member.username} {member.lastName}
+                                </li>
+                            ))
+                        ) : (
+                            <li>No members found</li>
+                        )}
+                    </ul>
+                    <div>
+                        <button className="saveButton" onClick={handleSave}>Save</button>
+
+                    </div>
+                </div>
+
+
             </div>
-        </div>
+
+        </>
     );
 };
 
