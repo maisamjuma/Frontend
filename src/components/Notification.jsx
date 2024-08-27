@@ -115,7 +115,7 @@ const Notification = ({ loggedInUser }) => {
                     onSendNotification={() => setShowPopup(true)}
                 />
                 <div className="main-contentN">
-                    <div className="message-list border-2">
+                    <div className="message-list border-2 d-flex flex-row g-5">
                         {filteredMessages.map((msg, index) => (
                             <div key={index} className="message-item" onClick={() => setShowPopup(msg)}>
                                 <strong>From:</strong> {msg.from}<br />
@@ -164,7 +164,7 @@ const Notification = ({ loggedInUser }) => {
                                 </div>
                                 <div className="d-flex justify-content-between mt-3">
                                     <button className="btn btn-primary" onClick={handleSendNotification}>Send</button>
-                                    <button className="btn btn-secondary" onClick={() => setShowPopup(false)}>Cancel</button>
+                                    <button className="cancelButton" onClick={() => setShowPopup(false)}>Cancel</button>
                                 </div>
                             </>
                         )}
