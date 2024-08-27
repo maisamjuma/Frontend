@@ -8,43 +8,52 @@ class BoardService {
     // Fetch all boards
     getAllBoards() {
         const token = localStorage.getItem("token");
-
-        return axios.get(BOARDS_API_BASE_URL);
-
+        return axios.get(BOARDS_API_BASE_URL, {
+            headers: {
+                'X-Auth-Token': token
+            }
+        });
     }
 
     // Fetch a board by its ID
     getBoardById(boardId) {
         const token = localStorage.getItem("token");
-
-        return axios.get(`${BOARDS_API_BASE_URL}/${boardId}`);
+        return axios.get(`${BOARDS_API_BASE_URL}/${boardId}`, {
+            headers: {
+                'X-Auth-Token': token
+            }
+        });
     }
 
     // Fetch boards by project ID
     getBoardsByProject(projectId) {
         const token = localStorage.getItem("token");
-
-        return axios.get(`${BOARDS_API_BASE_URL}/projects/${projectId}`);
+        return axios.get(`${BOARDS_API_BASE_URL}/projects/${projectId}`, {
+            headers: {
+                'X-Auth-Token': token
+            }
+        });
     }
 
     // Create a new board
     createBoard(projectId, roleId) {
         const token = localStorage.getItem("token");
-
-        // Construct the URL with the roleId
         const url = `${BOARDS_API_BASE_URL}/${roleId}`;
-
-        // Construct the body with only the projectId
-        return axios.post(url, {projectId});
+        return axios.post(url, { projectId }, {
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Auth-Token': token
+            }
+        });
     }
 
     // Update an existing board by its ID
     updateBoard(boardId, updatedBoard) {
         const token = localStorage.getItem("token");
-
         return axios.put(`${BOARDS_API_BASE_URL}/${boardId}`, updatedBoard, {
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-Auth-Token': token
             }
         });
     }
@@ -52,22 +61,23 @@ class BoardService {
     // Delete a board by its ID
     deleteBoard(boardId) {
         const token = localStorage.getItem("token");
-
-        return axios.delete(`${BOARDS_API_BASE_URL}/${boardId}`);
+        return axios.delete(`${BOARDS_API_BASE_URL}/${boardId}`, {
+            headers: {
+                'X-Auth-Token': token
+            }
+        });
     }
 
     // Add default boards to a project
     addDefaultBoards(projectId) {
         const token = localStorage.getItem("token");
-
-        // Construct the URL with the projectId
         const url = `${BOARDS_API_BASE_URL}/projects/${projectId}/default`;
-
-        // Make a POST request to the endpoint
-        return axios.post(url);
+        return axios.post(url, null, {
+            headers: {
+                'X-Auth-Token': token
+            }
+        });
     }
-
 }
-
 
 export default new BoardService();

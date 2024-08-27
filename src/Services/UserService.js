@@ -69,9 +69,9 @@ class UserService {
     }
 //////////////////////////////////////////////////////////////////////spring security:
     // User login
-    async login(password, username, email) {
+    async login(password, email) {
         try {
-            const response = await axios.post(`${BASE_URL}/auth`, { password, username, email });
+            const response = await axios.post(`${BASE_URL}/auth`, { password, email });
             return response.data;
         } catch (err) {
             throw err;

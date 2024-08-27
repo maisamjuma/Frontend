@@ -7,7 +7,7 @@ import UserService from "../../Services/UserService.js";
 const Login = ({onLogin}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [username, setUsername] = useState('');
+    // const [username, setUsername] = useState('');
     const [error, setError] = useState('')
 
     // const handleLogin = (e) => {
@@ -20,10 +20,9 @@ const Login = ({onLogin}) => {
         e.preventDefault();
 
         try {
-            const userData = await UserService.login(password,username,email)
+            const userData = await UserService.login(password,email)
             // console.log("userData userData:",userData)
             if (userData.token) {
-
                 localStorage.setItem('token', userData.token)
                 localStorage.setItem('role', userData.role)
                 // navigate('/profile')
@@ -49,15 +48,15 @@ const Login = ({onLogin}) => {
 
                 <h2>Login</h2>
                 {/*<h2>username</h2>*/}
-                <label>
-                    username:
-                    <input
-                        type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        required
-                    />
-                </label>
+                {/*<label>*/}
+                {/*    username:*/}
+                {/*    <input*/}
+                {/*        type="text"*/}
+                {/*        value={username}*/}
+                {/*        onChange={(e) => setUsername(e.target.value)}*/}
+                {/*        required*/}
+                {/*    />*/}
+                {/*</label>*/}
                 <label>
                     Email:
                     <input

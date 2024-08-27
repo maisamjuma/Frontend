@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Route, Routes, Navigate } from 'react-router-dom';
+import { Route, Routes, Navigate, useRoutes } from 'react-router-dom';
 import Projects from './components/projects';
 import Workspace from './components/Workspace';
-import User from "./components/User";
-import Layout from "./components/Layout/Layout.jsx";
-import Login from "./components/Login/Login.jsx";
-import ListUser from "./components/ListUser/ListUser.jsx";
-import Notification from "./components/Notification.jsx";
+import User from './components/User';
+import Layout from './components/Layout/Layout.jsx';
+import OldLogin from './components/Login/Login.jsx'; // old login
+import ListUser from './components/ListUser/ListUser.jsx';
+import Notification from './components/Notification.jsx';
 import HomePage from "./components/HomePage.jsx"; // Adjusted from Home to HomePage
 
 function App() {
@@ -101,19 +101,11 @@ function App() {
     const routesArray = [
         {
             path: "/login",
-            element: isAuthenticated ? <Navigate to="/old-login" /> : <Login onLogin={handleLogin} />,
-        },
-        {
-            path: "/old-login",
-            element: <OldLogin />, // Route to the old login screen
+            element: isAuthenticated ? <Navigate to="/main" /> : <OldLogin onLogin={handleLogin} />,
         },
         {
             path: "/register",
-            element: <Register />,
-        },
-        {
-            path: "/home",
-            element: isAuthenticated ? <Home /> : <Navigate to="/login" />,
+            element: <Navigate to="/main" />, // Adjust as needed
         },
         {
             path: "/main/*",
@@ -141,12 +133,9 @@ function App() {
     let routesElement = useRoutes(routesArray);
 
     return (
-        <AuthProvider>
-            <Header />
-            <div className="w-full h-screen flex flex-col">
-                {routesElement}
-            </div>
-        </AuthProvider>
+        <div className="w-full h-screen flex flex-col">
+            {routesElement}
+        </div>
     );
 }
 
