@@ -360,32 +360,7 @@ const Boards = ({
                                                              onClick={() => handleDeleteStatus(status.id)}>Delete Status
                                                         </div>
                                                         <div className="backend-dropdown-separator"/>
-                                                        <div className="backend-dropdown-color-picker">
-                                                            <div className="backend-color-box"
-                                                                 style={{backgroundColor: '#a729ca'}}
-                                                                 onClick={() => handleChangeColor(status.id, '#a729ca')}/>
-                                                            <div className="backend-color-box"
-                                                                 style={{backgroundColor: '#1148cc'}}
-                                                                 onClick={() => handleChangeColor(status.id, '#1148cc')}/>
-                                                            <div className="backend-color-box"
-                                                                 style={{backgroundColor: '#ffcccc'}}
-                                                                 onClick={() => handleChangeColor(status.id, '#ffcccc')}/>
-                                                            <div className="backend-color-box"
-                                                                 style={{backgroundColor: '#ccffcc'}}
-                                                                 onClick={() => handleChangeColor(status.id, '#ccffcc')}/>
-                                                            <div className="backend-color-box"
-                                                                 style={{backgroundColor: '#c3a838'}}
-                                                                 onClick={() => handleChangeColor(status.id, '#c3a838')}/>
-                                                            <div className="backend-color-box"
-                                                                 style={{backgroundColor: '#6ab54d'}}
-                                                                 onClick={() => handleChangeColor(status.id, '#6ab54d')}/>
-                                                            <div className="backend-color-box"
-                                                                 style={{backgroundColor: '#ccccff'}}
-                                                                 onClick={() => handleChangeColor(status.id, '#ccccff')}/>
-                                                            <div className="backend-color-box"
-                                                                 style={{backgroundColor: '#ffffcc'}}
-                                                                 onClick={() => handleChangeColor(status.id, '#ffffcc')}/>
-                                                        </div>
+
                                                     </div>
                                                 )}
                                             </div>

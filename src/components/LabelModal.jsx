@@ -93,14 +93,7 @@ const LabelModal = ({ onClose, labels, selectedLabels, onSave }) => {
                             <span>Labels</span>
                             <button className="close-button" onClick={onClose}>×</button>
                         </div>
-                        <div className="label-search">
-                            <input
-                                type="text"
-                                placeholder="Search labels..."
-                                value={searchTerm}
-                                onChange={handleSearchChange}
-                            />
-                        </div>
+
                         <div className="labels-list">
                             {filteredLabels.map((label) => (
                                 <div className="label-item" key={label.id}>
