@@ -53,11 +53,11 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
                 { id: 2, title: 'To Do', tasks: [], backgroundColor: '#f9f9f9' },
                 { id: 3, title: 'Doing', tasks: [], backgroundColor: '#f9f9f9' },
                 { id: 4, title: 'Ready to Review', tasks: [], backgroundColor: '#f9f9f9' },
-                { id: 5, title: "Reviewing", tasks: [], backgroundColor: '#f9f9f9' },
-                { id: 6, title: "Ready for QA", tasks: [], backgroundColor: '#f9f9f9' },
-                { id: 7, title: "In Progress", tasks: [], backgroundColor: '#f9f9f9' },
-                { id: 8, title: "QA Failed", tasks: [], backgroundColor: '#f9f9f9' },
-                { id: 9, title: "QA Passed", tasks: [], backgroundColor: '#f9f9f9' }
+                { id: 5, title: 'Reviewing', tasks: [], backgroundColor: '#f9f9f9' },
+                { id: 6, title: 'Ready for QA', tasks: [], backgroundColor: '#f9f9f9' },
+                { id: 7, title: 'In Progress', tasks: [], backgroundColor: '#f9f9f9' },
+                { id: 8, title: 'QA Failed', tasks: [], backgroundColor: '#f9f9f9' },
+                { id: 9, title: 'QA Passed', tasks: [], backgroundColor: '#f9f9f9' }
             ];
 
             let statuses = savedStatuses ? JSON.parse(savedStatuses) : defaultStatuses;
@@ -169,15 +169,31 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
         localStorage.setItem(`${projectId}_${boardId}_${name}_statuses`, JSON.stringify(statuses));
     }, [statuses, projectId, boardId, name]);
 
+    useEffect(() => {
+        localStorage.setItem('statuses', JSON.stringify(statuses));
+    }, [statuses]);
 
     useEffect(() => {
         const loadTasks = async () => {
             try {
                 const response = await TaskService.getTasksByProjectId(projectId);
                 const tasks = response.data;
-                console.log(tasks)
-                // Get statuses from localStorage
-                const storedStatuses = JSON.parse(localStorage.getItem('statuses'));
+                console.log("Fetched tasks:", tasks);
+
+                // Retrieve and handle statuses
+                const storedStatuses = JSON.parse(localStorage.getItem(`${projectId}_${boardId}_${name}_statuses`)) || [
+                    { id: 1, title: 'Unassigned Tasks', tasks: [], backgroundColor: '#f9f9f9' },
+                    { id: 2, title: 'To Do', tasks: [], backgroundColor: '#f9f9f9' },
+                    { id: 3, title: 'Doing', tasks: [], backgroundColor: '#f9f9f9' },
+                    { id: 4, title: 'Ready to Review', tasks: [], backgroundColor: '#f9f9f9' },
+                    { id: 5, title: 'Reviewing', tasks: [], backgroundColor: '#f9f9f9' },
+                    { id: 6, title: 'Ready for QA', tasks: [], backgroundColor: '#f9f9f9' },
+                    { id: 7, title: 'In Progress', tasks: [], backgroundColor: '#f9f9f9' },
+                    { id: 8, title: 'QA Failed', tasks: [], backgroundColor: '#f9f9f9' },
+                    { id: 9, title: 'QA Passed', tasks: [], backgroundColor: '#f9f9f9' }
+                ];
+
+                console.log("Stored statuses:", storedStatuses);
 
                 // Map tasks to their corresponding statuses
                 const updatedStatuses = storedStatuses.map(status => {
@@ -188,14 +204,18 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
                     };
                 });
 
+                console.log("Updated statuses after mapping tasks:", updatedStatuses);
+
                 setStatuses(updatedStatuses);
             } catch (error) {
-                // Handle error
+                console.error("Error in loadTasks:", error);
             }
         };
 
         loadTasks();
-    }, [projectId,boardId]);
+    }, [projectId, boardId, name]);
+
+
 
     const handleAddTask = async (statusId, task) => {
         if (task.name.trim()) {
@@ -204,6 +224,7 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
                 const newTask = {
                     projectId: projectId,
                     taskName: task.name,
+                    boardId:boardId,
                     taskDescription: task.description || '',
                     status: status.title, // Use status.title as a string
                     priority: task.priority ? task.priority.toUpperCase() : 'MEDIUM', // Convert priority to uppercase
@@ -485,7 +506,7 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
                                             </div>
                                             <div className="backend-tasks-container">
                                                 {status.tasks.map((task, taskIndex) => (
-                                                    <Draggable key={taskId} draggableId={taskId} index={taskIndex}>
+                                                    <Draggable key={task.id} draggableId={task.id} index={taskIndex}>
                                                         {(provided) => (
                                                             <div
                                                                 className={`backend-task-box ${highlightedTaskId === taskId ? 'highlighted' : ''}`}

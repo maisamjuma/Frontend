@@ -3,6 +3,7 @@ import './AddTaskModal.css';
 import Calendar from 'react-calendar';
 import PropTypes from "prop-types";
 import UserService from "../Services/UserService.js";
+import boards from "./Boards.jsx";
 //import TaskService from "../Services/TaskService.js";
 //import Boards from "./Boards.jsx";
 
@@ -55,6 +56,7 @@ const AddTaskModal = ({ isVisible, onClose, onAddTask, status, projectId, projec
                     projectId: projectId,
                     name: taskName,
                     description,
+                    boardId:boards.boardId,
                     status: status.title,
                     priority,
                     dueDate: dueDate.toISOString().split('T')[0],
