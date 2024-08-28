@@ -1,6 +1,4 @@
-/* Members.css */
 
-/* Container for the list of members */
 .member-list {
     display: flex;
     flex-direction: column;
@@ -8,12 +6,18 @@
     margin: 0;
     padding: 0;
     list-style-type: none;
-    max-height: 400px; /* Limit height to avoid excessive scrolling */
-    overflow-y: auto; /* Enable vertical scrolling */
+    max-height: 400px;
+    overflow-y: auto;
 
 }
+.member-list::-webkit-scrollbar {
+    display: none;
+}
 
-/* Style for each member item */
+.member-list {
+    scrollbar-width: none;
+}
+
 .member-item {
     display: flex;
     align-items: center;
@@ -24,22 +28,20 @@
     background-color: #ffffff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s, box-shadow 0.3s;
-    cursor: pointer; /* Indicate that the item is clickable */
+    cursor: pointer;
+    width: 300px;
 }
 
-/* Hover effect for better user interaction */
 .member-item:hover {
     background-color: #f9f9f9;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Style for checkboxes container */
 .checkbox-container {
     display: flex;
     align-items: center;
 }
 
-/* Style for checkboxes */
 .checkbox-container input {
     width: 16px;
     height: 16px;
@@ -47,20 +49,17 @@
     cursor: pointer;
 }
 
-/* Name styling */
 .member-name {
     font-size: 16px;
     font-weight: 600;
     color: #333;
 }
 
-/* Role styling */
 .member-role {
     font-size: 14px;
     color: #666;
 }
 
-/* Responsive design */
 @media (max-width: 768px) {
     .member-item {
         flex-direction: column;
@@ -78,4 +77,7 @@
     .member-role {
         font-size: 12px;
     }
+}
+.member-item.selected {
+    background-color: #f0f0f0;
 }

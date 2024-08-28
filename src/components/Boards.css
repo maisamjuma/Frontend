@@ -171,15 +171,19 @@ html, body {
     outline: none; /* Remove default focus outline */
     color: #000;
 }
+.nameCon{
+    margin-bottom: 20px;
+    padding: 20px;
+}
 
-/* Allow status-container to extend with content and wrap items */
+    /* Allow status-container to extend with content and wrap items */
 .backend-status-container {
     display: flex;
     flex-wrap: nowrap; /* Prevent items from wrapping to the next line */
     align-items: flex-start; /* Align items to the start of the container */
     gap: 10px; /* Space between items */
-
     justify-content: flex-start; /* Align items to the start (left) */
+    margin-top: 50px;
 }
 
 /* Style for the status title */

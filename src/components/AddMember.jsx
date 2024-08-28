@@ -71,15 +71,19 @@ const AddMember = ({ projectId,onAddMember, onSave, onDeleteMode, isDeleting }) 
     return (
         <div className="modal-overlay">
             <div className="modal-content">
-                <div className="d-flex flex-row gap-4">
+                <div className="mb-1  d-flex flex-row gap-5 ">
+                    <h3>Edit Members</h3>
+                    <button className="titleAndx" onClick={() => onSave(true)}>X</button>
+                </div>
+                <div className="serachForPopup ">
                     <input
                         type="text"
                         placeholder="Search members..."
                         value={searchTerm}
                         onChange={handleSearchChange}
-                        className="search-bar rounded"
+                        className="search-bar w-100 "
                     />
-                    <button className="m-0 pb-2 pt-2 fw-semibold" onClick={() => onSave(true)}>X</button>
+
                 </div>
                 <div className="member-list">
                     {availableMembers.map((member) => (

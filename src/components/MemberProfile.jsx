@@ -7,23 +7,37 @@ const MemberProfile = ({ member,userDetails, onClose }) => {
 
     // Find user details for the selected member
     const user = userDetails.find(user => user.userId === member.userId);
+
+    const firstLetter = user.username.charAt(0).toUpperCase();
+
     console.log("Selected user:", user);
     if (!user) {
         return <div>Loading...</div>; // Handle loading state or display an error
     }
     return (
         <div className="member-profile-overlay">
-            <div className="member-profile">
-                <h3>Member Profile</h3>
-                <p><strong>Username:</strong> {user.username}</p>
-                <p><strong>Email:</strong> {user.email}</p>
-                <p><strong>First Name:</strong> {user.firstName}</p>
-                <p><strong>Last Name:</strong> {user.lastName}</p>
-                <p><strong>Role:</strong> {user.role}</p>
-                <button onClick={onClose}>Close</button>
+        <div className="profile-card">
+            <div className="profile-header">
+                <div className="profile-picture">
+                    <span>{firstLetter}</span>
+                </div>
+                <div className="profile-info">
+                    <h2 className="usernameFont">{user.username}</h2>
+
+                </div>
+
+            </div>
+            <div className="profile-actions">
+                <p className="fontColor"><strong>Last Name: </strong> {user.lastName}</p>
+                <p className="fontColor"><strong>Email: </strong> {user.email}</p>
+                <p className="fontColor"><strong>Role: </strong> {user.role}</p>
+                <button className="secondary-nav-button d-flex justify-content-center" onClick={onClose}>Close</button>
             </div>
         </div>
-    );
+        </div>
+
+)
+    ;
 };
 
 MemberProfile.propTypes = {

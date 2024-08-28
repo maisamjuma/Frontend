@@ -180,7 +180,7 @@ const Sidebar = ({onMenuAction}) => {
         const newProject = {id: projectId, name: projectName, description: projectDescription};
 
 
-        setProjects([...projects, newProject]);
+        setProjects((projects) => [newProject, ...projects]);
     };
 
     return (
