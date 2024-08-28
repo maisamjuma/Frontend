@@ -23,20 +23,20 @@ const PriorityModal = ({onClose, onSave}) => {
                 <h2 className="priorityheader">Select Priority</h2>
                 <div className="priority-options">
                     <button
-                        className={`priority-option ${selectedPriority === 'high' ? 'selected' : ''}`}
-                        onClick={() => handlePriorityChange('high')}
-                    >
-                        High
-                    </button>
-                    <button
-                        className={`priority-option ${selectedPriority === 'medium' ? 'selected' : ''}`}
-                        onClick={() => handlePriorityChange('medium')}
+                        className={`priority-option ${selectedPriority === 'MEDIUM' ? 'selected' : ''}`}
+                        onClick={() => handlePriorityChange('MEDIUM')}
                     >
                         Medium
                     </button>
                     <button
-                        className={`priority-option ${selectedPriority === 'low' ? 'selected' : ''}`}
-                        onClick={() => handlePriorityChange('low')}
+                        className={`priority-option ${selectedPriority === 'HIGH' ? 'selected' : ''}`}
+                        onClick={() => handlePriorityChange('HIGH')}
+                    >
+                        High
+                    </button>
+                    <button
+                        className={`priority-option ${selectedPriority === 'LOW' ? 'selected' : ''}`}
+                        onClick={() => handlePriorityChange('LOW')}
                     >
                         Low
                     </button>

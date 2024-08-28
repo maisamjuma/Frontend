@@ -34,7 +34,7 @@ const Workspace = ({isVisible}) => {
             setProjectId(projectId);
             setProjectDescription(projectDescription); // Make sure this is correctly set
             setProjectMembers(projectMembers); // Set project members here
-            console.log("chinaaaaa", projectId, projectDescription, "memberes:", projectMembers, "project member:", projectName);
+           // console.log("chinaaaaa", projectId, projectDescription, "memberes:", projectMembers, "project member:", projectName);
         }
     }, [location.state]);
 
@@ -80,10 +80,10 @@ const Workspace = ({isVisible}) => {
             console.error('Error fetching roles:', error);
         }
     };
-    console.log(projectMembers)
-    console.log(projectDescription)
-    console.log("hiiiiiii", projectId)
-    console.log("selectedBoard", selectedBoard)
+    // console.log(projectMembers)
+    // console.log(projectDescription)
+    // console.log("hiiiiiii", projectId)
+    // console.log("selectedBoard", selectedBoard)
 
     const fetchBoards = async () => {
         // // Example boards added for testing
@@ -244,7 +244,8 @@ const Workspace = ({isVisible}) => {
                                 {roles.map(role => (
                                     <option key={role.id} value={role.id}>
                                         {role.roleName}
-                                    </option>
+                                    </option
+                                    >
                                 ))}
                             </select>
                             <button onClick={handleAddBoard}>Add</button>

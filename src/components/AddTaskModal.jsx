@@ -3,6 +3,7 @@ import './AddTaskModal.css';
 import Calendar from 'react-calendar';
 import PropTypes from "prop-types";
 import UserService from "../Services/UserService.js";
+//import TaskService from "../Services/TaskService.js";
 //import Boards from "./Boards.jsx";
 
 const AddTaskModal = ({ isVisible, onClose, onAddTask, status, projectId, projectDescription, projectMembers, setProjectId, setProjectDescription, setProjectMembers }) => {
@@ -46,32 +47,49 @@ const AddTaskModal = ({ isVisible, onClose, onAddTask, status, projectId, projec
     }, [projectMembers]);
 
 
-    const handleAddTask = () => {
+    const handleAddTask = async () => {
+        console.log("taskName:", taskName);
         if (taskName.trim()) {
-            setAssignedUserId();
-            const newTask = {
-                name: taskName,
-                description,
-                dueDate: dueDate.toISOString().split('T')[0], // Use selected date directly
-                priority,
-                status: status.title, // Use status title
-                assignedUserLetter: assignedUserLetter, // Assign user only if status.id is 2
-                assignedUserId: assignedUserId, // Assign user only if status.id is 2
+            try {
+                const newTask = {
+                    projectId: projectId,
+                    name: taskName,
+                    description,
+                    status: status.title,
+                    priority,
+                    dueDate: dueDate.toISOString().split('T')[0],
+                    assignedUserLetter: assignedUserLetter || null, // Handle optional fields
+                    assignedUserId: assignedUserId || null // Handle optional fields
+                };
 
-            };
-            onAddTask(newTask);
-            setTaskName('');
-            setDescription('');
-            setDueDate(new Date());
-            setPriority('medium');
-            setAssignedUserLetter(''); // Reset user selection
-            setAssignedUserId(''); // Reset user selection
-            onClose();
+                console.log("Sending task:", newTask); // Log the task object to inspect its structure
+
+
+
+                // Pass the created task (including its ID) back to the parent
+                onAddTask(newTask);
+
+                // Reset form fields
+                setTaskName('');
+                setDescription('');
+                setDueDate(new Date());
+                setPriority('MEDIUM');
+                setAssignedUserLetter('');
+                setAssignedUserId('');
+                onClose();
+            } catch (error) {
+                console.error('Error adding task:', error);
+                alert('Failed to add task. Please try again.');
+                // Log detailed error response
+                if (error.response) {
+                    console.error('Error response data:', error.response.data);
+                }
+            }
         } else {
             alert('Task name is required.');
         }
     };
-   // console.log("assignedUserId",assignedUserId)
+
 
     return (
         <>

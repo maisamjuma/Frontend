@@ -12,9 +12,11 @@ import CalendarModal from "./CalendarModal/CalendarModal.jsx";
 import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
 import PropTypes from "prop-types";
 import ChangeMemberModal from "./ChangeMemberModal.jsx";
+import TaskService from "../Services/TaskService.js";
 // import BoardService from "../Services/BoardService.js";
 //import members from "./Member/Members.jsx";
 //import members from "./Member/Members.jsx";
+//import TaskService from '../Services/TaskService';
 
 
 const Boards = ({ board, projectId, projectDescription, projectMembers, setProjectId, setProjectDescription, setProjectMembers }) => {
@@ -36,44 +38,26 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
     const [showcalenderModal, setcalendarModal] = useState(false);
     const [showchangememberModal, setshowchangememberModal] = useState(false);
     const [selectedMember, setSelectedMember] = useState('');
-
+    const [taskId, setTaskId] = useState(null);
     console.log(projectMembers)
     console.log("boardId ccccccccccccccccccccc",boardId)
     console.log("name ccccccccccccccccccc",name)
 
-    // useEffect(() => {
-    //     const fetchBoardName = async () => {
-    //         try {
-    //             const response = await BoardService.getBoardById(board.id);
-    //             const board = response.data;
-    //             console.log(board)
-    //             if (board && board.name) {
-    //                 setBoardName(board.name);
-    //             } else {
-    //                 throw new Error('Board name not available');
-    //             }
-    //         } catch (error) {
-    //             console.error('Error fetching board name:', error);
-    //         }
-    //     };
-    //
-    //     fetchBoardName();
-    // }, [board]);
 
 
     useEffect(() => {
         const loadStatuses = () => {
             const savedStatuses = localStorage.getItem(`${projectId}_${boardId}_${name}_statuses`);
             const defaultStatuses = [
-                { id: 1, title: 'unassigned tasks', tasks: [], backgroundColor: '#f9f9f9' },
+                { id: 1, title: 'Unassigned Tasks', tasks: [], backgroundColor: '#f9f9f9' },
                 { id: 2, title: 'To Do', tasks: [], backgroundColor: '#f9f9f9' },
                 { id: 3, title: 'Doing', tasks: [], backgroundColor: '#f9f9f9' },
                 { id: 4, title: 'Ready to Review', tasks: [], backgroundColor: '#f9f9f9' },
-                { id: 5, title: 'Reviewing', tasks: [], backgroundColor: '#f9f9f9' },
-                { id: 6, title: 'Ready for QA', tasks: [], backgroundColor: '#f9f9f9' },
-                { id: 7, title: 'In Progress', tasks: [], backgroundColor: '#f9f9f9' },
-                { id: 8, title: 'QA Failed', tasks: [], backgroundColor: '#f9f9f9' },
-                { id: 9, title: 'QA Passed', tasks: [], backgroundColor: '#f9f9f9' }
+                { id: 5, title: "Reviewing", tasks: [], backgroundColor: '#f9f9f9' },
+                { id: 6, title: "Ready for QA", tasks: [], backgroundColor: '#f9f9f9' },
+                { id: 7, title: "In Progress", tasks: [], backgroundColor: '#f9f9f9' },
+                { id: 8, title: "QA Failed", tasks: [], backgroundColor: '#f9f9f9' },
+                { id: 9, title: "QA Passed", tasks: [], backgroundColor: '#f9f9f9' }
             ];
 
             let statuses = savedStatuses ? JSON.parse(savedStatuses) : defaultStatuses;
@@ -185,39 +169,89 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
         localStorage.setItem(`${projectId}_${boardId}_${name}_statuses`, JSON.stringify(statuses));
     }, [statuses, projectId, boardId, name]);
 
-    const handleAddTask = (statusId, task) => {
+
+    useEffect(() => {
+        const loadTasks = async () => {
+            try {
+                const response = await TaskService.getTasksByProjectId(projectId);
+                const tasks = response.data;
+                console.log(tasks)
+                // Get statuses from localStorage
+                const storedStatuses = JSON.parse(localStorage.getItem('statuses'));
+
+                // Map tasks to their corresponding statuses
+                const updatedStatuses = storedStatuses.map(status => {
+                    const tasksForStatus = tasks.filter(task => task.status === status.title);
+                    return {
+                        ...status,
+                        tasks: tasksForStatus
+                    };
+                });
+
+                setStatuses(updatedStatuses);
+            } catch (error) {
+                // Handle error
+            }
+        };
+
+        loadTasks();
+    }, [projectId,boardId]);
+
+    const handleAddTask = async (statusId, task) => {
         if (task.name.trim()) {
             const status = statuses.find(status => status.id === statusId);
             if (status) {
-
-
                 const newTask = {
-                    id: `${projectId}_${boardId}_${name}_${statusId}_${status.tasks.length + 1}`,
-                    ...task,
-                    statusId: statusId,
-                    date: task.date || null, // Add date here if needed
-                    assignedUserLetter: task.assignedUserLetter || null, // Add this line
-                    // memberInitials: task.initial || null,
-                    assignedUserId: task.assignedUserId, // Assign user only if status.id is 2
-
+                    projectId: projectId,
+                    taskName: task.name,
+                    taskDescription: task.description || '',
+                    status: status.title, // Use status.title as a string
+                    priority: task.priority ? task.priority.toUpperCase() : 'MEDIUM', // Convert priority to uppercase
+                    date: task.dueDate || null, // Assuming this is not needed for creation
+                    assignedToUserId: task.assignedUserId || null, // Change to assignedToUserId
+                    assignedUserLetter: task.assignedUserLetter || null, // Handle optional fields
                 };
 
-                const updatedStatuses = statuses.map(status => {
-                    if (status.id === statusId) {
-                        return {
-                            ...status,
-                            tasks: [...status.tasks, newTask]
-                        };
-                    }
-                    return status;
-                });
-                console.log(status.tasks)
-                setStatuses(updatedStatuses);
-                setShowAddTaskModal(false);
-            }
-            console.log("Updated task:", task.name);
-            console.log("Member:", task.assignedUserId);
+                console.log("received task:", newTask);
 
+                try {
+                    const response = await TaskService.createTask(newTask);
+                    const createdTask = response.data;
+                    const newTaskId = createdTask.taskId; // Use taskId from the response
+
+                    console.log("Created task:", createdTask);
+                    console.log("new Task ID:", newTaskId);
+
+                    setTaskId(newTaskId);
+
+                    const updatedStatuses = statuses.map(status => {
+                        if (status.id === statusId) {
+                            return {
+                                ...status,
+                                tasks: [...status.tasks, createdTask]
+                            };
+                        }
+                        return status;
+                    });
+
+                    console.log("Updated statuses:", updatedStatuses);
+                    setStatuses(updatedStatuses);
+                    setShowAddTaskModal(false);
+                } catch (error) {
+                    if (error.response) {
+                        console.error("Error creating task:", error.response.data);
+                        alert(`Error creating task: ${error.response.data.error || 'An unknown error occurred'}`);
+                    } else if (error.request) {
+                        console.error("Error creating task: No response received");
+                        alert("No response received from the server. Please try again.");
+                    } else {
+                        console.error("Error creating task:", error.message);
+                        alert("An error occurred while creating the task. Please try again.");
+                    }
+                }
+            }
+        } else {
+            alert("Task name cannot be empty.");
         }
     };
 
@@ -254,8 +288,8 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
                 const updatedStatuses = statuses.map(status => ({
                     ...status,
                     tasks: status.tasks.map(task =>
-                        // task.id === selectedTask.id ? { ...task,memberInitials: task.assignedUserId } : task
-                        task.id === selectedTask.id ? { ...task,assignedUserLetter: initial,assignedUserId: memberId} : task
+                        // task.id === selectedTask.id ? { ...task,memberInitials: task.assignedToUserId } : task
+                        task.id === selectedTask.id ? { ...task,assignedUserLetter: initial,assignedToUserId: memberId} : task
                     )
                 }));
                 setStatuses(updatedStatuses);
@@ -371,7 +405,7 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
             const updatedStatuses = statuses.map(status => ({
                 ...status,
                 tasks: status.tasks.map(task =>
-                    task.id === selectedTask.id ? {...task, priority: newPriority} : task
+                    taskId === selectedTask.id ? {...task, priority: newPriority} : task
                 )
             }));
             setStatuses(updatedStatuses);
@@ -451,28 +485,28 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
                                             </div>
                                             <div className="backend-tasks-container">
                                                 {status.tasks.map((task, taskIndex) => (
-                                                    <Draggable key={task.id} draggableId={task.id} index={taskIndex}>
+                                                    <Draggable key={taskId} draggableId={taskId} index={taskIndex}>
                                                         {(provided) => (
                                                             <div
-                                                                className={`backend-task-box ${highlightedTaskId === task.id ? 'highlighted' : ''}`}
+                                                                className={`backend-task-box ${highlightedTaskId === taskId ? 'highlighted' : ''}`}
                                                                 {...provided.draggableProps}
                                                                 {...provided.dragHandleProps}
                                                                 ref={provided.innerRef}
-                                                                onDoubleClick={() => handleDoubleClick(task.id)}
+                                                                onDoubleClick={() => handleDoubleClick(taskId)}
                                                             >
                                                                 <div className="topTop">
                                                                     <div className="topClass">
                                                                         <div
                                                                             className="task-priority-display priority-${task.priority}">
-                                                                            {task.priority === 'high' && (
+                                                                            {task.priority === 'HIGH' && (
                                                                                 <span
                                                                                     className="priority-high">High</span>
                                                                             )}
-                                                                            {task.priority === 'medium' && (
+                                                                            { task.priority === 'MEDIUM' && (
                                                                                 <span
                                                                                     className="priority-medium">Medium</span>
                                                                             )}
-                                                                            {task.priority === 'low' && (
+                                                                            {task.priority === 'LOW'  && (
                                                                                 <span
                                                                                     className="priority-low">Low</span>
                                                                             )}
@@ -486,7 +520,7 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
                                                                     </div>
                                                                 </div>
                                                                 <div className="MiddleClass">
-                                                                    {editingTaskId === task.id ? (
+                                                                    {editingTaskId === taskId ? (
                                                                         <input
                                                                             type="text"
                                                                             defaultValue={task.name}
@@ -508,7 +542,7 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
                                                                                 </div>
                                                                                 {(status.id >= 2) && (
                                                                                     <div className="nameCircle">
-                                                                                        {task.assignedUserId && (
+                                                                                        {task.assignedToUserId && (
                                                                                             <span className="taskMember">
                                                                                             {/*{task.memberInitials} /!* we need it for the old tasks*!/*/}
                                                                                             {task.assignedUserLetter}{/* we need it for add user*/}
