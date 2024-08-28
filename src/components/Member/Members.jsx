@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import './Members.css';
 import RoleService from "../../Services/RoleService.js";
+//import MemberProfile from '../MemberProfile'; // Import MemberProfile
 
 const Members = ({
                      members,
@@ -67,6 +68,7 @@ const Members = ({
 
                             <div className="member-name">{user.username}</div>
                             <div className="member-role">{roleName}</div>
+
                         </div>
                     );
                 })
