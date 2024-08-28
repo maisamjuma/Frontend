@@ -35,6 +35,7 @@
 
 .member-item {
     display: flex;
+    width: 340px;
     align-items: center; /* Center items vertically */
     gap: 25px; /* Adjust gap for better spacing */
     padding: 10px;

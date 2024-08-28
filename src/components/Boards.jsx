@@ -106,7 +106,6 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
         const sourceStatusId = parseInt(source.droppableId, 10);
         const destinationStatusId = parseInt(destination.droppableId, 10);
 
-
         // Check if the task was dropped in the same place
         if (
             source.droppableId === destination.droppableId &&
@@ -154,6 +153,11 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
 
         if(destinationStatusId === 1 && sourceStatusId >= 2){
             alert("You cannot move tasks from a higher status back to the unassigned tasks.");
+            return;
+        }
+
+        if(sourceStatusId === 1 && destinationStatusId >= 3){
+            alert("You can only move tasks from an unassigned status to ToDo status");
             return;
         }
 
@@ -277,19 +281,19 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
         setEditingTaskId(null);
     };
 
-    const handleChangeColor = (statusId, color) => {
-        const updatedStatuses = statuses.map(status => {
-            if (status.id === statusId) {
-                return {
-                    ...status,
-                    backgroundColor: color
-                };
-            }
-            return status;
-        });
-        setStatuses(updatedStatuses);
-        setDropdownStatusId(null);
-    };
+    // const handleChangeColor = (statusId, color) => {
+    //     const updatedStatuses = statuses.map(status => {
+    //         if (status.id === statusId) {
+    //             return {
+    //                 ...status,
+    //                 backgroundColor: color
+    //             };
+    //         }
+    //         return status;
+    //     });
+    //     setStatuses(updatedStatuses);
+    //     setDropdownStatusId(null);
+    // };
 
     const handlePencilClick = (task) => {
         const statusId = parseInt(task.id.split('_')[2], 10);
@@ -415,33 +419,33 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
                                                         <div className="backend-dropdown-item"
                                                              onClick={() => handleDeleteStatus(status.id)}>Delete Status
                                                         </div>
-                                                        <div className="backend-dropdown-separator"/>
-                                                        <div className="backend-dropdown-color-picker">
-                                                            <div className="backend-color-box"
-                                                                 style={{backgroundColor: '#a729ca'}}
-                                                                 onClick={() => handleChangeColor(status.id, '#a729ca')}/>
-                                                            <div className="backend-color-box"
-                                                                 style={{backgroundColor: '#1148cc'}}
-                                                                 onClick={() => handleChangeColor(status.id, '#1148cc')}/>
-                                                            <div className="backend-color-box"
-                                                                 style={{backgroundColor: '#ffcccc'}}
-                                                                 onClick={() => handleChangeColor(status.id, '#ffcccc')}/>
-                                                            <div className="backend-color-box"
-                                                                 style={{backgroundColor: '#ccffcc'}}
-                                                                 onClick={() => handleChangeColor(status.id, '#ccffcc')}/>
-                                                            <div className="backend-color-box"
-                                                                 style={{backgroundColor: '#c3a838'}}
-                                                                 onClick={() => handleChangeColor(status.id, '#c3a838')}/>
-                                                            <div className="backend-color-box"
-                                                                 style={{backgroundColor: '#6ab54d'}}
-                                                                 onClick={() => handleChangeColor(status.id, '#6ab54d')}/>
-                                                            <div className="backend-color-box"
-                                                                 style={{backgroundColor: '#ccccff'}}
-                                                                 onClick={() => handleChangeColor(status.id, '#ccccff')}/>
-                                                            <div className="backend-color-box"
-                                                                 style={{backgroundColor: '#ffffcc'}}
-                                                                 onClick={() => handleChangeColor(status.id, '#ffffcc')}/>
-                                                        </div>
+                                                        {/*<div className="backend-dropdown-separator"/>*/}
+                                                        {/*<div className="backend-dropdown-color-picker">*/}
+                                                        {/*    <div className="backend-color-box"*/}
+                                                        {/*         style={{backgroundColor: '#a729ca'}}*/}
+                                                        {/*         onClick={() => handleChangeColor(status.id, '#a729ca')}/>*/}
+                                                        {/*    <div className="backend-color-box"*/}
+                                                        {/*         style={{backgroundColor: '#1148cc'}}*/}
+                                                        {/*         onClick={() => handleChangeColor(status.id, '#1148cc')}/>*/}
+                                                        {/*    <div className="backend-color-box"*/}
+                                                        {/*         style={{backgroundColor: '#ffcccc'}}*/}
+                                                        {/*         onClick={() => handleChangeColor(status.id, '#ffcccc')}/>*/}
+                                                        {/*    <div className="backend-color-box"*/}
+                                                        {/*         style={{backgroundColor: '#ccffcc'}}*/}
+                                                        {/*         onClick={() => handleChangeColor(status.id, '#ccffcc')}/>*/}
+                                                        {/*    <div className="backend-color-box"*/}
+                                                        {/*         style={{backgroundColor: '#c3a838'}}*/}
+                                                        {/*         onClick={() => handleChangeColor(status.id, '#c3a838')}/>*/}
+                                                        {/*    <div className="backend-color-box"*/}
+                                                        {/*         style={{backgroundColor: '#6ab54d'}}*/}
+                                                        {/*         onClick={() => handleChangeColor(status.id, '#6ab54d')}/>*/}
+                                                        {/*    <div className="backend-color-box"*/}
+                                                        {/*         style={{backgroundColor: '#ccccff'}}*/}
+                                                        {/*         onClick={() => handleChangeColor(status.id, '#ccccff')}/>*/}
+                                                        {/*    <div className="backend-color-box"*/}
+                                                        {/*         style={{backgroundColor: '#ffffcc'}}*/}
+                                                        {/*         onClick={() => handleChangeColor(status.id, '#ffffcc')}/>*/}
+                                                        {/*</div>*/}
                                                     </div>
                                                 )}
                                             </div>

@@ -29,7 +29,7 @@ const Members = ({
                     return (
                         <div
                             key={member.userId}
-                            className={`member-item ${selectedMembers.includes(member.userId) ? 'selected' : ''}`}
+                            className={`member-item-on-project ${selectedMembers.includes(member.userId) ? 'selected' : ''}`}
                             onClick={() => onMemberClick(member)} // Ensure this is passing the full member object
                         >
 

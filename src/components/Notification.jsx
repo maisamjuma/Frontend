@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'; // Import PropTypes
 import SideBarForNoti from "./SideBarForNoti.jsx";
 import { Filter } from "./SVGIcons.jsx";
 import UserService from '../Services/UserService.js'; // Import your UserService
+import NotificationService from '../Services/NotificationService.js';
 
 const Notification = ({ loggedInUser }) => {
     const [showPopup, setShowPopup] = useState(false);
@@ -27,15 +28,30 @@ const Notification = ({ loggedInUser }) => {
             }
         };
 
-        fetchUsers();
-    }, []);
+        const fetchNotifications = async () => {
+            try {
+                const response = await NotificationService.getNotificationsByUserId(loggedInUser.userId);
+                setMessages(response.data);
+            } catch (error) {
+                console.error('Error fetching notifications:', error);
+            }
+        };
 
-    const handleSendNotification = () => {
+        fetchUsers();
+        fetchNotifications();
+    }, [loggedInUser.userId]);
+
+    const handleSendNotification = async () => {
         if (selectedUsers.length && message) {
-            const newMessage = { from: loggedInUser, to: selectedUsers, message };
-            setMessages([newMessage, ...messages]);
-            setShowPopup(false);
-            resetForm();
+            const newNotification = { from: loggedInUser, to: selectedUsers, message };
+            try {
+                await NotificationService.createNotification(newNotification);
+                setMessages([newNotification, ...messages]);
+                setShowPopup(false);
+                resetForm();
+            } catch (error) {
+                console.error('Error sending notification:', error);
+            }
         }
     };
 

@@ -184,6 +184,16 @@ html, body {
     gap: 10px; /* Space between items */
     justify-content: flex-start; /* Align items to the start (left) */
     margin-top: 50px;
+    overflow: auto; /* Keep overflow to enable scrolling */
+}
+/* Hide scrollbars for Webkit browsers (Chrome, Safari) */
+.backend-status-container::-webkit-scrollbar {
+    display: none; /* Hide scrollbar */
+}
+
+/* Hide scrollbars for Firefox */
+.backend-status-container {
+    scrollbar-width: none; /* Hide scrollbar in Firefox */
 }
 
 /* Style for the status title */
@@ -200,7 +210,7 @@ html, body {
 /* Dropdown menu styles */
 .backend-dropdown-menu {
     position: absolute;
-    top: 40px; /* Adjust based on the height of the status-header */
+    top: 50px; /* Adjust based on the height of the status-header */
     right: 10px; /* Adjust based on the padding of the status-box */
     background-color: #fff;
     border: 1px solid #ccc;
@@ -213,13 +223,13 @@ html, body {
 }
 
 /* Color picker styles */
-.backend-dropdown-color-picker {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* Two columns */
-    gap: 1px; /* Space between color boxes */
-    margin-bottom: 10px; /* Space between color boxes and delete button */
-    margin-left: 13px;
-}
+/*.backend-dropdown-color-picker {*/
+/*    display: grid;*/
+/*    grid-template-columns: repeat(4, 1fr); !* Two columns *!*/
+/*    gap: 1px; !* Space between color boxes *!*/
+/*    margin-bottom: 10px; !* Space between color boxes and delete button *!*/
+/*    margin-left: 13px;*/
+/*}*/
 
 /* Line between color boxes and delete button */
 .backend-dropdown-separator {

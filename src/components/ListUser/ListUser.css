@@ -22,3 +22,8 @@
 .text-bg-dark {
     margin-top: 20px;
 }
+
+.btn-info:hover{
+    color: white;
+    background-color: black;
+}
