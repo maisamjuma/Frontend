@@ -45,39 +45,7 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
 
 
 
-    useEffect(() => {
-        const loadStatuses = () => {
-            const savedStatuses = localStorage.getItem(`${projectId}_${boardId}_${name}_statuses`);
-            const defaultStatuses = [
-                { id: 1, title: 'Unassigned Tasks', tasks: [], backgroundColor: '#f9f9f9' },
-                { id: 2, title: 'To Do', tasks: [], backgroundColor: '#f9f9f9' },
-                { id: 3, title: 'Doing', tasks: [], backgroundColor: '#f9f9f9' },
-                { id: 4, title: 'Ready to Review', tasks: [], backgroundColor: '#f9f9f9' },
-                { id: 5, title: 'Reviewing', tasks: [], backgroundColor: '#f9f9f9' },
-                { id: 6, title: 'Ready for QA', tasks: [], backgroundColor: '#f9f9f9' },
-                { id: 7, title: 'In Progress', tasks: [], backgroundColor: '#f9f9f9' },
-                { id: 8, title: 'QA Failed', tasks: [], backgroundColor: '#f9f9f9' },
-                { id: 9, title: 'QA Passed', tasks: [], backgroundColor: '#f9f9f9' }
-            ];
 
-            let statuses = savedStatuses ? JSON.parse(savedStatuses) : defaultStatuses;
-
-            // Filter statuses based on boardName
-            if (name === 'QA' || name === 'qa') {
-                // Show only the last four statuses
-                statuses = statuses.filter(status => status.id > 5);
-            } else if (name === 'Backend' || name === 'Frontend') {
-                // Show only the first five statuses
-                statuses = statuses.filter(status => status.id <= 5);
-            }
-
-            return statuses;
-        };
-
-        if (name) {
-            setStatuses(loadStatuses());
-        }
-    }, [projectId, boardId, name]);
 
     const onDragEnd = (result) => {
         const {source, destination} = result;
@@ -164,57 +132,85 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
     };
 
 
+    // Function to load or reset statuses
+    const loadStatuses = () => {
+        const savedStatuses = localStorage.getItem(`${projectId}_${boardId}_${name}_statuses`);
+        const defaultStatuses = [
+            { id: 1, title: 'Unassigned Tasks', tasks: [], backgroundColor: '#f9f9f9' },
+            { id: 2, title: 'To Do', tasks: [], backgroundColor: '#f9f9f9' },
+            { id: 3, title: 'Doing', tasks: [], backgroundColor: '#f9f9f9' },
+            { id: 4, title: 'Ready to Review', tasks: [], backgroundColor: '#f9f9f9' },
+            { id: 5, title: 'Reviewing', tasks: [], backgroundColor: '#f9f9f9' },
+            { id: 6, title: 'Ready for QA', tasks: [], backgroundColor: '#f9f9f9' },
+            { id: 7, title: 'In Progress', tasks: [], backgroundColor: '#f9f9f9' },
+            { id: 8, title: 'QA Failed', tasks: [], backgroundColor: '#f9f9f9' },
+            { id: 9, title: 'QA Passed', tasks: [], backgroundColor: '#f9f9f9' }
+        ];
+
+        let statuses = savedStatuses ? JSON.parse(savedStatuses) : defaultStatuses;
+
+        // Filter statuses based on board name
+        if (name === 'QA') {
+            statuses = statuses.filter(status => status.id > 5);
+        } else if (name === 'Backend' || name === 'Frontend') {
+            statuses = statuses.filter(status => status.id <= 5);
+        }
+
+        return statuses;
+    };
+
+    // Initial load of statuses
+    useEffect(() => {
+        if (name) {
+            console.log(`Loading statuses for {projectId: ${projectId}, boardId: ${boardId}, name: '${name}'}`);
+            setStatuses(loadStatuses());
+        }
+    }, [projectId, boardId, name]);
+
+    // Reset statuses in localStorage
+    const resetStatuses = () => {
+        console.log(`Resetting statuses for {projectId: ${projectId}, boardId: ${boardId}, name: '${name}'}`);
+        localStorage.removeItem(`${projectId}_${boardId}_${name}_statuses`);
+        setStatuses(loadStatuses());
+    };
+
     // Save statuses to localStorage whenever they change
     useEffect(() => {
-        localStorage.setItem(`${projectId}_${boardId}_${name}_statuses`, JSON.stringify(statuses));
+        if (statuses.length > 0) {
+            console.log(`Saving statuses to key: ${projectId}_${boardId}_${name}_statuses`);
+            localStorage.setItem(`${projectId}_${boardId}_${name}_statuses`, JSON.stringify(statuses));
+        }
     }, [statuses, projectId, boardId, name]);
-
-    useEffect(() => {
-        localStorage.setItem('statuses', JSON.stringify(statuses));
-    }, [statuses]);
 
     useEffect(() => {
         const loadTasks = async () => {
             try {
                 const response = await TaskService.getTasksByProjectId(projectId);
                 const tasks = response.data;
-                console.log("Fetched tasks:", tasks);
 
-                // Retrieve and handle statuses
-                const storedStatuses = JSON.parse(localStorage.getItem(`${projectId}_${boardId}_${name}_statuses`)) || [
-                    { id: 1, title: 'Unassigned Tasks', tasks: [], backgroundColor: '#f9f9f9' },
-                    { id: 2, title: 'To Do', tasks: [], backgroundColor: '#f9f9f9' },
-                    { id: 3, title: 'Doing', tasks: [], backgroundColor: '#f9f9f9' },
-                    { id: 4, title: 'Ready to Review', tasks: [], backgroundColor: '#f9f9f9' },
-                    { id: 5, title: 'Reviewing', tasks: [], backgroundColor: '#f9f9f9' },
-                    { id: 6, title: 'Ready for QA', tasks: [], backgroundColor: '#f9f9f9' },
-                    { id: 7, title: 'In Progress', tasks: [], backgroundColor: '#f9f9f9' },
-                    { id: 8, title: 'QA Failed', tasks: [], backgroundColor: '#f9f9f9' },
-                    { id: 9, title: 'QA Passed', tasks: [], backgroundColor: '#f9f9f9' }
-                ];
+                // Filter tasks by boardId before mapping them to statuses
+                const filteredTasks = tasks.filter(task => task.boardId === boardId);
 
-                console.log("Stored statuses:", storedStatuses);
+                // Retrieve statuses or use defaults
+                const storedStatuses = loadStatuses();
 
                 // Map tasks to their corresponding statuses
                 const updatedStatuses = storedStatuses.map(status => {
-                    const tasksForStatus = tasks.filter(task => task.status === status.title);
+                    const tasksForStatus = filteredTasks.filter(task => task.status === status.title);
                     return {
                         ...status,
                         tasks: tasksForStatus
                     };
                 });
 
-                console.log("Updated statuses after mapping tasks:", updatedStatuses);
-
                 setStatuses(updatedStatuses);
             } catch (error) {
-                console.error("Error in loadTasks:", error);
+                console.error("Error loading tasks:", error);
             }
         };
 
         loadTasks();
     }, [projectId, boardId, name]);
-
 
 
     const handleAddTask = async (statusId, task) => {
@@ -325,16 +321,44 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
     };
 
 
-    const handleBlur = (statusId, taskId, newName) => {
-        const updatedStatuses = statuses.map(status => ({
-            ...status,
-            tasks: status.tasks.map(task =>
-                task.id === taskId ? {...task, name: newName} : task
-            )
-        }));
-        setStatuses(updatedStatuses);
-        setEditingTaskId(null);
+    const handleBlur = async (statusId, taskId, newName) => {
+
+        console.log("statusId",statusId)
+        console.log("taskId",taskId)
+        console.log("newName",taskId)
+        try {
+            // Find the task you want to update
+            const taskToUpdate = statuses
+                .find(status => status.id === statusId)
+                .tasks.find(task => task.id === taskId);
+
+            // Create an updated task object
+            const updatedTask = {
+                ...taskToUpdate,
+                taskName: newName
+            };
+
+            // Update the task on the server
+            await TaskService.updateTask(taskId,updatedTask);
+
+            // Update the state locally
+            const updatedStatuses = statuses.map(status => ({
+                ...status,
+                tasks: status.tasks.map(task =>
+                    task.id === taskId ? updatedTask : task
+                )
+            }));
+
+            setStatuses(updatedStatuses);
+        } catch (error) {
+            console.error("Error updating task:", error);
+            alert("There was an error updating the task. Please try again.");
+        } finally {
+            // Clear the editing state
+            setEditingTaskId(null);
+        }
     };
+
 
     // const handleChangeColor = (statusId, color) => {
     //     const updatedStatuses = statuses.map(status => {
@@ -351,13 +375,13 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
     // };
 
     const handlePencilClick = (task) => {
-        const statusId = parseInt(task.id.split('_')[2], 10);
+        const statusId = parseInt(taskId.split('_')[2], 10);
         const status = statuses.find(status => status.id === statusId);
         setSelectedTask({
             ...task,
             statusName: status ? status.title : 'Unknown Status'
         });
-        setHighlightedTaskId(task.id);
+        setHighlightedTaskId(taskId);
     };
 
     const handleCloseModal = () => {
@@ -447,6 +471,7 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
         <DragDropContext onDragEnd={onDragEnd}>
             <div className={` ${boardId}`}>
                 <div><h1>{name}</h1></div>
+                <button onClick={resetStatuses}>Reset Statuses</button>
                 <Droppable droppableId="all-statuses" direction="horizontal">
                     {(provided) => (
                         <div
@@ -523,11 +548,11 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
                                                                                 <span
                                                                                     className="priority-high">High</span>
                                                                             )}
-                                                                            { task.priority === 'MEDIUM' && (
+                                                                            {task.priority === 'MEDIUM' && (
                                                                                 <span
                                                                                     className="priority-medium">Medium</span>
                                                                             )}
-                                                                            {task.priority === 'LOW'  && (
+                                                                            {task.priority === 'LOW' && (
                                                                                 <span
                                                                                     className="priority-low">Low</span>
                                                                             )}
@@ -544,29 +569,30 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
                                                                     {editingTaskId === taskId ? (
                                                                         <input
                                                                             type="text"
-                                                                            defaultValue={task.name}
-                                                                            onBlur={(e) => handleBlur(status.id, task.id, e.target.value)}
+                                                                            defaultValue={task.taskName}
+                                                                            onBlur={(e) => handleBlur(status.id, taskId, e.target.value)}
                                                                             className="backend-task-input"
                                                                         />
                                                                     ) : (
                                                                         <>
                                                                             <div className="nameCss">
-                                                                                <span>{task.name}</span>
+                                                                                <span>{task.taskName}</span>
                                                                             </div>
                                                                             <div className="dateWithName">
                                                                                 <div className="dateCss">
-                                                                                    {task.dueDate && (
+                                                                                    {task.date && (
                                                                                         <span className="task-due-date">
-                                                                                            Due date: {new Date(task.dueDate).toLocaleDateString()}
+                                                                                            Due date: {new Date(task.date).toLocaleDateString()}
                                                                                         </span>
                                                                                     )}
                                                                                 </div>
                                                                                 {(status.id >= 2) && (
                                                                                     <div className="nameCircle">
                                                                                         {task.assignedToUserId && (
-                                                                                            <span className="taskMember">
+                                                                                            <span
+                                                                                                className="taskMember">
                                                                                             {/*{task.memberInitials} /!* we need it for the old tasks*!/*/}
-                                                                                            {task.assignedUserLetter}{/* we need it for add user*/}
+                                                                                                {task.assignedUserLetter}{/* we need it for add user*/}
                                                                                         </span>
                                                                                         )}
                                                                                     </div>
@@ -642,12 +668,12 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
                 )}
                 {
                     showcalenderModal && (
-                    <CalendarModal
-                        isVisible={showcalenderModal}
-                        onClose={handleCloseCalenderModal}
-                        onSavePriority={handleSaveDate}
-                        onRemoveDate={handleRemoveDate}/>
-                )
+                        <CalendarModal
+                            isVisible={showcalenderModal}
+                            onClose={handleCloseCalenderModal}
+                            onSavePriority={handleSaveDate}
+                            onRemoveDate={handleRemoveDate}/>
+                    )
                 }
                 {showAddTaskModal && (
 
@@ -664,6 +690,7 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
                         setProjectId={setProjectId}
                         setProjectDescription={setProjectDescription}
                         setProjectMembers={setProjectMembers}
+                        boardId={boardId} // Pass the boardId as a prop
                     />
 
                 )}
@@ -684,7 +711,6 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
 
             </div>
         </DragDropContext>
-
 
 
     );

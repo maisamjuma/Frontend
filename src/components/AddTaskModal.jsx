@@ -3,11 +3,12 @@ import './AddTaskModal.css';
 import Calendar from 'react-calendar';
 import PropTypes from "prop-types";
 import UserService from "../Services/UserService.js";
-import boards from "./Boards.jsx";
+//import boards from "./Boards.jsx";
 //import TaskService from "../Services/TaskService.js";
 //import Boards from "./Boards.jsx";
 
-const AddTaskModal = ({ isVisible, onClose, onAddTask, status, projectId, projectDescription, projectMembers, setProjectId, setProjectDescription, setProjectMembers }) => {
+const AddTaskModal = ({ isVisible, onClose, onAddTask, status, projectId, projectDescription,
+                          projectMembers, setProjectId, setProjectDescription, setProjectMembers,boardId}) => {
     const [taskName, setTaskName] = useState('');
     const [description, setDescription] = useState('');
     const [dueDate, setDueDate] = useState(new Date());
@@ -56,7 +57,7 @@ const AddTaskModal = ({ isVisible, onClose, onAddTask, status, projectId, projec
                     projectId: projectId,
                     name: taskName,
                     description,
-                    boardId:boards.boardId,
+                    boardId:boardId,
                     status: status.title,
                     priority,
                     dueDate: dueDate.toISOString().split('T')[0],
@@ -208,7 +209,8 @@ AddTaskModal.propTypes = {
     })),
     setProjectId: PropTypes.func.isRequired,
     setProjectDescription: PropTypes.func.isRequired,
-    setProjectMembers: PropTypes.func.isRequired
+    setProjectMembers: PropTypes.func.isRequired,
+    boardId: PropTypes.number.isRequired,
 };
 
 export default AddTaskModal;

@@ -6,7 +6,12 @@ class TaskService {
 
     // Fetch a task by its ID
     getTaskById(taskId) {
-        return axios.get(`${TASKS_API_BASE_URL}/${taskId}`);
+        const token = localStorage.getItem("token");
+        return axios.get(`${TASKS_API_BASE_URL}/${taskId}`, {
+            headers: {
+                'X-Auth-Token': token
+            }
+        });
     }
 
     // Delete a task by its ID
@@ -16,23 +21,34 @@ class TaskService {
 
     // Update a task by its ID
     updateTask(taskId, updatedTaskData) {
+        const token = localStorage.getItem("token");
         return axios.put(`${TASKS_API_BASE_URL}/${taskId}`, updatedTaskData, {
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-Auth-Token': token
             }
         });
     }
 
     // Fetch all tasks
     getAllTasks() {
-        return axios.get(TASKS_API_BASE_URL);
+        const token = localStorage.getItem("token");
+        return axios.get(TASKS_API_BASE_URL, {
+            headers: {
+                'X-Auth-Token': token
+            }
+        });
     }
 
     // Fetch all tasks of a specific project by Project ID
     getTasksByProjectId(projectId) {
-        return axios.get(`${TASKS_API_BASE_URL}/project/${projectId}`);
+        const token = localStorage.getItem("token");
+        return axios.get(`${TASKS_API_BASE_URL}/project/${projectId}`, {
+            headers: {
+                'X-Auth-Token': token
+            }
+        });
     }
-
     // Fetch all tasks of a specific user by User ID
     getTasksByUserId(userId) {
         return axios.get(`${TASKS_API_BASE_URL}/user/${userId}`);
@@ -40,9 +56,12 @@ class TaskService {
 
     // Create a new task and assign it to a user and a project
     createTask(task) {
+        const token = localStorage.getItem("token");
+
         return axios.post(TASKS_API_BASE_URL, task, {
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-Auth-Token': token
             }
         });
     }
