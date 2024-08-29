@@ -13,6 +13,7 @@ const HomePage = () => {
     const [newRole, setNewRole] = useState('');
     const [newTeamLeader, setNewTeamLeader] = useState('');
     const [selectedRole, setSelectedRole] = useState('');
+    const [isAdmin, setIsAdmin] = useState(false); // New state for isAdmin checkbox
     const [successMessage, setSuccessMessage] = useState('');
     const navigator = useNavigate();
 
@@ -38,10 +39,15 @@ const HomePage = () => {
         setNewTeamLeader(e.target.value);
     }
 
+    function handleIsAdminChange(e) {
+        setIsAdmin(e.target.checked); // Handle checkbox change
+    }
+
     const handleSaveTeamLeader = () => {
         console.log('Assigning team leader...');
         console.log('Selected Role:', selectedRole);
         console.log('Selected Member:', newTeamLeader);
+        console.log('Is Admin:', isAdmin); // Log isAdmin value
         // Implement your save logic here, e.g., making an API call to assign the role to the user.
     };
 
@@ -82,6 +88,7 @@ const HomePage = () => {
         if (isAssigning) {
             setNewTeamLeader('');
             setSelectedRole('');
+            setIsAdmin(false); // Reset the isAdmin checkbox when canceling
             // Optionally clear any relevant success message if needed
         }
         setIsAssigningTeamLeader(!isAssigning);
@@ -140,6 +147,19 @@ const HomePage = () => {
                                     </option>
                                 ))}
                             </select>
+
+                            <div className="form-check mb-2">
+                                <input
+                                    type="checkbox"
+                                    className="form-check-input"
+                                    id="isAdminCheck"
+                                    checked={isAdmin}
+                                    onChange={handleIsAdminChange}
+                                />
+                                <label className="form-check-label" htmlFor="isAdminCheck">
+                                    Is Admin
+                                </label>
+                            </div>
 
                             <button
                                 type='button'

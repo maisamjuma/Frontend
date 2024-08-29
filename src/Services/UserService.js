@@ -17,16 +17,16 @@ class UserService {
         });
     }
 
-    // Create a new user
-    createUser(user) {
-        const token = localStorage.getItem("token");
-        return axios.post(USERS_API_BASE_URL, user, {
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Auth-Token': token
-            }
-        });
-    }
+    // // Create a new user
+    // createUser(user) {
+    //     const token = localStorage.getItem("token");
+    //     return axios.post(USERS_API_BASE_URL, user, {
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             'X-Auth-Token': token
+    //         }
+    //     });
+    // }
 
     // Fetch a user by its ID
     getUserById(userId) {
@@ -68,7 +68,7 @@ class UserService {
             }
         });
     }
-//////////////////////////////////////////////////////////////////////spring security:
+
     // User login
     async login(password, email) {
         try {
@@ -79,13 +79,13 @@ class UserService {
         }
     }
 
-    // Register a new user
-    static async register(userData) {
-        const token = localStorage.getItem("token");
+// Register a new user
+    async register(userData) {
         try {
+            // Ensure the user data includes the necessary fields
             const response = await axios.post(`${BASE_URL}/auth/register`, userData, {
                 headers: {
-                    'X-Auth-Token': token
+                    'Content-Type': 'application/json',
                 }
             });
             return response.data;
@@ -93,6 +93,7 @@ class UserService {
             throw err;
         }
     }
+
 
     // Get all users
     static async getAllUsers() {
