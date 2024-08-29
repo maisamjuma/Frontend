@@ -307,11 +307,6 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
         console.log("taskId", taskId); // Ensure this is not null
         console.log("newName", newName);
 
-        if (!taskId) {
-            console.error("Task ID is null or undefined");
-            alert("Task ID is missing. Please try again.");
-            return;
-        }
 
         try {
             const status = statuses.find(status => status.id === statusId);
@@ -321,7 +316,7 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
                 return;
             }
 
-            const taskToUpdate = status.tasks.find(task => task.id === taskId);
+            const taskToUpdate = status.tasks.find(task => task.taskId === taskId);
             if (!taskToUpdate) {
                 console.error("Task not found");
                 alert("Task not found. Please try again.");
@@ -335,7 +330,7 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
             const updatedStatuses = statuses.map(status => ({
                 ...status,
                 tasks: status.tasks.map(task =>
-                    task.id === taskId ? updatedTask : task
+                    task.taskId === taskId ? updatedTask : task
                 )
             }));
 
@@ -364,13 +359,19 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
     // };
 
     const handlePencilClick = (task) => {
-        const statusId = parseInt(taskId.split('_')[2], 10); // Ensure taskId is valid
+        console.log("task id:", task.taskId);
+        console.log("task name:", task.taskName);
+
+        // Assuming `taskId` is now just a direct ID rather than needing to be split
+        const statusId = parseInt(task.taskId, 10); // Use taskId directly
+
         const status = statuses.find(status => status.id === statusId);
         setSelectedTask({
             ...task,
             statusName: status ? status.title : 'Unknown Status'
         });
-        setHighlightedTaskId(taskId); // Ensure task.id is used correctly
+
+        setHighlightedTaskId(task.taskId); // Use taskId directly
     };
 
 
@@ -595,7 +596,7 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
                                                                         <input
                                                                             type="text"
                                                                             defaultValue={task.taskName}
-                                                                            onBlur={(e) => handleBlur(status.id, taskId, e.target.value)}
+                                                                            onBlur={(e) => handleBlur(status.id, task.taskId, e.target.value)}
                                                                             className="backend-task-input"
                                                                         />
                                                                     ) : (
