@@ -5,7 +5,7 @@ import './Notification.css';
 import PropTypes from 'prop-types'; // Import PropTypes
 import SideBarForNoti from "./SideBarForNoti.jsx";
 import { Filter } from "./SVGIcons.jsx";
-import UserService from '../Services/UserService.js'; // Import your UserService
+import UserService from '../Services/UserService'; // Import your UserService
 import NotificationService from '../Services/NotificationService.js';
 
 const Notification = ({ loggedInUser }) => {
