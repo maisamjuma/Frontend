@@ -92,93 +92,93 @@ const HomePage = () => {
 
     return (
         <div className="forScroll">
-        <div className='listcontainer'>
-            <div className='video-container mb-3 d-flex align-items-center'>
-                <video width="20%" height="10%" autoPlay loop muted>
-                    <source src="/videos/H.mp4" type="video/mp4"/>
-                    Your browser does not support the video tag.
-                </video>
-                <div className='devtrack-text ms-3'>
-                    <span className="dev fw-bold" style={{fontSize: '24px'}}>Your one-stop platform for seamless </span>
-                    <span className="track fw-bold" style={{fontSize: '24px'}}> team collaboration and project management.</span>
+            <div className='listcontainer'>
+                <div className='video-container mb-3 d-flex align-items-center'>
+                    <video width="20%" height="10%" autoPlay loop muted>
+                        <source src="/videos/H.mp4" type="video/mp4"/>
+                        Your browser does not support the video tag.
+                    </video>
+                    <div className='devtrack-text ms-3'>
+                        <span className="dev fw-bold" style={{fontSize: '24px'}}>Your one-stop platform for seamless </span>
+                        <span className="track fw-bold" style={{fontSize: '24px'}}> team collaboration and project management.</span>
+                    </div>
                 </div>
-            </div>
-            <div className="home-button-container">
-                <button type='button' className='btnAddUser' onClick={addNewUser}>
-                    <FontAwesomeIcon icon={faUserPlus}/> Add User
-                </button>
-                <button
-                    type='button'
-                    className='btnAssignTeamLeader'
-                    onClick={handleToggleAssignTeamLeader}
-                >
-                    <FontAwesomeIcon icon={faUserShield}/>
-                    {isAssigning ? 'Cancel' : 'Assign Team Leaders'}
-                </button>
-                {isAssigning && (
-                    <div className='Assigncontent' ref={assignContentRef}>
-                        <select
-                            value={selectedRole}
-                            onChange={handleRoleChange}
-                            className='form-control mb-2'
-                        >
-                            <option value="">Select Role</option>
-                            <option value="Backend">Backend</option>
-                            <option value="Frontend">Frontend</option>
-                            <option value="QA">QA</option>
-                        </select>
+                <div className="home-button-container">
+                    <button type='button' className='btnAddUser' onClick={addNewUser}>
+                        <FontAwesomeIcon icon={faUserPlus}/> Add User
+                    </button>
+                    <button
+                        type='button'
+                        className='btnAssignTeamLeader'
+                        onClick={handleToggleAssignTeamLeader}
+                    >
+                        <FontAwesomeIcon icon={faUserShield}/>
+                        {isAssigning ? 'Cancel' : 'Assign Team Leaders'}
+                    </button>
+                    {isAssigning && (
+                        <div className='Assigncontent' ref={assignContentRef}>
+                            <select
+                                value={selectedRole}
+                                onChange={handleRoleChange}
+                                className='form-control mb-2'
+                            >
+                                <option value="">Select Role</option>
+                                <option value="Backend">Backend</option>
+                                <option value="Frontend">Frontend</option>
+                                <option value="QA">QA</option>
+                            </select>
 
-                        <select
-                            value={newTeamLeader}
-                            onChange={handleTeamLeaderChange}
-                            className='form-control mb-2'
-                        >
-                            <option value="">Select Member</option>
-                            {users.map(user => (
-                                <option key={user.userId} value={user.userId}>
-                                    {user.firstName} {user.lastName}
-                                </option>
-                            ))}
-                        </select>
+                            <select
+                                value={newTeamLeader}
+                                onChange={handleTeamLeaderChange}
+                                className='form-control mb-2'
+                            >
+                                <option value="">Select Member</option>
+                                {users.map(user => (
+                                    <option key={user.userId} value={user.userId}>
+                                        {user.firstName} {user.lastName}
+                                    </option>
+                                ))}
+                            </select>
 
+                            <button
+                                type='button'
+                                className='btn btn-primary'
+                                onClick={handleSaveTeamLeader}
+                            >
+                                Save Team Leader
+                            </button>
+                        </div>
+                    )}
+                    <button
+                        type='button'
+                        className='btnAddRole'
+                        onClick={handleToggleAddRole}
+                    >
+                        <FontAwesomeIcon icon={faUserTag}/> {isAddingRole ? 'Cancel' : 'Add new role'}
+                    </button>
+                </div>
+                {isAddingRole && (
+                    <div className='rolecontent' ref={roleContentRef}>
+                        <input
+                            type='text'
+                            value={newRole}
+                            onChange={e => setNewRole(e.target.value)}
+                            placeholder='Enter new role'
+                            className='form-control mb-2'
+                        />
+                        {successMessage && <div className="alert alert-success">{successMessage}</div>}
                         <button
                             type='button'
                             className='btn btn-primary'
-                            onClick={handleSaveTeamLeader}
+                            onClick={handleSaveRole}
                         >
-                            Save Team Leader
+                            Save Role
                         </button>
                     </div>
                 )}
-                <button
-                    type='button'
-                    className='btnAddRole'
-                    onClick={handleToggleAddRole}
-                >
-                    <FontAwesomeIcon icon={faUserTag}/> {isAddingRole ? 'Cancel' : 'Add new role'}
-                </button>
-            </div>
-            {isAddingRole && (
-                <div className='rolecontent' ref={roleContentRef}>
-                    <input
-                        type='text'
-                        value={newRole}
-                        onChange={e => setNewRole(e.target.value)}
-                        placeholder='Enter new role'
-                        className='form-control mb-2'
-                    />
-                    {successMessage && <div className="alert alert-success">{successMessage}</div>}
-                    <button
-                        type='button'
-                        className='btn btn-primary'
-                        onClick={handleSaveRole}
-                    >
-                        Save Role
-                    </button>
-                </div>
-            )}
 
-        </div>
+            </div>
         </div>
     );
 }
