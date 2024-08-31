@@ -1,60 +1,31 @@
-/* Container for the entire list */
-.container {
-    margin-top: 20px;
+.user-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    transition: transform 0.2s;
 }
 
-/* Style for the card container */
-.card {
-    border: 1px solid #ddd; /* Light border for a subtle distinction */
-    border-radius: 8px; /* Rounded corners for a modern look */
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effects */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+.user-card:hover {
+    transform: translateY(-5px);
 }
 
-/* Card hover effect */
-.card:hover {
-    transform: scale(1.02); /* Slightly enlarge the card */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Increase shadow on hover for a more pronounced effect */
-}
-
-/* Title style inside the card */
 .card-title {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     font-weight: bold;
-    margin-bottom: 0.5rem;
-    color: #333; /* Darker text color for better readability */
 }
 
-/* Subtitle style inside the card */
 .card-subtitle {
-    font-size: 1rem;
-    font-weight: 500;
-    margin-bottom: 1rem;
-    color: #777; /* Lighter color for the role subtitle */
+    font-size: 1.2rem;
 }
 
-/* Text style inside the card */
 .card-text {
-    font-size: 0.9rem;
-    color: #555; /* Mid-tone color for general text */
+    font-size: 1rem;
 }
 
-/* Button style inside the card */
 .btn-info {
-    background-color: #007bff; /* Primary color for the button */
-    border: none;
-    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+    font-size: 1rem;
+    padding: 0.5rem 1.5rem;
 }
 
-/* Button hover effect */
-.btn-info:hover {
-    background-color: #0056b3; /* Darker blue on hover */
-    color: white;
-}
-
-/* Responsive styling for the card grid */
-@media (max-width: 767px) {
-    .card {
-        margin-bottom: 20px;
-    }
+.text-muted {
+    font-size: 0.9rem;
 }

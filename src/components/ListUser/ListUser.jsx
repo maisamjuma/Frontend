@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import UserService from '../../Services/UserService.js';
 import RoleService from "../../Services/RoleService.js";
 import './ListUser.css';
-import {Container} from "react-bootstrap";
-import {Row} from "antd";
+import { Container } from "react-bootstrap";
+import { Row } from "antd";
 
 const ListUser = () => {
     const [users, setUsers] = useState([]);
@@ -51,25 +51,27 @@ const ListUser = () => {
             <h2 className="text-center mb-4">Employee Directory</h2>
             <Row>
                 {users.map(user => (
-                    <div key={user.userId} className="col-md-4 mb-4">
-                        <div className="card p-3">
-                            <h3 className="card-title">
+                    <div key={user.userId} className="col-md-6 col-lg-4 mb-4">
+                        <div className="card user-card p-3 shadow-sm">
+                            <h3 className="card-title text-primary mb-2">
                                 {user.firstName} {user.lastName}
                             </h3>
-                            <h5 className="card-subtitle mb-2 text-muted">
+                            <h5 className="card-subtitle mb-3 text-muted">
                                 {user.roleName}
                             </h5>
                             <p className="card-text"><strong>Email:</strong> {user.email}</p>
                             <p className="card-text"><strong>Team Leader:</strong> {user.isTeamLeader ? 'Yes' : 'No'}</p>
                             <p className="card-text"><strong>Joined:</strong> {user.createdAt}</p>
-                            <p className="card-text"><strong>Last Updated:</strong> {user.updatedAt}</p>
-                            <button
-                                type='button'
-                                className='btn btn-info'
-                                onClick={() => updateUser(user.userId)}
-                            >
-                                Update
-                            </button>
+                            <div className="d-flex justify-content-between align-items-center mt-4">
+                                <button
+                                    type='button'
+                                    className='btn btn-info'
+                                    onClick={() => updateUser(user.userId)}
+                                >
+                                    Update
+                                </button>
+                                <small className="text-muted"><em>Last Updated: {user.updatedAt}</em></small>
+                            </div>
                         </div>
                     </div>
                 ))}
