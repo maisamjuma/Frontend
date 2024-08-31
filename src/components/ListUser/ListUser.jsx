@@ -23,17 +23,23 @@ const ListUser = () => {
                     return acc;
                 }, {});
 
-                const transformedUsers = usersData.map(user => ({
-                    userId: user.userId,
-                    email: user.email,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    functionalRoleId: user.functionalRoleId,
-                    roleName: roleMap[user.functionalRoleId] || 'Unknown Role',
-                    isTeamLeader: user.isTeamLeader,
-                    createdAt: new Date(user.createdAt).toLocaleString(),
-                    updatedAt: new Date(user.updatedAt).toLocaleString()
-                }));
+                const transformedUsers = usersData.map(user => {
+                    const createdAt = new Date(user.createdAt);
+                    const updatedAt = new Date(user.updatedAt);
+
+                    return {
+                        userId: user.userId,
+                        email: user.email,
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        functionalRoleId: user.functionalRoleId,
+                        roleName: roleMap[user.functionalRoleId] || 'Unknown Role',
+                        isTeamLeader: user.isTeamLeader,
+                        createdAt: `${createdAt.toLocaleDateString()} ${createdAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`,
+                        updatedAt: `${updatedAt.toLocaleDateString()} ${updatedAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`
+                    };
+                });
+
                 setUsers(transformedUsers);
             } catch (error) {
                 console.error('Error fetching users or roles:', error);
@@ -62,7 +68,7 @@ const ListUser = () => {
                             <p className="card-text"><strong>Email:</strong> {user.email}</p>
                             <p className="card-text"><strong>Team Leader:</strong> {user.isTeamLeader ? 'Yes' : 'No'}</p>
                             <p className="card-text"><strong>Joined:</strong> {user.createdAt}</p>
-                            <div className="d-flex justify-content-between align-items-center mt-4">
+                            <div className="d-flex justify-content-between align-items-center mt-3">
                                 <button
                                     type='button'
                                     className='btn btn-info'

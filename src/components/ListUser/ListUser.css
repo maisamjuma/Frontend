@@ -2,6 +2,10 @@
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     transition: transform 0.2s;
+    max-height: 300px; /* Set a max height to control the card size */
+    overflow: hidden;  /* Hide any overflow content */
+    display: flex;
+    flex-direction: column; /* Ensure the content is stacked vertically */
 }
 
 .user-card:hover {
@@ -9,23 +13,25 @@
 }
 
 .card-title {
-    font-size: 1.5rem;
+    font-size: 1.25rem; /* Slightly smaller font size */
     font-weight: bold;
 }
 
 .card-subtitle {
-    font-size: 1.2rem;
+    font-size: 1.1rem; /* Slightly smaller font size */
 }
 
 .card-text {
-    font-size: 1rem;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem; /* Add some margin for spacing */
 }
 
 .btn-info {
-    font-size: 1rem;
-    padding: 0.5rem 1.5rem;
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
 }
 
 .text-muted {
-    font-size: 0.9rem;
+    font-size: 0.8rem; /* Smaller font size for less prominent text */
+    margin-top: 0.5rem;
 }
