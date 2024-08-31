@@ -7,7 +7,7 @@ import { faListAlt, faTasks, faTimes } from '@fortawesome/free-solid-svg-icons';
 const DetailsModal = ({ task, onClose }) => {
     const initialTableData = (task && task.tableData && Array.isArray(task.tableData) && task.tableData.length > 0)
         ? task.tableData
-        : [{ Description: task.description || "", Comments: "" }];
+        : [{ Description: task.taskDescription || "", Comments: "" }];
 
     const [descriptionData, setDescriptionData] = useState(initialTableData.map(row => ({ Description: row.Description })));
     const [commentsData, setCommentsData] = useState(initialTableData.map(row => ({ Comments: row.Comments })));
@@ -50,10 +50,10 @@ const DetailsModal = ({ task, onClose }) => {
         setCommentsData([...commentsData, { Comments: '' }]);
     };
 
-    const handleAddAttachment = () => {
-        // Handle attachment logic here
-        alert("Add Attachment button clicked!");
-    };
+    // const handleAddAttachment = () => {
+    //     // Handle attachment logic here
+    //     alert("Add Attachment button clicked!");
+    // };
 
     return (
         <div className="details-modal-overlay" onClick={handleOverlayClick}>
@@ -69,7 +69,7 @@ const DetailsModal = ({ task, onClose }) => {
                 <div className="detailstitle">
                     <FontAwesomeIcon icon={faTasks} className="details-icon" />
                     <p className="task-description">Description:</p>
-                    <button className="add-attachment-btn" onClick={handleAddAttachment}>Add Attachment</button>
+                    {/*<button className="add-attachment-btn" onClick={handleAddAttachment}>Add Attachment</button>*/}
                 </div>
                 <div className="table-container">
                     {descriptionData.map((row, rowIndex) => (
@@ -137,7 +137,7 @@ DetailsModal.propTypes = {
         name: PropTypes.string.isRequired,
         statusName: PropTypes.string.isRequired,
         date: PropTypes.instanceOf(Date),
-        description: PropTypes.string,
+        taskDescription: PropTypes.string,
         comment: PropTypes.string,
         tableData: PropTypes.arrayOf(PropTypes.shape({
             Description: PropTypes.string,

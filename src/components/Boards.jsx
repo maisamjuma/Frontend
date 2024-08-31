@@ -44,9 +44,6 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
     console.log("name ccccccccccccccccccc",name)
 
 
-
-
-
     const onDragEnd = (result) => {
         const {source, destination} = result;
 
@@ -167,12 +164,12 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
         }
     }, [projectId, boardId, name]);
 
-    // Reset statuses in localStorage
-    const resetStatuses = () => {
-        console.log(`Resetting statuses for {projectId: ${projectId}, boardId: ${boardId}, name: '${name}'}`);
-        localStorage.removeItem(`${projectId}_${boardId}_${name}_statuses`);
-        setStatuses(loadStatuses());
-    };
+    // // Reset statuses in localStorage
+    // const resetStatuses = () => {
+    //     console.log(`Resetting statuses for {projectId: ${projectId}, boardId: ${boardId}, name: '${name}'}`);
+    //     localStorage.removeItem(`${projectId}_${boardId}_${name}_statuses`);
+    //     setStatuses(loadStatuses());
+    // };
 
     // Save statuses to localStorage whenever they change
     useEffect(() => {
@@ -187,15 +184,8 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
             try {
                 const response = await TaskService.getTasksByProjectId(projectId);
                 const tasks = response.data;
-
-                // Filter tasks by boardId before mapping them to statuses
                 const filteredTasks = tasks.filter(task => task.boardId === boardId);
-
-                // Retrieve statuses or use defaults
-                const storedStatuses = loadStatuses();
-
-                // Map tasks to their corresponding statuses
-                const updatedStatuses = storedStatuses.map(status => {
+                const updatedStatuses = loadStatuses().map(status => {
                     const tasksForStatus = filteredTasks.filter(task => task.status === status.title);
                     return {
                         ...status,
@@ -212,66 +202,58 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
         loadTasks();
     }, [projectId, boardId, name]);
 
-
     const handleAddTask = async (statusId, task) => {
-        if (task.name.trim()) {
+        if (task && task.taskName && task.taskName.trim()) {
             const status = statuses.find(status => status.id === statusId);
             if (status) {
                 const newTask = {
                     projectId: projectId,
-                    taskName: task.name,
-                    boardId:boardId,
-                    taskDescription: task.description || '',
-                    status: status.title, // Use status.title as a string
-                    priority: task.priority ? task.priority.toUpperCase() : 'MEDIUM', // Convert priority to uppercase
-                    date: task.dueDate || null, // Assuming this is not needed for creation
-                    assignedToUserId: task.assignedUserId || null, // Change to assignedToUserId
-                    assignedUserLetter: task.assignedUserLetter || null, // Handle optional fields
+                    taskName: task.taskName,  // Ensure property names match
+                    boardId: boardId,
+                    taskDescription: task.taskDescription,
+                    status: status.title,
+                    priority: task.priority ? task.priority.toUpperCase() : 'MEDIUM',
+                    date: task.dueDate || null,
+                    assignedToUserId: task.assignedUserId || null,
+                    assignedUserLetter: task.assignedUserLetter || null,
                 };
 
-                console.log("received task:", newTask);
+                console.log("Task received from AddTaskModal:", task);
+                console.log("New task to update state:", newTask);
 
-                try {
-                    const response = await TaskService.createTask(newTask);
-                    const createdTask = response.data;
-                    const newTaskId = createdTask.taskId; // Use taskId from the response
-
-                    console.log("Created task:", createdTask);
-                    console.log("new Task ID:", newTaskId);
-
-                    setTaskId(newTaskId);
-
-                    const updatedStatuses = statuses.map(status => {
-                        if (status.id === statusId) {
-                            return {
-                                ...status,
-                                tasks: [...status.tasks, createdTask]
-                            };
-                        }
-                        return status;
-                    });
-
-                    console.log("Updated statuses:", updatedStatuses);
-                    setStatuses(updatedStatuses);
-                    setShowAddTaskModal(false);
-                } catch (error) {
-                    if (error.response) {
-                        console.error("Error creating task:", error.response.data);
-                        alert(`Error creating task: ${error.response.data.error || 'An unknown error occurred'}`);
-                    } else if (error.request) {
-                        console.error("Error creating task: No response received");
-                        alert("No response received from the server. Please try again.");
-                    } else {
-                        console.error("Error creating task:", error.message);
-                        alert("An error occurred while creating the task. Please try again.");
+                // Update the local statuses state to include the newly created task
+                const updatedStatuses = statuses.map(status => {
+                    if (status.id === statusId) {
+                        return {
+                            ...status,
+                            tasks: status.tasks ? [...status.tasks, newTask] : [newTask]
+                        };
                     }
-                }
+                    return status;
+                });
+
+                setStatuses(updatedStatuses);
+                setShowAddTaskModal(false);
+            } else {
+                console.error("Status not found:", statusId);
             }
         } else {
             alert("Task name cannot be empty.");
         }
     };
 
+
+
+
+    // Example function that uses taskId
+    const useTaskId = () => {
+        if (taskId) {
+            console.log("Using taskId:", taskId);
+            // Perform actions with taskId
+        }else
+            console.log("not found");
+
+    };
 
     const handleDeleteTask = (taskId) => {
         const updatedStatuses = statuses.map(status => ({
@@ -320,32 +302,35 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
         }
     };
 
-
     const handleBlur = async (statusId, taskId, newName) => {
+        console.log("statusId", statusId);
+        console.log("taskId", taskId); // Ensure this is not null
+        console.log("newName", newName);
 
-        console.log("statusId",statusId)
-        console.log("taskId",taskId)
-        console.log("newName",taskId)
+
         try {
-            // Find the task you want to update
-            const taskToUpdate = statuses
-                .find(status => status.id === statusId)
-                .tasks.find(task => task.id === taskId);
+            const status = statuses.find(status => status.id === statusId);
+            if (!status) {
+                console.error("Status not found");
+                alert("Status not found. Please try again.");
+                return;
+            }
 
-            // Create an updated task object
-            const updatedTask = {
-                ...taskToUpdate,
-                taskName: newName
-            };
+            const taskToUpdate = status.tasks.find(task => task.taskId === taskId);
+            if (!taskToUpdate) {
+                console.error("Task not found");
+                alert("Task not found. Please try again.");
+                return;
+            }
 
-            // Update the task on the server
-            await TaskService.updateTask(taskId,updatedTask);
+            const updatedTask = { ...taskToUpdate, taskName: newName };
 
-            // Update the state locally
+            await TaskService.updateTask(taskId, updatedTask);
+
             const updatedStatuses = statuses.map(status => ({
                 ...status,
                 tasks: status.tasks.map(task =>
-                    task.id === taskId ? updatedTask : task
+                    task.taskId === taskId ? updatedTask : task
                 )
             }));
 
@@ -354,7 +339,6 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
             console.error("Error updating task:", error);
             alert("There was an error updating the task. Please try again.");
         } finally {
-            // Clear the editing state
             setEditingTaskId(null);
         }
     };
@@ -375,14 +359,21 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
     // };
 
     const handlePencilClick = (task) => {
-        const statusId = parseInt(taskId.split('_')[2], 10);
+        console.log("task id:", task.taskId);
+        console.log("task name:", task.taskName);
+
+        // Assuming `taskId` is now just a direct ID rather than needing to be split
+        const statusId = parseInt(task.taskId, 10); // Use taskId directly
+
         const status = statuses.find(status => status.id === statusId);
         setSelectedTask({
             ...task,
             statusName: status ? status.title : 'Unknown Status'
         });
-        setHighlightedTaskId(taskId);
+
+        setHighlightedTaskId(task.taskId); // Use taskId directly
     };
+
 
     const handleCloseModal = () => {
         setSelectedTask(null);
@@ -466,12 +457,47 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
         setcalendarModal(false);
     };
 
+    // const handleUpdateTask = async (taskId, updatedTaskData) => {
+    //     try {
+    //         await TaskService.updateTask(taskId, updatedTaskData);
+    //
+    //         const updatedStatuses = statuses.map(status => ({
+    //             ...status,
+    //             tasks: status.tasks.map(task =>
+    //                 task.id === taskId ? { ...task, ...updatedTaskData } : task
+    //             )
+    //         }));
+    //
+    //         setStatuses(updatedStatuses);
+    //     } catch (error) {
+    //         console.error("Error updating task:", error);
+    //         alert("Error updating task. Please try again.");
+    //     }
+    // };
+    //
+    // const handleDeleteTask = async (taskId) => {
+    //     try {
+    //         await TaskService.deleteTask(taskId);
+    //
+    //         const updatedStatuses = statuses.map(status => ({
+    //             ...status,
+    //             tasks: status.tasks.filter(task => task.id !== taskId)
+    //         }));
+    //
+    //         setStatuses(updatedStatuses);
+    //     } catch (error) {
+    //         console.error("Error deleting task:", error);
+    //         alert("Error deleting task. Please try again.");
+    //     }
+    // };
+
+
 
     return (
         <DragDropContext onDragEnd={onDragEnd}>
             <div className={` ${boardId}`}>
                 <div><h1>{name}</h1></div>
-                <button onClick={resetStatuses}>Reset Statuses</button>
+                <button onClick={useTaskId}>useTaskId</button>
                 <Droppable droppableId="all-statuses" direction="horizontal">
                     {(provided) => (
                         <div
@@ -570,7 +596,7 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
                                                                         <input
                                                                             type="text"
                                                                             defaultValue={task.taskName}
-                                                                            onBlur={(e) => handleBlur(status.id, taskId, e.target.value)}
+                                                                            onBlur={(e) => handleBlur(status.id, task.taskId, e.target.value)}
                                                                             className="backend-task-input"
                                                                         />
                                                                     ) : (
@@ -678,19 +704,24 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
                 {showAddTaskModal && (
 
                     <AddTaskModal
-
                         isVisible={showAddTaskModal}
                         onClose={() => setShowAddTaskModal(false)}
-                        onAddTask={(task) => handleAddTask(currentStatusId, task)}
-                        status={statuses.find(status => status.id === currentStatusId)} // Pass the correct status object
-
+                        onAddTask={(taskId, projectId, taskName, description, boardId, status, priority, assignedUserId) => {
+                            handleAddTask(currentStatusId, {
+                                taskId,
+                                projectId,
+                                taskName,
+                                description,
+                                boardId,
+                                status,
+                                priority,
+                                assignedUserId
+                            });
+                        }}
+                        status={statuses.find(status => status.id === currentStatusId)}
                         projectId={projectId}
-                        projectDescription={projectDescription}
-                        projectMembers={projectMembers} // Add this line
-                        setProjectId={setProjectId}
-                        setProjectDescription={setProjectDescription}
-                        setProjectMembers={setProjectMembers}
-                        boardId={boardId} // Pass the boardId as a prop
+                        projectMembers={projectMembers}
+                        boardId={boardId}
                     />
 
                 )}
