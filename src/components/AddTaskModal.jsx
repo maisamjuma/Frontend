@@ -59,6 +59,7 @@ const AddTaskModal = ({
                 const response = await TaskService.createTask(newTask);
                 const { taskId } = response.data; // Access response data
                 console.log('Task created:', response.data);
+                console.log("task id :", taskId);
 
                 onAddTask(taskId, projectId, taskName, taskDescription, boardId, status, priority, assignedUserId);
 

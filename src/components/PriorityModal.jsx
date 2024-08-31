@@ -2,18 +2,25 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import './PriorityModal.css';
+import TaskService from "../Services/TaskService.js";
 
-const PriorityModal = ({onClose, onSave}) => {
+const PriorityModal = ({onClose,task, onSave}) => {
     const [selectedPriority, setSelectedPriority] = useState('');
 
     const handlePriorityChange = (priority) => {
         setSelectedPriority(priority);
     };
 
-    const handleSaveClick = () => {
-        // Save selected priority directly
-        onSave(selectedPriority);
-        onClose();
+    const handleSaveClick = async () => {
+        try {
+            // Update the task with the new priority
+            await TaskService.updateTask(task.taskId, { priority: selectedPriority });
+            onSave(selectedPriority); // Notify the parent component
+            onClose(); // Close the modal
+        } catch (error) {
+            console.error('Error updating task priority:', error);
+            alert('Failed to update the task priority. Please try again.');
+        }
     };
 
 
@@ -23,20 +30,20 @@ const PriorityModal = ({onClose, onSave}) => {
                 <h2 className="priorityheader">Select Priority</h2>
                 <div className="priority-options">
                     <button
-                        className={`priority-option ${selectedPriority === 'MEDIUM' ? 'selected' : ''}`}
-                        onClick={() => handlePriorityChange('MEDIUM')}
+                        className={`priority-option ${selectedPriority === 'medium' ? 'selected' : ''}`}
+                        onClick={() => handlePriorityChange('medium')}
                     >
                         Medium
                     </button>
                     <button
-                        className={`priority-option ${selectedPriority === 'HIGH' ? 'selected' : ''}`}
-                        onClick={() => handlePriorityChange('HIGH')}
+                        className={`priority-option ${selectedPriority === 'high' ? 'selected' : ''}`}
+                        onClick={() => handlePriorityChange('high')}
                     >
                         High
                     </button>
                     <button
-                        className={`priority-option ${selectedPriority === 'LOW' ? 'selected' : ''}`}
-                        onClick={() => handlePriorityChange('LOW')}
+                        className={`priority-option ${selectedPriority === 'low' ? 'selected' : ''}`}
+                        onClick={() => handlePriorityChange('low')}
                     >
                         Low
                     </button>
@@ -52,6 +59,14 @@ const PriorityModal = ({onClose, onSave}) => {
 PriorityModal.propTypes = {
     onClose: PropTypes.func.isRequired,
     onSave: PropTypes.func,
+    task: PropTypes.shape({
+        taskId: PropTypes.number.isRequired,
+        taskName: PropTypes.string.isRequired,
+        status: PropTypes.string.isRequired,
+        priority: PropTypes.string.isRequired,
+        date: PropTypes.instanceOf(Date),
+        taskDescription: PropTypes.string.isRequired,
+    }),
 };
 
 export default PriorityModal;

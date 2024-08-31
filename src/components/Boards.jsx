@@ -13,6 +13,7 @@ import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
 import PropTypes from "prop-types";
 import ChangeMemberModal from "./ChangeMemberModal.jsx";
 import TaskService from "../Services/TaskService.js";
+//import DetailsModal from "./DetailsModal/DetailsModal.jsx";
 // import BoardService from "../Services/BoardService.js";
 //import members from "./Member/Members.jsx";
 //import members from "./Member/Members.jsx";
@@ -36,6 +37,7 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
     const [showPriorityModal, setShowPriorityModal] = useState(false);
     const [showAddTaskModal, setShowAddTaskModal] = useState(false);
     const [showcalenderModal, setcalendarModal] = useState(false);
+//    const [showDetailsModal, setshowDetailsModal] = useState(false);
     const [showchangememberModal, setshowchangememberModal] = useState(false);
     const [selectedMember, setSelectedMember] = useState('');
     const [taskId, setTaskId] = useState(null);
@@ -153,6 +155,14 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
             statuses = statuses.filter(status => status.id <= 5);
         }
 
+
+        // // Ensure priority field exists in each task
+        // statuses.forEach(status => {
+        //     status.tasks.forEach(task => {
+        //         task.priority = task.priority || 'MEDIUM';  // Default to 'MEDIUM' if not set
+        //     });
+        // });
+
         return statuses;
     };
 
@@ -164,20 +174,15 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
         }
     }, [projectId, boardId, name]);
 
-    // // Reset statuses in localStorage
-    // const resetStatuses = () => {
-    //     console.log(`Resetting statuses for {projectId: ${projectId}, boardId: ${boardId}, name: '${name}'}`);
-    //     localStorage.removeItem(`${projectId}_${boardId}_${name}_statuses`);
-    //     setStatuses(loadStatuses());
-    // };
 
-    // Save statuses to localStorage whenever they change
+// Save statuses to localStorage whenever they change
     useEffect(() => {
         if (statuses.length > 0) {
             console.log(`Saving statuses to key: ${projectId}_${boardId}_${name}_statuses`);
             localStorage.setItem(`${projectId}_${boardId}_${name}_statuses`, JSON.stringify(statuses));
         }
     }, [statuses, projectId, boardId, name]);
+
 
     useEffect(() => {
         const loadTasks = async () => {
@@ -207,12 +212,13 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
             const status = statuses.find(status => status.id === statusId);
             if (status) {
                 const newTask = {
+                    taskId: task.taskId,
                     projectId: projectId,
                     taskName: task.taskName,  // Ensure property names match
                     boardId: boardId,
                     taskDescription: task.taskDescription,
                     status: status.title,
-                    priority: task.priority ? task.priority.toUpperCase() : 'MEDIUM',
+                    priority: task.priority ? task.priority : 'medium',
                     date: task.dueDate || null,
                     assignedToUserId: task.assignedUserId || null,
                     assignedUserLetter: task.assignedUserLetter || null,
@@ -254,14 +260,20 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
             console.log("not found");
 
     };
-
     const handleDeleteTask = (taskId) => {
-        const updatedStatuses = statuses.map(status => ({
-            ...status,
-            tasks: status.tasks.filter(task => task.id !== taskId)
-        }));
-        setStatuses(updatedStatuses);
+        console.log("is task id ?",taskId)
+        if(taskId) {
+            const updatedStatuses = statuses.map(status => ({
+                ...status,
+                tasks: status.tasks.filter(task => task.id !== taskId)
+            }));
+            setStatuses(updatedStatuses);
+        }else
+            console.error("task id not found")
     };
+
+
+
 
     const handleDoubleClick = (taskId) => {
         setEditingTaskId(taskId);
@@ -307,6 +319,11 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
         console.log("taskId", taskId); // Ensure this is not null
         console.log("newName", newName);
 
+        if (!taskId) {
+            console.error("Task ID is undefined");
+            alert("Task ID is not available. Please try again.");
+            return;
+        }
 
         try {
             const status = statuses.find(status => status.id === statusId);
@@ -344,19 +361,6 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
     };
 
 
-    // const handleChangeColor = (statusId, color) => {
-    //     const updatedStatuses = statuses.map(status => {
-    //         if (status.id === statusId) {
-    //             return {
-    //                 ...status,
-    //                 backgroundColor: color
-    //             };
-    //         }
-    //         return status;
-    //     });
-    //     setStatuses(updatedStatuses);
-    //     setDropdownStatusId(null);
-    // };
 
     const handlePencilClick = (task) => {
         console.log("task id:", task.taskId);
@@ -364,7 +368,7 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
 
         // Assuming `taskId` is now just a direct ID rather than needing to be split
         const statusId = parseInt(task.taskId, 10); // Use taskId directly
-
+        console.log('statusId:', statusId);
         const status = statuses.find(status => status.id === statusId);
         setSelectedTask({
             ...task,
@@ -441,13 +445,14 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
             const updatedStatuses = statuses.map(status => ({
                 ...status,
                 tasks: status.tasks.map(task =>
-                    taskId === selectedTask.id ? {...task, priority: newPriority} : task
+                    task.id === selectedTask.id ? {...task, priority: newPriority} : task
                 )
             }));
             setStatuses(updatedStatuses);
             setShowPriorityModal(false);
         }
     };
+
 
     const handleClosePriorityModal = () => {
         setShowPriorityModal(false);
@@ -557,28 +562,28 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
                                             </div>
                                             <div className="backend-tasks-container">
                                                 {status.tasks.map((task, taskIndex) => (
-                                                    <Draggable key={task.id} draggableId={task.id} index={taskIndex}>
+                                                    <Draggable key={task.taskId} draggableId={task.taskId} index={taskIndex}>
                                                         {(provided) => (
                                                             <div
-                                                                className={`backend-task-box ${highlightedTaskId === taskId ? 'highlighted' : ''}`}
+                                                                className={`backend-task-box ${highlightedTaskId === task.taskId ? 'highlighted' : ''}`}
                                                                 {...provided.draggableProps}
                                                                 {...provided.dragHandleProps}
                                                                 ref={provided.innerRef}
-                                                                onDoubleClick={() => handleDoubleClick(taskId)}
+                                                                onDoubleClick={() => handleDoubleClick(task.taskId)}
                                                             >
                                                                 <div className="topTop">
                                                                     <div className="topClass">
                                                                         <div
                                                                             className="task-priority-display priority-${task.priority}">
-                                                                            {task.priority === 'HIGH' && (
+                                                                            {task.priority === 'high' && (
                                                                                 <span
                                                                                     className="priority-high">High</span>
                                                                             )}
-                                                                            {task.priority === 'MEDIUM' && (
+                                                                            {task.priority === 'medium' && (
                                                                                 <span
                                                                                     className="priority-medium">Medium</span>
                                                                             )}
-                                                                            {task.priority === 'LOW' && (
+                                                                            {task.priority === 'low' && (
                                                                                 <span
                                                                                     className="priority-low">Low</span>
                                                                             )}
@@ -592,7 +597,7 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
                                                                     </div>
                                                                 </div>
                                                                 <div className="MiddleClass">
-                                                                    {editingTaskId === taskId ? (
+                                                                    {editingTaskId === task.taskId ? (
                                                                         <input
                                                                             type="text"
                                                                             defaultValue={task.taskName}
@@ -706,12 +711,12 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
                     <AddTaskModal
                         isVisible={showAddTaskModal}
                         onClose={() => setShowAddTaskModal(false)}
-                        onAddTask={(taskId, projectId, taskName, description, boardId, status, priority, assignedUserId) => {
+                        onAddTask={(taskId, projectId, taskName, taskDescription, boardId, status, priority, assignedUserId) => {
                             handleAddTask(currentStatusId, {
                                 taskId,
                                 projectId,
                                 taskName,
-                                description,
+                                taskDescription,
                                 boardId,
                                 status,
                                 priority,
@@ -726,19 +731,26 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
 
                 )}
                 {showchangememberModal && (
-                    <ChangeMemberModal
-                        isVisible={showchangememberModal}
-                        onClose={() => setshowchangememberModal(false)}
-                        onSave={handleChangeMember}
-                        projectId={projectId}
-                        projectDescription={projectDescription}
-                        projectMembers={projectMembers} // Add this line
-                        setProjectId={setProjectId}
-                        setProjectDescription={setProjectDescription}
-                        setProjectMembers={setProjectMembers}
-                    />
+                <ChangeMemberModal
+                    isVisible={showchangememberModal}
+                    onClose={() => setshowchangememberModal(false)}
+                    onSave={handleChangeMember}
+                    projectId={projectId}
+                    projectDescription={projectDescription}
+                    projectMembers={projectMembers} // Add this line
+                    setProjectId={setProjectId}
+                    setProjectDescription={setProjectDescription}
+                    setProjectMembers={setProjectMembers}
+                />
 
-                )}
+            )}
+                {/*{showDetailsModal && (*/}
+                {/*    <DetailsModal*/}
+                {/*        onClose={() => setshowDetailsModal(false)}*/}
+                {/*        task={{ ...selectedTask, statusName: selectedStatusName }}*/}
+                {/*    />*/}
+                {/*)}*/}
+
 
             </div>
         </DragDropContext>

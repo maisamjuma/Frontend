@@ -17,9 +17,10 @@ import CalendarModal from "./CalendarModal/CalendarModal.jsx";
 import DetailsModal from "./DetailsModal/DetailsModal.jsx";
 import LabelModal from "./LabelModal.jsx";
 import ChangeMemberModal from './ChangeMemberModal';
+import TaskService from "../Services/TaskService.js";
 
 // eslint-disable-next-line react/prop-types
-const TaskModal = ({ selectedMember,task, onClose, onDelete, boards, statuses, labels = [],onSaveMember, onSaveDate, onRemoveDate, onSavePriority, onSaveLabels ,projectId, projectDescription, projectMembers, setProjectId, setProjectDescription, setProjectMembers }) => {
+const TaskModal = ({ selectedMember,task, onClose, onDelete, boardId, statuses, labels = [],onSaveMember, onSaveDate, onRemoveDate, onSavePriority, onSaveLabels ,projectId, projectDescription, projectMembers, setProjectId, setProjectDescription, setProjectMembers }) => {
     const [isMoveModalOpen, setIsMoveModalOpen] = useState(false);
     const [isCalendarModalOpen, setIsCalendarModalOpen] = useState(false);
     const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
@@ -28,10 +29,14 @@ const TaskModal = ({ selectedMember,task, onClose, onDelete, boards, statuses, l
     const [isChangeMemberModalOpen, setIsChangeMemberModalOpen] = useState(false);
     console.log("projectId:",projectId,"projectDescription:",projectDescription,"projectMembers:",projectMembers);
     console.log("hhghg",selectedMember)
+    // eslint-disable-next-line react/prop-types
+    console.log("is task id in taskmodal ? ",task.taskId)
+
+
     if (!task) return null;
 
-    const status = statuses.find(status => status.id === task.statusId) || {};
-    const statusName = status.title || 'Unknown Status';
+    // const status = statuses.find(status => status.id === task.statusId) || {};
+    // const statusName = status.title || 'Unknown Status';
 
     // Function to determine background color based on the first label
     const getTaskBackgroundColor = () => {
@@ -44,12 +49,20 @@ const TaskModal = ({ selectedMember,task, onClose, onDelete, boards, statuses, l
         if (e.target.classList.contains('task-modal-overlay')) onClose();
     };
 
-    const handleDeleteClick = () => {
+    const handleDeleteClick = async () => {
         if (window.confirm('Are you sure you want to delete this task?')) {
-            onDelete(task.id);
-            onClose();
+            try {
+                await TaskService.deleteTask(task.taskId); // Call the service method
+                onDelete(task.taskId); // Notify the parent component to remove the task
+                onClose(); // Close the modal
+            } catch (error) {
+                console.error('Error deleting task:', error);
+                alert('Failed to delete the task. Please try again.');
+            }
         }
     };
+
+
     // const handleSaveMember = (memberId) => {
     //     console.log('Selected member ID:', memberId);
     //     // Handle the logic to save the selected member
@@ -84,7 +97,7 @@ const TaskModal = ({ selectedMember,task, onClose, onDelete, boards, statuses, l
                     </button>
                 </div>
                 <div className="task-status">
-                    Status: {statusName}
+                    Status: {task.status}
                 </div>
                 {task.date && (
                     <div className="task-date">
@@ -95,7 +108,7 @@ const TaskModal = ({ selectedMember,task, onClose, onDelete, boards, statuses, l
             {isMoveModalOpen && (
                 <MoveModal
                     onClose={() => setIsMoveModalOpen(false)}
-                    boards={boards}
+                    boardId={boardId}
                     statuses={statuses}
                     task={task}
                 />
@@ -113,13 +126,14 @@ const TaskModal = ({ selectedMember,task, onClose, onDelete, boards, statuses, l
             {isDetailsModalOpen && (
                 <DetailsModal
                     onClose={() => setIsDetailsModalOpen(false)}
-                    task={{ ...task, statusName }}
+                    task={{ ...task}}
                 />
             )}
             {isPriorityModalOpen && (
                 <PriorityModal
                     onClose={() => setIsPriorityModalOpen(false)}
                     onSave={onSavePriority}
+                    task={{ ...task}}
                 />
             )}
             {isLabelModalOpen && (
@@ -154,11 +168,12 @@ const TaskModal = ({ selectedMember,task, onClose, onDelete, boards, statuses, l
 TaskModal.propTypes = {
     selectedMember: PropTypes.string, // Assuming selectedMember is a string or use the correct type
     task: PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        id: PropTypes.string.isRequired,
-        statusId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        taskName: PropTypes.string.isRequired,
+        taskId: PropTypes.number.isRequired,
+        status:  PropTypes.string.isRequired,
+        taskDescription:PropTypes.string.isRequired,
         date: PropTypes.instanceOf(Date),
-        priority: PropTypes.string,
+        priority: PropTypes.string.isRequired,
         labels: PropTypes.arrayOf(PropTypes.string),
         memberId: PropTypes.string, // Added if you are using memberId
     }),

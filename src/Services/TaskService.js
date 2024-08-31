@@ -16,9 +16,13 @@ class TaskService {
 
     // Delete a task by its ID
     deleteTask(taskId) {
-        return axios.delete(`${TASKS_API_BASE_URL}/${taskId}`);
+        const token = localStorage.getItem("token");
+        return axios.delete(`${TASKS_API_BASE_URL}/${taskId}`, {
+            headers: {
+                'X-Auth-Token': token
+            }
+        });
     }
-
     // Update a task by its ID
     updateTask(taskId, updatedTaskData) {
         const token = localStorage.getItem("token");

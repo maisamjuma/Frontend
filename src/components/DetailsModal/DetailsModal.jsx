@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import './DetailsModal.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faListAlt, faTasks, faTimes } from '@fortawesome/free-solid-svg-icons';
+import TaskService from '../../services/TaskService'; // Assuming you have a TaskService for API calls
 
 const DetailsModal = ({ task, onClose }) => {
     const initialTableData = (task && task.tableData && Array.isArray(task.tableData) && task.tableData.length > 0)
@@ -11,7 +12,7 @@ const DetailsModal = ({ task, onClose }) => {
 
     const [descriptionData, setDescriptionData] = useState(initialTableData.map(row => ({ Description: row.Description })));
     const [commentsData, setCommentsData] = useState(initialTableData.map(row => ({ Comments: row.Comments })));
-    const [statusName, setStatusName] = useState(task.statusName);
+    //const [statusName, setStatusName] = useState(task.statusName);
 
     useEffect(() => {
         if (task && task.tableData && Array.isArray(task.tableData)) {
@@ -20,11 +21,11 @@ const DetailsModal = ({ task, onClose }) => {
         }
     }, [task]);
 
-    useEffect(() => {
-        if (task.statusName) {
-            setStatusName(task.statusName);
-        }
-    }, [task.statusName]);
+    // useEffect(() => {
+    //     if (task.statusName) {
+    //         setStatusName(task.statusName);
+    //     }
+    // }, [task.statusName]);
 
     if (!task) return null;
 
@@ -50,26 +51,41 @@ const DetailsModal = ({ task, onClose }) => {
         setCommentsData([...commentsData, { Comments: '' }]);
     };
 
-    // const handleAddAttachment = () => {
-    //     // Handle attachment logic here
-    //     alert("Add Attachment button clicked!");
-    // };
+    const handleSaveDescription = async () => {
+        try {
+            const updatedTask = {
+                ...task,
+                taskDescription: descriptionData[0].Description,
+                tableData: descriptionData.map((desc, index) => ({
+                    ...desc,
+                    Comments: commentsData[index]?.Comments || '',
+                })),
+            };
+
+            await TaskService.updateTask(task.taskId, updatedTask);
+
+            alert('Task description updated successfully!');
+           onClose(); // Close the modal after saving
+        } catch (error) {
+            console.error("Error updating task:", error);
+            alert("There was an error updating the task. Please try again.");
+        }
+    };
 
     return (
         <div className="details-modal-overlay" onClick={handleOverlayClick}>
             <div className="details-modal-content">
                 <div className="details-modal-header">
                     <div className="details-modal-title">
-                        <FontAwesomeIcon icon={faListAlt} className="details-icon" />
-                        <h2>{task.name}</h2>
+                        <FontAwesomeIcon icon={faListAlt} className="details-icon"/>
+                        <h2>{task.taskName}</h2>
                     </div>
-                    <FontAwesomeIcon icon={faTimes} className="close-icon" onClick={onClose} />
+                    <FontAwesomeIcon icon={faTimes} className="close-icon" onClick={onClose}/>
                 </div>
-                <p className="task-status">In Status: {statusName}</p>
+                <p className="task-status">In Status: {task.status}</p>
                 <div className="detailstitle">
-                    <FontAwesomeIcon icon={faTasks} className="details-icon" />
+                    <FontAwesomeIcon icon={faTasks} className="details-icon"/>
                     <p className="task-description">Description:</p>
-                    {/*<button className="add-attachment-btn" onClick={handleAddAttachment}>Add Attachment</button>*/}
                 </div>
                 <div className="table-container">
                     {descriptionData.map((row, rowIndex) => (
@@ -91,9 +107,11 @@ const DetailsModal = ({ task, onClose }) => {
                         </div>
                     ))}
                 </div>
-
+                <div className="table-controls">
+                    <button className="save-description-btn" onClick={handleSaveDescription}>Save Description</button>
+                </div>
                 <div className="detailstitle">
-                    <FontAwesomeIcon icon={faTasks} className="details-icon" />
+                    <FontAwesomeIcon icon={faTasks} className="details-icon"/>
                     <p className="task-comment">Comments:</p>
                 </div>
                 <div className="table-container-comment">
@@ -126,6 +144,7 @@ const DetailsModal = ({ task, onClose }) => {
                 <div className="table-controls-comment">
                     <button className="addcomment" onClick={handleAddCommentsRow}>Add Comments</button>
                 </div>
+
             </div>
         </div>
     );
@@ -133,11 +152,11 @@ const DetailsModal = ({ task, onClose }) => {
 
 DetailsModal.propTypes = {
     task: PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        statusName: PropTypes.string.isRequired,
+        taskId: PropTypes.number.isRequired,
+        taskName: PropTypes.string.isRequired,
+        status: PropTypes.string.isRequired,
         date: PropTypes.instanceOf(Date),
-        taskDescription: PropTypes.string,
+        taskDescription: PropTypes.string.isRequired,
         comment: PropTypes.string,
         tableData: PropTypes.arrayOf(PropTypes.shape({
             Description: PropTypes.string,
