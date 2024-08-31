@@ -213,7 +213,31 @@ const Boards = ({
         };
 
         loadTasks();
-    }, [projectId, boardId, name]);
+    }, [showPriorityModal,projectId, boardId, name]);
+
+
+    useEffect(() => {
+        const loadTasks = async () => {
+            try {
+                const response = await TaskService.getTasksByProjectId(projectId);
+                const tasks = response.data;
+                const filteredTasks = tasks.filter(task => task.boardId === boardId);
+                const updatedStatuses = loadStatuses().map(status => {
+                    const tasksForStatus = filteredTasks.filter(task => task.status === status.title);
+                    return {
+                        ...status,
+                        tasks: tasksForStatus
+                    };
+                });
+
+                setStatuses(updatedStatuses);
+            } catch (error) {
+                console.error("Error loading tasks:", error);
+            }
+        };
+
+        loadTasks();
+    }, [selectedTask]);
 
     const handleAddTask = async (statusId, task) => {
         if (task && task.taskName && task.taskName.trim()) {
