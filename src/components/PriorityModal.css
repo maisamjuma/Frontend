@@ -15,7 +15,7 @@
     margin-bottom: 20px;
 }
 .priority-modal-content {
-    background: #282E33;
+    background:#ffffff;
     padding: 20px;
     border-radius: 8px;
     color: #dcdde1;
@@ -29,12 +29,11 @@
         margin-top: 20px;
 }
 
-
-
 .priority-option {
-    background: #34495e;
-    color: #dcdde1;
+    background: white;
+    color: black;
     border: none;
+    border: 1px solid #E9967A; /* Dark salmon border color */
     padding: 10px 20px;
     margin: 5px;
     cursor: pointer;
@@ -44,6 +43,7 @@
 
 .priority-option.selected {
     background: darksalmon; /* Highlight the selected priority */
+    color: white;
 }
 
 .priority-option:hover {
@@ -51,8 +51,8 @@
 }
 
 .save-button {
-    background: #7f8fa6;
-    color: #dcdde1;
+    background: darksalmon;
+    color: white;
     border: none;
     padding: 10px 20px;
     margin-top: 20px;

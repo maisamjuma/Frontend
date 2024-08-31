@@ -20,7 +20,15 @@ import TaskService from "../Services/TaskService.js";
 //import TaskService from '../Services/TaskService';
 
 
-const Boards = ({ board, projectId, projectDescription, projectMembers, setProjectId, setProjectDescription, setProjectMembers }) => {
+const Boards = ({
+                    board,
+                    projectId,
+                    projectDescription,
+                    projectMembers,
+                    setProjectId,
+                    setProjectDescription,
+                    setProjectMembers
+                }) => {
     // const { board} = useParams(); // Get boardName from the route parameters
     // const [boardName, setBoardName] = useState(null);
     // const { boardId, name } = board;
@@ -42,8 +50,8 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
     const [selectedMember, setSelectedMember] = useState('');
     const [taskId, setTaskId] = useState(null);
     console.log(projectMembers)
-    console.log("boardId ccccccccccccccccccccc",boardId)
-    console.log("name ccccccccccccccccccc",name)
+    console.log("boardId ccccccccccccccccccccc", boardId)
+    console.log("name ccccccccccccccccccc", name)
 
 
     const onDragEnd = (result) => {
@@ -102,12 +110,12 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
         const updatedDestinationTasks = Array.from(destinationStatus.tasks);
         updatedDestinationTasks.splice(destination.index, 0, task);
 
-        if(destinationStatusId === 1 && sourceStatusId >= 2){
+        if (destinationStatusId === 1 && sourceStatusId >= 2) {
             alert("You cannot move tasks from a higher status back to the unassigned tasks.");
             return;
         }
 
-        if(sourceStatusId === 1 && destinationStatusId >= 3){
+        if (sourceStatusId === 1 && destinationStatusId >= 3) {
             alert("You can only move tasks from an unassigned status to ToDo status");
             return;
         }
@@ -135,15 +143,15 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
     const loadStatuses = () => {
         const savedStatuses = localStorage.getItem(`${projectId}_${boardId}_${name}_statuses`);
         const defaultStatuses = [
-            { id: 1, title: 'Unassigned Tasks', tasks: [], backgroundColor: '#f9f9f9' },
-            { id: 2, title: 'To Do', tasks: [], backgroundColor: '#f9f9f9' },
-            { id: 3, title: 'Doing', tasks: [], backgroundColor: '#f9f9f9' },
-            { id: 4, title: 'Ready to Review', tasks: [], backgroundColor: '#f9f9f9' },
-            { id: 5, title: 'Reviewing', tasks: [], backgroundColor: '#f9f9f9' },
-            { id: 6, title: 'Ready for QA', tasks: [], backgroundColor: '#f9f9f9' },
-            { id: 7, title: 'In Progress', tasks: [], backgroundColor: '#f9f9f9' },
-            { id: 8, title: 'QA Failed', tasks: [], backgroundColor: '#f9f9f9' },
-            { id: 9, title: 'QA Passed', tasks: [], backgroundColor: '#f9f9f9' }
+            {id: 1, title: 'Unassigned Tasks', tasks: [], backgroundColor: '#f9f9f9'},
+            {id: 2, title: 'To Do', tasks: [], backgroundColor: '#f9f9f9'},
+            {id: 3, title: 'Doing', tasks: [], backgroundColor: '#f9f9f9'},
+            {id: 4, title: 'Ready to Review', tasks: [], backgroundColor: '#f9f9f9'},
+            {id: 5, title: 'Reviewing', tasks: [], backgroundColor: '#f9f9f9'},
+            {id: 6, title: 'Ready for QA', tasks: [], backgroundColor: '#f9f9f9'},
+            {id: 7, title: 'In Progress', tasks: [], backgroundColor: '#f9f9f9'},
+            {id: 8, title: 'QA Failed', tasks: [], backgroundColor: '#f9f9f9'},
+            {id: 9, title: 'QA Passed', tasks: [], backgroundColor: '#f9f9f9'}
         ];
 
         let statuses = savedStatuses ? JSON.parse(savedStatuses) : defaultStatuses;
@@ -205,7 +213,31 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
         };
 
         loadTasks();
-    }, [projectId, boardId, name]);
+    }, [showPriorityModal,projectId, boardId, name]);
+
+
+    useEffect(() => {
+        const loadTasks = async () => {
+            try {
+                const response = await TaskService.getTasksByProjectId(projectId);
+                const tasks = response.data;
+                const filteredTasks = tasks.filter(task => task.boardId === boardId);
+                const updatedStatuses = loadStatuses().map(status => {
+                    const tasksForStatus = filteredTasks.filter(task => task.status === status.title);
+                    return {
+                        ...status,
+                        tasks: tasksForStatus
+                    };
+                });
+
+                setStatuses(updatedStatuses);
+            } catch (error) {
+                console.error("Error loading tasks:", error);
+            }
+        };
+
+        loadTasks();
+    }, [selectedTask]);
 
     const handleAddTask = async (statusId, task) => {
         if (task && task.taskName && task.taskName.trim()) {
@@ -249,42 +281,38 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
     };
 
 
-
-
     // Example function that uses taskId
     const useTaskId = () => {
         if (taskId) {
             console.log("Using taskId:", taskId);
             // Perform actions with taskId
-        }else
+        } else
             console.log("not found");
 
     };
     const handleDeleteTask = (taskId) => {
-        console.log("is task id ?",taskId)
-        if(taskId) {
+        console.log("is task id ?", taskId)
+        if (taskId) {
             const updatedStatuses = statuses.map(status => ({
                 ...status,
                 tasks: status.tasks.filter(task => task.id !== taskId)
             }));
             setStatuses(updatedStatuses);
-        }else
+        } else
             console.error("task id not found")
     };
-
-
 
 
     const handleDoubleClick = (taskId) => {
         setEditingTaskId(taskId);
     };
 
-    const handleChangeMember = (memberId,memberUsername) => {
-        console.log("Board memberId:",memberId)
-        console.log("Board memberUsername:",memberUsername)
+    const handleChangeMember = (memberId, memberUsername) => {
+        console.log("Board memberId:", memberId)
+        console.log("Board memberUsername:", memberUsername)
 
         if (selectedTask) {
-            console.log("selectedTask: ",selectedTask)
+            console.log("selectedTask: ", selectedTask)
 
             const member = projectMembers.find(member => member.userId === memberId);
             // console.log("member :",member)
@@ -300,12 +328,15 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
                     ...status,
                     tasks: status.tasks.map(task =>
                         // task.id === selectedTask.id ? { ...task,memberInitials: task.assignedToUserId } : task
-                        task.id === selectedTask.id ? { ...task,assignedUserLetter: initial,assignedToUserId: memberId} : task
+                        task.id === selectedTask.id ? {
+                            ...task,
+                            assignedUserLetter: initial,
+                            assignedToUserId: memberId
+                        } : task
                     )
                 }));
                 setStatuses(updatedStatuses);
-            }
-            else {
+            } else {
                 console.log('Member not found');
             }
             setshowchangememberModal(false);
@@ -340,7 +371,7 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
                 return;
             }
 
-            const updatedTask = { ...taskToUpdate, taskName: newName };
+            const updatedTask = {...taskToUpdate, taskName: newName};
 
             await TaskService.updateTask(taskId, updatedTask);
 
@@ -359,7 +390,6 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
             setEditingTaskId(null);
         }
     };
-
 
 
     const handlePencilClick = (task) => {
@@ -441,11 +471,11 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
     };
 
     const handleSavePriority = (newPriority) => {
-        if (selectedTask) {
+        if (taskId) {
             const updatedStatuses = statuses.map(status => ({
                 ...status,
                 tasks: status.tasks.map(task =>
-                    task.id === selectedTask.id ? {...task, priority: newPriority} : task
+                    task.taskId === taskId ? {...task, priority: newPriority} : task
                 )
             }));
             setStatuses(updatedStatuses);
@@ -495,7 +525,6 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
     //         alert("Error deleting task. Please try again.");
     //     }
     // };
-
 
 
     return (
@@ -562,7 +591,8 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
                                             </div>
                                             <div className="backend-tasks-container">
                                                 {status.tasks.map((task, taskIndex) => (
-                                                    <Draggable key={task.taskId} draggableId={task.taskId} index={taskIndex}>
+                                                    <Draggable key={task.taskId} draggableId={task.taskId}
+                                                               index={taskIndex}>
                                                         {(provided) => (
                                                             <div
                                                                 className={`backend-task-box ${highlightedTaskId === task.taskId ? 'highlighted' : ''}`}
@@ -731,19 +761,19 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
 
                 )}
                 {showchangememberModal && (
-                <ChangeMemberModal
-                    isVisible={showchangememberModal}
-                    onClose={() => setshowchangememberModal(false)}
-                    onSave={handleChangeMember}
-                    projectId={projectId}
-                    projectDescription={projectDescription}
-                    projectMembers={projectMembers} // Add this line
-                    setProjectId={setProjectId}
-                    setProjectDescription={setProjectDescription}
-                    setProjectMembers={setProjectMembers}
-                />
+                    <ChangeMemberModal
+                        isVisible={showchangememberModal}
+                        onClose={() => setshowchangememberModal(false)}
+                        onSave={handleChangeMember}
+                        projectId={projectId}
+                        projectDescription={projectDescription}
+                        projectMembers={projectMembers} // Add this line
+                        setProjectId={setProjectId}
+                        setProjectDescription={setProjectDescription}
+                        setProjectMembers={setProjectMembers}
+                    />
 
-            )}
+                )}
                 {/*{showDetailsModal && (*/}
                 {/*    <DetailsModal*/}
                 {/*        onClose={() => setshowDetailsModal(false)}*/}
@@ -760,17 +790,17 @@ const Boards = ({ board, projectId, projectDescription, projectMembers, setProje
 
 };
 Boards.propTypes = {
-projectId: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.string,
-]).isRequired,
+    projectId: PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.string,
+    ]).isRequired,
     projectDescription: PropTypes.string,
     projectMembers: PropTypes.arrayOf(PropTypes.shape({
         userId: PropTypes.number.isRequired,
         projectMemberId: PropTypes.number.isRequired,
         projectId: PropTypes.number.isRequired,
         joinedAt: PropTypes.string.isRequired,
-})),
+    })),
     setProjectId: PropTypes.func.isRequired,
     setProjectDescription: PropTypes.func.isRequired,
     setProjectMembers: PropTypes.func.isRequired,

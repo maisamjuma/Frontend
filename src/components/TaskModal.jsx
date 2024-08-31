@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import './TaskModal.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {
     faUser,
     faCalendar,
@@ -20,17 +20,36 @@ import ChangeMemberModal from './ChangeMemberModal';
 import TaskService from "../Services/TaskService.js";
 
 // eslint-disable-next-line react/prop-types
-const TaskModal = ({ selectedMember,task, onClose, onDelete, boardId, statuses, labels = [],onSaveMember, onSaveDate, onRemoveDate, onSavePriority, onSaveLabels ,projectId, projectDescription, projectMembers, setProjectId, setProjectDescription, setProjectMembers }) => {
+const TaskModal = ({
+                       selectedMember,
+                       task,
+                       onClose,
+                       onDelete,
+                       boardId,
+                       statuses,
+                       labels = [],
+                       onSaveMember,
+                       onSaveDate,
+                       onRemoveDate,
+                       onSavePriority,
+                       onSaveLabels,
+                       projectId,
+                       projectDescription,
+                       projectMembers,
+                       setProjectId,
+                       setProjectDescription,
+                       setProjectMembers
+                   }) => {
     const [isMoveModalOpen, setIsMoveModalOpen] = useState(false);
     const [isCalendarModalOpen, setIsCalendarModalOpen] = useState(false);
     const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
     const [isPriorityModalOpen, setIsPriorityModalOpen] = useState(false);
     const [isLabelModalOpen, setIsLabelModalOpen] = useState(false);
     const [isChangeMemberModalOpen, setIsChangeMemberModalOpen] = useState(false);
-    console.log("projectId:",projectId,"projectDescription:",projectDescription,"projectMembers:",projectMembers);
-    console.log("hhghg",selectedMember)
+    console.log("projectId:", projectId, "projectDescription:", projectDescription, "projectMembers:", projectMembers);
+    console.log("hhghg", selectedMember)
     // eslint-disable-next-line react/prop-types
-    console.log("is task id in taskmodal ? ",task.taskId)
+    console.log("is task id in taskmodal ? ", task.taskId)
 
 
     if (!task) return null;
@@ -72,7 +91,7 @@ const TaskModal = ({ selectedMember,task, onClose, onDelete, boardId, statuses, 
 
     return (
         <div className="task-modal-overlay" onClick={handleOverlayClick}>
-            <div className="task-modal-content" style={{ backgroundColor: getTaskBackgroundColor() }}>
+            <div className="task-modal-content" style={{backgroundColor: getTaskBackgroundColor()}}>
                 <div className="task-modal-actions">
                     <button onClick={() => setIsDetailsModalOpen(true)}>
                         <FontAwesomeIcon icon={faClipboard}/> Show Details
@@ -126,14 +145,14 @@ const TaskModal = ({ selectedMember,task, onClose, onDelete, boardId, statuses, 
             {isDetailsModalOpen && (
                 <DetailsModal
                     onClose={() => setIsDetailsModalOpen(false)}
-                    task={{ ...task}}
+                    task={{...task}}
                 />
             )}
             {isPriorityModalOpen && (
                 <PriorityModal
                     onClose={() => setIsPriorityModalOpen(false)}
                     onSave={onSavePriority}
-                    task={{ ...task}}
+                    task={{...task}}
                 />
             )}
             {isLabelModalOpen && (
@@ -170,8 +189,8 @@ TaskModal.propTypes = {
     task: PropTypes.shape({
         taskName: PropTypes.string.isRequired,
         taskId: PropTypes.number.isRequired,
-        status:  PropTypes.string.isRequired,
-        taskDescription:PropTypes.string.isRequired,
+        status: PropTypes.string.isRequired,
+        taskDescription: PropTypes.string.isRequired,
         date: PropTypes.instanceOf(Date),
         priority: PropTypes.string.isRequired,
         labels: PropTypes.arrayOf(PropTypes.string),

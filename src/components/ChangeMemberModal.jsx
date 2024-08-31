@@ -16,7 +16,7 @@ const ChangeMemberModal = ({
                            }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedMemberId, setSelectedMemberId] = useState('');
-    const [selectedMemberUsername, setSelectedMemberUsername] = useState('');
+    const [selectedMembername, setSelectedMembername] = useState('');
     const [userDetails, setUserDetails] = useState([]);
 
     // Fetch user details based on projectMembers
@@ -42,19 +42,19 @@ const ChangeMemberModal = ({
 
     // Filter members based on search term
     const filteredMembers = userDetails.filter(member =>
-        member.username.toLowerCase().includes(searchTerm.toLowerCase())
+        member.firstName.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     const handleSave = () => {
         if (selectedMemberId) {
-            onSave(selectedMemberId, selectedMemberUsername); // Pass selected member to parent
+            onSave(selectedMemberId, selectedMembername); // Pass selected member to parent
             onClose(); // Close modal after saving
         }
     };
 
     const handleMemberClick = (memberId, memberUsername) => {
         setSelectedMemberId(memberId);
-        setSelectedMemberUsername(memberUsername);
+        setSelectedMembername(memberUsername);
     };
 
     const handleSearchChange = (e) => {
@@ -81,13 +81,13 @@ const ChangeMemberModal = ({
                             filteredMembers.map(member => (
                                 <li
                                     key={member.userId}
-                                    onClick={() => handleMemberClick(member.userId, member.username)}
+                                    onClick={() => handleMemberClick(member.userId, member.firstName)}
                                     className={`change-member-list-item ${member.userId === selectedMemberId ? 'selected-member' : ''}`}
                                 >
                                 <span className="member-initial-circle">
-                                    {member.username.charAt(0).toUpperCase()}
+                                    {member.firstName.charAt(0).toUpperCase()}
                                 </span>
-                                    {member.username} {member.lastName}
+                                    {member.firstName} {member.lastName}
                                 </li>
                             ))
                         ) : (
