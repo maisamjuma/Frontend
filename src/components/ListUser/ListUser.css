@@ -8,6 +8,22 @@
     transition: box-shadow 0.3s ease; /* Smooth shadow transition */
 }
 
+.btn-update-user {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+    background-color: #E9967A; /* Dark salmon background */
+    border-color: #E9967A; /* Dark salmon border */
+    color: #fff; /* White text */
+    border-radius: 5px; /* Rounded corners */
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-update-user:hover {
+    background-color: #d78b6b; /* Slightly darker salmon */
+    border-color: #d78b6b; /* Darker salmon border */
+    color: #fff; /* White text */
+}
+
 .user-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow on hover */
@@ -25,8 +41,6 @@
 }
 
 .card-text {
-    /*font-size: 0.9rem;*/
-    /*margin-bottom: 0.5rem; !* Add some margin for spacing *!*/
     color: #333; /* Dark grey color for text */
 }
 
@@ -43,7 +57,6 @@
 }
 
 .text-muted {
-
     color: #6c757d; /* Muted text color */
 }
 
