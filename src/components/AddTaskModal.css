@@ -13,9 +13,11 @@
     align-items: center;
     z-index: 1000;
 }
-
+.add-new-task-h3{
+    color: #0b0a0a;
+}
 .addtask-modal-content {
-    background: #2f3640;
+    background: #ffffff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -35,9 +37,9 @@
     width: 100%;
     padding: 8px;
     border-radius: 4px;
-    background: #3c4451;
-    color: #dcdde1;
-    border: 1px solid #7f8fa6;
+    background: #F8F9FA;
+    color: black;
+    border: 1px solid #E9967A;
     box-sizing: border-box; /* Ensure padding and border are included in the width */
 }
 
@@ -50,6 +52,7 @@
     margin-top: 20px;
     resize: vertical;
     text-align: left;
+    border: 1px solid #E9967A; /* Dark salmon border color */
 }
 
 .modal-due-date-input,
@@ -81,11 +84,11 @@
 }
 
 .modal-add-button {
-    background-color: #7f8fa6;
+    background-color:darksalmon;
 }
 
 .modal-cancel-button {
-    background-color: #7f8fa6;
+    background-color: darksalmon;
 }
 
 .modal-add-button:hover,
@@ -103,5 +106,5 @@
 }
 
 .paragraph {
-    color: white;
+    color: black;
 }

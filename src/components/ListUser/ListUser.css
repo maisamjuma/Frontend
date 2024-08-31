@@ -4,8 +4,14 @@
     border-radius: 8px; /* Rounded corners */
     transition: transform 0.2s;
     max-height: 300px; /* Set a max height to control the card size */
+    max-width: 320px; /* Set a max height to control the card size */
     background-color: #fff; /* White background for cards */
     transition: box-shadow 0.3s ease; /* Smooth shadow transition */
+    /*margin: 5px; !* Space between cards *!*/
+
+    /*display: flex; !* Or use grid *!*/
+    /*gap: 20px; !* Space between cards *!*/
+    /*flex-wrap: wrap; !* Allows cards to wrap to the next line *!*/
 }
 
 .btn-update-user {
@@ -59,6 +65,12 @@
 .text-muted {
     color: #6c757d; /* Muted text color */
 }
+
+/*.card-container {*/
+/*    display: flex; !* Or use grid *!*/
+/*    gap: 20px; !* Space between cards *!*/
+/*    flex-wrap: wrap; !* Allows cards to wrap to the next line *!*/
+/*}*/
 
 .container {
     background-color: #f8f9fa; /* Light grey background for the container */
