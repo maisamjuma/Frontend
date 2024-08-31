@@ -18,7 +18,6 @@ html, body {
     z-index: 1000;
     background-color: #f8f9fa;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
 }
 
 .secondary-navbar {
@@ -30,7 +29,6 @@ html, body {
     background-color: #e9ecef;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 10px 0; /* Adjust for vertical padding */
-
 }
 
 .secondary-nav {
@@ -54,15 +52,14 @@ html, body {
     text-decoration: none;
     color: black; /* Default color */
     margin-left: 30px;
-
 }
 
 .main-content {
-    margin-top: 10px; /* Height of top navbar */
+    margin-top: 70px; /* Height of top navbar and secondary navbar */
     margin-left: 200px; /* Width of the sidebar */
     padding: 20px;
     flex-grow: 1;
-    overflow-y: hidden; /* Allows scrolling only within this area */
+    overflow-y: auto; /* Allows scrolling within this area */
     overflow-x: hidden; /* Prevents horizontal scrolling */
 }
 
@@ -73,9 +70,9 @@ html, body {
 .secondary-nav-button {
     margin: 0 1px;
     background-color: #e9ecef;
-    color: darksalmon;
+    color: #E9967A; /* Dark salmon color */
     padding: 3px;
-    font-weight: bolder;
+    font-weight: bold;
     letter-spacing: 1px;
 }
 
@@ -83,12 +80,11 @@ html, body {
     background-color: #7f8fa6;
     color: #333333;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 1px 4px;
-
 }
 
 .add-board-button {
     margin-left: 25px;
-    padding: 5px 5px;
+    padding: 5px 10px;
     background: none;
     color: #0b0a0a;
     border: none;
@@ -97,7 +93,7 @@ html, body {
 }
 
 .add-board-button:hover {
-    background: darksalmon;
+    background: #E9967A; /* Dark salmon color */
     color: #ffffff;
 }
 
@@ -116,26 +112,24 @@ html, body {
 }
 
 .dropdownaddboard input {
-    margin-bottom: 1px;
+    margin-bottom: 10px; /* Increased space for clarity */
     padding: 5px;
 }
 
 .dropdownaddboard button {
     padding: 5px 10px;
-    background-color: darksalmon;
+    background-color: #E9967A; /* Dark salmon color */
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    margin-top: 15px;
+    margin-top: 10px;
     align-self: flex-start; /* Align button to the left */
 }
 
 .dropdownaddboard button:hover {
-    background-color: #0b0a0a;
-    color: white;
+    background-color: #0b0a0a; /* Darker color on hover */
 }
-
 
 .board-container {
     position: relative;
@@ -147,14 +141,13 @@ html, body {
     position: absolute;
     top: 100%; /* Position it just below the board name */
     left: 0;
-    background-color: darksalmon;
+    background-color: #E9967A; /* Dark salmon color */
     color: white;
     border: none;
     padding: 8px 16px; /* Increase padding for a bigger button */
     font-size: 14px; /* Increase font size */
     border-radius: 4px;
     cursor: pointer;
-    margin-top: 0px;
 }
 
 .board-container:hover .delete-board-button {
@@ -162,8 +155,9 @@ html, body {
 }
 
 .delete-board-button:hover {
-    background-color: darksalmon; /* Darker red on hover */
+    background-color: #0b0a0a; /* Darker color on hover */
 }
+
 .more-boards-dropdown {
     position: relative;
     display: inline-block;
@@ -178,9 +172,11 @@ html, body {
     border-radius: 4px;
     cursor: pointer;
 }
-.show-more-button:hover{
-    background: darksalmon;
+
+.show-more-button:hover {
+    background: #E9967A; /* Dark salmon color */
 }
+
 .dropdown-content {
     display: block;
     position: absolute;
@@ -188,27 +184,25 @@ html, body {
     left: 0;
     margin-top: 5px;
     padding: 0; /* Remove default padding */
-    /*margin: 0; !* Remove default margin *!*/
     list-style: none; /* Removes bullet points or dots from list items */
     background-color: #f9f9f9;
     min-width: 140px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
 }
-.dropdown-content li{
+
+.dropdown-content li {
     width: 100%; /* Ensure each item takes full width */
     display: flex;
     justify-content: center; /* Center the text horizontally */
     text-align: center; /* Ensure the text itself is centered */
 }
+
 .dropdown-content .secnav-links {
     color: black;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
-    margin-right: 20px;
-
-
 }
 
 .dropdown-content .secnav-links:hover {

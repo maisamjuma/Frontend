@@ -5,49 +5,49 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: transparent; /* No background color */
+    background: transparent;
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1050; /* Ensure it is above other content but below the modal */
+    z-index: 1050;
 }
 
 /* Modal content styling */
 .change-member-modal-content-new {
-    background: #282E33; /* Background color for the modal */
+    background: #282E33;
     padding: 20px;
     border-radius: 8px;
     width: 400px;
     height: 600px;
     max-height: 80%;
     color: white;
-    overflow: hidden; /* Hide overflow */
+    overflow: hidden;
     position: relative;
-    z-index: 1060; /* Ensure it is above the overlay */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Adds a shadow for better visibility */
+    z-index: 1060;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Header styling */
 .change-member-modal-header-new {
     display: flex;
-    justify-content: center; /* Center content horizontally */
+    justify-content: center;
     align-items: center;
     margin-bottom: 15px;
-    position: relative; /* Allows absolute positioning of the close button */
+    position: relative;
 }
 
 /* Title styling */
 .change-member-modal-title-new {
     font-size: 18px;
     font-weight: bold;
-    position: absolute; /* Position it absolutely within the header */
-    left: 50%; /* Center it horizontally */
-    transform: translateX(-50%); /* Adjust for exact centering */
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 /* Close button styling */
 .change-member-close-button-new {
-    position: absolute; /* Position it absolutely within the header */
+    position: absolute;
     top: -7px;
     color: white;
     background: none;
@@ -59,19 +59,25 @@
 }
 
 .change-member-close-button-new:hover {
-    background: darksalmon;
+    background: #E9967A; /* Dark Salmon */
+    color: #282E33; /* Dark background for text contrast */
 }
 
-.saveButton{
+/* Save button styling */
+.saveButton {
     position: absolute;
     right: 5px;
     bottom: 15px;
-    padding-right: 10px;
-    padding-left: 10px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding: 5px 10px;
+    background-color: #E9967A; /* Dark Salmon */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
 
-
+.saveButton:hover {
+    background-color: #d78b6d; /* Slightly darker Dark Salmon */
 }
 
 /* Search input styling */
@@ -79,26 +85,26 @@
     width: 100%;
     padding: 8px;
     margin: 10px 0;
-    border: 1px solid #ccc;
+    border: 1px solid #E9967A; /* Dark Salmon */
     border-radius: 4px;
 }
 
 /* List styling */
 .change-member-list-new {
-    list-style: none; /* Remove default list styling */
+    list-style: none;
     padding: 0;
     color: white;
-    max-height: 380px; /* Adjust as needed to fit the modal */
-    overflow-y: auto; /* Allow vertical scrolling */
+    max-height: 380px;
+    overflow-y: auto;
     margin: 0;
 }
+
 .change-member-list-new::-webkit-scrollbar {
-    display: none; /* Hide scrollbar */
+    display: none;
 }
 
-/* Hide scrollbars for Firefox */
 .change-member-list-new {
-    scrollbar-width: none; /* Hide scrollbar in Firefox */
+    scrollbar-width: none;
 }
 
 .change-member-list-new li {
@@ -111,15 +117,15 @@
     transition: background-color 0.2s, border-color 0.2s;
 }
 
-/* Remove default marker/dots if they are still appearing */
+/* Remove default marker/dots */
 .change-member-list-new li::marker {
-    content: none; /* Remove any marker */
+    content: none;
 }
 
 /* Highlight the selected member */
 .change-member-list-item.selected-member {
     background-color: #e0e0e0;
-    border-color: #007bff;
+    border-color: #E9967A; /* Dark Salmon */
 }
 
 /* Member circle styling */
@@ -131,7 +137,7 @@
     height: 27px;
     margin-right: 10px;
     border-radius: 50%;
-    background-color: darksalmon;
+    background-color: #E9967A; /* Dark Salmon */
     color: white;
     font-size: 14px;
     font-weight: bold;
@@ -140,5 +146,5 @@
 
 /* Add hover effect for list items */
 .change-member-list-new li:hover {
-    background-color: gray;
+    background-color: #E9967A; /* Dark Salmon */
 }

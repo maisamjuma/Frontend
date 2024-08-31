@@ -1,19 +1,12 @@
 /* DeleteMember.css */
 .delete-member-popup {
-    /*position: fixed;*/
-    /*top: 20%;*/
-    /*left: 50%;*/
-    /*transform: translate(-50%, 0);*/
-    /*background-color: white;*/
-    /*padding: 20px;*/
-    /*box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);*/
-    /*z-index: 1000;*/
     padding: 20px;
-    background-color: #ffffff;
+    background-color: #282E33; /* Darker background for consistency */
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Slightly darker shadow for better contrast */
     max-width: 320px;
     margin-top: 20px;
+    color: white; /* Ensure text is readable on the dark background */
 }
 
 .member-item {
@@ -21,7 +14,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 12px 20px;
-    border: 1px solid #ddd;
+    border: 1px solid #E9967A; /* Dark Salmon border */
     border-radius: 8px;
     background-color: #ffffff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -31,22 +24,24 @@
 }
 
 .member-item:hover {
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #f0f0f0; /* Light gray for hover effect */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adjusted shadow */
 }
 
 .secondary-nav-button {
     margin: 0 1px;
-    background-color: #e9ecef;
-    color: darksalmon;
-    padding: 3px;
+    background-color: #E9967A; /* Dark Salmon */
+    color: white;
+    padding: 5px 10px;
     font-weight: bolder;
     letter-spacing: 1px;
+    border: none; /* Remove default border */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer;
 }
 
 .secondary-nav-button:hover {
-    background-color: #7f8fa6;
-    color: #333333;
+    background-color: #d78b6d; /* Slightly darker Dark Salmon */
+    color: #282E33; /* Darker text color for contrast */
     box-shadow: rgba(0, 0, 0, 0.25) 0px 1px 4px;
-
 }

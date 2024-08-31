@@ -1,3 +1,4 @@
+/* HomePage.css */
 .listcontainer {
     position: relative;
     flex-grow: 1; /* Take up remaining space */
@@ -15,18 +16,16 @@
     max-height: 1000px; /* Reduce max height slightly to allow more content to fit */
     overflow-y: auto; /* Enable vertical scrolling within these sections */
 }
-.rolecontent{
+
+.rolecontent {
     margin-top: 20px; /* Adjust as needed */
     height: 100%;
     max-height: 1000px; /* Reduce max height slightly to allow more content to fit */
     overflow-y: auto; /* Enable vertical scrolling within these sections */
 }
-.listcontainer::-webkit-scrollbar {
-    display: none; /* Hides the scrollbar in WebKit-based browsers */
-}
-.Assigncontent::-webkit-scrollbar {
-    display: none; /* Hides the scrollbar in WebKit-based browsers */
-}
+
+.listcontainer::-webkit-scrollbar,
+.Assigncontent::-webkit-scrollbar,
 .rolecontent::-webkit-scrollbar {
     display: none; /* Hides the scrollbar in WebKit-based browsers */
 }
@@ -35,7 +34,6 @@
     display: flex;
     justify-content: center;
     padding-top: 20px; /* Adjust top padding to give more room for lifting */
-
 }
 
 .video-container video {
@@ -45,7 +43,7 @@
 }
 
 .track {
-    color: darksalmon;
+    color: #E9967A; /* Dark Salmon color */
 }
 
 .home-button-container {
@@ -59,23 +57,26 @@
 .btnAssignTeamLeader {
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
-    background: rgb(11, 10, 10);
+    background: #282E33; /* Dark background */
     width: 170px;
     height: 100px;
     margin-top: 20px;
+    color: #E9967A; /* Dark Salmon text color */
+    border: 1px solid #E9967A; /* Dark Salmon border */
 }
 
 .btnAddUser:hover,
 .btnAddRole:hover,
 .btnAssignTeamLeader:hover {
-    background: darksalmon;
+    background: #E9967A; /* Dark Salmon */
+    color: #282E33; /* Dark background for text */
+    border: 1px solid #282E33; /* Dark background border */
 }
 
 .text-bg-dark {
     margin-top: 20px;
+    color: #E9967A; /* Dark Salmon text color */
 }
-
-
 
 .assign-container {
     display: flex;
@@ -83,13 +84,14 @@
     gap: 10px; /* Consistent space between dropdowns and button */
 }
 
-
 .btn {
-    background: darksalmon;
+    background: #E9967A; /* Dark Salmon */
     margin-left: 15px;
+    color: #282E33; /* Dark background text color */
 }
 
 .btn:hover {
-    background: black;
-    border: 2px solid black;
+    background: #282E33; /* Dark background */
+    border: 2px solid #282E33; /* Dark background border */
+    color: #E9967A; /* Dark Salmon text color */
 }

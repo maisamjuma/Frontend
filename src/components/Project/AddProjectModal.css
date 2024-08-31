@@ -1,4 +1,4 @@
-
+/* AddProjectModal.css */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -14,12 +14,13 @@
 
 /* Modal content box */
 .modal-content {
-    background: #fff;
+    background: #282E33; /* Updated background to match the design */
     border-radius: 8px;
     padding: 20px;
     width: 90%;
     max-width: 500px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    color: #dcdde1; /* Updated text color for consistency */
     position: relative;
 }
 
@@ -27,7 +28,7 @@
 .modal-content h3 {
     margin: 0;
     font-size: 1.5em;
-    color: #333;
+    color: #dcdde1; /* Updated title color */
 }
 
 /* Form group styling */
@@ -39,16 +40,18 @@
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
-    color: #333;
+    color: #dcdde1; /* Updated label color */
 }
 
 .form-group input,
 .form-group textarea {
     width: 100%;
     padding: 8px;
-    border: 1px solid #ccc;
+    border: 1px solid #7f8fa6; /* Updated border color */
     border-radius: 4px;
     box-sizing: border-box;
+    background-color: #3c4451; /* Updated background color */
+    color: #dcdde1; /* Updated text color */
 }
 
 /* Success message styling */
@@ -73,7 +76,7 @@
 }
 
 .btn-success {
-    background-color: #28a745;
+    background-color: #7f8fa6; /* Updated to match theme */
 }
 
 .btn-danger {
@@ -81,7 +84,7 @@
 }
 
 .btn-success:hover {
-    background-color: #218838;
+    background-color: #6c757d; /* Darker shade for hover effect */
 }
 
 .btn-danger:hover {

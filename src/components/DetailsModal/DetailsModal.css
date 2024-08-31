@@ -1,28 +1,31 @@
+/* Details modal overlay */
 .details-modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.5); /* Slight overlay for focus */
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: auto;
 }
 
+/* Details modal content */
 .details-modal-content {
-    background: #282E33;
+    background: #ffffff; /* Light background for modal */
     padding: 20px;
     border-radius: 8px;
     max-width: 90%;
     width: 100%;
     max-height: 90%;
     overflow-y: auto;
-    color: #dcdde1;
+    color: #333333; /* Dark text color */
     position: relative;
 }
 
+/* Modal header styles */
 .details-modal-header {
     display: flex;
     justify-content: space-between;
@@ -38,40 +41,36 @@
 .detailstitle {
     display: flex;
     align-items: center;
-    margin-bottom: 10px; /* Adjust margin to ensure proper spacing */
+    margin-bottom: 10px; /* Adjust margin for spacing */
 }
 
 .details-icon {
     margin-right: 10px;
-    color: #ffffff; /* Ensure the icon color matches the text */
+    color: #333333; /* Dark gray icon color */
 }
 
 .close-icon {
     cursor: pointer;
-    color: #dcdde1;
+    color: #333333; /* Dark gray close icon color */
 }
 
+/* Task status */
 .task-status {
     font-size: 0.9em;
-    color: #7f8fa6;
+    color: #E9967A; /* Dark salmon color for status */
 }
 
+/* Task description and comment */
 .task-description,
 .task-comment {
-    font-size: 1.1em; /* Increase font size slightly */
-    font-weight: bold; /* Make the text bold */
-    color: #ffffff; /* Make the text white */
-    margin-bottom: 10px; /* Space below the text */
-    margin-top: 10px; /* Space above the text to move it slightly down */
-}
-
-.task-description {
-    font-size: 1.1em;
+    font-size: 1.1em; /* Slightly larger font size */
     font-weight: bold;
-    color: #ffffff;
-    margin-right: 10px; /* Space between description and button */
+    color: #333333; /* Dark text color */
+    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
+/* Table container */
 .table-container,
 .table-container-comment {
     margin-bottom: 20px;
@@ -83,10 +82,11 @@
 
 .member-name-comment {
     font-size: 1em;
-    color: #dcdde1;
+    color: #333333; /* Dark text color */
     margin-bottom: 5px;
 }
 
+/* Task details table */
 .task-details-table {
     width: 80%; /* Adjust table width as needed */
     border-collapse: collapse;
@@ -95,45 +95,45 @@
 
 .task-details-table th,
 .task-details-table td {
-    border: 1px solid #7f8fa6;
+    border: 1px solid #E9967A; /* Dark salmon border color */
     padding: 5px; /* Reduced padding */
     text-align: left;
-    line-height: 0.6; /* Adjust line height to reduce row height */
+    line-height: 1.2; /* Adjust line height */
 }
 
 .task-details-table-comment {
     width: 70%; /* Reduce the width of the comment table */
     border-collapse: collapse;
-    margin-bottom: 5px; /* Reduce the margin at the bottom of the table */
-    font-size: 0.85em; /* Reduce the font size for a smaller appearance */
+    margin-bottom: 5px; /* Reduced margin */
+    font-size: 0.85em; /* Smaller font size */
 }
 
 .task-details-table-comment th,
 .task-details-table-comment td {
-    border: 1px solid #7f8fa6;
-    padding: 3px; /* Reduce padding for cells */
+    border: 1px solid #E9967A; /* Dark salmon border color */
+    padding: 3px; /* Reduced padding */
     text-align: left;
-    line-height: 3px; /* Adjust line height for more compact rows */
+    line-height: 1.2; /* Adjust line height */
 }
 
 .task-details-table th,
 .task-details-table-comment th {
-    background-color: #34495e;
-    color: #dcdde1;
+    background-color: #E9967A; /* Dark salmon background for headers */
+    color: #ffffff; /* White text color for headers */
 }
 
 .task-details-table tr:nth-child(even),
 .task-details-table-comment tr:nth-child(even) {
-    background-color: #2f3640;
+    background-color: #F8F9FA; /* Light gray background for rows */
 }
 
+/* Textarea styles */
 .textarea,
 .textarea-comment {
     width: 100%;
-    background: #2f3640;
-    background: #3c4451;
-    color: #dcdde1;
-    border: 1px solid #7f8fa6;
+    background: #F8F9FA; /* Light gray background for textareas */
+    color: #333333; /* Dark text color */
+    border: 1px solid #E9967A; /* Dark salmon border color */
     padding: 7px;
     box-sizing: border-box;
 }
@@ -148,34 +148,36 @@
     resize: vertical;
 }
 
-
+/* Table controls styles */
 .table-controls-comment {
     display: flex;
     gap: 10px;
     margin-top: 20px;
 }
+
 .table-controls {
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
 }
 
-.add-attachment-btn:hover {
-    background-color: darksalmon; /* Darker shade for hover effect */
-}
+/* Add attachment button styles */
 .add-attachment-btn {
-    background-color: #7f8fa6; /* Button color */
+    background-color: #E9967A; /* Dark salmon background */
     border: none;
     color: white;
     padding: 10px 20px;
     text-align: center;
-    text-decoration: none;
     font-size: 16px;
     cursor: pointer;
     border-radius: 8px;
-    margin-left: 740px;
+    margin-left: auto; /* Align to the right */
+    transition: background-color 0.3s ease;
 }
 
+.add-attachment-btn:hover {
+    background-color: #d78b6b; /* Slightly darker salmon on hover */
+}
 
 /* Additional styling for other elements */
 .table-container,

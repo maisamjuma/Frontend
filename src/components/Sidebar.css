@@ -1,5 +1,4 @@
-/* src/components/Sidebar.css */
-
+/* Sidebar container styling */
 .sidebar {
     position: fixed;
     padding: 10px;
@@ -7,13 +6,14 @@
     left: 0;
     width: 200px; /* Width of the sidebar */
     bottom: 0; /* Extend to the bottom */
-    background-color: #fff;
+    background-color: #f8f9fa; /* Background color updated to match theme */
     z-index: 998;
     box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
-    overflow-y: hidden; /* Optional: to handle overflow */
+    overflow-y: auto; /* Adjusted to allow vertical scrolling */
     overflow-x: hidden; /* Prevents horizontal scrolling */
 }
 
+/* Dropdown list item styling */
 .dropdown-list li {
     white-space: normal;
     word-wrap: break-word;
@@ -26,7 +26,7 @@
 /* Hover effect for project names */
 .dropdown-list li:hover {
     transform: scale(1.05); /* Slightly enlarge the project name */
-    background-color: #f0f0f0; /* Change the background color */
+    background-color: #e9967a; /* Change the background color to dark salmon */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a shadow for a popping effect */
 }
 
@@ -36,13 +36,12 @@
     transform: scale(2); /* Slightly enlarge the three dots */
     transition: transform 0.2s ease, color 0.2s ease;
     cursor: pointer; /* Change cursor to pointer on hover */
-    /*margin-bottom: 7px;*/
 }
 
 /* Hover effect for the three dots */
 .menu-toggle:hover {
     transform: scale(1.6); /* Slightly enlarge the three dots */
-    color: darksalmon; /* Change the color of the dots */
+    color: #e9967a; /* Change the color of the dots to dark salmon */
 }
 
 /* Hide scrollbars for Webkit browsers (Chrome, Safari) */
@@ -52,21 +51,23 @@
 
 /* Hide scrollbars for Firefox */
 .sidebar {
-    scrollbar-width: none; /* Hide scrollbar in Firefox */
+    scrollbar-width: none; /* Hide scrollbar in Firefox */
 }
 
-
+/* Sidebar icon styling */
 .sidebar-icon {
     width: 20px;
     height: 20px;
     margin-right: 10px;
 }
 
+/* Unordered list styling */
 .sidebar ul {
     list-style: none;
     padding: 0;
 }
 
+/* List item styling */
 .sidebar ul li {
     padding: 10px;
     cursor: pointer;
@@ -74,13 +75,13 @@
     transition: background-color 0.3s, transform 0.3s; /* Smooth transition for background color and scaling */
 }
 
-
 /* Line above the "Settings" item */
 .settings-line {
-    border-top: 3px solid #0b0a0a;
+    border-top: 3px solid #e9967a; /* Line color updated to dark salmon */
     margin: 5px 0; /* Adjust margin to reduce space above and below the line */
 }
 
+/* Project container styling */
 .projects-container {
     display: flex;
     justify-content: space-between;
@@ -88,48 +89,50 @@
     cursor: pointer;
 }
 
+/* Menu container styling */
 .menu-container {
     position: relative;
 }
 
-.menu-toggle {
-    cursor: pointer;
-}
-
+/* Menu list styling */
 .menu-list {
     position: absolute;
     right: 0;
     top: 20px;
-    background: white;
+    background: #fff;
     border: 1px solid #ccc;
     padding: 10px;
     border-radius: 5px; /* Makes the ends of the list item round */
-
     list-style: none;
 }
-.addpro:hover{
+
+/* Hover effect for add and delete project buttons */
+.addpro:hover,
+.deletepro:hover {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Adds a shadow to emphasize the pop-up */
 }
-.deletepro:hover{
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Adds a shadow to emphasize the pop-up */
-}
+
+/* Dropdown list styling */
 .dropdown-list {
     padding-left: 20px;
 }
 
+/* Rotate class */
 .rotate-180 {
-    rotate: 180deg;
+    transform: rotate(180deg); /* Corrected rotation property */
 }
 
+/* Icon text container styling */
 .icon-text-container {
     display: flex;
     align-items: center;
 }
 
+/* Circle icon styling */
 .circle-icon {
     width: 40px;
     height: 40px;
-    background-color: darksalmon;
+    background-color: #e9967a; /* Circle color updated to dark salmon */
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -140,16 +143,14 @@
     margin-right: 10px;
 }
 
+/* Sidebar text styling */
 .sidebar-text {
     font-size: 16px;
     font-weight: normal;
     color: #333;
 }
 
-
-
-/* ... rest of your sidebar styles ... */
-/* Style for the container that holds the list of projects */
+/* Projects list container styling */
 .projects-list-container {
     max-height: 250px; /* Adjust the height as needed */
     overflow-y: auto; /* Enable vertical scrolling */
@@ -172,18 +173,10 @@
     scrollbar-color: #ccc transparent;
 }
 
-/* Highlight effect specifically for the "Users List" item */
-.user-lists:hover {
-    color: #0b0a0a; /* Change text color on hover */
-    font-weight: bold; /* Make text bold */
-}
-
-/* Highlight effect specifically for the "Settings" item */
-.Settings:hover {
-    color: #0b0a0a; /* Change text color on hover */
-    font-weight: bold; /* Make text bold */
-}
-.projects-text:hover{
-    color: #0b0a0a; /* Change text color on hover */
+/* Highlight effect for list items */
+.user-lists:hover,
+.Settings:hover,
+.projects-text:hover {
+    color: #e9967a; /* Change text color on hover to dark salmon */
     font-weight: bold; /* Make text bold */
 }

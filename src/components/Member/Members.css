@@ -1,3 +1,4 @@
+/* members.css */
 .member-list {
     display: flex;
     flex-direction: column;
@@ -7,14 +8,14 @@
     list-style-type: none;
     max-height: 400px;
     overflow-y: auto;
-
 }
+
 .member-list::-webkit-scrollbar {
     display: none;
 }
 
 .member-list {
-    scrollbar-width: none;
+    scrollbar-width: none; /* Hide scrollbar for Firefox */
 }
 
 .member-item-on-project {
@@ -22,9 +23,9 @@
     align-items: center;
     justify-content: space-between;
     padding: 12px 20px;
-    border: 1px solid #ddd;
+    border: 1px solid #e9967a; /* Dark salmon border */
     border-radius: 8px;
-    background-color: #ffffff;
+    background-color: #ffffff; /* White background */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s, box-shadow 0.3s;
     cursor: pointer;
@@ -32,7 +33,7 @@
 }
 
 .member-item-on-project:hover {
-    background-color: #f9f9f9;
+    background-color: #f8f9fa; /* Light gray background on hover */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -51,12 +52,12 @@
 .member-name {
     font-size: 16px;
     font-weight: 600;
-    color: #333;
+    color: #333; /* Dark gray color for name */
 }
 
 .member-role {
     font-size: 14px;
-    color: #666;
+    color: #666; /* Medium gray color for role */
 }
 
 @media (max-width: 768px) {
@@ -77,6 +78,8 @@
         font-size: 12px;
     }
 }
+
 .member-item-on-project.selected {
-    background-color: #f0f0f0;
+    background-color: #e9967a; /* Dark salmon background for selected item */
+    color: #ffffff; /* White text color for selected item */
 }

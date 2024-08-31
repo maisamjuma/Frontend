@@ -1,3 +1,4 @@
+/* Overlay for the task modal */
 .task-modal-overlay {
     position: fixed;
     top: 0;
@@ -11,54 +12,53 @@
     z-index: 1000;
 }
 
+/* Content of the task modal */
 .task-modal-content {
     padding: 20px;
-    border-radius: 4px;
+    border-radius: 8px; /* Updated to match rounded corners theme */
     max-width: 230px;
     width: 100%;
     text-align: center;
-    position: relative;
-    background: none;
-
+    background: #ffffff; /* Light background for readability */
+    color: #333; /* Dark text color for contrast */
+    transition: background-color 0.3s ease; /* Smooth background color transition */
 }
 
+/* Actions area in the task modal */
 .task-modal-actions {
     display: flex;
     flex-direction: column; /* Stack buttons vertically */
     align-items: center; /* Center align buttons */
 }
 
+/* Buttons in the actions area */
 .task-modal-actions button {
     display: flex;
     align-items: center; /* Center icon and text vertically */
     margin: 10px 0; /* Space between buttons */
     padding: 10px 20px;
     border: none;
-    border-radius: 4px;
-    background-color: darksalmon;
-    color: white;
+    border-radius: 4px; /* Consistent border radius */
+    background-color: #E9967A; /* Dark salmon background color */
+    color: #fff; /* White text */
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
+/* Hover effect for buttons */
 .task-modal-actions button:hover {
-    background-color: darksalmon; /* Darker background on hover */
+    background-color: #d87a61; /* Slightly darker shade of dark salmon */
 }
 
+/* Icon and text spacing in buttons */
 .task-modal-actions button svg {
     margin-right: 8px; /* Space between icon and text */
 }
 
+/* Task date styling */
 .task-date {
-    font-size: 0.6em; /* Smaller font size */
-    color: #666; /* Optional: Change color to make it less prominent */
-    margin-top: 30px; /* Space between task name and date */
+    font-size: 0.8em; /* Slightly larger font size for readability */
+    color: #666; /* Gray color for less prominence */
+    margin-top: 20px; /* Adjusted margin for better spacing */
     display: block; /* Ensure date appears on a new line */
-}
-
-.task-modal-content {
-    border-radius: 8px;
-    padding: 20px;
-    color: white;
-    transition: background-color 0.3s ease;
 }

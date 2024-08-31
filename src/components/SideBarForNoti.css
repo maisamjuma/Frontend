@@ -1,29 +1,44 @@
+/* Sidebar container styling */
 .sidebar {
     position: fixed;
     top: 60px; /* Adjust for navbar height */
     left: 0;
     width: 200px;
     height: calc(100vh - 60px); /* Full height minus navbar height */
-    background-color: #fff;
+    background-color: #f8f9fa; /* Background color updated to match theme */
     box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
     padding: 10px;
     overflow-y: auto;
     z-index: 998; /* Ensure it stays above the main content */
 }
 
+/* List group item styling */
 .list-group-item {
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, color 0.3s; /* Added color transition */
+    border-radius: 4px; /* Rounded corners for hover effect */
 }
 
+/* Selected item styling */
 .list-group-item.selected {
-    background-color: #d3d3d3;
+    background-color: #e9967a; /* Dark salmon background for selected items */
+    color: #fff; /* White text for better contrast */
 }
 
+/* Primary button styling */
 .btn-primary {
     margin-top: 0;
     width: 100%;
     margin-bottom: 20px;
-
+    background-color: #e9967a; /* Dark salmon background color for primary button */
+    border: none; /* Remove default border */
+    color: #fff; /* White text for button */
+    padding: 10px; /* Padding for better button appearance */
+    border-radius: 4px; /* Rounded corners for the button */
+    transition: background-color 0.3s; /* Smooth transition for background color */
 }
 
+/* Hover effect for primary button */
+.btn-primary:hover {
+    background-color: #d87a61; /* Slightly darker shade of dark salmon for hover effect */
+}

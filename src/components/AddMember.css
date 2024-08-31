@@ -1,3 +1,4 @@
+/* AddMember.css */
 .add-member-container {
     padding: 20px;
     background-color: #ffffff;
@@ -13,6 +14,7 @@
     margin-bottom: 15px;
     border-radius: 4px;
     border: 1px solid #ccc;
+    box-sizing: border-box;
 }
 
 .member-list {
@@ -20,7 +22,7 @@
     padding: 0;
     margin: 0;
     max-height: 350px;
-    overflow: auto; /* Keep overflow to enable scrolling */
+    overflow: auto; /* Enable scrolling */
 }
 
 /* Hide scrollbars for Webkit browsers (Chrome, Safari) */
@@ -35,13 +37,12 @@
 
 .member-item {
     display: flex;
-    width: 340px;
     align-items: center; /* Center items vertically */
-    gap: 25px; /* Adjust gap for better spacing */
+    gap: 15px; /* Adjusted gap for better spacing */
     padding: 10px;
     background-color: #f9f9f9;
     border-radius: 4px;
-    margin-bottom: 10px; /* Reduce bottom margin */
+    margin-bottom: 10px; /* Spacing between items */
     transition: background-color 0.3s ease;
     position: relative; /* Position relative for checkbox positioning */
 }
@@ -92,4 +93,3 @@
 .member-item.selected {
     background-color: #d1e7ff; /* Light blue to indicate selection */
 }
-

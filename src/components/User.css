@@ -5,8 +5,7 @@
     align-items: center;
     min-height: 100vh; /* Full viewport height */
     padding: 0; /* Remove default padding */
-    margin-left: 100px;
-    margin-top: -70px;
+    margin: 0; /* Reset margin to center properly */
 }
 
 /* Card styles */
@@ -37,7 +36,7 @@
 
 /* Header styles */
 .card-header {
-    background-color: darksalmon;
+    background-color: #E9967A; /* Dark salmon background color */
     color: white;
     padding: 15px;
     border-bottom: 1px solid #ddd;
@@ -59,19 +58,19 @@
     display: block;
     color: #333;
 }
+
 /* Checkbox container style */
 .checkbox-container {
     display: flex;
-    margin-top: 10px;
     align-items: center;
-    margin-right: 600px/* Align checkbox and label vertically */
+    margin-top: 10px;
 }
 
 /* Label styles */
 .teamleaderlabel {
     font-weight: bold;
     color: #333;
-   /* Adjust spacing between label and checkbox */
+    margin-left: 0.5rem; /* Adjust spacing between label and checkbox */
 }
 
 /* Input and select styles */
@@ -97,22 +96,15 @@
     font-size: 0.875rem;
 }
 
-
-
 /* Checkbox styles */
 .form-check-input {
     width: 10px; /* Ensure checkbox does not stretch */
     margin-right: 0.5rem; /* Space between checkbox and label */
 }
 
-/* Label margin-left for checkbox */
-.ml-2 {
-    margin-left: 0.5rem; /* Adjust spacing as needed */
-}
-
 /* Button styles */
 .btn-success {
-    background-color: #0b0a0a !important; /* Use !important to override default styles */
+    background-color: #0b0a0a !important; /* Dark background */
     border: none !important; /* Remove default border */
     color: white !important; /* Ensure text color is white */
     padding: 0.5rem 1rem !important; /* Consistent padding */
@@ -123,28 +115,27 @@
 
 /* Button hover styles */
 .btn-success:hover {
-    background-color: darksalmon !important; /* Background color on hover */
-}
-
-/* Checkbox styles */
-.form-check-input {
-    margin-right: 0.5rem;
+    background-color: #E9967A !important; /* Dark salmon background color on hover */
 }
 
 /* Form control sizes */
 input[type="datetime-local"] {
     padding: 0.5rem;
 }
+
+/* Layout for form rows */
 .form-row {
     display: flex;
     flex-wrap: wrap;
 }
-/* Style for the vertical group of fields */
+
+/* Style for vertical group of fields */
 .vertical-group {
     flex: 1; /* Adjust this value as needed */
     margin-right: 1rem;
 }
-/* Style for the horizontal group of fields */
+
+/* Style for horizontal group of fields */
 .horizontal-group {
     flex: 1; /* Adjust this value as needed */
     margin-right: 1rem;

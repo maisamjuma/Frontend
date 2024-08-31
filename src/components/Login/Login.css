@@ -10,12 +10,12 @@ html, body {
     align-items: center; /* Center vertically */
     height: 100vh; /* Full viewport height */
     width: 100vw; /* Full viewport width */
-    background-color: #f4f4f4;
+    background-color: #f8f9fa; /* Light gray background to match the theme */
     box-sizing: border-box; /* Include padding and border in the width */
 }
 
 .login-form {
-    background: white;
+    background: #ffffff; /* White background for the form */
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -26,35 +26,39 @@ html, body {
 
 .login-form h2 {
     margin-bottom: 20px;
-    text-align: center; /* Center text if needed */
+    text-align: center; /* Center text */
+    color: #333333; /* Dark gray color for header */
 }
 
 .login-form label {
     display: block;
     margin-bottom: 10px;
+    color: #333333; /* Dark gray text color */
 }
 
 .login-form input {
     width: 100%;
     padding: 8px;
     margin-bottom: 20px;
-    border: 1px solid #0b0a0a;
+    border: 1px solid #e9967a; /* Dark salmon border color */
     border-radius: 4px;
+    background-color: #f8f9fa; /* Light gray background for input fields */
+    color: #333333; /* Dark gray text color */
 }
 
 .login-form button {
     width: 100%;
     padding: 10px;
-    background-color: #ffffff;
-    color: darksalmon; /* Text color */
-    border: 1px solid darksalmon; /* Border color */
+    background-color: #e9967a; /* Dark salmon background */
+    color: #ffffff; /* White text color */
+    border: 1px solid #e9967a; /* Dark salmon border color */
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s; /* Smooth transition for color changes */
 }
 
 .login-form button:hover {
-    background-color: darksalmon; /* Background color on hover */
-    color: #ffffff; /* Text color on hover */
-    border: 1px solid darksalmon; /* Border color */
+    background-color: #d78b6b; /* Slightly darker salmon on hover */
+    color: #ffffff; /* White text color on hover */
+    border: 1px solid #d78b6b; /* Darker salmon border color on hover */
 }

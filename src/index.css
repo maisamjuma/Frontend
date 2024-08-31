@@ -2,11 +2,9 @@
     font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
     line-height: 1.5;
     font-weight: 400;
-
     color-scheme: light dark;
-    color: rgba(255, 255, 255, 0.87);
-    background-color: #242424;
-
+    color: #333333; /* Dark Gray for text */
+    background-color: #F8F9FA; /* Light Gray background */
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
@@ -15,12 +13,12 @@
 
 a {
     font-weight: 500;
-    color: #646cff;
-    text-decoration: inherit;
+    color: #E9967A; /* Dark Salmon for links */
+    text-decoration: none;
 }
 
 a:hover {
-    color: #535bf2;
+    color: #d78b6b; /* Slightly darker salmon for hover effect */
 }
 
 body {
@@ -29,11 +27,14 @@ body {
     place-items: center;
     min-width: 320px;
     min-height: 100vh;
+    background-color: #F8F9FA; /* Light Gray background */
+    color: #333333; /* Dark Gray text */
 }
 
 h1 {
     font-size: 3.2em;
     line-height: 1.1;
+    color: #E9967A; /* Dark Salmon for headings */
 }
 
 button {
@@ -44,7 +45,14 @@ button {
     font-weight: 500;
     font-family: inherit;
     cursor: pointer;
-    transition: border-color 0.25s;
+    transition: background-color 0.25s, border-color 0.25s;
+    background-color: #E9967A; /* Dark Salmon background */
+    color: #ffffff; /* White text */
+}
+
+button:hover {
+    background-color: #d78b6b; /* Slightly darker salmon on hover */
+    border-color: #d78b6b; /* Darker salmon border */
 }
 
 button:focus,
@@ -54,17 +62,15 @@ button:focus-visible {
 
 @media (prefers-color-scheme: light) {
     :root {
-        color: #213547;
-        background-color: #ffffff;
+        color: #333333;
+        background-color: #F8F9FA;
     }
 
     a:hover {
-        color: #747bff;
+        color: #d78b6b; /* Dark Salmon for link hover */
     }
 
     button {
-        background-color: #f9f9f9;
+        background-color: #E9967A; /* Dark Salmon background */
     }
 }
-
-

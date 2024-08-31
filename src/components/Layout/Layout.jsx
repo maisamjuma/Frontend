@@ -1,12 +1,12 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './Layout.css';
 import Navbar from '../Navbar/Navbar.jsx';  // Import your Navbar component
 import Modal from '../Modal/Modal.jsx';    // Import your Modal component
 import Sidebar from '../Sidebar.jsx'; // Import the new Sidebar component
-import {useNavigate} from 'react-router-dom'; // Make sure to import useNavigate
+import { useNavigate } from 'react-router-dom'; // Make sure to import useNavigate
 
-const Layout = ({children, onLogout}) => {
+const Layout = ({ children, onLogout }) => {
     const [projects, setProjects] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
@@ -32,7 +32,7 @@ const Layout = ({children, onLogout}) => {
     };
 
     const addProject = (projectName) => {
-        setProjects([...projects, {name: projectName}]);
+        setProjects([...projects, { name: projectName, id: Date.now() }]); // Added id for unique key
     };
 
     const handleMenuAction = (action, selectedProjects) => {
@@ -52,14 +52,14 @@ const Layout = ({children, onLogout}) => {
 
     return (
         <div className="layout-container">
-            {/* First Row: Navbar */}
+            {/* Navbar */}
             <div className="navbar">
-                <Navbar onLogout={onLogout}/> {/* Pass onLogout to Navbar */}
+                <Navbar onLogout={onLogout} /> {/* Pass onLogout to Navbar */}
             </div>
 
-            {/* Second Row: Two Columns */}
+            {/* Content Row */}
             <div className="content-row">
-                {/* Left Column: Sidebar */}
+                {/* Sidebar */}
                 <div className="sidebar">
                     <Sidebar
                         projects={projects}
@@ -68,14 +68,15 @@ const Layout = ({children, onLogout}) => {
                         onMenuAction={handleMenuAction}
                     />
                 </div>
-                {/* Right Column: Main Content */}
+
+                {/* Main Content */}
                 <div className="main-content">
                     {children}
                 </div>
             </div>
 
-            {/* Render the Modal component */}
-            <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} addProject={addProject}/>
+            {/* Modal */}
+            <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} addProject={addProject} />
         </div>
     );
 };

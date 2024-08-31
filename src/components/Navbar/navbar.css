@@ -1,14 +1,21 @@
+/* navbar.css */
 .navbar {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 1000;
-    background-color: #f8f9fa;
+    background-color: #f8f9fa; /* Light background color */
 }
 
 .navbar .navbar-nav .nav-link {
     margin-right: 1rem;
+    color: #333; /* Default text color for links */
+    transition: color 0.3s; /* Smooth transition for link color */
+}
+
+.navbar .navbar-nav .nav-link:hover {
+    color: #e9967a; /* Dark salmon color on hover */
 }
 
 .navbar .form-inline {
@@ -19,24 +26,29 @@
 .navbar .navbar-brand {
     font-weight: bold; /* Ensure 'Task Hub' is bold */
     cursor: pointer; /* Indicate that it is clickable */
+    color: #333; /* Default text color for brand */
+}
+
+.navbar .navbar-brand:hover {
+    color: #e9967a; /* Dark salmon color on hover */
 }
 
 .navbar .dropdown-menu {
-    background-color: #f8f9fa;
-    border: none; /* Remove border if you want a cleaner look */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+    background-color: #f8f9fa; /* Light background for dropdown */
+    border: none; /* Remove border for a cleaner look */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
 .navbar .btn-outline-success {
-    border-color: #ff69b4;
-    color: #ff69b4;
+    border-color: #e9967a; /* Dark salmon border color */
+    color: #e9967a; /* Dark salmon text color */
 }
 
 .navbar .btn-outline-success:hover,
 .navbar .btn-outline-success:active,
 .navbar .btn-outline-success:focus {
-    background-color: #ff69b4;
-    color: white;
+    background-color: #e9967a; /* Dark salmon background on hover */
+    color: white; /* White text color */
 }
 
 body {
@@ -61,13 +73,13 @@ body {
 }
 
 .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item {
-    color: #000; /* Adjust text color */
+    color: #333; /* Default text color */
 }
 
 .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item:hover {
-    background-color: #e9ecef; /* Adjust hover background color */
+    background-color: #e9ecef; /* Light gray background on hover */
 }
 
 .track {
-    color: darksalmon;
+    color: #e9967a; /* Dark salmon color for track */
 }

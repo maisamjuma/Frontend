@@ -1,3 +1,4 @@
+/* AddTaskModal.css */
 .addtask-modal-overlay {
     position: fixed;
     top: 0;
@@ -25,40 +26,36 @@
     overflow-y: auto;
 }
 
-.modal-task-input {
+.modal-task-input,
+.modal-description-textarea,
+.modal-due-date-input,
+.modal-priority-select,
+.priority-dropdown,
+.user-dropdown {
     width: 100%;
     padding: 8px;
-    margin-top: 30px;
+    border-radius: 4px;
     background: #3c4451;
     color: #dcdde1;
     border: 1px solid #7f8fa6;
+    box-sizing: border-box; /* Ensure padding and border are included in the width */
+}
+
+.modal-task-input {
+    margin-top: 30px;
 }
 
 .modal-description-textarea {
-    width: 100%;
-    padding: 8px;
     height: 150px;
-    margin-bottom: 20px;
-    resize: vertical;
     margin-top: 20px;
-    background: #3c4451;
-    color: #dcdde1;
-    border: 1px solid #7f8fa6;
+    resize: vertical;
     text-align: left;
 }
 
-.modal-due-date-input {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-}
-
+.modal-due-date-input,
 .modal-priority-select {
-    width: 100%;
-    padding: 8px;
     margin-bottom: 10px;
 }
-
 
 .modal-actions {
     display: flex;
@@ -66,63 +63,45 @@
     margin-top: 30px;
 }
 
-
 .selected-date {
     margin-top: 5px;
     font-size: 14px;
     color: #555;
 }
 
+.modal-add-button,
+.modal-cancel-button {
+    margin-top: 20px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    color: white;
+}
 
 .modal-add-button {
-    margin-top: 20px;
     background-color: #7f8fa6;
-    color: white;
 }
 
 .modal-cancel-button {
-
-    margin-top: 20px;
     background-color: #7f8fa6;
-    color: white;
 }
 
-
-.modal-add-button:hover {
-    background-color: darksalmon; /* Darker shade for hover effect */
-    color: #0b0a0a;
-}
-
+.modal-add-button:hover,
 .modal-cancel-button:hover {
     background-color: darksalmon; /* Darker shade for hover effect */
     color: #0b0a0a;
 }
 
-.priority-dropdown {
-    width: 100%;
-    padding: 8px;
-    border-radius: 4px;
-    background: #3c4451;
-    color: #dcdde1;
-    border: 1px solid #7f8fa6;
-}
-.custom-calendar {
-    margin-top: 20px; /* Adjust this value to move the calendar down */
-}
-.user-dropdown{
-    width: 100%;
-    padding: 8px;
-    border-radius: 4px;
-    background: #3c4451;
-    color: #dcdde1;
-    border: 1px solid #7f8fa6;
-}
 .priority-options {
     margin-top: 40px;
 }
+
 .user-options {
     margin-top: 10px;
 }
-.paragraph{
-    color:white;
+
+.paragraph {
+    color: white;
 }

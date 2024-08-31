@@ -1,18 +1,16 @@
-/* Layout.css */
-
 .layout-container {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    background: none;
+    background-color: #F8F9FA; /* Light Gray background */
 }
 
 /* Navbar styling */
 .navbar {
     width: 100%;
     height: 60px; /* Adjust height as needed */
-    background-color: #333;
-    color: #fff;
+    background-color: #E9967A; /* Dark Salmon */
+    color: #fff; /* White text */
     position: fixed;
     top: 0;
     left: 0;
@@ -22,10 +20,10 @@
 /* Sidebar styling */
 .sidebar {
     width: 200px; /* Adjust width as needed */
-    background-color: #555;
-    color: black;
+    background-color: #E9967A; /* Dark Salmon */
+    /*color: #ffffff; !* White text *!*/
     position: fixed;
-    top: 20px; /* Aligns below the navbar */
+    top: 60px; /* Aligns below the navbar */
     left: 0;
     height: calc(100vh - 60px); /* Takes up remaining vertical space */
     z-index: 900;
@@ -35,18 +33,15 @@
 .content-row {
     display: flex;
     flex: 1;
-    margin-top: 50px;
+    margin-top: 60px; /* Adjusted for the navbar */
     margin-left: 200px; /* Shifts content right to account for the sidebar */
-    justify-content: center;
-    align-items: center;
-
+    padding: 20px;
 }
 
 /* Main content styling */
 .main-content {
-    background: none;
+    background: #F8F9FA; /* Light Gray background */
     width: 100%;
     max-width: 1080px; /* Adjust max width as needed */
     margin: auto; /* Center content within available space */
 }
-
