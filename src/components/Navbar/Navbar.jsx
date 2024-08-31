@@ -12,7 +12,7 @@ const Navbar = ({ onLogout }) => {
                 <div className="dropdown">
                     <a className="navbar-brand fw-bold" href="#" role="button" id="dropdownMenuLink"
                        data-bs-toggle="dropdown" aria-expanded="false">
-                        DEV<span className="track">TRACK</span>
+                        <span className="DEV">DEV</span><span className="track">TRACK</span>
                     </a>
                     <ul className="dropdown-menu" aria-labelledby="dropdownMenuLink">
                         <li><Link className="dropdown-item" to="/">Welcome</Link></li>
