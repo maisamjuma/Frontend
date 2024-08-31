@@ -116,7 +116,7 @@ const Notification = ({ loggedInUser }) => {
                                         className="user-item"
                                         onClick={() => user && user.userId && handleUserFilterClick(user.userId)}
                                     >
-                                        {user && user.firstName ? user.firstName : 'Unknown User'} {/* Assuming 'firstName' is the property */}
+                                        {user && user.firstName ? user.firstName : 'Unknown User'} {user && user.lastName ? user.lastName : 'Unknown User'}{/* Assuming 'firstName' is the property */}
                                     </li>
                                 ))}
                             </ul>
@@ -179,7 +179,7 @@ const Notification = ({ loggedInUser }) => {
                                     />
                                 </div>
                                 <div className="d-flex justify-content-between mt-3">
-                                    <button className="btn btn-primary" onClick={handleSendNotification}>Send</button>
+                                    <button className="saveNotificationBtn" onClick={handleSendNotification}>Send</button>
                                     <button className="cancelButton" onClick={() => setShowPopup(false)}>Cancel</button>
                                 </div>
                             </>

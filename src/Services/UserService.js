@@ -38,6 +38,16 @@ class UserService {
         });
     }
 
+    // Fetch a user by its ID
+    getUserByName(email) {
+        const token = localStorage.getItem("token");
+        return axios.get(`${USERS_API_BASE_URL}/${email}`, {
+            headers: {
+                'X-Auth-Token': token
+            }
+        });
+    }
+
     // Update a user by its ID
     updateUser(userId, user) {
         const token = localStorage.getItem("token");
