@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import './PriorityModal.css';
 import TaskService from "../Services/TaskService.js";
 
-const PriorityModal = ({onClose,task, onSave}) => {
+const PriorityModal = ({onClose, task, onSave}) => {
     const [selectedPriority, setSelectedPriority] = useState('');
 
     const handlePriorityChange = (priority) => {
@@ -12,14 +12,26 @@ const PriorityModal = ({onClose,task, onSave}) => {
     };
 
     const handleSaveClick = async () => {
+        console.log("selected : ", selectedPriority)
         try {
-            // Update the task with the new priority
-            await TaskService.updateTask(task.taskId, { priority: selectedPriority });
-            onSave(selectedPriority); // Notify the parent component
-            onClose(); // Close the modal
+            // Create the updated task object with the new priority
+            const updatedTask = {
+                ...task, // Spread the existing task details
+                priority: selectedPriority, // Update the priority with the selected value
+            };
+
+            // Call the TaskService to update the task with the new priority
+            await TaskService.updateTask(task.taskId, updatedTask);
+
+            // Alert the user that the priority was updated successfully
+            alert('Task priority updated successfully!');
+            onSave(selectedPriority);
+            // Close the modal after saving
+            onClose();
         } catch (error) {
+            // Handle any errors that occur during the update
             console.error('Error updating task priority:', error);
-            alert('Failed to update the task priority. Please try again.');
+            alert('There was an error updating the task priority. Please try again.');
         }
     };
 
