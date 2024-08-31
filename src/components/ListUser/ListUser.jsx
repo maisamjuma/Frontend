@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import UserService from '../../Services/UserService.js';
+import RoleService from "../../Services/RoleService.js";
 import './ListUser.css';
+import { Container } from "react-bootstrap";
+import { Row } from "antd";
 
 const ListUser = () => {
     const [users, setUsers] = useState([]);
@@ -11,20 +14,29 @@ const ListUser = () => {
         const fetchUsers = async () => {
             try {
                 const response = await UserService.getAllUsers();
-                // Transform the response data to use correct field names
-                const transformedUsers = response.data.map(user => ({
+                const usersData = response.data;
+
+                const roleResponse = await RoleService.getAllRoles();
+                const rolesData = roleResponse.data;
+                const roleMap = rolesData.reduce((acc, role) => {
+                    acc[role.funcRoleId] = role.roleName;
+                    return acc;
+                }, {});
+
+                const transformedUsers = usersData.map(user => ({
                     userId: user.userId,
                     email: user.email,
                     firstName: user.firstName,
                     lastName: user.lastName,
-                    functionalRoleId: user.functionalRoleId, // Updated to match the API response
+                    functionalRoleId: user.functionalRoleId,
+                    roleName: roleMap[user.functionalRoleId] || 'Unknown Role',
                     isTeamLeader: user.isTeamLeader,
-                    createdAt: new Date(user.createdAt).toLocaleString(), // Formatting date
-                    updatedAt: new Date(user.updatedAt).toLocaleString()  // Formatting date
+                    createdAt: new Date(user.createdAt).toLocaleString(),
+                    updatedAt: new Date(user.updatedAt).toLocaleString()
                 }));
                 setUsers(transformedUsers);
             } catch (error) {
-                console.error('Error fetching users:', error);
+                console.error('Error fetching users or roles:', error);
             }
         };
         fetchUsers();
@@ -35,49 +47,36 @@ const ListUser = () => {
     };
 
     return (
-        <div>
-            <h2 className='text-bg-dark'>List of Users</h2>
-            <div className="user-table-container">
-                <table className="table table-striped table-bordered">
-                    <thead>
-                    <tr>
-                        <th>User Id</th>
-                        <th>Email</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Role ID</th>
-                        <th>Is Team Leader?</th>
-                        <th>Created At</th>
-                        <th>Updated At</th>
-                        <th>Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {users.map(user => (
-                        <tr key={user.userId}>
-                            <td>{user.userId}</td>
-                            <td>{user.email}</td>
-                            <td>{user.firstName}</td>
-                            <td>{user.lastName}</td>
-                            <td>{user.functionalRoleId}</td>
-                            <td>{user.isTeamLeader ? 'Yes' : 'No'}</td>
-                            <td>{user.createdAt}</td>
-                            <td>{user.updatedAt}</td>
-                            <td>
+        <Container className="mt-4">
+            <h2 className="text-center mb-4">Employee Directory</h2>
+            <Row>
+                {users.map(user => (
+                    <div key={user.userId} className="col-md-6 col-lg-4 mb-4">
+                        <div className="card user-card p-3 shadow-sm">
+                            <h3 className="card-title text-primary mb-2">
+                                {user.firstName} {user.lastName}
+                            </h3>
+                            <h5 className="card-subtitle mb-3 text-muted">
+                                {user.roleName}
+                            </h5>
+                            <p className="card-text"><strong>Email:</strong> {user.email}</p>
+                            <p className="card-text"><strong>Team Leader:</strong> {user.isTeamLeader ? 'Yes' : 'No'}</p>
+                            <p className="card-text"><strong>Joined:</strong> {user.createdAt}</p>
+                            <div className="d-flex justify-content-between align-items-center mt-4">
                                 <button
                                     type='button'
-                                    className='btn btn-info mb-2'
+                                    className='btn btn-info'
                                     onClick={() => updateUser(user.userId)}
                                 >
                                     Update
                                 </button>
-                            </td>
-                        </tr>
-                    ))}
-                    </tbody>
-                </table>
-            </div>
-        </div>
+                                <small className="text-muted"><em>Last Updated: {user.updatedAt}</em></small>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </Row>
+        </Container>
     );
 };
 

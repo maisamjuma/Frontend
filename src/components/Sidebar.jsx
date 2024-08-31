@@ -6,6 +6,7 @@ import {useNavigate} from 'react-router-dom';
 import AddProjectModal from './Project/AddProjectModal.jsx';
 import ProjectService from '../Services/ProjectService';  // Adjust the import path as necessary
 // import { deleteProject } from '../Services/ProjectService'; // Import the deleteProject function
+import {userIsAdmin} from '../utils/authUtils'; // Import the utility function
 
 import {ArrowDownIcon} from "./SVGIcons.jsx";
 
@@ -20,6 +21,7 @@ const Sidebar = ({onMenuAction}) => {
     const [selectedProjects, setSelectedProjects] = useState([]); // Added this line
     const sidebarRef = useRef(null);
     const navigate = useNavigate();
+    const userRoleIsAdmin = userIsAdmin(); // Check if the user is an admin
 
     // Define static project
     const STATIC_PROJECT = {
@@ -194,21 +196,23 @@ const Sidebar = ({onMenuAction}) => {
                 </li>
                 <hr/>
                 <li className="projects-container" onClick={toggleProjects}>
-                <span className="d-flex gap-2">
-                <span className="projects-text">Projects</span>
-                <div className={isProjectsOpen && "rotate-180 mt-1"}>
-                        <ArrowDownIcon/>
-                </div>
-                 </span>
-                    <div className="menu-container">
-                        <span className="menu-toggle" onClick={toggleMenu}>...</span>
-                        {isMenuOpen && (
-                            <ul className="menu-list" onClick={(e) => e.stopPropagation()}>
-                                <li className="addpro" onClick={() => handleMenuAction('Add')}>Add</li>
-                                <li className="deletepro" onClick={() => handleMenuAction('Delete')}>Delete</li>
-                            </ul>
-                        )}
-                    </div>
+        <span className="d-flex gap-2">
+            <span className="projects-text">Projects</span>
+            <div className={isProjectsOpen && "rotate-180 mt-1"}>
+                <ArrowDownIcon/>
+            </div>
+        </span>
+                    {userRoleIsAdmin && (
+                        <div className="menu-container">
+                            <span className="menu-toggle" onClick={toggleMenu}>...</span>
+                            {isMenuOpen && (
+                                <ul className="menu-list" onClick={(e) => e.stopPropagation()}>
+                                    <li className="addpro" onClick={() => handleMenuAction('Add')}>Add</li>
+                                    <li className="deletepro" onClick={() => handleMenuAction('Delete')}>Delete</li>
+                                </ul>
+                            )}
+                        </div>
+                    )}
                 </li>
                 {isProjectsOpen && (
                     <div className="projects-list-container">
@@ -234,7 +238,9 @@ const Sidebar = ({onMenuAction}) => {
                     </div>
                 )}
                 <div className="line-above-settings"/>
-                <li className="user-lists" onClick={handleUsersListClick}>Users List</li>
+                {userRoleIsAdmin && (
+                    <li className="user-lists" onClick={handleUsersListClick}>Users List</li>
+                )}
                 <li className="Settings">Settings</li>
             </ul>
             <AddProjectModal
@@ -245,7 +251,7 @@ const Sidebar = ({onMenuAction}) => {
         </div>
     );
 };
-    Sidebar.propTypes = {
+Sidebar.propTypes = {
     projects: PropTypes.arrayOf(
         PropTypes.shape({
             id: PropTypes.string.isRequired,
