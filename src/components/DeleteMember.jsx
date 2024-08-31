@@ -33,8 +33,8 @@ const DeleteMember = ({
                             onClick={() => onMemberClick(member)}
                         >
 
-                            <div className="member-name">{user.username}</div>
-                            <div className="member-role">{user.role}</div>
+                            <div className="member-name">{user.firstName} {user.lastName}</div>
+                            <div className="member-role">{user.functionalRoleId}</div>
                         </div>
 
                     );
