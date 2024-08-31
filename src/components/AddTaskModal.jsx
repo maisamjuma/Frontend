@@ -83,7 +83,7 @@ const AddTaskModal = ({
         isVisible && (
             <div className="addtask-modal-overlay">
                 <div className="addtask-modal-content">
-                    <h3>Add New Task</h3>
+                    <h3 className="add-new-task-h3">Add New Task</h3>
                     <div className="task-info">
                         <input
                             type="text"
