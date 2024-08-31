@@ -14,14 +14,13 @@ const MemberProfile = ({ member, userDetails, onClose }) => {
             // Fetch the role name using the role ID
             const fetchRoleName = async () => {
                 try {
-                    const response = await RoleService.getRoleById(user.role);
+                    const response = await RoleService.getRoleById(user.functionalRoleId);
                     setRoleName(response.data.roleName);
                 } catch (error) {
                     console.error(`Error fetching role for roleId: ${user.role}`, error);
                     setRoleName('Unknown Role');
                 }
             };
-
             fetchRoleName();
         }
     }, [user]);
@@ -30,7 +29,7 @@ const MemberProfile = ({ member, userDetails, onClose }) => {
         return <div>Loading...</div>; // Handle loading state or display an error
     }
 
-    const firstLetter = user.username.charAt(0).toUpperCase();
+    const firstLetter = user.firstName.charAt(0).toUpperCase();
 
     return (
         <div className="member-profile-overlay">
@@ -40,14 +39,15 @@ const MemberProfile = ({ member, userDetails, onClose }) => {
                         <span>{firstLetter}</span>
                     </div>
                     <div className="profile-info">
-                        <h2 className="usernameFont">{user.username}</h2>
+                        <h2 className="usernameFont">{user.firstName} {user.lastName}</h2>
                     </div>
                 </div>
                 <div className="profile-actions">
-                    <p className="fontColor"><strong>Last Name: </strong> {user.lastName}</p>
+                    <p className="fontColor"><strong>First Name: </strong> {user.firstName}</p>
                     <p className="fontColor"><strong>Email: </strong> {user.email}</p>
                     <p className="fontColor"><strong>Role: </strong> {roleName}</p>
-                    <button className="secondary-nav-button d-flex justify-content-center" onClick={onClose}>Close</button>
+                    <button className="secondary-nav-button d-flex justify-content-center" onClick={onClose}>Close
+                    </button>
                 </div>
             </div>
         </div>
