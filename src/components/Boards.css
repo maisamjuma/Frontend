@@ -4,7 +4,7 @@ html, body {
     padding: 0;
     height: 100%; /* Ensure body takes full height of viewport */
     background-color: #ffffff; /* Set background color to white */
-    overflow-y: hidden;
+    overflow-y: auto;
     overflow-x: hidden;
 }
 
