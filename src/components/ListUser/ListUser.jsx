@@ -59,10 +59,10 @@ const ListUser = () => {
                 {users.map(user => (
                     <div key={user.userId} className="col-md-6 col-lg-4 mb-4">
                         <div className="card user-card p-3 shadow-sm">
-                            <h3 className="card-title text-primary mb-2">
+                            <h3 className="card-title">
                                 {user.firstName} {user.lastName}
                             </h3>
-                            <h5 className="card-subtitle mb-3 text-muted">
+                            <h5 className="card-subtitle mb-3">
                                 {user.roleName}
                             </h5>
                             <p className="card-text"><strong>Email:</strong> {user.email}</p>
