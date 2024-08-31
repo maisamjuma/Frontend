@@ -46,7 +46,7 @@ const Boards = ({
     const [showAddTaskModal, setShowAddTaskModal] = useState(false);
     const [showcalenderModal, setcalendarModal] = useState(false);
 //    const [showDetailsModal, setshowDetailsModal] = useState(false);
-    const [showchangememberModal, setshowchangememberModal] = useState(false);
+    const [showChangeMemberModal, setShowChangeMemberModal] = useState(false);
     const [selectedMember, setSelectedMember] = useState('');
     const [taskId, setTaskId] = useState(null);
     console.log(projectMembers)
@@ -174,16 +174,39 @@ const Boards = ({
         return statuses;
     };
 
-    // Initial load of statuses
     useEffect(() => {
-        if (name) {
+        const loadStatusesAndTasks = async () => {
+            if (!name) return;
+
             console.log(`Loading statuses for {projectId: ${projectId}, boardId: ${boardId}, name: '${name}'}`);
-            setStatuses(loadStatuses());
-        }
-    }, [projectId, boardId, name]);
 
+            // Load statuses
+            const loadedStatuses = loadStatuses();
+            setStatuses(loadedStatuses);
 
-// Save statuses to localStorage whenever they change
+            try {
+                // Fetch tasks
+                const response = await TaskService.getTasksByProjectId(projectId);
+                const tasks = response.data.filter(task => task.boardId === boardId);
+
+                // Update statuses with tasks
+                const updatedStatuses = loadedStatuses.map(status => {
+                    const tasksForStatus = tasks.filter(task => task.status === status.title);
+                    return {
+                        ...status,
+                        tasks: tasksForStatus
+                    };
+                });
+
+                setStatuses(updatedStatuses);
+            } catch (error) {
+                console.error('Error loading tasks:', error);
+            }
+        };
+
+        loadStatusesAndTasks();
+    }, [projectId, boardId, name, showPriorityModal, selectedTask]);
+
     useEffect(() => {
         if (statuses.length > 0) {
             console.log(`Saving statuses to key: ${projectId}_${boardId}_${name}_statuses`);
@@ -191,53 +214,6 @@ const Boards = ({
         }
     }, [statuses, projectId, boardId, name]);
 
-
-    useEffect(() => {
-        const loadTasks = async () => {
-            try {
-                const response = await TaskService.getTasksByProjectId(projectId);
-                const tasks = response.data;
-                const filteredTasks = tasks.filter(task => task.boardId === boardId);
-                const updatedStatuses = loadStatuses().map(status => {
-                    const tasksForStatus = filteredTasks.filter(task => task.status === status.title);
-                    return {
-                        ...status,
-                        tasks: tasksForStatus
-                    };
-                });
-
-                setStatuses(updatedStatuses);
-            } catch (error) {
-                console.error("Error loading tasks:", error);
-            }
-        };
-
-        loadTasks();
-    }, [showPriorityModal,projectId, boardId, name]);
-
-
-    useEffect(() => {
-        const loadTasks = async () => {
-            try {
-                const response = await TaskService.getTasksByProjectId(projectId);
-                const tasks = response.data;
-                const filteredTasks = tasks.filter(task => task.boardId === boardId);
-                const updatedStatuses = loadStatuses().map(status => {
-                    const tasksForStatus = filteredTasks.filter(task => task.status === status.title);
-                    return {
-                        ...status,
-                        tasks: tasksForStatus
-                    };
-                });
-
-                setStatuses(updatedStatuses);
-            } catch (error) {
-                console.error("Error loading tasks:", error);
-            }
-        };
-
-        loadTasks();
-    }, [selectedTask]);
 
     const handleAddTask = async (statusId, task) => {
         if (task && task.taskName && task.taskName.trim()) {
@@ -308,26 +284,15 @@ const Boards = ({
     };
 
     const handleChangeMember = (memberId, memberUsername) => {
-        console.log("Board memberId:", memberId)
-        console.log("Board memberUsername:", memberUsername)
-
         if (selectedTask) {
-            console.log("selectedTask: ", selectedTask)
-
             const member = projectMembers.find(member => member.userId === memberId);
-            // console.log("member :",member)
             if (member) {
-                // Extract the first letter of the member's name and convert to uppercase
-                // const initial = member.username.charAt(0).toUpperCase();
                 const initial = memberUsername.charAt(0).toUpperCase();
                 setSelectedMember(initial);
-
-                // Update statuses with the new member ID for the selected task
 
                 const updatedStatuses = statuses.map(status => ({
                     ...status,
                     tasks: status.tasks.map(task =>
-                        // task.id === selectedTask.id ? { ...task,memberInitials: task.assignedToUserId } : task
                         task.id === selectedTask.id ? {
                             ...task,
                             assignedUserLetter: initial,
@@ -339,7 +304,7 @@ const Boards = ({
             } else {
                 console.log('Member not found');
             }
-            setshowchangememberModal(false);
+            setShowChangeMemberModal(false);
         } else {
             console.log('No task selected');
         }
@@ -760,10 +725,10 @@ const Boards = ({
                     />
 
                 )}
-                {showchangememberModal && (
+                {showChangeMemberModal && (
                     <ChangeMemberModal
-                        isVisible={showchangememberModal}
-                        onClose={() => setshowchangememberModal(false)}
+                        isVisible={showChangeMemberModal}
+                        onClose={() => setShowChangeMemberModal(false)}
                         onSave={handleChangeMember}
                         projectId={projectId}
                         projectDescription={projectDescription}
