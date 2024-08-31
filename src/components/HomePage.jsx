@@ -1,10 +1,11 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { useNavigate } from "react-router-dom";
+import React, {useEffect, useState, useRef} from 'react';
+import {useNavigate} from "react-router-dom";
 import UserService from "../Services/UserService.js";
 import RoleService from '../Services/RoleService';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserPlus, faUserShield, faUserTag } from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faUserPlus, faUserShield, faUserTag} from '@fortawesome/free-solid-svg-icons';
 import './HomePage.css';
+import {userIsAdmin} from '../utils/authUtils'; // Import the utility function
 
 const HomePage = () => {
     const [users, setUsers] = useState([]);
@@ -17,6 +18,7 @@ const HomePage = () => {
     const [successMessage, setSuccessMessage] = useState('');
     const navigator = useNavigate();
 
+    const userRoleIsAdmin = userIsAdmin(); // Check if the user is an admin
     // Refs for scrolling
     const assignContentRef = useRef(null);
     const roleContentRef = useRef(null);
@@ -80,7 +82,7 @@ const HomePage = () => {
         }
         setIsAddingRole(!isAddingRole);
         if (!isAddingRole && roleContentRef.current) {
-            roleContentRef.current.scrollIntoView({ behavior: 'smooth' });
+            roleContentRef.current.scrollIntoView({behavior: 'smooth'});
         }
     };
 
@@ -93,7 +95,7 @@ const HomePage = () => {
         }
         setIsAssigningTeamLeader(!isAssigning);
         if (!isAssigning && assignContentRef.current) {
-            assignContentRef.current.scrollIntoView({ behavior: 'smooth' });
+            assignContentRef.current.scrollIntoView({behavior: 'smooth'});
         }
     };
 
@@ -106,78 +108,83 @@ const HomePage = () => {
                         Your browser does not support the video tag.
                     </video>
                     <div className='devtrack-text ms-3'>
-                        <span className="dev fw-bold" style={{fontSize: '24px'}}>Your one-stop platform for seamless </span>
+                        <span className="dev fw-bold"
+                              style={{fontSize: '24px'}}>Your one-stop platform for seamless </span>
                         <span className="track fw-bold" style={{fontSize: '24px'}}> team collaboration and project management.</span>
                     </div>
                 </div>
-                <div className="home-button-container">
-                    <button type='button' className='btnAddUser' onClick={addNewUser}>
-                        <FontAwesomeIcon icon={faUserPlus}/> Add User
-                    </button>
-                    <button
-                        type='button'
-                        className='btnAssignTeamLeader'
-                        onClick={handleToggleAssignTeamLeader}
-                    >
-                        <FontAwesomeIcon icon={faUserShield}/>
-                        {isAssigning ? 'Cancel' : 'Assign Team Leaders'}
-                    </button>
-                    {isAssigning && (
-                        <div className='Assigncontent' ref={assignContentRef}>
-                            <select
-                                value={selectedRole}
-                                onChange={handleRoleChange}
-                                className='form-control mb-2'
-                            >
-                                <option value="">Select Role</option>
-                                <option value="Backend">Backend</option>
-                                <option value="Frontend">Frontend</option>
-                                <option value="QA">QA</option>
-                            </select>
+                {userRoleIsAdmin && (
 
-                            <select
-                                value={newTeamLeader}
-                                onChange={handleTeamLeaderChange}
-                                className='form-control mb-2'
-                            >
-                                <option value="">Select Member</option>
-                                {users.map(user => (
-                                    <option key={user.userId} value={user.userId}>
-                                        {user.firstName} {user.lastName}
-                                    </option>
-                                ))}
-                            </select>
+                    <div className="home-button-container">
 
-                            <div className="form-check mb-2">
-                                <input
-                                    type="checkbox"
-                                    className="form-check-input"
-                                    id="isAdminCheck"
-                                    checked={isAdmin}
-                                    onChange={handleIsAdminChange}
-                                />
-                                <label className="form-check-label" htmlFor="isAdminCheck">
-                                    Is Admin
-                                </label>
+                        <button type='button' className='btnAddUser' onClick={addNewUser}>
+                            <FontAwesomeIcon icon={faUserPlus}/> Add User
+                        </button>
+                        <button
+                            type='button'
+                            className='btnAssignTeamLeader'
+                            onClick={handleToggleAssignTeamLeader}
+                        >
+                            <FontAwesomeIcon icon={faUserShield}/>
+                            {isAssigning ? 'Cancel' : 'Assign Team Leaders'}
+                        </button>
+                        {isAssigning && (
+                            <div className='Assigncontent' ref={assignContentRef}>
+                                <select
+                                    value={selectedRole}
+                                    onChange={handleRoleChange}
+                                    className='form-control mb-2'
+                                >
+                                    <option value="">Select Role</option>
+                                    <option value="Backend">Backend</option>
+                                    <option value="Frontend">Frontend</option>
+                                    <option value="QA">QA</option>
+                                </select>
+
+                                <select
+                                    value={newTeamLeader}
+                                    onChange={handleTeamLeaderChange}
+                                    className='form-control mb-2'
+                                >
+                                    <option value="">Select Member</option>
+                                    {users.map(user => (
+                                        <option key={user.userId} value={user.userId}>
+                                            {user.firstName} {user.lastName}
+                                        </option>
+                                    ))}
+                                </select>
+
+                                <div className="form-check mb-2">
+                                    <input
+                                        type="checkbox"
+                                        className="form-check-input"
+                                        id="isAdminCheck"
+                                        checked={isAdmin}
+                                        onChange={handleIsAdminChange}
+                                    />
+                                    <label className="form-check-label" htmlFor="isAdminCheck">
+                                        Is Admin
+                                    </label>
+                                </div>
+
+                                <button
+                                    type='button'
+                                    className='btn btn-primary'
+                                    onClick={handleSaveTeamLeader}
+                                >
+                                    Save Team Leader
+                                </button>
                             </div>
-
-                            <button
-                                type='button'
-                                className='btn btn-primary'
-                                onClick={handleSaveTeamLeader}
-                            >
-                                Save Team Leader
-                            </button>
-                        </div>
-                    )}
-                    <button
-                        type='button'
-                        className='btnAddRole'
-                        onClick={handleToggleAddRole}
-                    >
-                        <FontAwesomeIcon icon={faUserTag}/> {isAddingRole ? 'Cancel' : 'Add new role'}
-                    </button>
-                </div>
+                        )}
+                        <button
+                            type='button'
+                            className='btnAddRole'
+                            onClick={handleToggleAddRole}
+                        >
+                            <FontAwesomeIcon icon={faUserTag}/> {isAddingRole ? 'Cancel' : 'Add new role'}
+                        </button>
+                    </div>
+                )}
                 {isAddingRole && (
                     <div className='rolecontent' ref={roleContentRef}>
                         <input

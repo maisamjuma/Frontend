@@ -6,24 +6,39 @@ class ProjectMemberService {
 
     // Get Project Member by projectMemberId
     getProjectMemberById(projectMemberId) {
-        return axios.get(`${MEMBERS_API_BASE_URL}/${projectMemberId}`);
+        const token = localStorage.getItem("token");
+        return axios.get(`${MEMBERS_API_BASE_URL}/${projectMemberId}`,{
+            headers: {
+                'X-Auth-Token': token
+            }
+        });
     }
 
     // Delete a Member from a specific Project by projectMemberId
     deleteMemberFromProject(projectMemberId,projectId) {
-        return axios.delete(`${MEMBERS_API_BASE_URL}/project/${projectId}/member/${projectMemberId}`);
+        const token = localStorage.getItem("token");
+        return axios.delete(`${MEMBERS_API_BASE_URL}/project/${projectId}/member/${projectMemberId}`,{
+            headers: {
+                'X-Auth-Token': token
+            }
+        });
     }
-
     // Delete a Member from all projects by userId hhhh
     deleteMemberFromAllProjects(userId) {
-        return axios.delete(`${MEMBERS_API_BASE_URL}/user/${userId}`);
+        const token = localStorage.getItem("token");
+        return axios.delete(`${MEMBERS_API_BASE_URL}/user/${userId}`,{
+            headers: {
+                'X-Auth-Token': token
+            }
+        });
     }
-
     // Update info of a Project Member by projectMemberId
     updateProjectMember(projectMemberId, memberData) {
+        const token = localStorage.getItem("token");
         return axios.put(`${MEMBERS_API_BASE_URL}/${projectMemberId}`, memberData, {
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-Auth-Token': token
             }
         });
     }
@@ -35,14 +50,23 @@ class ProjectMemberService {
 
     // Get all Members of a specific project by projectId
     getProjectMembersByProjectId(projectId) {
-        return axios.get(`${MEMBERS_API_BASE_URL}/project/${projectId}`);
-    }
+        const token = localStorage.getItem("token");
 
+        return axios.get(`${MEMBERS_API_BASE_URL}/project/${projectId}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Auth-Token': token
+            }
+        });
+    }
     // Add Member to a project
     addMemberToProject(memberData) {
+        const token = localStorage.getItem("token");
+
         return axios.post(MEMBERS_API_BASE_URL, memberData, {
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-Auth-Token': token
             }
         });
     }

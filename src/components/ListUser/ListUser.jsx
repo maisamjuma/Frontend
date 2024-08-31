@@ -11,7 +11,18 @@ const ListUser = () => {
         const fetchUsers = async () => {
             try {
                 const response = await UserService.getAllUsers();
-                setUsers(response.data);
+                // Transform the response data to use correct field names
+                const transformedUsers = response.data.map(user => ({
+                    userId: user.userId,
+                    email: user.email,
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    functionalRoleId: user.functionalRoleId, // Updated to match the API response
+                    isTeamLeader: user.isTeamLeader,
+                    createdAt: new Date(user.createdAt).toLocaleString(), // Formatting date
+                    updatedAt: new Date(user.updatedAt).toLocaleString()  // Formatting date
+                }));
+                setUsers(transformedUsers);
             } catch (error) {
                 console.error('Error fetching users:', error);
             }
@@ -19,8 +30,8 @@ const ListUser = () => {
         fetchUsers();
     }, []);
 
-    const updateUser = (id) => {
-        navigate(`/edit-user/${id}`);
+    const updateUser = (userId) => {
+        navigate(`/edit-user/${userId}`);
     };
 
     return (
@@ -31,12 +42,10 @@ const ListUser = () => {
                     <thead>
                     <tr>
                         <th>User Id</th>
-                        <th>Username</th>
                         <th>Email</th>
-                        <th>Password</th>
                         <th>First Name</th>
                         <th>Last Name</th>
-                        <th>Role</th>
+                        <th>Role ID</th>
                         <th>Is Team Leader?</th>
                         <th>Created At</th>
                         <th>Updated At</th>
@@ -45,15 +54,13 @@ const ListUser = () => {
                     </thead>
                     <tbody>
                     {users.map(user => (
-                        <tr key={user.id}>
+                        <tr key={user.userId}>
                             <td>{user.userId}</td>
-                            <td>{user.username}</td>
                             <td>{user.email}</td>
-                            <td>{user.password}</td>
                             <td>{user.firstName}</td>
                             <td>{user.lastName}</td>
-                            <td>{user.role}</td>
-                            <td>{user.isAdmin ? 'Yes' : 'No'}</td>
+                            <td>{user.functionalRoleId}</td>
+                            <td>{user.isTeamLeader ? 'Yes' : 'No'}</td>
                             <td>{user.createdAt}</td>
                             <td>{user.updatedAt}</td>
                             <td>
