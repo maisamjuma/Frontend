@@ -289,7 +289,7 @@ const Workspace = ({isVisible}) => {
 };
 
 Workspace.propTypes = {
-    isVisible: PropTypes.bool.isRequired,
+    isVisible: PropTypes.bool,
 };
 
 export default Workspace;

@@ -22,15 +22,15 @@ const Members = ({
     // Fetch role names when the component mounts or when members/userDetails change
     useEffect(() => {
         const fetchRoleNames = async () => {
-            const uniqueRoleIds = [...new Set(userDetails.map(user => user.role))];
+            const uniqueRoleIds = [...new Set(userDetails.map(user => user.functionalRoleId))];
 
-            const rolesPromises = uniqueRoleIds.map(async (roleId) => {
+            const rolesPromises = uniqueRoleIds.map(async (functionalRoleId) => {
                 try {
-                    const response = await RoleService.getRoleById(roleId);
-                    return { roleId, roleName: response.data.roleName };
+                    const response = await RoleService.getRoleById(functionalRoleId);
+                    return { functionalRoleId, roleName: response.data.roleName };
                 } catch (error) {
-                    console.error(`Error fetching role for roleId: ${roleId}`, error);
-                    return { roleId, roleName: 'Unknown Role' };
+                    console.error(`Error fetching role for roleId: ${functionalRoleId}`, error);
+                    return { functionalRoleId, roleName: 'Unknown Role' };
                 }
             });
 
@@ -66,7 +66,7 @@ const Members = ({
                             onClick={() => onMemberClick(member)} // Ensure this is passing the full member object
                         >
 
-                            <div className="member-name">{user.username}</div>
+                            <div className="member-name">{user.firstName} {user.lastName}</div>
                             <div className="member-role">{roleName}</div>
 
                         </div>

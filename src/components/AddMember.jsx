@@ -27,7 +27,7 @@ const AddMember = ({ projectId,onAddMember, onSave, onDeleteMode, isDeleting }) 
         const term = e.target.value.toLowerCase();
         setSearchTerm(term);
         const filtered = availableMembers.filter((member) =>
-            member.username.toLowerCase().includes(term)
+            member.firstName.toLowerCase().includes(term)
         );
         setFilteredMembers(filtered);
     };
@@ -92,8 +92,8 @@ const AddMember = ({ projectId,onAddMember, onSave, onDeleteMode, isDeleting }) 
                             className={`member-item ${selectedMembers.includes(member.userId) ? 'selected' : ''}`}
                             onClick={() => handleMemberClick(member)}
                         >
-                            <div className="member-name">{member.username}</div>
-                            <div className="member-role">{member.role}</div>
+                            <div className="member-name">{member.firstName} {member.lastName}</div>
+                            <div className="member-role">{member.functionalRoleId}</div>
                         </div>
                     ))}
                 </div>
