@@ -1,29 +1,60 @@
-.user-table-container {
-    overflow: auto;
-    max-height: 400px; /* Adjust this value as needed */
-    border: 1px solid #ddd; /* Optional: to add a border around the scrollable area */
-}
-
-.table {
-    width: 100%;
-    min-width: 800px; /* Adjust this value based on your table width */
-    border-collapse: collapse;
-}
-
-.table th, .table td {
-    white-space: nowrap; /* Prevent wrapping to ensure horizontal scrolling */
-    padding: 8px;
-}
-
-.table th {
-    background-color: #f4f4f4;
-}
-
-.text-bg-dark {
+/* Container for the entire list */
+.container {
     margin-top: 20px;
 }
 
-.btn-info:hover{
+/* Style for the card container */
+.card {
+    border: 1px solid #ddd; /* Light border for a subtle distinction */
+    border-radius: 8px; /* Rounded corners for a modern look */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effects */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+}
+
+/* Card hover effect */
+.card:hover {
+    transform: scale(1.02); /* Slightly enlarge the card */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Increase shadow on hover for a more pronounced effect */
+}
+
+/* Title style inside the card */
+.card-title {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: #333; /* Darker text color for better readability */
+}
+
+/* Subtitle style inside the card */
+.card-subtitle {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    color: #777; /* Lighter color for the role subtitle */
+}
+
+/* Text style inside the card */
+.card-text {
+    font-size: 0.9rem;
+    color: #555; /* Mid-tone color for general text */
+}
+
+/* Button style inside the card */
+.btn-info {
+    background-color: #007bff; /* Primary color for the button */
+    border: none;
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+/* Button hover effect */
+.btn-info:hover {
+    background-color: #0056b3; /* Darker blue on hover */
     color: white;
-    background-color: black;
+}
+
+/* Responsive styling for the card grid */
+@media (max-width: 767px) {
+    .card {
+        margin-bottom: 20px;
+    }
 }

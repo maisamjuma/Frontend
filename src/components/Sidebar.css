@@ -33,16 +33,16 @@
 /* Styles for the three dots next to project names */
 .menu-toggle {
     display: inline-block;
-    transform: scale(1.2); /* Slightly enlarge the three dots */
+    transform: scale(2); /* Slightly enlarge the three dots */
     transition: transform 0.2s ease, color 0.2s ease;
     cursor: pointer; /* Change cursor to pointer on hover */
-    margin-bottom: 7px;
+    /*margin-bottom: 7px;*/
 }
 
 /* Hover effect for the three dots */
 .menu-toggle:hover {
-    transform: scale(1.4); /* Slightly enlarge the three dots */
-    color: #0b0a0a; /* Change the color of the dots */
+    transform: scale(1.6); /* Slightly enlarge the three dots */
+    color: darksalmon; /* Change the color of the dots */
 }
 
 /* Hide scrollbars for Webkit browsers (Chrome, Safari) */
