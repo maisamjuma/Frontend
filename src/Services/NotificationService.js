@@ -6,23 +6,40 @@ class NotificationService {
 
     // Get Notification by notificationId
     getNotificationById(notificationId) {
-        return axios.get(`${NOTIFICATIONS_API_BASE_URL}/${notificationId}`);
+        const token = localStorage.getItem("token");
+        return axios.get(`${NOTIFICATIONS_API_BASE_URL}/${notificationId}`,{
+            headers: {
+                'X-Auth-Token': token
+            }
+        });
     }
 
     // Get Notifications by userId
     getNotificationsByUserId(userId) {
-        return axios.get(`${NOTIFICATIONS_API_BASE_URL}/user/${userId}`);
+        const token = localStorage.getItem("token");
+        return axios.get(`${NOTIFICATIONS_API_BASE_URL}/user/${userId}`,{
+            headers: {
+            'X-Auth-Token': token
+            }
+        });
     }
 
     // Delete Notification by notificationId
     deleteNotificationById(notificationId) {
-        return axios.delete(`${NOTIFICATIONS_API_BASE_URL}/${notificationId}`);
+        const token = localStorage.getItem("token");
+        return axios.delete(`${NOTIFICATIONS_API_BASE_URL}/${notificationId}`,{
+            headers: {
+                'X-Auth-Token': token
+            }
+        });
     }
 
     // Update Notification by notificationId
     updateNotificationById(notificationId, notificationData) {
+        const token = localStorage.getItem("token");
         return axios.put(`${NOTIFICATIONS_API_BASE_URL}/${notificationId}`, notificationData, {
             headers: {
+                'X-Auth-Token': token,
                 'Content-Type': 'application/json'
             }
         });
@@ -30,13 +47,20 @@ class NotificationService {
 
     // Get All Notifications
     getAllNotifications() {
-        return axios.get(NOTIFICATIONS_API_BASE_URL);
+        const token = localStorage.getItem("token");
+        return axios.get(NOTIFICATIONS_API_BASE_URL,{
+            headers: {
+                'X-Auth-Token': token
+            }
+        });
     }
 
     // Create Notification
     createNotification(notificationData) {
+        const token = localStorage.getItem("token");
         return axios.post(NOTIFICATIONS_API_BASE_URL, notificationData, {
             headers: {
+                'X-Auth-Token': token,
                 'Content-Type': 'application/json'
             }
         });

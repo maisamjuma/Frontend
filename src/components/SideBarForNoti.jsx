@@ -16,9 +16,9 @@ const SideBarForNoti = ({ users, loggedInUser, onSendNotification }) => {
                 {users.map(user => (
                     <li
                         key={user.userId} // Ensure this is a unique identifier
-                        className={`list-group-item ${user.username === loggedInUser ? 'highlight' : ''}`}
+                        className={`list-group-item ${user.email === loggedInUser ? 'highlight' : ''}`}
                     >
-                        {user.username}
+                        {user.firstName} {user.lastName}
                     </li>
                 ))}
             </ul>

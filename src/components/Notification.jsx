@@ -39,7 +39,7 @@ const Notification = ({ loggedInUser }) => {
 
         fetchUsers();
         fetchNotifications();
-    }, [loggedInUser.userId]);
+    }, [loggedInUser]);
 
     const handleSendNotification = async () => {
         if (selectedUsers.length && message) {
@@ -77,7 +77,7 @@ const Notification = ({ loggedInUser }) => {
     };
 
     const filteredUsers = users.filter(user =>
-        user.username.toLowerCase().includes(searchQuery.toLowerCase())
+        user && user.firstName && user.firstName.toLowerCase().includes((searchQuery || '').toLowerCase())
     );
 
     // Filter messages based on the selected user
@@ -105,7 +105,7 @@ const Notification = ({ loggedInUser }) => {
                         >
                             <input
                                 type="text"
-                                placeholder="Search by username..."
+                                placeholder="Search by firstName..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
@@ -114,9 +114,9 @@ const Notification = ({ loggedInUser }) => {
                                     <li
                                         key={user.userId} // Ensure this is a unique identifier
                                         className="user-item"
-                                        onClick={() => handleUserFilterClick(user.username)}
+                                        onClick={() => user && user.userId && handleUserFilterClick(user.userId)}
                                     >
-                                        {user.username} {/* Assuming 'username' is the property */}
+                                        {user && user.firstName ? user.firstName : 'Unknown User'} {/* Assuming 'firstName' is the property */}
                                     </li>
                                 ))}
                             </ul>
@@ -161,10 +161,10 @@ const Notification = ({ loggedInUser }) => {
                                         {users.map(user => (
                                             <li
                                                 key={user.userId} // Ensure this is a unique identifier
-                                                className={`list-group-item ${selectedUsers.includes(user.username) ? 'selected' : ''}`}
-                                                onClick={() => handleUserSelection(user.username)} // Use username for selection
+                                                className={`list-group-item ${selectedUsers.includes(user.userId) ? 'selected' : ''}`}
+                                                onClick={() => handleUserSelection(user.userId)} // Use firstname for selection
                                             >
-                                                {user.username} {/* Display username */}
+                                                {user.firstName} {user.lastName}{/* Display firstName */}
                                             </li>
                                         ))}
                                     </ul>
@@ -192,7 +192,9 @@ const Notification = ({ loggedInUser }) => {
 };
 // Define prop types for validation
 Notification.propTypes = {
-    loggedInUser: PropTypes.string.isRequired
+    loggedInUser: PropTypes.shape({
+        userId: PropTypes.string.isRequired,
+    }).isRequired,
 };
 
 export default Notification;
