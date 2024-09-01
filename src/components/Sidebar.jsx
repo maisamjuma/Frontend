@@ -241,7 +241,6 @@ const Sidebar = ({onMenuAction}) => {
                 {/*{userRoleIsAdmin && (*/}
                 {/*    <li className="user-lists" onClick={handleUsersListClick}>Users List</li>*/}
                 {/*)}*/}
-                <li className="Settings">Settings</li>
             </ul>
             <AddProjectModal
                 isVisible={isAddProjectModalVisible}

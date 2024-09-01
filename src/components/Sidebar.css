@@ -152,7 +152,7 @@
 
 /* Projects list container styling */
 .projects-list-container {
-    max-height: 250px; /* Adjust the height as needed */
+    max-height: 400px; /* Adjust the height as needed */
     overflow-y: auto; /* Enable vertical scrolling */
     padding-right: 5px; /* Space to accommodate scrollbar if visible */
 }

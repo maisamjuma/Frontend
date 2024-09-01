@@ -33,8 +33,11 @@ const Navbar = ({ onLogout }) => {
                             <Link className="nav-link active" aria-current="page" to="/">Home</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link" to="/main/notifications">Notifications</Link> {/* Updated Path */}
+                            <Link className="nav-link"
+                                  to="/main/notifications">Notifications</Link> {/* Updated Path */}
                         </li>
+                        <li className="nav-link">Settings</li>
+
                     </ul>
                 </div>
             </div>
