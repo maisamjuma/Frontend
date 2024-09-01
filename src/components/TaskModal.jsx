@@ -12,7 +12,7 @@ import {
     faTag
 } from '@fortawesome/free-solid-svg-icons';
 import PriorityModal from './PriorityModal';
-import MoveModal from "./MoveModal/MoveModal.jsx";
+//import MoveModal from "./MoveModal/MoveModal.jsx";
 import CalendarModal from "./CalendarModal/CalendarModal.jsx";
 import DetailsModal from "./DetailsModal/DetailsModal.jsx";
 import LabelModal from "./LabelModal.jsx";
@@ -25,7 +25,6 @@ const TaskModal = ({
                        task,
                        onClose,
                        onDelete,
-                       boardId,
                        statuses,
                        labels = [],
                        onSaveMember,
@@ -124,14 +123,20 @@ const TaskModal = ({
                     </div>
                 )}
             </div>
-            {isMoveModalOpen && (
-                <MoveModal
-                    onClose={() => setIsMoveModalOpen(false)}
-                    boardId={boardId}
-                    statuses={statuses}
-                    task={task}
-                />
-            )}
+            {/*{isMoveModalOpen && (*/}
+            {/*    <MoveModal*/}
+            {/*        onClose={() => setIsMoveModalOpen(false)}*/}
+            {/*        boardId={boardId}*/}
+            {/*        statuses={statuses}*/}
+            {/*        task={{...task}}*/}
+            {/*        projectId={projectId}*/}
+            {/*        projectDescription={projectDescription}*/}
+            {/*        projectMembers={projectMembers}*/}
+            {/*        setProjectId={setProjectId}*/}
+            {/*        setProjectDescription={setProjectDescription}*/}
+            {/*        setProjectMembers={setProjectMembers}*/}
+            {/*        />*/}
+            {/*)}*/}
             {isCalendarModalOpen && (
                 <CalendarModal
                     onClose={() => setIsCalendarModalOpen(false)}

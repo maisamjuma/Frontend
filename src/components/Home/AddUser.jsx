@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 // import { createUser, getUserById } from '../Services/UserService';
-import UserService from '../Services/UserService';
+import UserService from '../../Services/UserService.js';
 
-import RoleService from "../Services/RoleService";
+import RoleService from "../../Services/RoleService.js";
 // import { createUser,checkUserRoles } from '../Services/authService.js'; // Import from FirebaseAuthService
 // import { checkUserRoles } from '../firebase/auth.js'; // Import from auth.js (update the path accordingly)
 // import { useNavigate } from 'react-router-dom';
 // import RoleService from "../Services/RoleService";
-import { useNavigate, useParams } from 'react-router-dom';
-import './User.css';
+import {useNavigate} from 'react-router-dom';
+import './AddUser.css';
 
-const User = () => {
+const AddUser = () => {
     const navigate = useNavigate();
 
     const [roles, setRoles] = useState([]);
@@ -86,7 +86,7 @@ const User = () => {
                 console.log(" functionalRoleId:", functionalRoleId);
 
 
-                console.log(" User:", user);
+                console.log(" AddUser:", user);
 
                 // Save user details using the register method
                 const response = await UserService.register(user);
@@ -94,7 +94,7 @@ const User = () => {
 
 
                 // Log the user object and the response data for debugging
-                console.log(" User:", user);
+                console.log(" AddUser:", user);
                 console.log("Response :", response);
 
                 // Navigate to the desired page after successful user creation
@@ -105,11 +105,9 @@ const User = () => {
         }
     };
 
-
-
     const validateForm = () => {
         let valid = true;
-        const errorsCopy = { ...errors };
+        const errorsCopy = {...errors};
 
         // if (!username.trim()) {
         //     errorsCopy.username = 'Username is required';
@@ -281,4 +279,4 @@ const User = () => {
     );
 };
 
-export default User;
+export default AddUser;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import UserService from '../../Services/UserService.js';
-import RoleService from "../../Services/RoleService.js";
+import UserService from '../../../Services/UserService.js';
+import RoleService from "../../../Services/RoleService.js";
 import './ListUser.css';
 import { Container } from "react-bootstrap";
 import { Row } from "antd";
@@ -51,7 +51,8 @@ const ListUser = () => {
     }, []);
 
     const updateUser = (userId) => {
-        navigate(`/edit-user/${userId}`);
+        console.log("updateUser userId:",userId);
+        navigate(`/main/edit-user/${userId}`);
     };
     function addNewUser() {
         navigator('/main/User');

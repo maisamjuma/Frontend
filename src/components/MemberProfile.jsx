@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import './MemberProfile.css'; // Import the CSS file
 import RoleService from "../Services/RoleService.js";
 
-const MemberProfile = ({ member, userDetails, onClose }) => {
+const MemberProfile = ({ member, userDetails, onClose, onLogout  }) => {
     const [roleName, setRoleName] = useState('Loading role...'); // State to store the role name
 
     // Find user details for the selected member
@@ -31,6 +31,16 @@ const MemberProfile = ({ member, userDetails, onClose }) => {
 
     const firstLetter = user.firstName.charAt(0).toUpperCase();
 
+    // const handleLogout = (e) => {
+    //     e.preventDefault();
+    //     console.log('Logging out...');
+    //     if (typeof onLogout === 'function') {
+    //         onLogout(); // Call the passed onLogout function
+    //     } else {
+    //         console.error('onLogout is not a function');
+    //     }
+    // };
+
     return (
         <div className="member-profile-overlay">
             <div className="profile-card">
@@ -42,7 +52,7 @@ const MemberProfile = ({ member, userDetails, onClose }) => {
                         <h2 className="usernameFont">{user.firstName} {user.lastName}</h2>
                     </div>
                     <div>
-                        <button className="secondary-nav-button d-flex justify-content-center" onClick={onClose}>X
+                        <button className="secondary-nav-button-X d-flex justify-content-center" onClick={onClose}>X
                         </button>
                     </div>
                 </div>
@@ -50,7 +60,11 @@ const MemberProfile = ({ member, userDetails, onClose }) => {
                     <p className="fontColor"><strong>First Name: </strong> {user.firstName}</p>
                     <p className="fontColor"><strong>Email: </strong> {user.email}</p>
                     <p className="fontColor"><strong>Role: </strong> {roleName}</p>
-                    <button className="secondary-nav-button d-flex justify-content-center" onClick={onClose}>Log out
+                    <button className="secondary-nav-button d-flex justify-content-center"
+                            href="#" onClick={(e) => {
+                        e.preventDefault();
+                        onLogout();
+                    }}>Log Out
                     </button>
                 </div>
             </div>
@@ -75,7 +89,8 @@ MemberProfile.propTypes = {
             role: PropTypes.number.isRequired,
         })
     ).isRequired,
-    onClose: PropTypes.func.isRequired
+    onClose: PropTypes.func.isRequired,
+    onLogout: PropTypes.func.isRequired
 };
 
 export default MemberProfile;
