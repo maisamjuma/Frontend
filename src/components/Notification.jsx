@@ -116,7 +116,7 @@ const Notification = ({ loggedInUser }) => {
                                         className="user-item"
                                         onClick={() => user && user.userId && handleUserFilterClick(user.userId)}
                                     >
-                                        {user && user.firstName ? user.firstName : 'Unknown User'} {user && user.lastName ? user.lastName : 'Unknown User'}{/* Assuming 'firstName' is the property */}
+                                        {user && user.firstName ? user.firstName : 'Unknown AddUser'} {user && user.lastName ? user.lastName : 'Unknown AddUser'}{/* Assuming 'firstName' is the property */}
                                     </li>
                                 ))}
                             </ul>
