@@ -1,29 +1,26 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
-import { Link } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import './navbar.css';
 
 const Navbar = ({ onLogout }) => {
+    const navigate = useNavigate(); // Initialize useNavigate hook
+
+    const handleDevTrackClick = (e) => {
+        e.preventDefault();
+        navigate('/'); // Navigate to the Welcome page
+    };
+
     return (
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
             <div className="container-fluid">
                 <div className="dropdown">
                     <a className="navbar-brand fw-bold" href="#" role="button" id="dropdownMenuLink"
-                       data-bs-toggle="dropdown" aria-expanded="false">
+                       data-bs-toggle="dropdown" aria-expanded="false" onClick={handleDevTrackClick}>
                         <span className="DEV">DEV</span><span className="track">TRACK</span>
                     </a>
-                    <ul className="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <li><Link className="dropdown-item" to="/">Welcome</Link></li>
-                        <li><hr className="dropdown-divider" /></li>
-                        <li>
-                            <a className="dropdown-item" href="#" onClick={(e) => {
-                                e.preventDefault();
-                                onLogout();
-                            }}>Log Out</a>
-                        </li>
-                    </ul>
                 </div>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
