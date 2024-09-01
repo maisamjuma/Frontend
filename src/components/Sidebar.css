@@ -4,7 +4,7 @@
     padding: 10px;
     top: 60px; /* Height of the top navbar */
     left: 0;
-    width: 200px; /* Width of the sidebar */
+    width: 400px; /* Width of the sidebar */
     bottom: 0; /* Extend to the bottom */
     background-color: #f8f9fa; /* Background color updated to match theme */
     z-index: 998;

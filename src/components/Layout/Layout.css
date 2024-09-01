@@ -19,7 +19,7 @@
 
 /* Sidebar styling */
 .sidebar {
-    width: 200px; /* Adjust width as needed */
+    width: 400px; /* Adjust width as needed */
     background-color: #E9967A; /* Dark Salmon */
     /*color: #ffffff; !* White text *!*/
     position: fixed;

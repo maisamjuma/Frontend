@@ -74,7 +74,7 @@ const MoveModal = ({ statuses = [], task = {}, onClose, onMoveTask }) => {
                     <FontAwesomeIcon icon={faTimes} />
                 </span>
                 <div className="move-title">
-                    <h2>Move Task</h2>
+                    <h2 className="titleMoveTask">Move Task</h2>
                     <p>Select Destination</p>
                 </div>
                 <DragDropContext onDragEnd={onDragEnd}>
@@ -85,8 +85,9 @@ const MoveModal = ({ statuses = [], task = {}, onClose, onMoveTask }) => {
                                 ref={provided.innerRef}
                                 {...provided.droppableProps}
                             >
-                                <h3>Board</h3>
+                                <h3 className="namesOfMoveModal">Board</h3>
                                 <select
+                                    className="selectOfMoveModal"
                                     value={selectedBoard}
                                     onChange={(e) => {
                                         setSelectedBoard(e.target.value);
@@ -115,8 +116,9 @@ const MoveModal = ({ statuses = [], task = {}, onClose, onMoveTask }) => {
                 </DragDropContext>
 
                 <div className="move-modal-section">
-                    <h3>Status</h3>
+                    <h3 className="namesOfMoveModal">Status</h3>
                     <select
+                        className="selectOfMoveModal"
                         value={selectedStatus}
                         onChange={(e) => setSelectedStatus(e.target.value)}
                         disabled={!selectedBoard}
@@ -131,8 +133,9 @@ const MoveModal = ({ statuses = [], task = {}, onClose, onMoveTask }) => {
                 </div>
 
                 <div className="move-modal-section">
-                    <h3>Priority</h3>
+                    <h3 className="namesOfMoveModal">Priority</h3>
                     <select
+                        className="selectOfMoveModal"
                         value={selectedPriority}
                         onChange={(e) => setSelectedPriority(e.target.value)}
                         disabled={!selectedStatus}
