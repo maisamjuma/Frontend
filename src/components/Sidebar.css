@@ -6,11 +6,13 @@
     left: 0;
     width: 400px; /* Width of the sidebar */
     bottom: 0; /* Extend to the bottom */
-    background-color: #f8f9fa; /* Background color updated to match theme */
     z-index: 998;
     box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
     overflow-y: auto; /* Adjusted to allow vertical scrolling */
     overflow-x: hidden; /* Prevents horizontal scrolling */
+    background-color: #E9967A; /* Dark Salmon */
+    height: calc(100vh - 60px); /* Takes up remaining vertical space */
+
 }
 
 /* Dropdown list item styling */
@@ -152,7 +154,7 @@
 
 /* Projects list container styling */
 .projects-list-container {
-    max-height: 250px; /* Adjust the height as needed */
+    max-height: 400px; /* Adjust the height as needed */
     overflow-y: auto; /* Enable vertical scrolling */
     padding-right: 5px; /* Space to accommodate scrollbar if visible */
 }
@@ -171,12 +173,32 @@
 .projects-list-container {
     scrollbar-width: thin;
     scrollbar-color: #ccc transparent;
+    overflow-x: hidden;
+
 }
 
 /* Highlight effect for list items */
 .user-lists:hover,
 .Settings:hover,
 .projects-text:hover {
-    color: #e9967a; /* Change text color on hover to dark salmon */
+    color:#3a3a3c; /* Change text color on hover to dark salmon */
     font-weight: bold; /* Make text bold */
+}
+.projects-text{
+    /*margin-left: 2px;*/
+    font-size:20px;
+    font-weight: bold;
+}
+.projectName-arrowDown{
+    display: flex;
+    gap: 85px;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    width: 300px;
+    left: 2px;
+
 }

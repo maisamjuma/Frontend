@@ -13,6 +13,7 @@ import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
 import PropTypes from "prop-types";
 import ChangeMemberModal from "./ChangeMemberModal.jsx";
 import TaskService from "../Services/TaskService.js";
+import UserService from "../Services/UserService.js";
 //import DetailsModal from "./DetailsModal/DetailsModal.jsx";
 // import BoardService from "../Services/BoardService.js";
 //import members from "./Member/Members.jsx";
@@ -47,6 +48,7 @@ const Boards = ({
     const [showcalenderModal, setcalendarModal] = useState(false);
 //    const [showDetailsModal, setshowDetailsModal] = useState(false);
     const [showChangeMemberModal, setShowChangeMemberModal] = useState(false);
+    const [comingFromChangeMember, setComingFromChangeMember] = useState(false);
     const [selectedMember, setSelectedMember] = useState('');
     const [taskId, setTaskId] = useState(null);
     console.log(projectMembers)
@@ -175,36 +177,55 @@ const Boards = ({
     };
 
     useEffect(() => {
-        const loadStatusesAndTasks = async () => {
-            if (!name) return;
+        if (!comingFromChangeMember) {
+            const loadStatusesAndTasks = async () => {
+                if (!name) return;
 
-            console.log(`Loading statuses for {projectId: ${projectId}, boardId: ${boardId}, name: '${name}'}`);
+                console.log(`Loading statuses for {projectId: ${projectId}, boardId: ${boardId}, name: '${name}'}`);
 
-            // Load statuses
-            const loadedStatuses = loadStatuses();
-            setStatuses(loadedStatuses);
+                // Load statuses
+                const loadedStatuses = loadStatuses();
+                setStatuses(loadedStatuses);
 
-            try {
-                // Fetch tasks
-                const response = await TaskService.getTasksByProjectId(projectId);
-                const tasks = response.data.filter(task => task.boardId === boardId);
+                try {
+                    // Fetch tasks
+                    const response = await TaskService.getTasksByProjectId(projectId);
+                    const tasks = response.data.filter(task => task.boardId === boardId);
 
-                // Update statuses with tasks
-                const updatedStatuses = loadedStatuses.map(status => {
-                    const tasksForStatus = tasks.filter(task => task.status === status.title);
-                    return {
-                        ...status,
-                        tasks: tasksForStatus
-                    };
-                });
+                    // Fetch user details for each task and add assignedUserLetter
+                    const updatedTasks = await Promise.all(tasks.map(async task => {
+                        if (task.assignedToUserId) {
+                            try {
+                                const userResponse = await UserService.getUserById(task.assignedToUserId);
+                                const user = userResponse.data;
+                                const assignedUserLetter = user.firstName.charAt(0).toUpperCase();
+                                return { ...task, assignedUserLetter };
+                            } catch (userError) {
+                                console.error(`Error fetching user info for userId ${task.assignedToUserId}:`, userError);
+                                return task; // Return the task as is if there's an error fetching user info
+                            }
+                        } else {
+                            return task; // If no assigned user, return task as is
+                        }
+                    }));
 
-                setStatuses(updatedStatuses);
-            } catch (error) {
-                console.error('Error loading tasks:', error);
-            }
-        };
+                    // Update statuses with tasks
+                    const updatedStatuses = loadedStatuses.map(status => {
+                        const tasksForStatus = updatedTasks.filter(task => task.status === status.title);
+                        return {
+                            ...status,
+                            tasks: tasksForStatus
+                        };
+                    });
 
-        loadStatusesAndTasks();
+                    setStatuses(updatedStatuses);
+                } catch (error) {
+                    console.error('Error loading tasks:', error);
+                }
+            };
+            loadStatusesAndTasks();
+            // setComingFromChangeMember(false);
+        }
     }, [projectId, boardId, name, showPriorityModal, selectedTask]);
 
     useEffect(() => {
@@ -228,7 +249,7 @@ const Boards = ({
                     status: status.title,
                     priority: task.priority ? task.priority : 'medium',
                     date: task.dueDate || null,
-                    assignedToUserId: task.assignedUserId || null,
+                    assignedToUserId: task.assignedToUserId || null,
                     assignedUserLetter: task.assignedUserLetter || null,
                 };
 
@@ -284,19 +305,22 @@ const Boards = ({
     };
 
     const handleChangeMember = (memberId, memberUsername) => {
+
+        setComingFromChangeMember(true);
         if (selectedTask) {
-            console.log('selectedTask :',selectedTask);
+            console.log('selectedTask :', selectedTask);
             const member = projectMembers.find(member => member.userId === memberId);
-            console.log("member :",member)
+            console.log("member :", member)
+            console.log("selectedTask :", selectedTask)
             if (member) {
                 const initial = memberUsername.charAt(0).toUpperCase();
-                console.log('initial',initial)
+                console.log('initial', initial)
                 setSelectedMember(initial);
 
                 const updatedStatuses = statuses.map(status => ({
                     ...status,
                     tasks: status.tasks.map(task =>
-                        task.taskId === taskId ? {
+                        task.taskId === selectedTask.taskId ? {
                             ...task,
                             assignedUserLetter: initial,
                             assignedToUserId: memberId
@@ -308,6 +332,7 @@ const Boards = ({
                 console.log('Member not found');
             }
             setShowChangeMemberModal(false);
+            // setComingFromChangeMember(false);
         } else {
             console.log('No task selected');
         }
@@ -439,6 +464,8 @@ const Boards = ({
     };
 
     const handleSavePriority = (newPriority) => {
+        setComingFromChangeMember(false);
+
         if (taskId) {
             const updatedStatuses = statuses.map(status => ({
                 ...status,
@@ -595,8 +622,10 @@ const Boards = ({
                                                                                             <span
                                                                                                 className="taskMember">
                                                                                             {/*{task.memberInitials} /!* we need it for the old tasks*!/*/}
-                                                                                                {task.assignedToUserId}
-                                                                                                {task.initial}{/* we need it for add user*/}
+                                                                                                {/*    {task.assignedToUserId}*/}
+                                                                                                {task.assignedUserLetter}
+                                                                                                {/*{SelectedMember}*/}
+                                                                                                {/*{task.initial}/!* we need it for add user*!/*/}
                                                                                         </span>
                                                                                         )}
                                                                                     </div>
@@ -684,7 +713,7 @@ const Boards = ({
                     <AddTaskModal
                         isVisible={showAddTaskModal}
                         onClose={() => setShowAddTaskModal(false)}
-                        onAddTask={(taskId, projectId, taskName, taskDescription, boardId, status, priority, assignedUserId) => {
+                        onAddTask={(taskId, projectId, taskName, taskDescription, boardId, status, priority, assignedToUserId) => {
                             handleAddTask(currentStatusId, {
                                 taskId,
                                 projectId,
@@ -693,7 +722,7 @@ const Boards = ({
                                 boardId,
                                 status,
                                 priority,
-                                assignedUserId
+                                assignedToUserId
                             });
                         }}
                         status={statuses.find(status => status.id === currentStatusId)}

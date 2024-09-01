@@ -135,6 +135,7 @@ ChangeMemberModal.propTypes = {
         taskName: PropTypes.string.isRequired,
         status: PropTypes.string.isRequired,
         assignedToUserId:PropTypes.string.isRequired,
+        assignedUserLetter:PropTypes.string.isRequired,
         priority: PropTypes.string.isRequired,
         date: PropTypes.instanceOf(Date),
         taskDescription: PropTypes.string.isRequired,

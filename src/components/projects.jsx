@@ -147,7 +147,7 @@ const Projects = () => {
                                     setIsDeleting(false);
                                 }}
                             >
-                                {isEditing ? 'Edit Member' : 'Add Member'}
+                                {isEditing ? 'Edit Member' : 'Edit Member'}
                             </button>
                         </li>
                     )}
