@@ -192,45 +192,37 @@ const Boards = ({
 
 
     const handleAddTask = async (statusId, task) => {
-        if (task && task.taskName && task.taskName.trim()) {
-            const status = statuses.find(status => status.id === statusId);
-            if (status) {
-                const newTask = {
-                    taskId: task.taskId,
-                    projectId: projectId,
-                    taskName: task.taskName,  // Ensure property names match
-                    boardId: boardId,
-                    taskDescription: task.taskDescription,
-                    status: status.title,
-                    priority: task.priority ? task.priority : 'medium',
-                    date: task.dueDate || null,
-                    assignedToUserId: task.assignedToUserId || null,
-                    assignedUserLetter: task.assignedUserLetter || null,
-                };
-
-                console.log("Task received from AddTaskModal:", task);
-                console.log("New task to update state:", newTask);
-
-                // Update the local statuses state to include the newly created task
-                const updatedStatuses = statuses.map(status => {
-                    if (status.id === statusId) {
-                        return {
-                            ...status,
-                            tasks: status.tasks ? [...status.tasks, newTask] : [newTask]
-                        };
-                    }
-                    return status;
-                });
-
-                setStatuses(updatedStatuses);
-                setShowAddTaskModal(false);
-            } else {
-                console.error("Status not found:", statusId);
+        try {
+            // Fetch the user details if the task has an assigned user
+            if (task.assignedToUserId) {
+                try {
+                    const userResponse = await UserService.getUserById(task.assignedToUserId);
+                    const user = userResponse.data;
+                    const assignedUserLetter = user.firstName.charAt(0).toUpperCase();
+                    task = { ...task, assignedUserLetter };
+                } catch (userError) {
+                    console.error(`Error fetching user info for userId ${task.assignedToUserId}:`, userError);
+                    // Proceed without the assignedUserLetter if there's an error
+                }
             }
-        } else {
-            alert("Task name cannot be empty.");
+
+            // Update statuses with the new task
+            const updatedStatuses = statuses.map(status => {
+                if (status.id === statusId) {
+                    return {
+                        ...status,
+                        tasks: [...status.tasks, task]
+                    };
+                }
+                return status;
+            });
+
+            setStatuses(updatedStatuses);
+        } catch (error) {
+            console.error('Error adding task:', error);
         }
     };
+
 
 
     // Example function that uses taskId
