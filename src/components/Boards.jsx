@@ -13,6 +13,7 @@ import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
 import PropTypes from "prop-types";
 import ChangeMemberModal from "./ChangeMemberModal.jsx";
 import TaskService from "../Services/TaskService.js";
+import UserService from "../Services/UserService.js";
 //import DetailsModal from "./DetailsModal/DetailsModal.jsx";
 // import BoardService from "../Services/BoardService.js";
 //import members from "./Member/Members.jsx";
@@ -176,10 +177,7 @@ const Boards = ({
     };
 
     useEffect(() => {
-
         if (!comingFromChangeMember) {
-
-
             const loadStatusesAndTasks = async () => {
                 if (!name) return;
 
@@ -187,10 +185,6 @@ const Boards = ({
 
                 // Load statuses
                 const loadedStatuses = loadStatuses();
-                console.log("loadedStatuses",loadedStatuses)
-                console.log("statuses",statuses)
-
-
                 setStatuses(loadedStatuses);
 
                 try {
@@ -198,23 +192,26 @@ const Boards = ({
                     const response = await TaskService.getTasksByProjectId(projectId);
                     const tasks = response.data.filter(task => task.boardId === boardId);
 
-
-                    // const updatedStatuses = statuses.map(status => ({
-                    //     ...status,
-                    //     tasks: status.tasks.map(task =>
-                    //         task.taskId === selectedTask.taskId ? {
-                    //             ...task,
-                    //             assignedUserLetter: initial,
-                    //             assignedToUserId: memberId
-                    //         } : task
-                    //     )
-                    // }));
-                    // setStatuses(updatedStatuses);
-
+                    // Fetch user details for each task and add assignedUserLetter
+                    const updatedTasks = await Promise.all(tasks.map(async task => {
+                        if (task.assignedToUserId) {
+                            try {
+                                const userResponse = await UserService.getUserById(task.assignedToUserId);
+                                const user = userResponse.data;
+                                const assignedUserLetter = user.firstName.charAt(0).toUpperCase();
+                                return { ...task, assignedUserLetter };
+                            } catch (userError) {
+                                console.error(`Error fetching user info for userId ${task.assignedToUserId}:`, userError);
+                                return task; // Return the task as is if there's an error fetching user info
+                            }
+                        } else {
+                            return task; // If no assigned user, return task as is
+                        }
+                    }));
 
                     // Update statuses with tasks
                     const updatedStatuses = loadedStatuses.map(status => {
-                        const tasksForStatus = tasks.filter(task => task.status === status.title);
+                        const tasksForStatus = updatedTasks.filter(task => task.status === status.title);
                         return {
                             ...status,
                             tasks: tasksForStatus
@@ -229,7 +226,6 @@ const Boards = ({
             loadStatusesAndTasks();
             // setComingFromChangeMember(false);
         }
-
     }, [projectId, boardId, name, showPriorityModal, selectedTask]);
 
     useEffect(() => {
