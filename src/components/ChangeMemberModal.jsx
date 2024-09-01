@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import './ChangeMemberModal.css';
 import UserService from "../Services/UserService.js";
+import TaskService from "../Services/TaskService.js";
 
 const ChangeMemberModal = ({
 
                                onSave,
                                onClose,
+                                task,
                                projectId,
                                projectDescription,
                                projectMembers,
@@ -18,7 +20,7 @@ const ChangeMemberModal = ({
     const [selectedMemberId, setSelectedMemberId] = useState('');
     const [selectedMembername, setSelectedMembername] = useState('');
     const [userDetails, setUserDetails] = useState([]);
-
+        console.log("change member task : ",task)
     // Fetch user details based on projectMembers
     useEffect(() => {
         const fetchUserDetails = async () => {
@@ -45,10 +47,27 @@ const ChangeMemberModal = ({
         member.firstName.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    const handleSave = () => {
+    const handleSave = async () => {
         if (selectedMemberId) {
-            onSave(selectedMemberId, selectedMembername); // Pass selected member to parent
-            onClose(); // Close modal after saving
+            try {
+                // Create the updated task object with the new assigned user
+                const updatedTask = {
+                    ...task, // Spread the existing task details
+                    assignedToUserId: selectedMemberId, // Update the assigned user ID
+                };
+
+                // Call the TaskService to update the task with the new assigned user
+                await TaskService.updateTask(task.taskId, updatedTask);
+
+                // Alert the user that the assigned user was updated successfully
+                alert('Task assigned user updated successfully!');
+                onSave(selectedMemberId, selectedMembername); // Pass selected member to parent
+                onClose(); // Close modal after saving
+            } catch (error) {
+                // Handle any errors that occur during the update
+                console.error('Error updating task assigned user:', error);
+                alert('There was an error updating the task assigned user. Please try again.');
+            }
         }
     };
 
@@ -111,6 +130,15 @@ ChangeMemberModal.propTypes = {
 
     onClose: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired,
+    task: PropTypes.shape({
+        taskId: PropTypes.number.isRequired,
+        taskName: PropTypes.string.isRequired,
+        status: PropTypes.string.isRequired,
+        assignedToUserId:PropTypes.string.isRequired,
+        priority: PropTypes.string.isRequired,
+        date: PropTypes.instanceOf(Date),
+        taskDescription: PropTypes.string.isRequired,
+    }),
     projectId: PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string,

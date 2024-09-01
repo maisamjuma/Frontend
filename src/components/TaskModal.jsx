@@ -49,7 +49,7 @@ const TaskModal = ({
     console.log("projectId:", projectId, "projectDescription:", projectDescription, "projectMembers:", projectMembers);
     console.log("hhghg", selectedMember)
     // eslint-disable-next-line react/prop-types
-    console.log("is task id in taskmodal ? ", task.taskId)
+    console.log("is task in taskmodal ? ", task)
 
 
     if (!task) return null;
@@ -164,17 +164,16 @@ const TaskModal = ({
                 />
             )}
             {isChangeMemberModalOpen && (
-
                 <ChangeMemberModal
                     onClose={() => setIsChangeMemberModalOpen(false)}
                     onSave={onSaveMember} // Pass the function to handle saving the member
+                    task={{...task}}
                     projectId={projectId}
                     projectDescription={projectDescription}
                     projectMembers={projectMembers}
                     setProjectId={setProjectId}
                     setProjectDescription={setProjectDescription}
                     setProjectMembers={setProjectMembers}
-
                 />
             )}
 
