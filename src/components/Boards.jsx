@@ -56,43 +56,97 @@ const Boards = ({
     console.log("name ccccccccccccccccccc", name)
 
 
-    const onDragEnd = (result) => {
-        const { destination, source, draggableId } = result;
 
-        // If no destination (dropped outside any droppable), do nothing
-        if (!destination) return;
+    const onDragEnd = async (result) => {
+        console.log("result", result);
+        const { source, destination, draggableId } = result;
 
-        // Handle moving tasks within the same board
-        const sourceStatus = statuses.find(status => status.id.toString() === source.droppableId);
-        const destinationStatus = statuses.find(status => status.id.toString() === destination.droppableId);
+        // Check if the task was dropped outside any droppable area
+        if (!destination) {
+            return;
+        }
 
-        if (!sourceStatus || !destinationStatus) return;
+        const sourceStatusId = parseInt(source.droppableId, 10);
+        const destinationStatusId = parseInt(destination.droppableId, 10);
+        const draggableTaskId = parseInt(draggableId, 10);  // Convert draggableId to integer
 
-        const sourceTasks = Array.from(sourceStatus.tasks);
-        const [removed] = sourceTasks.splice(source.index, 1);
+        // Find source and destination status objects
+        const sourceStatus = statuses.find(status => status.id === sourceStatusId);
+        const destinationStatus = statuses.find(status => status.id === destinationStatusId);
 
-        if (source.droppableId === destination.droppableId) {
-            // Reordering within the same status
-            sourceTasks.splice(destination.index, 0, removed);
-            setStatuses(statuses.map(status =>
-                status.id === sourceStatus.id ? { ...status, tasks: sourceTasks } : status
-            ));
-        } else {
-            // Moving between different statuses within the same board
-            const destinationTasks = Array.from(destinationStatus.tasks);
-            destinationTasks.splice(destination.index, 0, removed);
+        if (!sourceStatus || !destinationStatus) {
+            return;
+        }
 
-            setStatuses(statuses.map(status => {
-                if (status.id === sourceStatus.id) {
-                    return { ...status, tasks: sourceTasks };
-                }
-                if (status.id === destinationStatus.id) {
-                    return { ...status, tasks: destinationTasks };
+        // Handle reordering within the same status
+        if (sourceStatusId === destinationStatusId) {
+            const reorderedTasks = Array.from(sourceStatus.tasks);
+            const [movedTask] = reorderedTasks.splice(source.index, 1);
+            reorderedTasks.splice(destination.index, 0, movedTask);
+
+            const updatedStatuses = statuses.map(status => {
+                if (status.id === sourceStatusId) {
+                    return {
+                        ...status,
+                        tasks: reorderedTasks
+                    };
                 }
                 return status;
-            }));
+            });
+
+            setStatuses(updatedStatuses);
+            return;
+        }
+
+        // Handle moving tasks between different statuses
+        const task = sourceStatus.tasks.find(task => task.taskId === draggableTaskId);
+
+        if (!task) {
+            console.error(`Task with ID ${draggableTaskId} not found`);
+            return;
+        }
+
+        const updatedSourceTasks = Array.from(sourceStatus.tasks);
+        updatedSourceTasks.splice(source.index, 1);
+
+        const updatedDestinationTasks = Array.from(destinationStatus.tasks);
+        updatedDestinationTasks.splice(destination.index, 0, task);
+
+        if (destinationStatusId === 1 && sourceStatusId >= 2) {
+            alert("You cannot move tasks from a higher status back to the unassigned tasks.");
+            return;
+        }
+
+        const updatedStatuses = statuses.map(status => {
+            if (status.id === sourceStatusId) {
+                return {
+                    ...status,
+                    tasks: updatedSourceTasks,
+                };
+            } else if (status.id === destinationStatusId) {
+                return {
+                    ...status,
+                    tasks: updatedDestinationTasks,
+                };
+            }
+            return status;
+        });
+
+        setStatuses(updatedStatuses);
+
+        // Update task status in the database
+        try {
+            const statusTitle = destinationStatus.title; // Get status title
+            await TaskService.updateTask(task.taskId, { ...task, status: statusTitle });
+            alert('Task status updated successfully!');
+        } catch (error) {
+            console.error('Error updating task status:', error);
+            alert('There was an error updating the task status. Please try again.');
         }
     };
+
+
+
 
 
 
@@ -223,17 +277,6 @@ const Boards = ({
         }
     };
 
-
-
-    // Example function that uses taskId
-    const useTaskId = () => {
-        if (taskId) {
-            console.log("Using taskId:", taskId);
-            // Perform actions with taskId
-        } else
-            console.log("not found");
-
-    };
     const handleDeleteTask = (taskId) => {
         console.log("is task id ?", taskId)
         if (taskId) {
@@ -471,148 +514,145 @@ const Boards = ({
 
     return (
         <DragDropContext onDragEnd={onDragEnd}>
-            <div className={`${board.boardId}`}>
+            <div className="boardAllStatuses">
                 <div>
                     <h1>{board.name}</h1>
                 </div>
-                <button onClick={useTaskId}>useTaskId</button>
                 <Droppable droppableId="all-statuses" direction="horizontal">
                     {(provided) => (
                         <div
                             className="backend-status-container"
-                            {...provided.droppableProps}
                             ref={provided.innerRef}
+                            {...provided.droppableProps}
                         >
                             {statuses.map((status) => (
-                                <Droppable key={status.id} droppableId={status.id.toString()} type="TASK">
-                                    {(provided) => (
-                                        <div
-                                            className="backend-status-box"
-                                            style={{ backgroundColor: status.backgroundColor }}
-                                            ref={provided.innerRef}
-                                            {...provided.droppableProps}
-                                        >
-                                            <div className="backend-status-header">
-                                            <span className="backend-status-title">
-                                                {status.title}
-                                            </span>
-                                                <span
-                                                    className="backend-status-menu"
-                                                    onClick={() => setDropdownStatusId(dropdownStatusId === status.id ? null : status.id)}
-                                                >
-                                                ...
-                                            </span>
-                                                {dropdownStatusId === status.id && (
-                                                    <div className="backend-dropdown-menu">
-                                                        <div
-                                                            className="backend-dropdown-item"
-                                                            onClick={() => handleDeleteStatus(status.id)}
-                                                        >
-                                                            Delete Status
-                                                        </div>
-                                                    </div>
-                                                )}
-                                            </div>
-                                            <Droppable droppableId={status.id.toString()} type="TASK">
-                                                {(provided) => (
-                                                    <div
-                                                        className="backend-tasks-container"
-                                                        ref={provided.innerRef}
-                                                        {...provided.droppableProps}
+                                <div key={status.id} className="backend-status-box-wrapper">
+                                    <Droppable droppableId={status.id.toString()} type="TASK">
+                                        {(provided) => (
+                                            <div
+                                                className="backend-status-box"
+                                                style={{ backgroundColor: status.backgroundColor }}
+                                                ref={provided.innerRef}
+                                                {...provided.droppableProps}
+                                            >
+                                                <div className="backend-status-header">
+                                                <span className="backend-status-title">
+                                                    {status.title}
+                                                </span>
+                                                    <span
+                                                        className="backend-status-menu"
+                                                        onClick={() => setDropdownStatusId(dropdownStatusId === status.id ? null : status.id)}
                                                     >
-                                                        {status.tasks.map((task, taskIndex) => (
-                                                            <Draggable
-                                                                key={task.id}
-                                                                draggableId={task.id}
-                                                                index={taskIndex}
+                                                    ...
+                                                </span>
+                                                    {dropdownStatusId === status.id && (
+                                                        <div className="backend-dropdown-menu">
+                                                            <div
+                                                                className="backend-dropdown-item"
+                                                                onClick={() => handleDeleteStatus(status.id)}
                                                             >
-                                                                {(provided) => (
-                                                                    <div
-                                                                        className={`backend-task-box ${highlightedTaskId === task.taskId ? 'highlighted' : ''}`}
-                                                                        {...provided.draggableProps}
-                                                                        {...provided.dragHandleProps}
-                                                                        ref={provided.innerRef}
-                                                                        onDoubleClick={() => handleDoubleClick(task.taskId)}
-                                                                    >
-                                                                        <div className="topTop">
-                                                                            <div className="topClass">
-                                                                                <div
-                                                                                    className={`task-priority-display priority-${task.priority}`}
-                                                                                >
-                                                                                    {task.priority === 'high' && (
-                                                                                        <span className="priority-high">High</span>
-                                                                                    )}
-                                                                                    {task.priority === 'medium' && (
-                                                                                        <span className="priority-medium">Medium</span>
-                                                                                    )}
-                                                                                    {task.priority === 'low' && (
-                                                                                        <span className="priority-low">Low</span>
-                                                                                    )}
-                                                                                </div>
-                                                                            </div>
-                                                                            <div className="topClass2">
-                                                                                <FaPen
-                                                                                    className="backend-pencil-icon"
-                                                                                    onClick={() => handlePencilClick(task)}
-                                                                                />
+                                                                Delete Status
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                                <div
+                                                    className="backend-tasks-container"
+                                                    ref={provided.innerRef}
+                                                    {...provided.droppableProps}
+                                                >
+                                                    {status.tasks.map((task, taskIndex) => (
+                                                        <Draggable
+                                                            key={task.taskId}
+                                                            draggableId={task.taskId.toString()}
+                                                            index={taskIndex}
+                                                        >
+                                                            {(provided) => (
+                                                                <div
+                                                                    className={`backend-task-box ${highlightedTaskId === task.taskId ? 'highlighted' : ''}`}
+                                                                    {...provided.draggableProps}
+                                                                    {...provided.dragHandleProps}
+                                                                    ref={provided.innerRef}
+                                                                    onDoubleClick={() => handleDoubleClick(task.taskId)}
+                                                                >
+                                                                    <div className="topTop">
+                                                                        <div className="topClass">
+                                                                            <div
+                                                                                className={`task-priority-display priority-${task.priority}`}
+                                                                            >
+                                                                                {task.priority === 'high' && (
+                                                                                    <span className="priority-high">High</span>
+                                                                                )}
+                                                                                {task.priority === 'medium' && (
+                                                                                    <span className="priority-medium">Medium</span>
+                                                                                )}
+                                                                                {task.priority === 'low' && (
+                                                                                    <span className="priority-low">Low</span>
+                                                                                )}
                                                                             </div>
                                                                         </div>
-                                                                        <div className="MiddleClass">
-                                                                            {editingTaskId === task.taskId ? (
-                                                                                <input
-                                                                                    type="text"
-                                                                                    defaultValue={task.taskName}
-                                                                                    onBlur={(e) => handleBlur(status.id, task.taskId, e.target.value)}
-                                                                                    className="backend-task-input"
-                                                                                />
-                                                                            ) : (
-                                                                                <>
-                                                                                    <div className="nameCss">
-                                                                                        <span>{task.taskName}</span>
+                                                                        <div className="topClass2">
+                                                                            <FaPen
+                                                                                className="backend-pencil-icon"
+                                                                                onClick={() => handlePencilClick(task)}
+                                                                            />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="MiddleClass">
+                                                                        {editingTaskId === task.taskId ? (
+                                                                            <input
+                                                                                type="text"
+                                                                                defaultValue={task.taskName}
+                                                                                onBlur={(e) => handleBlur(status.id, task.taskId, e.target.value)}
+                                                                                className="backend-task-input"
+                                                                            />
+                                                                        ) : (
+                                                                            <>
+                                                                                <div className="nameCss">
+                                                                                    <span>{task.taskName}</span>
+                                                                                </div>
+                                                                                <div className="dateWithName">
+                                                                                    <div className="dateCss">
+                                                                                        {task.date && (
+                                                                                            <span className="task-due-date">
+                                                                                            Due date: {new Date(task.date).toLocaleDateString()}
+                                                                                        </span>
+                                                                                        )}
                                                                                     </div>
-                                                                                    <div className="dateWithName">
-                                                                                        <div className="dateCss">
-                                                                                            {task.date && (
-                                                                                                <span className="task-due-date">
-                                                                                                Due date: {new Date(task.date).toLocaleDateString()}
+                                                                                    {(status.id >= 2) && (
+                                                                                        <div className="nameCircle">
+                                                                                            {task.assignedToUserId && (
+                                                                                                <span className="taskMember">
+                                                                                                {task.assignedUserLetter}
                                                                                             </span>
                                                                                             )}
                                                                                         </div>
-                                                                                        {(status.id >= 2) && (
-                                                                                            <div className="nameCircle">
-                                                                                                {task.assignedToUserId && (
-                                                                                                    <span className="taskMember">
-                                                                                                    {task.assignedUserLetter}
-                                                                                                </span>
-                                                                                                )}
-                                                                                            </div>
-                                                                                        )}
-                                                                                    </div>
-                                                                                </>
-                                                                            )}
-                                                                        </div>
+                                                                                    )}
+                                                                                </div>
+                                                                            </>
+                                                                        )}
                                                                     </div>
-                                                                )}
-                                                            </Draggable>
-                                                        ))}
-                                                        {provided.placeholder}
-                                                    </div>
+                                                                </div>
+                                                            )}
+                                                        </Draggable>
+                                                    ))}
+                                                    {provided.placeholder}
+                                                </div>
+                                                {(status.id === 1 || status.id === 2) && (
+                                                    <button
+                                                        onClick={() => {
+                                                            setCurrentStatusId(status.id);
+                                                            setShowAddTaskModal(true);
+                                                        }}
+                                                        className="backend-show-add-task"
+                                                    >
+                                                        + Add Task
+                                                    </button>
                                                 )}
-                                            </Droppable>
-                                            {(status.id === 1 || status.id === 2) && (
-                                                <button
-                                                    onClick={() => {
-                                                        setCurrentStatusId(status.id);
-                                                        setShowAddTaskModal(true);
-                                                    }}
-                                                    className="backend-show-add-task"
-                                                >
-                                                    + Add Task
-                                                </button>
-                                            )}
-                                        </div>
-                                    )}
-                                </Droppable>
+                                            </div>
+                                        )}
+                                    </Droppable>
+                                </div>
                             ))}
                             {provided.placeholder}
                         </div>
