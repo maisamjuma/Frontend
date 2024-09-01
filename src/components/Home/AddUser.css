@@ -1,32 +1,29 @@
-/* Container to center the card */
 .full-screen-center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 80vh; /* Full viewport height */
-    padding: 0; /* Remove default padding */
-    margin: 0; /* Reset margin to center properly */
+    /*display: flex;*/
+    /*justify-content: center;*/
+    /*align-items: center;*/
+    /*overflow-y: auto;*/
 }
 
-/* Card styles */
+
 .card {
-    border: 1px solid #ddd;
+
+    border: 5px solid darksalmon;
     border-radius: 8px;
-    /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
-    width: 100%;
-    max-width: 900px; /* Adjust as needed */
-    height: 60vh; /* Adjust height to give more space */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    width: 600px;
+    max-width: 900px;
+    height: 590px;
     padding: 20px;
     box-sizing: border-box;
-    background: #fff; /* Ensure background color to distinguish card */
-    margin: 0; /* Remove margins */
-    overflow: auto; /* Enable scrolling */
+    background: white;
+    margin-bottom: 50px;
+    overflow: auto;
 }
 
-/* Hide scrollbars but keep scrolling */
 .card::-webkit-scrollbar {
-    width: 0; /* Hide vertical scrollbar */
-    height: 0; /* Hide horizontal scrollbar */
+    width: 0;
+    height: 0;
 }
 
 .card {
@@ -34,113 +31,124 @@
     scrollbar-width: none; /* Firefox */
 }
 
-/* Header styles */
 .card-header {
-    background-color: #E9967A; /* Dark salmon background color */
+    background-color: #E9967A;
     color: white;
     padding: 15px;
     border-bottom: 1px solid #ddd;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
     font-size: 1.5rem;
-    text-align: center; /* Center text in header */
+    text-align: center;
+    margin-bottom: 10px;
+    width: 550px;
 }
 
-/* Form group styles */
 .form-group {
     margin-bottom: 1.5rem;
 }
 
-/* Label styles */
 .form-label {
     font-weight: bold;
     margin-bottom: 0.5rem;
     display: block;
-    color: white;
+    color: #3a3a3c;
+    font-size: 20px;
 }
 
-/* Checkbox container style */
 .checkbox-container {
     display: flex;
     align-items: center;
-    margin-top: 10px;
+    margin: 10px;
 }
 
-/* Label styles */
 .teamleaderlabel {
     font-weight: bold;
-    color: #333;
-    margin-left: 0.5rem; /* Adjust spacing between label and checkbox */
+    color: black;
+    margin-left: 0.5rem;
 }
 
-/* Input and select styles */
 .form-control {
-    border: 1px solid #E9967A; /* Dark salmon border color */
+    border: 1px solid #E9967A;
     border-radius: 0.25rem;
-    padding: 0.5rem;
+    padding: 5px;
     background-color: white;
     width: 100%;
     box-sizing: border-box;
+    font-weight: bold;
+    color: #3a3a3c;
 }
 
 
 
-/* Input focus styles */
 .form-control:focus {
     border-color: #ffffff;
     outline: 0;
-    /*box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);*/
 }
 
-/* Invalid feedback styles */
 .invalid-feedback {
     display: block;
     color: #dc3545;
     font-size: 0.875rem;
 }
 
-/* Checkbox styles */
 .form-check-input {
-    width: 10px; /* Ensure checkbox does not stretch */
-    margin-right: 0.5rem; /* Space between checkbox and label */
+    width: 10px;
+    margin-right: 0.5rem;
 
 }
 
-/* Button styles */
-.btn-success {
-    background-color: #0b0a0a !important; /* Dark background */
-    border: none !important; /* Remove default border */
-    color: white !important; /* Ensure text color is white */
-    padding: 0.5rem 1rem !important; /* Consistent padding */
-    border-radius: 0.25rem !important; /* Rounded corners */
-    cursor: pointer !important; /* Pointer cursor on hover */
-    font-size: 1rem !important; /* Font size */
+.btn-successB {
+    background-color: white;
+    color: #333333;
+    padding: 5px ;
+    border-radius: 6px ;
+    cursor: pointer ;
+    font-size: 20px ;
+    font-weight: bold;
+    position: relative;
+    left: 380px;
+    top: 40px;
+    border: solid 2px darksalmon;
+    width: 150px;
 }
 
-/* Button hover styles */
 .btn-success:hover {
-    background-color: #E9967A !important; /* Dark salmon background color on hover */
+    background-color: #E9967A ;
 }
 
-/* Form control sizes */
 input[type="datetime-local"] {
     padding: 0.5rem;
 }
 
-/* Layout for form rows */
 .form-row {
     display: flex;
     flex-wrap: wrap;
 }
 
-/* Style for vertical group of fields */
 .vertical-group {
-    flex: 1; /* Adjust this value as needed */
+    flex: 1;
     margin-right: 1rem;
 }
 
-/* Style for horizontal group of fields */
 .horizontal-group {
-    flex: 1; /* Adjust this value as needed */
+    flex: 1;
     margin-right: 1rem;
+}
+.addUserInput{
+    border: solid 1px #E9967A;
+    padding: 5px;
+    border-radius: 5px;
+}
+.defualOption{
+    background-color: darksalmon;
+}
+.dropDownRole{
+    padding: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 5px;
+    margin-top: 5px;
+    border: solid 1px #E9967A;
+    color: #333333;
 }

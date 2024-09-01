@@ -9,6 +9,7 @@ import RoleService from "../../Services/RoleService.js";
 // import RoleService from "../Services/RoleService";
 import {useNavigate} from 'react-router-dom';
 import './AddUser.css';
+import {ArrowDownIcon} from "../SVGIcons.jsx";
 
 const AddUser = () => {
     const navigate = useNavigate();
@@ -180,65 +181,65 @@ const AddUser = () => {
                             {/*    />*/}
                             {/*    {errors.username && <div className='invalid-feedback'>{errors.username}</div>}*/}
                             {/*</div>*/}
-                            <div className="form-group mb-2 vertical-group">
+                            <div className=" mb-2 vertical-group">
                                 <label className='form-label'>Email:</label>
                                 <input
                                     type="email"
                                     placeholder="Enter Employee Email"
                                     name="email"
                                     value={email}
-                                    className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+                                    className={` addUserInput ${errors.email ? 'is-invalid' : ''}`}
                                     onChange={handleEmail}
                                 />
                                 {errors.email && <div className='invalid-feedback'>{errors.email}</div>}
                             </div>
-                            <div className="form-group mb-2 vertical-group">
+                            <div className=" mb-2 vertical-group">
                                 <label className='form-label'>Password:</label>
                                 <input
                                     type="password"
                                     placeholder="Enter Password"
                                     name="password"
                                     value={password}
-                                    className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+                                    className={` addUserInput ${errors.password ? 'is-invalid' : ''}`}
                                     onChange={handlePassword}
                                 />
                                 {errors.password && <div className='invalid-feedback'>{errors.password}</div>}
                             </div>
                         </div>
                         <div className="form-row">
-                            <div className="form-group mb-2 horizontal-group">
+                            <div className=" mb-2 horizontal-group">
                                 <label className='form-label'>First Name:</label>
                                 <input
                                     type="text"
                                     placeholder="Enter First Name"
                                     name="firstName"
                                     value={firstName}
-                                    className={`form-control ${errors.firstName ? 'is-invalid' : ''}`}
+                                    className={` addUserInput ${errors.firstName ? 'is-invalid' : ''}`}
                                     onChange={handleFirstName}
                                 />
                                 {errors.firstName && <div className='invalid-feedback'>{errors.firstName}</div>}
                             </div>
-                            <div className="form-group mb-2 horizontal-group">
+                            <div className=" mb-2 horizontal-group">
                                 <label className='form-label'>Last Name:</label>
                                 <input
                                     type="text"
                                     placeholder="Enter Last Name"
                                     name="lastName"
                                     value={lastName}
-                                    className={`form-control ${errors.lastName ? 'is-invalid' : ''}`}
+                                    className={` addUserInput ${errors.lastName ? 'is-invalid' : ''}`}
                                     onChange={handleLastName}
                                 />
                                 {errors.lastName && <div className='invalid-feedback'>{errors.lastName}</div>}
                             </div>
-                            <div className="form-group mb-2 horizontal-group">
+                            <div className=" mb-2 horizontal-group">
                                 <label className='form-label'>Role:</label>
                                 <select
                                     name="role"
                                     value={functionalRoleId}
-                                    className={`form-control ${errors.role ? 'is-invalid' : ''}`}
+                                    className={` dropDownRole ${errors.role ? 'is-invalid' : ''}`}
                                     onChange={handleRole}
                                 >
-                                    <option value="">Select a role</option>
+                                    <option className= "defualOption" value="">Select a role</option>
                                     {roles.map((role) => (
                                         <option key={role.funcRoleId} value={role.funcRoleId}>
                                             {role.roleName}
@@ -249,29 +250,31 @@ const AddUser = () => {
                                 {errors.role && <div className='invalid-feedback'>{errors.role}</div>}
                             </div>
                         </div>
-                        <div className="form-group mb-2">
+                        <div className=" mb-2">
                             <div className="checkbox-container">
-                                <label className='teamleaderlabel'>Is Team Leader:</label>
                                 <input
                                     type="checkbox"
                                     name="isTeamLeader"
                                     checked={isTeamLeader}
                                     onChange={handleIsTeamLeader}
                                 />
+                                <label className='form-label'>Is Team Leader</label>
+
                             </div>
                         </div>
-                        <div className="form-group mb-2">
+                        <div className=" mb-2">
                             <div className="checkbox-container">
-                                <label className='adminlabel'>Is Admin:</label>
                                 <input
                                     type="checkbox"
                                     name="isAdmin"
                                     checked={isAdmin}
                                     onChange={handleIsAdmin}
                                 />
+                                <label className='form-label'>Is Admin</label>
+
                             </div>
                         </div>
-                        <button type="submit" className="btn btn-primary">Save</button>
+                        <button className="btn-successB">Save</button>
                     </form>
                 </div>
             </div>
