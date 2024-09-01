@@ -139,7 +139,7 @@ const AddTaskModal = ({
                                             key={user.userId}
                                             value={user.userId}
                                         >
-                                            {user.username} {user.lastName}
+                                            {user.firstName} {user.lastName}
                                         </option>
                                     ))
                                 ) : (

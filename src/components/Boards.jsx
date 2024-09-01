@@ -223,17 +223,6 @@ const Boards = ({
         }
     };
 
-
-
-    // Example function that uses taskId
-    const useTaskId = () => {
-        if (taskId) {
-            console.log("Using taskId:", taskId);
-            // Perform actions with taskId
-        } else
-            console.log("not found");
-
-    };
     const handleDeleteTask = (taskId) => {
         console.log("is task id ?", taskId)
         if (taskId) {
@@ -471,11 +460,10 @@ const Boards = ({
 
     return (
         <DragDropContext onDragEnd={onDragEnd}>
-            <div className={`${board.boardId}`}>
+            <div className="boardAllStatuses">
                 <div>
                     <h1>{board.name}</h1>
                 </div>
-                <button onClick={useTaskId}>useTaskId</button>
                 <Droppable droppableId="all-statuses" direction="horizontal">
                     {(provided) => (
                         <div
