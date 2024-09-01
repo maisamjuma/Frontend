@@ -42,7 +42,7 @@
 //             setCurrentUser({...user});//by simply spreading out the users properties into a new object (so that we are not maintaining any references to this user argument)
 //
 //             /*
-//             since we have set the Current User (by setCurrentUser function) -> then we can also be sure that the user has logged in, so we can simply call setUserLoggedIn(true);
+//             since we have set the Current AddUser (by setCurrentUser function) -> then we can also be sure that the user has logged in, so we can simply call setUserLoggedIn(true);
 //             but first, we check if provider is email and password login:
 //             */
 //             // const isEmail = user.providerData.some(

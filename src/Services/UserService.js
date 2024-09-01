@@ -79,7 +79,7 @@ class UserService {
         });
     }
 
-    // User login
+    // AddUser login
     async login(password, email) {
         try {
             const response = await axios.post(`${BASE_URL}/auth`, { password, email });

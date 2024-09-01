@@ -1,11 +1,11 @@
 import React, {useEffect, useState, useRef} from 'react';
 import {useNavigate} from "react-router-dom";
-import UserService from "../Services/UserService.js";
-import RoleService from '../Services/RoleService';
+import UserService from "../../Services/UserService.js";
+import RoleService from '../../Services/RoleService.js';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faUserPlus, faUserShield, faUserTag} from '@fortawesome/free-solid-svg-icons';
 import './HomePage.css';
-import {userIsAdmin} from '../utils/authUtils';
+import {userIsAdmin} from '../../utils/authUtils.js';
 import ListUser from './ListUser/ListUser.jsx'; // Import the ListUser component
 
 const HomePage = () => {
@@ -32,7 +32,7 @@ const HomePage = () => {
     }, []);
 
     function addNewUser() {
-        navigator('/main/User');
+        navigator('/main/AddUser');
     }
 
     function handleRoleChange(e) {
