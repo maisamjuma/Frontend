@@ -115,74 +115,57 @@ const HomePage = () => {
                         <span className="track fw-bold" style={{fontSize: '24px'}}> team collaboration and project management.</span>
                     </div>
                 </div>
-                {userRoleIsAdmin && (
-                    <div className="home-button-container">
+                <div className="manage-homePage">
+                    {userRoleIsAdmin && (
+                        <div className='Assigncontent'>
+                            <h3>Assign A Team Leader</h3>
+                            <select
+                                value={selectedRole}
+                                onChange={handleRoleChange}
+                                className='form-controlHb mb-2'
+                            >
+                                <option value="">Select Role</option>
+                                <option value="Backend">Backend</option>
+                                <option value="Frontend">Frontend</option>
+                                <option value="QA">QA</option>
+                            </select>
 
-                        <button
-                            type='button'
-                            className='btnAssignTeamLeader'
-                            onClick={handleToggleAssignTeamLeader}
-                        >
-                            <FontAwesomeIcon icon={faUserShield}/>
-                            {isAssigning ? 'Cancel' : 'Assign Team Leaders'}
-                        </button>
+                            <select
+                                value={newTeamLeader}
+                                onChange={handleTeamLeaderChange}
+                                className='form-control mb-2'
+                            >
+                                <option value="">Select Member</option>
+                                {users.map(user => (
+                                    <option key={user.userId} value={user.userId}>
+                                        {user.firstName} {user.lastName}
+                                    </option>
+                                ))}
+                            </select>
 
-                            <div className='Assigncontent' >
-                                <select
-                                    value={selectedRole}
-                                    onChange={handleRoleChange}
-                                    className='form-control mb-2'
-                                >
-                                    <option value="">Select Role</option>
-                                    <option value="Backend">Backend</option>
-                                    <option value="Frontend">Frontend</option>
-                                    <option value="QA">QA</option>
-                                </select>
-
-                                <select
-                                    value={newTeamLeader}
-                                    onChange={handleTeamLeaderChange}
-                                    className='form-control mb-2'
-                                >
-                                    <option value="">Select Member</option>
-                                    {users.map(user => (
-                                        <option key={user.userId} value={user.userId}>
-                                            {user.firstName} {user.lastName}
-                                        </option>
-                                    ))}
-                                </select>
-
-                                <div className="form-check mb-2">
-                                    <input
-                                        type="checkbox"
-                                        className="form-check-input"
-                                        id="isAdminCheck"
-                                        checked={isAdmin}
-                                        onChange={handleIsAdminChange}
-                                    />
-                                    <label className="form-check-label" htmlFor="isAdminCheck">
-                                        Is Admin
-                                    </label>
-                                </div>
-
-                                <button
-                                    type='button'
-                                    className='btn btn-primary'
-                                    onClick={handleSaveTeamLeader}
-                                >
-                                    Save Team Leader
-                                </button>
+                            <div className="form-check mb-2">
+                                <input
+                                    type="checkbox"
+                                    className="form-check-input"
+                                    id="isAdminCheck"
+                                    checked={isAdmin}
+                                    onChange={handleIsAdminChange}
+                                />
+                                <label className="form-check-label" htmlFor="isAdminCheck">
+                                    Is Admin
+                                </label>
                             </div>
 
-                        <button
-                            type='button'
-                            className='btnAddRole'
-                            onClick={handleToggleAddRole}
-                        >
-                            <FontAwesomeIcon icon={faUserTag}/> {isAddingRole ? 'Cancel' : 'Add new role'}
-                        </button>
-                    </div>
-                )}
+                            <button
+                                type='button'
+                                className='btn btn-primary'
+                                onClick={handleSaveTeamLeader}
+                            >
+                                Save Team Leader
+                            </button>
+                        </div>
+                    )}
+
 
                     <div className="rolecontent" ref={roleContentRef}>
                         <h3>Add New Roll</h3>
@@ -201,9 +184,12 @@ const HomePage = () => {
                         >
                             Save Role
                         </button>
+
                     </div>
+                </div>
 
             </div>
+
 
             {userRoleIsAdmin && (
                 <ListUser/>

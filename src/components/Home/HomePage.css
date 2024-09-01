@@ -16,20 +16,7 @@
     overflow:hidden; /* Ensure children content isn't cut off */
 }
 
-.Assigncontent{
-    max-height: none; /* Allow content to grow as needed */
-    overflow-y: auto; /* Still allow scrolling within these sections if necessary */
-}
-.rolecontent {
- width: 300px;
- margin-top: 20px;
-    position: relative;
-    left: 800px;
-    bottom: 150px;
-    border: 1px solid #ccc;
-    padding: 30px;
-    border-radius: 10px;
-}
+
 
 .video-container {
     display: flex;
@@ -91,4 +78,25 @@
     background: #282E33;
     border: 2px solid #282E33;
     color: #E9967A;
+}
+.Assigncontent{
+    width: 500px;
+    margin-top: 20px;
+    position: relative;
+    left: 20px;
+    border-right: 1px solid #ccc;
+    padding: 30px;
+
+}
+.rolecontent {
+    width: 500px;
+    margin-top: 20px;
+    border-left: 1px solid #ccc;
+    padding: 30px;
+}
+.manage-homePage{
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    margin-bottom: 70px;
 }

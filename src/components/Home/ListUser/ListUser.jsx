@@ -11,6 +11,7 @@ import {faUserPlus} from "@fortawesome/free-solid-svg-icons";
 const ListUser = () => {
     const [users, setUsers] = useState([]);
     const navigate = useNavigate();
+    const navigator = useNavigate();
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -55,8 +56,14 @@ const ListUser = () => {
         navigate(`/main/edit-user/${userId}`);
     };
     function addNewUser() {
-        navigator('/main/User');
+        navigator('/main/AddUser');
     }
+    useEffect(() => {
+        UserService.getAllUsers().then((response) => {
+            setUsers(response.data);
+        }).catch(error => console.log(error));
+    }, []);
+
     return (
         <>
             <h2 className=" mb-4 ">Employee Directory</h2>
