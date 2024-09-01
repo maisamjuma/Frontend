@@ -160,6 +160,11 @@
     padding: 20px;
 }
 
+.boardAllStatuses{
+    width: 1380px;
+    padding-right: 140px;
+}
+
     /* Allow status-container to extend with content and wrap items */
 .backend-status-container {
     display: flex;
@@ -167,7 +172,7 @@
     align-items: flex-start; /* Align items to the start of the container */
     gap: 10px; /* Space between items */
     justify-content: flex-start; /* Align items to the start (left) */
-
+    overflow-x: auto;
 }
 /* Hide scrollbars for Webkit browsers (Chrome, Safari) */
 .backend-status-container::-webkit-scrollbar {

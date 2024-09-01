@@ -524,7 +524,7 @@ const Boards = ({
 
     return (
         <DragDropContext onDragEnd={onDragEnd}>
-            <div className={` ${boardId}`}>
+            <div className="boardAllStatuses">
                 <div><h1>{name}</h1></div>
                 <button onClick={useTaskId}>useTaskId</button>
                 <Droppable droppableId="all-statuses" direction="horizontal">
