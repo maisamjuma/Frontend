@@ -14,6 +14,7 @@ import PropTypes from "prop-types";
 import ChangeMemberModal from "./ChangeMemberModal.jsx";
 import TaskService from "../Services/TaskService.js";
 import UserService from "../Services/UserService.js";
+import BoardService from "../Services/BoardService.js";
 //import DetailsModal from "./DetailsModal/DetailsModal.jsx";
 // import BoardService from "../Services/BoardService.js";
 //import members from "./Member/Members.jsx";
@@ -53,7 +54,8 @@ const Boards = ({
     const [taskId, setTaskId] = useState(null);
     console.log(projectMembers)
     console.log("boardId ccccccccccccccccccccc", boardId)
-    console.log("name ccccccccccccccccccc", name)
+    console.log("projectid ccccccccccccccccccc", projectId)
+
 
 
 
@@ -511,6 +513,72 @@ const Boards = ({
     //     }
     // };
 
+    const moveTasksToQA = async () => {
+        // Fetch boards for the project
+        try {
+            const response = await BoardService.getBoardsByProject(projectId); // Ensure `projectId` is available
+            const boards = response.data; // Adjust according to your API response
+
+            // Find the QA board
+            const qaBoard = boards.find(board => board.name === 'QA');
+            if (!qaBoard) {
+                console.error('QA board not found');
+                return;
+            }
+
+            const qaBoardId = qaBoard.boardId; // QA board ID
+            console.log("qaBoardId",qaBoardId)
+            // Find the 'Reviewing' status from the current board
+            const reviewingStatus = statuses.find(status => status.title === 'Reviewing');
+            if (!reviewingStatus) {
+                console.error('Reviewing status not found');
+                return;
+            }
+
+            // Prepare tasks to move
+            const tasksToMove = reviewingStatus.tasks;
+
+            if (tasksToMove.length === 0) {
+                console.log('No tasks to move');
+                return;
+            }
+
+            // Update each task status and board ID
+            for (const task of tasksToMove) {
+                console.log("check for task : ",task);
+                try {
+                    await TaskService.updateTask(task.taskId, {
+                        ...task,
+                        status: 'Ready for QA', // Set the new status
+                        boardId: qaBoardId // Update the board ID
+                    });
+                } catch (error) {
+                    console.error(`Error updating task ${task.taskId}:`, error);
+                }
+            }
+
+            // alert('Tasks moved to QA successfully!');
+
+            // Optionally, update the local state if needed
+            const updatedStatuses = statuses.map(status => {
+                if (status.title === 'Reviewing') {
+                    return {
+                        ...status,
+                        tasks: [] // Clear tasks from 'Reviewing'
+                    };
+                }
+                return status;
+            });
+            setStatuses(updatedStatuses);
+
+        } catch (error) {
+            console.error('Error fetching boards or moving tasks:', error);
+            alert('There was an error moving the tasks. Please try again.');
+        }
+    };
+
+
+
 
     return (
         <DragDropContext onDragEnd={onDragEnd}>
@@ -647,6 +715,14 @@ const Boards = ({
                                                         className="backend-show-add-task"
                                                     >
                                                         + Add Task
+                                                    </button>
+                                                )}
+                                                {status.id === 5 && (
+                                                    <button
+                                                        onClick={() => moveTasksToQA()}
+                                                        className="move-to-qa-button"
+                                                    >
+                                                        Move to QA
                                                     </button>
                                                 )}
                                             </div>
