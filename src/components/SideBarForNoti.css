@@ -3,7 +3,7 @@
     position: fixed;
     top: 60px; /* Adjust for navbar height */
     left: 0;
-    width: 200px;
+    width: 270px;
     height: calc(100vh - 60px); /* Full height minus navbar height */
     background-color: #f8f9fa; /* Background color updated to match theme */
     box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);

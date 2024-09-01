@@ -23,7 +23,7 @@ html, body {
 .secondary-navbar {
     position: fixed;
     top: 60px; /* Adjust based on navbar height */
-    left: 200px; /* Width of the sidebar */
+    left: 270px; /* Width of the sidebar */
     right: 0;
     z-index: 999;
     background-color: #e9ecef;
