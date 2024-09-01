@@ -2,7 +2,7 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import {Link, useNavigate} from 'react-router-dom';
-//import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import './navbar.css';
 
 const Navbar = () => {
@@ -10,7 +10,7 @@ const Navbar = () => {
 
     const handleDevTrackClick = (e) => {
         e.preventDefault();
-        navigate('/'); // Navigate to the Welcome page
+        navigate('/login'); // Navigate to the Welcome page
     };
 
     return (
@@ -45,5 +45,8 @@ const Navbar = () => {
     );
 };
 
+Navbar.propTypes = {
+    onLogout: PropTypes.func.isRequired,
+};
 
 export default Navbar;

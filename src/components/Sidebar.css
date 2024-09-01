@@ -173,12 +173,32 @@
 .projects-list-container {
     scrollbar-width: thin;
     scrollbar-color: #ccc transparent;
+    overflow-x: hidden;
+
 }
 
 /* Highlight effect for list items */
 .user-lists:hover,
 .Settings:hover,
 .projects-text:hover {
-    color: #e9967a; /* Change text color on hover to dark salmon */
+    color:#3a3a3c; /* Change text color on hover to dark salmon */
     font-weight: bold; /* Make text bold */
+}
+.projects-text{
+    /*margin-left: 2px;*/
+    font-size:20px;
+    font-weight: bold;
+}
+.projectName-arrowDown{
+    display: flex;
+    gap: 85px;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    width: 300px;
+    left: 2px;
+
 }

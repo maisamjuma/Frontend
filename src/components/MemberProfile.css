@@ -119,16 +119,16 @@ body {
     color: black;
 }
 
-.close-btn {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 20px;
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
-}
+/*.close-btn {*/
+/*    background: none;*/
+/*    border: none;*/
+/*    color: white;*/
+/*    font-size: 20px;*/
+/*    position: absolute;*/
+/*    top: 10px;*/
+/*    right: 10px;*/
+/*    cursor: pointer;*/
+/*}*/
 
 .profile-actions {
     padding: 15px;
@@ -144,12 +144,24 @@ body {
 .usernameFont{
 }
 .secondary-nav-button {
-    margin: 0 1px;
     background-color: #e9ecef;
     color: darksalmon;
     padding: 3px;
     font-weight: bolder;
     letter-spacing: 1px;
+}
+
+.secondary-nav-button-X{
+    background-color: #e9ecef;
+    color: darksalmon;
+    padding: 3px;
+    padding-right: 7px;
+    padding-left: 7px;
+    font-weight: bolder;
+    letter-spacing: 1px;
+    position: absolute;
+    right: 10px;
+    top: 22px;
 }
 
 .secondary-nav-button:hover {

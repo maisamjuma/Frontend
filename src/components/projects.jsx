@@ -8,7 +8,8 @@ import DeleteMember from './DeleteMember.jsx';
 import defaultProjectIcon from '../assets/projectIcon.png';
 import ProjectMemberService from '../Services/ProjectMemberService';
 import UserService from '../Services/UserService.js';
-import {userIsAdmin, userIsTeamLeader} from '../utils/authUtils'; // Import the utility function
+import {userIsAdmin, userIsTeamLeader} from '../utils/authUtils';
+//import PropTypes from "prop-types"; // Import the utility function
 
 const Projects = () => {
     const {projectName} = useParams();
@@ -27,8 +28,19 @@ const Projects = () => {
     const [showDeletePopup, setShowDeletePopup] = useState(false);
     const userRoleIsAdmin = userIsAdmin(); // Check if the user is an admin
     const userRoleIsTeamLeader = userIsTeamLeader(); // Check if the user is an admin
-
     const containerRef = useRef(null);
+    // useEffect(() => {
+    //     const isAuthenticated = true; // Replace with actual auth check
+    //     if (!isAuthenticated) {
+    //         navigate('/login');
+    //     }
+    // }, [navigate]);
+    //
+    const handleLogout = () => {
+        localStorage.removeItem('authToken');
+        sessionStorage.removeItem('authToken');
+        navigate('/login');
+    };
 
     useEffect(() => {
         const fetchProjectMembers = async () => {
@@ -135,7 +147,7 @@ const Projects = () => {
                                     setIsDeleting(false);
                                 }}
                             >
-                                {isEditing ? 'Edit Member' : 'Add Member'}
+                                {isEditing ? 'Edit Member' : 'Edit Member'}
                             </button>
                         </li>
                     )}
@@ -225,6 +237,7 @@ const Projects = () => {
                         member={showProfile}
                         userDetails={userDetails}
                         onClose={() => setShowProfile(null)}
+                        onLogout={handleLogout}
                     />
                 )}
             </div>
@@ -271,5 +284,8 @@ const Projects = () => {
 
     );
 };
+// Projects.propTypes = {
+//     onLogout: PropTypes.func.isRequired,
+// };
 
 export default Projects;

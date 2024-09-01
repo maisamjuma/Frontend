@@ -9,12 +9,13 @@ import ProjectService from '../Services/ProjectService';  // Adjust the import p
 import {userIsAdmin} from '../utils/authUtils'; // Import the utility function
 
 import {ArrowDownIcon} from "./SVGIcons.jsx";
+import {FaPen} from "react-icons/fa";
 
 
 const Sidebar = ({onMenuAction}) => {
     const [projects, setProjects] = useState([]); // Added state for projects
 
-    const [isProjectsOpen, setIsProjectsOpen] = useState(false);
+    const [isProjectsOpen, setIsProjectsOpen] = useState(true);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isAddProjectModalVisible, setIsAddProjectModalVisible] = useState(false);
     const [isDeleteMode, setIsDeleteMode] = useState(false);
@@ -94,7 +95,6 @@ const Sidebar = ({onMenuAction}) => {
 
     useEffect(() => {
         setProjects([STATIC_PROJECT]);
-
         fetchProjects();
 
 
@@ -196,7 +196,7 @@ const Sidebar = ({onMenuAction}) => {
                 </li>
                 <hr/>
                 <li className="projects-container" onClick={toggleProjects}>
-        <span className="d-flex gap-2">
+        <span className="projectName-arrowDown">
             <span className="projects-text">Projects</span>
             <div className={isProjectsOpen && "rotate-180 mt-1"}>
                 <ArrowDownIcon/>
@@ -204,7 +204,11 @@ const Sidebar = ({onMenuAction}) => {
         </span>
                     {userRoleIsAdmin && (
                         <div className="menu-container">
-                            <span className="menu-toggle" onClick={toggleMenu}>...</span>
+                            <FaPen
+                                className="backend-pencil-icon"
+                                onClick={toggleMenu}
+                            />
+                            {/*<span className="menu-toggle" onClick={toggleMenu}>...</span>*/}
                             {isMenuOpen && (
                                 <ul className="menu-list" onClick={(e) => e.stopPropagation()}>
                                     <li className="addpro" onClick={() => handleMenuAction('Add')}>Add</li>
@@ -216,11 +220,13 @@ const Sidebar = ({onMenuAction}) => {
                 </li>
                 {isProjectsOpen && (
                     <div className="projects-list-container">
-                        <ul className="dropdown-list">
+                        <ul className="dropdown-list ">
                             {projects.map((project) => (
-                                <li key={project.projectId} onClick={() => handleProjectClick(project)}>
+
+                                <li  key={project.projectId} onClick={() => handleProjectClick(project)}>
                                     {isDeleteMode && (
                                         <input
+                                            className="mx-3"
                                             type="checkbox"
                                             checked={selectedProjects.includes(project.id)}
                                             onChange={(e) => handleCheckboxChange(e, project)}
@@ -228,6 +234,7 @@ const Sidebar = ({onMenuAction}) => {
                                     )}
                                     {project.name}
                                 </li>
+
                             ))}
                             {isDeleteMode && (
                                 <button onClick={handleDeleteSelected} disabled={selectedProjects.length === 0}>
