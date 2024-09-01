@@ -41,12 +41,16 @@ const MemberProfile = ({ member, userDetails, onClose }) => {
                     <div className="profile-info">
                         <h2 className="usernameFont">{user.firstName} {user.lastName}</h2>
                     </div>
+                    <div>
+                        <button className="secondary-nav-button d-flex justify-content-center" onClick={onClose}>X
+                        </button>
+                    </div>
                 </div>
                 <div className="profile-actions">
                     <p className="fontColor"><strong>First Name: </strong> {user.firstName}</p>
                     <p className="fontColor"><strong>Email: </strong> {user.email}</p>
                     <p className="fontColor"><strong>Role: </strong> {roleName}</p>
-                    <button className="secondary-nav-button d-flex justify-content-center" onClick={onClose}>Close
+                    <button className="secondary-nav-button d-flex justify-content-center" onClick={onClose}>Log out
                     </button>
                 </div>
             </div>
