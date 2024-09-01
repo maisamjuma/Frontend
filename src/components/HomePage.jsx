@@ -5,7 +5,8 @@ import RoleService from '../Services/RoleService';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faUserPlus, faUserShield, faUserTag} from '@fortawesome/free-solid-svg-icons';
 import './HomePage.css';
-import {userIsAdmin} from '../utils/authUtils'; // Import the utility function
+import {userIsAdmin} from '../utils/authUtils';
+import ListUser from './ListUser/ListUser.jsx'; // Import the ListUser component
 
 const HomePage = () => {
     const [users, setUsers] = useState([]);
@@ -19,6 +20,7 @@ const HomePage = () => {
     const navigator = useNavigate();
 
     const userRoleIsAdmin = userIsAdmin(); // Check if the user is an admin
+
     // Refs for scrolling
     const assignContentRef = useRef(null);
     const roleContentRef = useRef(null);
@@ -114,9 +116,7 @@ const HomePage = () => {
                     </div>
                 </div>
                 {userRoleIsAdmin && (
-
                     <div className="home-button-container">
-
                         <button type='button' className='btnAddUser' onClick={addNewUser}>
                             <FontAwesomeIcon icon={faUserPlus}/> Add User
                         </button>
@@ -204,8 +204,11 @@ const HomePage = () => {
                         </button>
                     </div>
                 )}
-
             </div>
+
+            {userRoleIsAdmin && (
+                <ListUser/>
+            )}
         </div>
     );
 }

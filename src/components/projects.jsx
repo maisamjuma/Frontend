@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate, useParams, useLocation } from 'react-router-dom';
+import React, {useState, useEffect, useRef} from 'react';
+import {useNavigate, useParams, useLocation} from 'react-router-dom';
 import './projects.css';
 import Members from './Member/Members.jsx';
 import AddMember from './AddMember.jsx';
@@ -8,12 +8,13 @@ import DeleteMember from './DeleteMember.jsx';
 import defaultProjectIcon from '../assets/projectIcon.png';
 import ProjectMemberService from '../Services/ProjectMemberService';
 import UserService from '../Services/UserService.js';
+import {userIsAdmin, userIsTeamLeader} from '../utils/authUtils'; // Import the utility function
 
 const Projects = () => {
-    const { projectName } = useParams();
+    const {projectName} = useParams();
     const navigate = useNavigate();
     const location = useLocation();
-    const { projectId, projectDescription } = location.state || {};
+    const {projectId, projectDescription} = location.state || {};
 
     const [image, setImage] = useState(defaultProjectIcon);
     const [showProfile, setShowProfile] = useState(null);
@@ -24,6 +25,8 @@ const Projects = () => {
     const [isDeleting, setIsDeleting] = useState(false);
     const [selectedMembers, setSelectedMembers] = useState([]);
     const [showDeletePopup, setShowDeletePopup] = useState(false);
+    const userRoleIsAdmin = userIsAdmin(); // Check if the user is an admin
+    const userRoleIsTeamLeader = userIsTeamLeader(); // Check if the user is an admin
 
     const containerRef = useRef(null);
 
@@ -114,7 +117,7 @@ const Projects = () => {
 
     const navigateToWorkspace = () => {
         navigate(`/main/workspace/${projectName}`, {
-            state: { projectDescription, projectId, projectMembers },
+            state: {projectDescription, projectId, projectMembers},
         });
     };
 
@@ -122,26 +125,30 @@ const Projects = () => {
         <div className="d-flex flex-row gap-5" ref={containerRef}>
             <nav className="secondary-navbarForPro d-flex flex-row gap-5">
                 <ul className="secondary-navbarForPro">
-                    <li>
-                        <button
-                            className={`secondary-nav-button ${!showMembersOnly ? 'active' : ''}`}
-                            onClick={() => {
-                                setShowMembersOnly(false);
-                                setIsEditing(true);
-                                setIsDeleting(false);
-                            }}
-                        >
-                            {isEditing ? 'Edit Member' : 'Add Member'}
-                        </button>
-                    </li>
-                    <li>
-                        <button
-                            className={`secondary-nav-button ${isDeleting ? 'active' : ''}`}
-                            onClick={handleDeleteMode}
-                        >
-                            Delete Members
-                        </button>
-                    </li>
+                    {(userRoleIsAdmin || userRoleIsTeamLeader ) && (
+                        <li>
+                            <button
+                                className={`secondary-nav-button ${!showMembersOnly ? 'active' : ''}`}
+                                onClick={() => {
+                                    setShowMembersOnly(false);
+                                    setIsEditing(true);
+                                    setIsDeleting(false);
+                                }}
+                            >
+                                {isEditing ? 'Edit Member' : 'Add Member'}
+                            </button>
+                        </li>
+                    )}
+                    {(userRoleIsAdmin || userRoleIsTeamLeader ) && (
+                        <li>
+                            <button
+                                className={`secondary-nav-button ${isDeleting ? 'active' : ''}`}
+                                onClick={handleDeleteMode}
+                            >
+                                Delete Members
+                            </button>
+                        </li>
+                    )}
                 </ul>
             </nav>
 
@@ -154,7 +161,7 @@ const Projects = () => {
                             width={90}
                             height={90}
                             onClick={handleImageClick}
-                            style={{ cursor: 'pointer' }}
+                            style={{cursor: 'pointer'}}
                         />
                         {image !== defaultProjectIcon && (
                             <button className="delete-image-button" onClick={handleDeleteImageClick}>
@@ -165,7 +172,7 @@ const Projects = () => {
                     <input
                         type="file"
                         id="fileInput"
-                        style={{ display: 'none' }}
+                        style={{display: 'none'}}
                         accept="image/*"
                         onChange={handleImageChange}
                     />
@@ -233,7 +240,7 @@ const Projects = () => {
 
                         <div className="serachForPopup">
 
-                        <input
+                            <input
                                 type="text"
                                 placeholder="Search members..."
                                 className="search-bar w-100 "

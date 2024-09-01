@@ -3,7 +3,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh; /* Full viewport height */
+    min-height: 80vh; /* Full viewport height */
     padding: 0; /* Remove default padding */
     margin: 0; /* Reset margin to center properly */
 }
@@ -12,10 +12,10 @@
 .card {
     border: 1px solid #ddd;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
     width: 100%;
     max-width: 900px; /* Adjust as needed */
-    height: 80vh; /* Adjust height to give more space */
+    height: 60vh; /* Adjust height to give more space */
     padding: 20px;
     box-sizing: border-box;
     background: #fff; /* Ensure background color to distinguish card */
@@ -56,7 +56,7 @@
     font-weight: bold;
     margin-bottom: 0.5rem;
     display: block;
-    color: #333;
+    color: white;
 }
 
 /* Checkbox container style */
@@ -75,18 +75,21 @@
 
 /* Input and select styles */
 .form-control {
-    border: 1px solid #ced4da;
+    border: 1px solid #E9967A; /* Dark salmon border color */
     border-radius: 0.25rem;
     padding: 0.5rem;
+    background-color: white;
     width: 100%;
     box-sizing: border-box;
 }
 
+
+
 /* Input focus styles */
 .form-control:focus {
-    border-color: #80bdff;
+    border-color: #ffffff;
     outline: 0;
-    box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
+    /*box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);*/
 }
 
 /* Invalid feedback styles */
@@ -100,6 +103,7 @@
 .form-check-input {
     width: 10px; /* Ensure checkbox does not stretch */
     margin-right: 0.5rem; /* Space between checkbox and label */
+
 }
 
 /* Button styles */

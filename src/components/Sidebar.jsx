@@ -163,9 +163,9 @@ const Sidebar = ({onMenuAction}) => {
         }
 
     };
-    const handleUsersListClick = () => {
-        navigate('/main/ListUser');
-    };
+    // const handleUsersListClick = () => {
+    //     navigate('/main/ListUser');
+    // };
     // const handleDelete = async (projectId) => {
     //     try {
     //         await deleteProject(projectId);
@@ -238,9 +238,9 @@ const Sidebar = ({onMenuAction}) => {
                     </div>
                 )}
                 <div className="line-above-settings"/>
-                {userRoleIsAdmin && (
-                    <li className="user-lists" onClick={handleUsersListClick}>Users List</li>
-                )}
+                {/*{userRoleIsAdmin && (*/}
+                {/*    <li className="user-lists" onClick={handleUsersListClick}>Users List</li>*/}
+                {/*)}*/}
                 <li className="Settings">Settings</li>
             </ul>
             <AddProjectModal
