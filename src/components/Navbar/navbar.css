@@ -1,11 +1,15 @@
 /* navbar.css */
 .navbar {
+    width: 100%;
+    height: 60px; /* Adjust height as needed */
+    background-color: #E9967A; /* Dark Salmon */
+    color: #fff; /* White text */
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 1000;
-    background-color: #f8f9fa; /* Light background color */
+    /*background-color: #f8f9fa; !* Light background color *!*/
 }
 
 .navbar .navbar-nav .nav-link {

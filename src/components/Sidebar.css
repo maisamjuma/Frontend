@@ -6,11 +6,13 @@
     left: 0;
     width: 400px; /* Width of the sidebar */
     bottom: 0; /* Extend to the bottom */
-    background-color: #f8f9fa; /* Background color updated to match theme */
     z-index: 998;
     box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
     overflow-y: auto; /* Adjusted to allow vertical scrolling */
     overflow-x: hidden; /* Prevents horizontal scrolling */
+    background-color: #E9967A; /* Dark Salmon */
+    height: calc(100vh - 60px); /* Takes up remaining vertical space */
+
 }
 
 /* Dropdown list item styling */

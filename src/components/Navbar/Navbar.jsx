@@ -2,10 +2,10 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import {Link, useNavigate} from 'react-router-dom';
-import PropTypes from 'prop-types';
+//import PropTypes from 'prop-types';
 import './navbar.css';
 
-const Navbar = ({ onLogout }) => {
+const Navbar = () => {
     const navigate = useNavigate(); // Initialize useNavigate hook
 
     const handleDevTrackClick = (e) => {
@@ -45,8 +45,5 @@ const Navbar = ({ onLogout }) => {
     );
 };
 
-Navbar.propTypes = {
-    onLogout: PropTypes.func.isRequired,
-};
 
 export default Navbar;

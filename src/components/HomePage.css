@@ -1,61 +1,44 @@
 /* HomePage.css */
-.listcontainer {
-    position: relative;
-    flex-grow: 1; /* Take up remaining space */
-    min-height: 500px; /* Minimum height */
-    max-height: 80vh; /* Limit height to 80% of the viewport for more scrollable space */
-    overflow-y: auto;  /* Enable vertical scrolling */
+
+.forScroll {
+    height: 100vh; /* Take full viewport height */
+    overflow-y: auto; /* Allow vertical scrolling */
     overflow-x: hidden; /* Prevent horizontal scrolling */
-    /*margin-top: -20px; !* Adjusted for better alignment *!*/
+    /*padding: 20px; !* Optional: Add padding for better spacing *!*/
+    margin-left: 120px;
 }
+
+.listcontainer {
+    flex-grow: 1;
+    min-height: 100%; /* Allow content to take full height */
+    overflow:hidden; /* Ensure children content isn't cut off */
+}
+
 /* Main content styling */
-.main-content {
-    background: #F8F9FA; /* Light Gray background */
-    width: 100%;
-    max-width: 1080px; /* Adjust max width as needed */
-    /*margin: auto; !* Center content within available space *!*/
-}
-.Assigncontent {
-    /*margin-top: 120px; !* Adjust as needed *!*/
-    height: 100%;
-    /*margin-left: 30px;*/
-    max-height: 1000px; /* Reduce max height slightly to allow more content to fit */
-    overflow-y: auto; /* Enable vertical scrolling within these sections */
-}
-
-.rolecontent {
-    /*margin-top: 20px; !* Adjust as needed *!*/
-    height: 100%;
-    max-height: 1000px; /* Reduce max height slightly to allow more content to fit */
-    overflow-y: auto; /* Enable vertical scrolling within these sections */
-}
-
-.listcontainer::-webkit-scrollbar,
-.Assigncontent::-webkit-scrollbar,
-.rolecontent::-webkit-scrollbar {
-    display: none; /* Hides the scrollbar in WebKit-based browsers */
+.Assigncontent, .rolecontent {
+    max-height: none; /* Allow content to grow as needed */
+    overflow-y: auto; /* Still allow scrolling within these sections if necessary */
 }
 
 .video-container {
     display: flex;
     justify-content: center;
-    padding-top: 20px; /* Adjust top padding to give more room for lifting */
+    padding-top: 20px;
 }
 
 .video-container video {
     max-width: 30%;
-    border-radius: 8px; /* Optional: Adds rounded corners to the video */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Adds shadow for better visibility */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .track {
-    color: #E9967A; /* Dark Salmon color */
+    color: #E9967A;
 }
 
 .home-button-container {
     display: flex;
-    gap: 10px; /* Adjust as needed for space between buttons */
-    /*margin-left: 200px;*/
+    gap: 10px;
 }
 
 .btnAddUser,
@@ -63,41 +46,38 @@
 .btnAssignTeamLeader {
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
-    background: #282E33; /* Dark background */
+    background: #282E33;
     width: 170px;
     height: 100px;
-    /*margin-top: 20px;*/
-    color: #E9967A; /* Dark Salmon text color */
-    border: 1px solid #E9967A; /* Dark Salmon border */
+    color: #E9967A;
+    border: 1px solid #E9967A;
 }
 
 .btnAddUser:hover,
 .btnAddRole:hover,
 .btnAssignTeamLeader:hover {
-    background: #E9967A; /* Dark Salmon */
-    color: #282E33; /* Dark background for text */
-    border: 1px solid #282E33; /* Dark background border */
+    background: #E9967A;
+    color: #282E33;
+    border: 1px solid #282E33;
 }
 
 .text-bg-dark {
-    /*margin-top: 20px;*/
-    color: #E9967A; /* Dark Salmon text color */
+    color: #E9967A;
 }
 
 .assign-container {
     display: flex;
     flex-direction: column;
-    gap: 10px; /* Consistent space between dropdowns and button */
+    gap: 10px;
 }
 
 .btn {
-    background: #E9967A; /* Dark Salmon */
-    /*margin-left: 15px;*/
-    color: #282E33; /* Dark background text color */
+    background: #E9967A;
+    color: #282E33;
 }
 
 .btn:hover {
-    background: #282E33; /* Dark background */
-    border: 2px solid #282E33; /* Dark background border */
-    color: #E9967A; /* Dark Salmon text color */
+    background: #282E33;
+    border: 2px solid #282E33;
+    color: #E9967A;
 }
