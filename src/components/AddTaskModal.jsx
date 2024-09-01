@@ -18,7 +18,7 @@ const AddTaskModal = ({
     const [taskDescription, setTaskDescription] = useState('');
     const [dueDate, setDueDate] = useState(new Date());
     const [priority, setPriority] = useState('medium');
-    const [assignedUserId, setAssignedUserId] = useState('');
+    const [assignedToUserId, setAssignedUserId] = useState('');
     const [userDetails, setUserDetails] = useState([]);
 
     useEffect(() => {
@@ -53,7 +53,7 @@ const AddTaskModal = ({
                     status: status.title,
                     priority,
                     dueDate: dueDate.toISOString(), // Use ISO format
-                    assignedUserId: assignedUserId || null
+                    assignedToUserId: assignedToUserId || null
                 };
 
                 const response = await TaskService.createTask(newTask);
@@ -61,7 +61,7 @@ const AddTaskModal = ({
                 console.log('Task created:', response.data);
                 console.log("task id :", taskId);
 
-                onAddTask(taskId, projectId, taskName, taskDescription, boardId, status, priority, assignedUserId);
+                onAddTask(taskId, projectId, taskName, taskDescription, boardId, status, priority, assignedToUserId);
 
                 // Reset form fields
                 setTaskName('');
@@ -128,7 +128,7 @@ const AddTaskModal = ({
                         <div className="user-options">
                             <p className="paragraph">Assign To:</p>
                             <select
-                                value={assignedUserId}
+                                value={assignedToUserId}
                                 onChange={(e) => setAssignedUserId(e.target.value)}
                                 className="user-dropdown"
                             >

@@ -249,7 +249,7 @@ const Boards = ({
                     status: status.title,
                     priority: task.priority ? task.priority : 'medium',
                     date: task.dueDate || null,
-                    assignedToUserId: task.assignedUserId || null,
+                    assignedToUserId: task.assignedToUserId || null,
                     assignedUserLetter: task.assignedUserLetter || null,
                 };
 
@@ -713,7 +713,7 @@ const Boards = ({
                     <AddTaskModal
                         isVisible={showAddTaskModal}
                         onClose={() => setShowAddTaskModal(false)}
-                        onAddTask={(taskId, projectId, taskName, taskDescription, boardId, status, priority, assignedUserId) => {
+                        onAddTask={(taskId, projectId, taskName, taskDescription, boardId, status, priority, assignedToUserId) => {
                             handleAddTask(currentStatusId, {
                                 taskId,
                                 projectId,
@@ -722,7 +722,7 @@ const Boards = ({
                                 boardId,
                                 status,
                                 priority,
-                                assignedUserId
+                                assignedToUserId
                             });
                         }}
                         status={statuses.find(status => status.id === currentStatusId)}

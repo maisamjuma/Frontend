@@ -1,47 +1,47 @@
 .layout-container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    background-color: #F8F9FA; /* Light Gray background */
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    /*height: 100vh;*/
+    /*background-color: #F8F9FA; !* Light Gray background *!*/
 }
 
-/* Navbar styling */
-.navbar {
-    width: 100%;
-    height: 60px; /* Adjust height as needed */
-    background-color: #E9967A; /* Dark Salmon */
-    color: #fff; /* White text */
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-}
+/*!* Navbar styling *!*/
+/*.navbar {*/
+/*    width: 100%;*/
+/*    height: 60px; !* Adjust height as needed *!*/
+/*    background-color: #E9967A; !* Dark Salmon *!*/
+/*    color: #fff; !* White text *!*/
+/*    position: fixed;*/
+/*    top: 0;*/
+/*    left: 0;*/
+/*    z-index: 1000;*/
+/*}*/
 
 /* Sidebar styling */
-.sidebar {
-    width: 400px; /* Adjust width as needed */
-    background-color: #E9967A; /* Dark Salmon */
-    /*color: #ffffff; !* White text *!*/
-    position: fixed;
-    top: 60px; /* Aligns below the navbar */
-    left: 0;
-    height: calc(100vh - 60px); /* Takes up remaining vertical space */
-    z-index: 900;
-}
+/*.sidebar {*/
+/*    width: 400px; !* Adjust width as needed *!*/
+/*    background-color: #E9967A; !* Dark Salmon *!*/
+/*    !*color: #ffffff; !* White text *!*!*/
+/*    position: fixed;*/
+/*    top: 60px; !* Aligns below the navbar *!*/
+/*    left: 0;*/
+/*    height: calc(100vh - 60px); !* Takes up remaining vertical space *!*/
+/*    z-index: 900;*/
+/*}*/
 
 /* Content row styling */
 .content-row {
-    display: flex;
-    flex: 1;
-    margin-top: 60px; /* Adjusted for the navbar */
-    margin-left: 200px; /* Shifts content right to account for the sidebar */
-    padding: 20px;
+    /*display: flex;*/
+    /*flex: 1;*/
+    /*margin-top: 60px; !* Adjusted for the navbar *!*/
+    /*margin-left: 200px; !* Shifts content right to account for the sidebar *!*/
+    /*padding: 20px;*/
 }
 
 /* Main content styling */
 .main-content {
-    background: #F8F9FA; /* Light Gray background */
-    width: 100%;
-    max-width: 1080px; /* Adjust max width as needed */
-    margin: auto; /* Center content within available space */
+    /*background: #F8F9FA; !* Light Gray background *!*/
+    /*width: 100%;*/
+    /*max-width: 1080px; !* Adjust max width as needed *!*/
+    /*margin: auto; !* Center content within available space *!*/
 }

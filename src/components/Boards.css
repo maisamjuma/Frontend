@@ -1,18 +1,8 @@
-/*Boards.css*/
-/* Set background color for the entire page */
-html, body {
+
+.backend-page,
+.backend-container {
     margin: 0;
     padding: 0;
-    height: 100%; /* Ensure body takes full height of viewport */
-    background-color: #ffffff; /* Set background color to white */
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
-.backend-page {
-    padding: 0; /* Ensure no extra padding */
-    margin: 0; /* Ensure no extra margin */
-
     box-sizing: border-box; /* Ensure padding is included in height calculation */
 }
 
@@ -25,27 +15,26 @@ html, body {
     width: auto;
     min-height: 100vh;
     background-color: #ffffff;
-    box-sizing: border-box;
     margin-right: 30px;
-    overflow-x: auto; /* Prevent horizontal scroll */
+    overflow-x: auto;
     overflow-y: hidden;
+
+
 }
 
 .backend-status-box {
     margin-top: 10px;
-    padding: 20px; /* Increase padding for larger boxes */
-    font-size: 16px; /* Increase font size */
+    padding: 20px;
+    font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 8px;
     background-color: #f9f9f9;
-    min-width: 260px; /* Increased minimum width */
-    min-height: 300px; /* Added minimum height */
+    min-width: 260px;
+    min-height: 300px;
     display: flex;
-    flex-direction: column; /* Stack items vertically */
-    gap: 10px; /* Space between items */
-    box-sizing: border-box; /* Include padding and border in element's total width and height */
-    position: relative; /* Position for dropdown menu */
-
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
 }
 
 /* Hide the scrollbar but allow scrolling */
@@ -124,9 +113,7 @@ html, body {
     display: flex;
     margin-left: 0px;
     margin-right: 10px;
-
 }
-
 
 /* Individual task styles */
 .backend-task-box {
@@ -142,7 +129,6 @@ html, body {
     gap: 5px;
     box-sizing: border-box;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-
 }
 
 .backend-task-box.highlighted {
@@ -163,10 +149,7 @@ html, body {
     font-size: 16px; /* Adjust font size as needed */
     box-sizing: border-box; /* Include padding and border in element's total width and height */
 }
-/*.for-name{*/
-/*    margin-bottom: 20px;*/
-/*}*/
-/* Remove any borders or background of the task box when input is focused */
+
 .backend-task-box input:focus {
     border-color: #f9f9f9;
     outline: none; /* Remove default focus outline */
@@ -184,8 +167,7 @@ html, body {
     align-items: flex-start; /* Align items to the start of the container */
     gap: 10px; /* Space between items */
     justify-content: flex-start; /* Align items to the start (left) */
-    margin-top: 50px;
-    overflow: auto; /* Keep overflow to enable scrolling */
+
 }
 /* Hide scrollbars for Webkit browsers (Chrome, Safari) */
 .backend-status-container::-webkit-scrollbar {
