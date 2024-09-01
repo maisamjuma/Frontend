@@ -5,6 +5,8 @@ import RoleService from "../../Services/RoleService.js";
 import './ListUser.css';
 import { Container } from "react-bootstrap";
 import { Row } from "antd";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faUserPlus} from "@fortawesome/free-solid-svg-icons";
 
 const ListUser = () => {
     const [users, setUsers] = useState([]);
@@ -51,38 +53,47 @@ const ListUser = () => {
     const updateUser = (userId) => {
         navigate(`/edit-user/${userId}`);
     };
-
+    function addNewUser() {
+        navigator('/main/User');
+    }
     return (
-        <Container className="mt-4">
-            <h2 className="text-center mb-4">Employee Directory</h2>
-            <Row>
-                {users.map(user => (
-                    <div key={user.userId} className="col-md-6 col-lg-4 mb-4">
-                        <div className="card user-card p-3 shadow-sm">
-                            <h3 className="card-title">
-                                {user.firstName} {user.lastName}
-                            </h3>
-                            <h5 className="card-subtitle mb-3">
-                                {user.roleName}
-                            </h5>
-                            <p className="card-text"><strong>Email:</strong> {user.email}</p>
-                            <p className="card-text"><strong>Team Leader:</strong> {user.isTeamLeader ? 'Yes' : 'No'}</p>
-                            <p className="card-text"><strong>Joined:</strong> {user.createdAt}</p>
-                            <div className="d-flex justify-content-between align-items-center mt-3">
-                                <button
-                                    type='button'
-                                    className='btn-update-user'
-                                    onClick={() => updateUser(user.userId)}
-                                >
-                                    Update
-                                </button>
-                                <small className="text-muted"><em>Last Updated: {user.updatedAt}</em></small>
+        <>
+            <h2 className=" mb-4 ">Employee Directory</h2>
+
+            <button type='button' className='btnAddUser' onClick={addNewUser}>
+                <FontAwesomeIcon icon={faUserPlus}/> Add User
+            </button>
+            <Container className="mt-4">
+                <Row>
+                    {users.map(user => (
+                        <div key={user.userId} className="col-md-6 col-lg-4 mb-4">
+                            <div className="card user-card p-3 shadow-sm">
+                                <h3 className="card-title">
+                                    {user.firstName} {user.lastName}
+                                </h3>
+                                <h5 className="card-subtitle mb-3">
+                                    {user.roleName}
+                                </h5>
+                                <p className="card-text"><strong>Email:</strong> {user.email}</p>
+                                <p className="card-text"><strong>Team
+                                    Leader:</strong> {user.isTeamLeader ? 'Yes' : 'No'}</p>
+                                <p className="card-text"><strong>Joined:</strong> {user.createdAt}</p>
+                                <div className="d-flex justify-content-between align-items-center mt-3">
+                                    <button
+                                        type='button'
+                                        className='btn-update-user'
+                                        onClick={() => updateUser(user.userId)}
+                                    >
+                                        Update
+                                    </button>
+                                    <small className="text-muted"><em>Last Updated: {user.updatedAt}</em></small>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                ))}
-            </Row>
-        </Container>
+                    ))}
+                </Row>
+            </Container>
+        </>
     );
 };
 
