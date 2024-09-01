@@ -117,9 +117,7 @@ const HomePage = () => {
                 </div>
                 {userRoleIsAdmin && (
                     <div className="home-button-container">
-                        <button type='button' className='btnAddUser' onClick={addNewUser}>
-                            <FontAwesomeIcon icon={faUserPlus}/> Add User
-                        </button>
+
                         <button
                             type='button'
                             className='btnAssignTeamLeader'
@@ -128,8 +126,8 @@ const HomePage = () => {
                             <FontAwesomeIcon icon={faUserShield}/>
                             {isAssigning ? 'Cancel' : 'Assign Team Leaders'}
                         </button>
-                        {isAssigning && (
-                            <div className='Assigncontent' ref={assignContentRef}>
+
+                            <div className='Assigncontent' >
                                 <select
                                     value={selectedRole}
                                     onChange={handleRoleChange}
@@ -175,7 +173,7 @@ const HomePage = () => {
                                     Save Team Leader
                                 </button>
                             </div>
-                        )}
+
                         <button
                             type='button'
                             className='btnAddRole'
@@ -185,8 +183,9 @@ const HomePage = () => {
                         </button>
                     </div>
                 )}
-                {isAddingRole && (
-                    <div className='rolecontent' ref={roleContentRef}>
+
+                    <div className="rolecontent" ref={roleContentRef}>
+                        <h3>Add New Roll</h3>
                         <input
                             type='text'
                             value={newRole}
@@ -203,7 +202,7 @@ const HomePage = () => {
                             Save Role
                         </button>
                     </div>
-                )}
+
             </div>
 
             {userRoleIsAdmin && (
