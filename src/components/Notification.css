@@ -29,7 +29,7 @@
 .secondary-navbarN {
     position: fixed;
     top: 60px;
-    left: 201px; /* Align to the left edge */
+    left: 270px; /* Align to the left edge */
     right: 0;
     z-index: 999;
     background-color: #e9ecef;
