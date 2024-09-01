@@ -6,19 +6,25 @@
     max-height: 80vh; /* Limit height to 80% of the viewport for more scrollable space */
     overflow-y: auto;  /* Enable vertical scrolling */
     overflow-x: hidden; /* Prevent horizontal scrolling */
-    margin-top: -20px; /* Adjusted for better alignment */
+    /*margin-top: -20px; !* Adjusted for better alignment *!*/
 }
-
+/* Main content styling */
+.main-content {
+    background: #F8F9FA; /* Light Gray background */
+    width: 100%;
+    max-width: 1080px; /* Adjust max width as needed */
+    /*margin: auto; !* Center content within available space *!*/
+}
 .Assigncontent {
-    margin-top: 120px; /* Adjust as needed */
+    /*margin-top: 120px; !* Adjust as needed *!*/
     height: 100%;
-    margin-left: 30px;
+    /*margin-left: 30px;*/
     max-height: 1000px; /* Reduce max height slightly to allow more content to fit */
     overflow-y: auto; /* Enable vertical scrolling within these sections */
 }
 
 .rolecontent {
-    margin-top: 20px; /* Adjust as needed */
+    /*margin-top: 20px; !* Adjust as needed *!*/
     height: 100%;
     max-height: 1000px; /* Reduce max height slightly to allow more content to fit */
     overflow-y: auto; /* Enable vertical scrolling within these sections */
@@ -49,7 +55,7 @@
 .home-button-container {
     display: flex;
     gap: 10px; /* Adjust as needed for space between buttons */
-    margin-left: 200px;
+    /*margin-left: 200px;*/
 }
 
 .btnAddUser,
@@ -60,7 +66,7 @@
     background: #282E33; /* Dark background */
     width: 170px;
     height: 100px;
-    margin-top: 20px;
+    /*margin-top: 20px;*/
     color: #E9967A; /* Dark Salmon text color */
     border: 1px solid #E9967A; /* Dark Salmon border */
 }
@@ -74,7 +80,7 @@
 }
 
 .text-bg-dark {
-    margin-top: 20px;
+    /*margin-top: 20px;*/
     color: #E9967A; /* Dark Salmon text color */
 }
 
@@ -86,7 +92,7 @@
 
 .btn {
     background: #E9967A; /* Dark Salmon */
-    margin-left: 15px;
+    /*margin-left: 15px;*/
     color: #282E33; /* Dark background text color */
 }
 
