@@ -74,6 +74,7 @@ const Layout = ({children, onLogout}) => {
                         onProjectClick={handleProjectClick}
                         onAddProject={addProject}
                         onMenuAction={handleMenuAction}
+                        onLogout={onLogout}
                     />
                 </div>
 

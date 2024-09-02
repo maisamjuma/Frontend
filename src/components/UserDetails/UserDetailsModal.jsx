@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import './UserDetailsModal.css'; // Define styles for the modal
+import { Container, Row, Col, Button } from 'react-bootstrap';
+
 import RoleService from "../../Services/RoleService.js";
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 
 const UserDetailsModal = ({ isVisible, onClose, userDetails, onLogout }) => {
     const [roleName, setRoleName] = useState('Loading role...'); // State to store the role name
@@ -51,13 +56,13 @@ const UserDetailsModal = ({ isVisible, onClose, userDetails, onLogout }) => {
                     </div>
                 </div>
                 <div className="profile-actions">
-                    <p><strong>First Name:</strong> {userDetails.firstName}</p>
+                    {/*<p><strong>First Name:</strong> {userDetails.firstName}</p>*/}
                     <p><strong>Email:</strong> {userDetails.email}</p>
                     <p><strong>Role:</strong> {roleName}</p>
                 </div>
-                <button className="logout-button" onClick={onLogout}>
-                    Log Out
-                </button>
+                <Button variant="primary" onClick={onLogout}>
+                    <FontAwesomeIcon icon={faSignOutAlt} /> Log Out
+                </Button>
             </div>
         </div>
     );
@@ -73,7 +78,7 @@ UserDetailsModal.propTypes = {
         email: PropTypes.string.isRequired,
         functionalRoleId: PropTypes.number.isRequired,
     }),
-    onLogout: PropTypes.func.isRequired // Ensure onLogout is defined as a required prop
+    onLogout: PropTypes.func.isRequired
 };
 
 export default UserDetailsModal;

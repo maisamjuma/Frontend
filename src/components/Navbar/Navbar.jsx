@@ -13,10 +13,7 @@ const Navbar = ({ onLogout }) => {
         navigate('/login'); // Navigate to the login page
     };
 
-    const handleLogout = () => {
-        onLogout(); // Call the onLogout function passed as a prop
-        navigate('/login'); // Redirect to the login page after logout
-    };
+
 
     return (
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -41,7 +38,7 @@ const Navbar = ({ onLogout }) => {
                             <Link className="nav-link" to="/main/notifications">Notifications</Link>
                         </li>
                         <li className="nav-item">
-                            <button className="nav-link btn btn-link" onClick={handleLogout}>Logout</button>
+                            <button className="nav-link btn btn-link" onClick={onLogout}>Logout</button>
                         </li>
                         <li className="nav-item">
                             <span className="nav-link">Settings</span>

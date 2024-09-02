@@ -4,17 +4,15 @@ import './Sidebar.css';
 //import dashboardIcon from '../assets/t.png';
 import {useNavigate} from 'react-router-dom';
 import AddProjectModal from './Project/AddProjectModal.jsx';
-import ProjectService from '../Services/ProjectService';  // Adjust the import path as necessary
-// import { deleteProject } from '../Services/ProjectService'; // Import the deleteProject function
-import {userIsAdmin, getUserInfoFromToken} from '../utils/authUtils'; // Import the utility function
-
+import ProjectService from '../Services/ProjectService';
+import {userIsAdmin} from '../utils/authUtils';
 import {ArrowDownIcon} from "./SVGIcons.jsx";
 import {FaPen} from "react-icons/fa";
 
 import UserDetailsModal from './UserDetails/UserDetailsModal.jsx'; // Import the UserDetailsModal component
 
 
-const Sidebar = ({onMenuAction}) => {
+const Sidebar = ({onMenuAction, onLogout}) => {
     const [projects, setProjects] = useState([]); // Added state for projects
 
     const [isProjectsOpen, setIsProjectsOpen] = useState(true);
@@ -192,26 +190,29 @@ const Sidebar = ({onMenuAction}) => {
         setProjects((projects) => [newProject, ...projects]);
     };
 
-    const handleDashboardClick = async () => {
-        // Fetch user info and show it in a popup
+    const handleDashboardClick = () => {
         try {
-            const userInfo = await getUserInfoFromToken();
-            setUserDetails(userInfo); // Store user details
-            setIsUserDetailsModalVisible(true); // Show the user details modal
+            const userInfo = JSON.parse(localStorage.getItem('loggedInUser'));
+            if (userInfo) {
+                setUserDetails(userInfo);
+                setIsUserDetailsModalVisible(true);
+            } else {
+                console.error("No user info found in local storage!");
+            }
         } catch (error) {
-            console.error("Error fetching user info:", error);
+            console.error("Error retrieving user info from local storage:", error);
         }
     };
 
     // Define the handleLogout function
-    const handleLogout = () => {
-        // Clear authentication data from local storage
-        localStorage.removeItem('token');
-        // Optionally, you can also clear any other user-related data if needed
-
-        // Redirect to the login page
-        navigate('/login');
-    };
+    // const handleLogout = () => {
+    //     // Clear authentication data from local storage
+    //     localStorage.removeItem('token');
+    //     // Optionally, you can also clear any other user-related data if needed
+    //
+    //     // Redirect to the login page
+    //     navigate('/login');
+    // };
 
     return (
         <div className="sidebar" ref={sidebarRef}>
@@ -286,7 +287,7 @@ const Sidebar = ({onMenuAction}) => {
                 isVisible={isUserDetailsModalVisible}
                 onClose={() => setIsUserDetailsModalVisible(false)}
                 userDetails={userDetails}
-                onLogout={handleLogout} // Pass the logout handler here
+                onLogout={onLogout}
             />
         </div>
     );
@@ -300,6 +301,8 @@ Sidebar.propTypes = {
     ).isRequired,
     onAddProject: PropTypes.func.isRequired,
     onMenuAction: PropTypes.func.isRequired,
+    onLogout: PropTypes.func.isRequired
+
 };
 
 export default Sidebar;
