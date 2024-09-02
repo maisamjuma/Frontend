@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import './UserDetailsModal.css'; // Define styles for the modal
 import { Button } from 'react-bootstrap';
@@ -10,6 +10,7 @@ import { faSignOutAlt, faKey } from '@fortawesome/free-solid-svg-icons';
 
 const UserDetailsModal = ({ isVisible, onClose, userDetails, onLogout }) => {
     const [roleName, setRoleName] = useState('Loading role...'); // State to store the role name
+    const modalRef = useRef(null); // Ref to the modal content
 
     useEffect(() => {
         if (userDetails) {
@@ -27,6 +28,22 @@ const UserDetailsModal = ({ isVisible, onClose, userDetails, onLogout }) => {
         }
     }, [userDetails]);
 
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (modalRef.current && !modalRef.current.contains(event.target)) {
+                onClose();
+            }
+        };
+
+        if (isVisible) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [isVisible, onClose]);
+
     const handleResetPassword = () => {
         // Implement your password reset logic here
         // For example, open a modal or redirect to a password reset page
@@ -38,8 +55,7 @@ const UserDetailsModal = ({ isVisible, onClose, userDetails, onLogout }) => {
     if (!userDetails) {
         return (
             <div className="user-details-modal">
-                <div className="modal-content">
-                    <span className="close-button" onClick={onClose}>&times;</span>
+                <div className="modal-content" ref={modalRef}>
                     <h2>User Details</h2>
                     <p>Loading user details...</p>
                 </div>
@@ -51,8 +67,7 @@ const UserDetailsModal = ({ isVisible, onClose, userDetails, onLogout }) => {
 
     return (
         <div className="user-details-modal">
-            <div className="modal-content">
-                <span className="close-button" onClick={onClose}>&times;</span>
+            <div className="modal-content" ref={modalRef}>
                 <div className="profile-header">
                     <div className="profile-picture">
                         <span>{firstLetter}</span>
