@@ -1,16 +1,21 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
-import {Link, useNavigate} from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import './navbar.css';
 
-const Navbar = () => {
+const Navbar = ({ onLogout }) => {
     const navigate = useNavigate(); // Initialize useNavigate hook
 
     const handleDevTrackClick = (e) => {
         e.preventDefault();
-        navigate('/login'); // Navigate to the Welcome page
+        navigate('/login'); // Navigate to the login page
+    };
+
+    const handleLogout = () => {
+        onLogout(); // Call the onLogout function passed as a prop
+        navigate('/login'); // Redirect to the login page after logout
     };
 
     return (
@@ -33,11 +38,14 @@ const Navbar = () => {
                             <Link className="nav-link active" aria-current="page" to="/">Home</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link"
-                                  to="/main/notifications">Notifications</Link> {/* Updated Path */}
+                            <Link className="nav-link" to="/main/notifications">Notifications</Link>
                         </li>
-                        <li className="nav-link">Settings</li>
-
+                        <li className="nav-item">
+                            <button className="nav-link btn btn-link" onClick={handleLogout}>Logout</button>
+                        </li>
+                        <li className="nav-item">
+                            <span className="nav-link">Settings</span>
+                        </li>
                     </ul>
                 </div>
             </div>

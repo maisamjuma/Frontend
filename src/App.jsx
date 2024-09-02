@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Route, Routes, Navigate} from 'react-router-dom';
+import {Route, Routes, Navigate, useNavigate} from 'react-router-dom';
 import Projects from './components/projects';
 import Workspace from './components/Workspace';
 import AddUser from "./components/Home/AddUser.jsx";
@@ -13,7 +13,12 @@ import PropTypes from "prop-types";
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [loggedInUser, setLoggedInUser] = useState(null);
+    const [loggedInUser, setLoggedInUser] = useState();
+    // const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+
+
+    const navigate = useNavigate();
+
     useEffect(() => {
         const styledTitle = document.getElementById('styled-title');
         if (styledTitle) {
@@ -21,14 +26,48 @@ function App() {
         }
     }, []);
 
+    //a debugging useEffect
+    useEffect(() => {
+        if (loggedInUser) {
+            console.log("loggedInUser has been updated: ", loggedInUser);
+
+
+            //just a test:
+            const storedUser = localStorage.getItem('loggedInUser');
+            if (storedUser) {
+                const user = JSON.parse(storedUser);
+                console.log("user from the localStorage: ", user);
+            }
+        }
+    }, [loggedInUser]);
+
     const handleLogin = (user) => {
         setIsAuthenticated(true);
+
         setLoggedInUser(user);
+        localStorage.setItem('loggedInUser', JSON.stringify(user)); // Ensure user object is stringified
+
+        // console.log("loggedInUser:       ", loggedInUser)
+        // console.log("setLoggedInUser(user);", user)
     }
-    const handleLogout = () => {
-        setIsAuthenticated(false);
-        setLoggedInUser(null);
-    }
+
+    const handleLogout = async () => {
+        try {
+            // Clear all local storage items
+            localStorage.clear();
+            sessionStorage.clear();
+
+            setIsAuthenticated(false);
+            setLoggedInUser(null)
+
+            // Redirect to login page
+            navigate('/login');
+        } catch (error) {
+            console.error('Logout failed:', error);
+            alert('Logout failed. Please try again.');
+        }
+    };
+
 
     return (
         <Routes>

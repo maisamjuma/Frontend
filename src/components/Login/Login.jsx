@@ -3,6 +3,7 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import './Login.css';
 import UserService from "../../Services/UserService.js";
+import {getUserInfoFromToken} from "../../utils/authUtils.js";
 
 const Login = ({onLogin}) => {
     const [email, setEmail] = useState('');
@@ -20,19 +21,23 @@ const Login = ({onLogin}) => {
         e.preventDefault();
 
         try {
-            const userData = await UserService.login(password, email)
+            const newToken = await UserService.login(password, email)
             // console.log("userData userData:",userData)
-            if (userData.token) {
-                localStorage.setItem('token', userData.token)
-                localStorage.setItem('role', userData.role)
+            if (newToken.token) {
+                localStorage.setItem('token', newToken.token)
+                // localStorage.setItem('role', newToken.role)
                 // navigate('/profile')
-                onLogin();//the line that navigates to the main page
+
+                const userInfo = await getUserInfoFromToken();
+
+                onLogin(userInfo);//the line that navigates to the main page
             } else {
-                setError(userData.message)
+                setError(newToken.message)
             }
 
         } catch (error) {
             console.log(error)
+            console.error("Error fetching user info:", error);
             setError(error.message)
             setTimeout(() => {
                 setError('');

@@ -43,7 +43,7 @@ class UserService {
     // Fetch a user by its ID
     getUserByName(email) {
         const token = localStorage.getItem("token");
-        return axios.get(`${USERS_API_BASE_URL}/${email}`, {
+        return axios.get(`${BASE_URL}/users/${email}`, {
             headers: {
                 'X-Auth-Token': token
             }

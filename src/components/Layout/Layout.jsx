@@ -18,6 +18,14 @@ const Layout = ({children, onLogout}) => {
         }
     }, [navigate]);
 
+    // useEffect(() => {
+    //     const token = localStorage.getItem('authToken');
+    //     if (!token) {
+    //         navigate('/login');
+    //     }
+    // }, [navigate]);
+
+
     useEffect(() => {
         const savedProjects = JSON.parse(localStorage.getItem('projects')) || [];
         setProjects(savedProjects);
