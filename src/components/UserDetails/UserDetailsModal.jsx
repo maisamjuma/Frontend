@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import './UserDetailsModal.css'; // Define styles for the modal
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 import RoleService from "../../Services/RoleService.js";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { faSignOutAlt, faKey } from '@fortawesome/free-solid-svg-icons';
 
 const UserDetailsModal = ({ isVisible, onClose, userDetails, onLogout }) => {
     const [roleName, setRoleName] = useState('Loading role...'); // State to store the role name
@@ -26,6 +26,12 @@ const UserDetailsModal = ({ isVisible, onClose, userDetails, onLogout }) => {
             fetchRoleName();
         }
     }, [userDetails]);
+
+    const handleResetPassword = () => {
+        // Implement your password reset logic here
+        // For example, open a modal or redirect to a password reset page
+        alert('Password reset functionality is not yet implemented.');
+    };
 
     if (!isVisible) return null;
 
@@ -56,13 +62,17 @@ const UserDetailsModal = ({ isVisible, onClose, userDetails, onLogout }) => {
                     </div>
                 </div>
                 <div className="profile-actions">
-                    {/*<p><strong>First Name:</strong> {userDetails.firstName}</p>*/}
                     <p><strong>Email:</strong> {userDetails.email}</p>
                     <p><strong>Role:</strong> {roleName}</p>
                 </div>
-                <Button variant="primary" onClick={onLogout}>
-                    <FontAwesomeIcon icon={faSignOutAlt} /> Log Out
-                </Button>
+                <div className="action-buttons">
+                    <Button variant="warning" onClick={handleResetPassword}>
+                        <FontAwesomeIcon icon={faKey} /> Reset Password
+                    </Button>
+                    <Button variant="primary" onClick={onLogout}>
+                        <FontAwesomeIcon icon={faSignOutAlt} /> Log Out
+                    </Button>
+                </div>
             </div>
         </div>
     );
