@@ -33,7 +33,7 @@ const Workspace = ({isVisible}) => {
             setProjectId(projectId);
             setProjectDescription(projectDescription); // Make sure this is correctly set
             setProjectMembers(projectMembers); // Set project members here
-           // console.log("chinaaaaa", projectId, projectDescription, "memberes:", projectMembers, "project member:", projectName);
+            // console.log("chinaaaaa", projectId, projectDescription, "memberes:", projectMembers, "project member:", projectName);
             setProjectDescription(projectDescription);
             setProjectMembers(projectMembers);
             console.log("Project ID:", projectId, "Description:", projectDescription, "Members:", projectMembers);

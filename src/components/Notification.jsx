@@ -1,14 +1,14 @@
 // Notification.jsx
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import Navbar from "./Navbar/Navbar.jsx";
 import './Notification.css';
 import PropTypes from 'prop-types'; // Import PropTypes
 import SideBarForNoti from "./SideBarForNoti.jsx";
-import { Filter } from "./SVGIcons.jsx";
+import {Filter} from "./SVGIcons.jsx";
 import UserService from '../Services/UserService'; // Import your UserService
 import NotificationService from '../Services/NotificationService.js';
 
-const Notification = ({ loggedInUser }) => {
+const Notification = ({loggedInUser}) => {
     const [showPopup, setShowPopup] = useState(false);
     const [selectedUsers, setSelectedUsers] = useState([]);
     const [message, setMessage] = useState('');
@@ -43,7 +43,7 @@ const Notification = ({ loggedInUser }) => {
 
     const handleSendNotification = async () => {
         if (selectedUsers.length && message) {
-            const newNotification = { from: loggedInUser, to: selectedUsers, message };
+            const newNotification = {from: loggedInUser, to: selectedUsers, message};
             try {
                 await NotificationService.createNotification(newNotification);
                 setMessages([newNotification, ...messages]);
@@ -89,7 +89,7 @@ const Notification = ({ loggedInUser }) => {
 
     return (
         <div>
-            <Navbar />
+            <Navbar/>
             <nav className="secondary-navbarN">
                 <h4>Notifications</h4>
                 <div
@@ -97,7 +97,7 @@ const Notification = ({ loggedInUser }) => {
                     onMouseEnter={handleFilterIconMouseEnter}
                     onMouseLeave={handleFilterIconMouseLeave}
                 >
-                    <Filter />
+                    <Filter/>
                     {filterPopupVisible && (
                         <div
                             className="search-popup active"
@@ -134,7 +134,7 @@ const Notification = ({ loggedInUser }) => {
                     <div className="message-list border-2 d-flex flex-row g-5">
                         {filteredMessages.map((msg, index) => (
                             <div key={index} className="message-item" onClick={() => setShowPopup(msg)}>
-                                <strong>From:</strong> {msg.from}<br />
+                                <strong>From:</strong> {msg.from}<br/>
                                 <strong>To:</strong> {msg.to.join(', ')}
                             </div>
                         ))}
@@ -179,7 +179,8 @@ const Notification = ({ loggedInUser }) => {
                                     />
                                 </div>
                                 <div className="d-flex justify-content-between mt-3">
-                                    <button className="saveNotificationBtn" onClick={handleSendNotification}>Send</button>
+                                    <button className="saveNotificationBtn" onClick={handleSendNotification}>Send
+                                    </button>
                                     <button className="cancelButton" onClick={() => setShowPopup(false)}>Cancel</button>
                                 </div>
                             </>

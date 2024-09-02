@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import './DetailsModal.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faListAlt, faTasks, faTimes } from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faListAlt, faTasks, faTimes} from '@fortawesome/free-solid-svg-icons';
 import TaskService from '../../services/TaskService'; // Assuming you have a TaskService for API calls
 
-const DetailsModal = ({ task, onClose }) => {
+const DetailsModal = ({task, onClose}) => {
     const initialTableData = (task && task.tableData && Array.isArray(task.tableData) && task.tableData.length > 0)
         ? task.tableData
-        : [{ Description: task.taskDescription || "", Comments: "" }];
+        : [{Description: task.taskDescription || "", Comments: ""}];
 
-    const [descriptionData, setDescriptionData] = useState(initialTableData.map(row => ({ Description: row.Description })));
-    const [commentsData, setCommentsData] = useState(initialTableData.map(row => ({ Comments: row.Comments })));
+    const [descriptionData, setDescriptionData] = useState(initialTableData.map(row => ({Description: row.Description})));
+    const [commentsData, setCommentsData] = useState(initialTableData.map(row => ({Comments: row.Comments})));
     //const [statusName, setStatusName] = useState(task.statusName);
 
     useEffect(() => {
         if (task && task.tableData && Array.isArray(task.tableData)) {
-            setDescriptionData(task.tableData.map(row => ({ Description: row.Description })));
-            setCommentsData(task.tableData.map(row => ({ Comments: row.Comments })));
+            setDescriptionData(task.tableData.map(row => ({Description: row.Description})));
+            setCommentsData(task.tableData.map(row => ({Comments: row.Comments})));
         }
     }, [task]);
 
@@ -48,7 +48,7 @@ const DetailsModal = ({ task, onClose }) => {
     };
 
     const handleAddCommentsRow = () => {
-        setCommentsData([...commentsData, { Comments: '' }]);
+        setCommentsData([...commentsData, {Comments: ''}]);
     };
 
     const handleSaveDescription = async () => {
@@ -65,7 +65,7 @@ const DetailsModal = ({ task, onClose }) => {
             await TaskService.updateTask(task.taskId, updatedTask);
 
             alert('Task description updated successfully!');
-           onClose(); // Close the modal after saving
+            onClose(); // Close the modal after saving
         } catch (error) {
             console.error("Error updating task:", error);
             alert("There was an error updating the task. Please try again.");

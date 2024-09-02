@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import UserService from '../../Services/UserService.js';
 import RoleService from "../../Services/RoleService.js";
-import { useNavigate, useParams } from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import './AddUser.css';
 
 const EditUser = () => {
-    const { userId } = useParams();
+    const {userId} = useParams();
     const navigate = useNavigate();
 
     const [roles, setRoles] = useState([]);
@@ -95,7 +95,7 @@ const EditUser = () => {
 
     const validateForm = () => {
         let valid = true;
-        const errorsCopy = { ...errors };
+        const errorsCopy = {...errors};
 
         if (!email.trim()) {
             errorsCopy.email = 'Email is required';

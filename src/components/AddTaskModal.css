@@ -13,9 +13,11 @@
     align-items: center;
     z-index: 1000;
 }
-.add-new-task-h3{
+
+.add-new-task-h3 {
     color: #0b0a0a;
 }
+
 .addtask-modal-content {
     background: #ffffff;
     padding: 20px;
@@ -84,7 +86,7 @@
 }
 
 .modal-add-button {
-    background-color:darksalmon;
+    background-color: darksalmon;
 }
 
 .modal-cancel-button {

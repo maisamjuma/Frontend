@@ -42,7 +42,7 @@ export const getUserInfoFromToken = async () => {
 
         // Save the user data to local storage
         localStorage.setItem('user', JSON.stringify(userData));
-        console.log("getUserInfoFromToken (the signed in user):",userData)
+        console.log("getUserInfoFromToken (the signed in user):", userData)
 
         return userData; // Return the user info
     } catch (error) {

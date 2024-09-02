@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import './ChangeMemberModal.css';
 import UserService from "../Services/UserService.js";
@@ -8,7 +8,7 @@ const ChangeMemberModal = ({
 
                                onSave,
                                onClose,
-                                task,
+                               task,
                                projectId,
                                projectDescription,
                                projectMembers,
@@ -20,7 +20,7 @@ const ChangeMemberModal = ({
     const [selectedMemberId, setSelectedMemberId] = useState('');
     const [selectedMembername, setSelectedMembername] = useState('');
     const [userDetails, setUserDetails] = useState([]);
-        console.log("change member task : ",task)
+    console.log("change member task : ", task)
     // Fetch user details based on projectMembers
     useEffect(() => {
         const fetchUserDetails = async () => {
@@ -134,8 +134,8 @@ ChangeMemberModal.propTypes = {
         taskId: PropTypes.number.isRequired,
         taskName: PropTypes.string.isRequired,
         status: PropTypes.string.isRequired,
-        assignedToUserId:PropTypes.string.isRequired,
-        assignedUserLetter:PropTypes.string.isRequired,
+        assignedToUserId: PropTypes.string.isRequired,
+        assignedUserLetter: PropTypes.string.isRequired,
         priority: PropTypes.string.isRequired,
         date: PropTypes.instanceOf(Date),
         taskDescription: PropTypes.string.isRequired,

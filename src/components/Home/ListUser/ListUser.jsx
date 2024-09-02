@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 import UserService from '../../../Services/UserService.js';
 import RoleService from "../../../Services/RoleService.js";
 import './ListUser.css';
-import { Container } from "react-bootstrap";
-import { Row } from "antd";
+import {Container} from "react-bootstrap";
+import {Row} from "antd";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUserPlus} from "@fortawesome/free-solid-svg-icons";
 
@@ -38,8 +38,14 @@ const ListUser = () => {
                         functionalRoleId: user.functionalRoleId,
                         roleName: roleMap[user.functionalRoleId] || 'Unknown Role',
                         isTeamLeader: user.isTeamLeader,
-                        createdAt: `${createdAt.toLocaleDateString()} ${createdAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`,
-                        updatedAt: `${updatedAt.toLocaleDateString()} ${updatedAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`
+                        createdAt: `${createdAt.toLocaleDateString()} ${createdAt.toLocaleTimeString([], {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        })}`,
+                        updatedAt: `${updatedAt.toLocaleDateString()} ${updatedAt.toLocaleTimeString([], {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        })}`
                     };
                 });
 
@@ -52,12 +58,14 @@ const ListUser = () => {
     }, []);
 
     const updateUser = (userId) => {
-        console.log("updateUser userId:",userId);
+        console.log("updateUser userId:", userId);
         navigate(`/main/edit-user/${userId}`);
     };
+
     function addNewUser() {
         navigator('/main/AddUser');
     }
+
     useEffect(() => {
         UserService.getAllUsers().then((response) => {
             setUsers(response.data);

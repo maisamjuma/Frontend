@@ -67,6 +67,7 @@
 .member-profile button:focus {
     outline: 2px solid darkred;
 }
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #1a1a1a;
@@ -138,11 +139,13 @@ body {
 }
 
 
-.fontColor{
+.fontColor {
     color: black;
 }
-.usernameFont{
+
+.usernameFont {
 }
+
 .secondary-nav-button {
     background-color: #e9ecef;
     color: darksalmon;
@@ -151,7 +154,7 @@ body {
     letter-spacing: 1px;
 }
 
-.secondary-nav-button-X{
+.secondary-nav-button-X {
     background-color: #e9ecef;
     color: darksalmon;
     padding: 3px;

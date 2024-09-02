@@ -239,7 +239,7 @@ const AddUser = () => {
                                     className={` dropDownRole ${errors.role ? 'is-invalid' : ''}`}
                                     onChange={handleRole}
                                 >
-                                    <option className= "defualOption" value="">Select a role</option>
+                                    <option className="defualOption" value="">Select a role</option>
                                     {roles.map((role) => (
                                         <option key={role.funcRoleId} value={role.funcRoleId}>
                                             {role.roleName}

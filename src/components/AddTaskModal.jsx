@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import './AddTaskModal.css';
 import Calendar from 'react-calendar';
 import PropTypes from 'prop-types';
@@ -57,7 +57,7 @@ const AddTaskModal = ({
                 };
 
                 const response = await TaskService.createTask(newTask);
-                const { taskId } = response.data; // Access response data
+                const {taskId} = response.data; // Access response data
                 console.log('Task created:', response.data);
                 console.log("task id :", taskId);
 
@@ -104,7 +104,7 @@ const AddTaskModal = ({
                         <Calendar
                             onChange={(date) => setDueDate(date)}
                             value={dueDate}
-                            tileClassName={({ date }) =>
+                            tileClassName={({date}) =>
                                 dueDate && date.toDateString() === new Date(dueDate).toDateString()
                                     ? 'selected-date'
                                     : null

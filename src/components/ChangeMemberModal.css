@@ -152,7 +152,8 @@
 .change-member-list-new li:hover {
 
     background-color: #E9967A; /* Dark Salmon */
-    .member-initial-circle{
+
+    .member-initial-circle {
         background-color: white;
         color: darksalmon;
     }

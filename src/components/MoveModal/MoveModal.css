@@ -11,13 +11,13 @@
     align-items: center;
 }
 
-.namesOfMoveModal{
+.namesOfMoveModal {
     color: black;
     font-weight: bold;
     font-size: 27px;
 }
 
-.selectOfMoveModal{
+.selectOfMoveModal {
     width: 195px;
     padding: 8px;
     border-radius: 4px;

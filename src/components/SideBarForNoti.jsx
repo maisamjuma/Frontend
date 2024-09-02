@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types'; // Import PropTypes
 import './SideBarForNoti.css';
 
-const SideBarForNoti = ({ users, loggedInUser, onSendNotification }) => {
+const SideBarForNoti = ({users, loggedInUser, onSendNotification}) => {
     return (
         <div className="sidebar">
             <div className="d-flex flex-column align-items-center justify-content-center">

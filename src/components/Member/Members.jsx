@@ -1,5 +1,4 @@
-
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import './Members.css';
 import RoleService from "../../Services/RoleService.js";
@@ -27,10 +26,10 @@ const Members = ({
             const rolesPromises = uniqueRoleIds.map(async (functionalRoleId) => {
                 try {
                     const response = await RoleService.getRoleById(functionalRoleId);
-                    return { functionalRoleId, roleName: response.data.roleName };
+                    return {functionalRoleId, roleName: response.data.roleName};
                 } catch (error) {
                     console.error(`Error fetching role for roleId: ${functionalRoleId}`, error);
-                    return { functionalRoleId, roleName: 'Unknown Role' };
+                    return {functionalRoleId, roleName: 'Unknown Role'};
                 }
             });
 

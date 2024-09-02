@@ -65,7 +65,7 @@ const AddProjectModal = ({isVisible, onClose, onAddProject}) => {
 
             try {
                 const response = await ProjectService.createProject(project);
-                const { projectId } = response; // Assuming projectId is in the response
+                const {projectId} = response; // Assuming projectId is in the response
 
                 // Notify the parent component of the new project
                 onAddProject(projectId, name, description);

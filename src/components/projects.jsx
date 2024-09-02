@@ -137,7 +137,7 @@ const Projects = () => {
         <div className="d-flex flex-row gap-5" ref={containerRef}>
             <nav className="secondary-navbarForPro d-flex flex-row gap-5">
                 <ul className="secondary-navbarForPro">
-                    {(userRoleIsAdmin || userRoleIsTeamLeader ) && (
+                    {(userRoleIsAdmin || userRoleIsTeamLeader) && (
                         <li>
                             <button
                                 className={`secondary-nav-button ${!showMembersOnly ? 'active' : ''}`}
@@ -151,7 +151,7 @@ const Projects = () => {
                             </button>
                         </li>
                     )}
-                    {(userRoleIsAdmin || userRoleIsTeamLeader ) && (
+                    {(userRoleIsAdmin || userRoleIsTeamLeader) && (
                         <li>
                             <button
                                 className={`secondary-nav-button ${isDeleting ? 'active' : ''}`}

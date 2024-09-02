@@ -32,13 +32,17 @@
     cursor: pointer; /* Indicate that it is clickable */
     color: #333; /* Default text color for brand */
 }
-.navbar .navbar-brand{
-    .track{
+
+.navbar .navbar-brand {
+    .track {
         color: black;
-    }.DEV{
-             color: darksalmon;
-         }
+    }
+
+    .DEV {
+        color: darksalmon;
+    }
 }
+
 .navbar .navbar-brand:hover {
     color: #e9967a; /* Dark salmon color on hover */
 }

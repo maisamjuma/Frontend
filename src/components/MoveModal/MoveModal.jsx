@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import './MoveModal.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faTimes} from '@fortawesome/free-solid-svg-icons';
 import BoardService from "../../Services/BoardService.js";
 
 const MoveModal = ({
@@ -46,15 +46,15 @@ const MoveModal = ({
 
     // Default statuses without boardId field
     const defaultStatuses = [
-        { id: 1, title: 'Unassigned Tasks' },
-        { id: 2, title: 'To Do' },
-        { id: 3, title: 'Doing' },
-        { id: 4, title: 'Ready to Review' },
-        { id: 5, title: 'Reviewing' },
-        { id: 6, title: 'Ready for QA' },
-        { id: 7, title: 'In Progress' },
-        { id: 8, title: 'QA Failed' },
-        { id: 9, title: 'QA Passed' }
+        {id: 1, title: 'Unassigned Tasks'},
+        {id: 2, title: 'To Do'},
+        {id: 3, title: 'Doing'},
+        {id: 4, title: 'Ready to Review'},
+        {id: 5, title: 'Reviewing'},
+        {id: 6, title: 'Ready for QA'},
+        {id: 7, title: 'In Progress'},
+        {id: 8, title: 'QA Failed'},
+        {id: 9, title: 'QA Passed'}
     ];
 
     // Combine default statuses with additional statuses
@@ -88,7 +88,7 @@ const MoveModal = ({
         <div className="move-modal-overlay" onClick={handleOverlayClick}>
             <div className="move-modal-content">
                 <span className="move-modal-close" onClick={onClose}>
-                    <FontAwesomeIcon icon={faTimes} />
+                    <FontAwesomeIcon icon={faTimes}/>
                 </span>
                 <div className="move-title">
                     <h2 className="titleMoveTask">Move Task</h2>

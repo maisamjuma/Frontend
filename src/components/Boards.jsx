@@ -57,11 +57,9 @@ const Boards = ({
     console.log("projectid ccccccccccccccccccc", projectId)
 
 
-
-
     const onDragEnd = async (result) => {
         console.log("result", result);
-        const { source, destination, draggableId } = result;
+        const {source, destination, draggableId} = result;
 
         // Check if the task was dropped outside any droppable area
         if (!destination) {
@@ -139,17 +137,13 @@ const Boards = ({
         // Update task status in the database
         try {
             const statusTitle = destinationStatus.title; // Get status title
-            await TaskService.updateTask(task.taskId, { ...task, status: statusTitle });
+            await TaskService.updateTask(task.taskId, {...task, status: statusTitle});
             alert('Task status updated successfully!');
         } catch (error) {
             console.error('Error updating task status:', error);
             alert('There was an error updating the task status. Please try again.');
         }
     };
-
-
-
-
 
 
     // Function to load or reset statuses
@@ -210,7 +204,7 @@ const Boards = ({
                                 const userResponse = await UserService.getUserById(task.assignedToUserId);
                                 const user = userResponse.data;
                                 const assignedUserLetter = user.firstName.charAt(0).toUpperCase();
-                                return { ...task, assignedUserLetter };
+                                return {...task, assignedUserLetter};
                             } catch (userError) {
                                 console.error(`Error fetching user info for userId ${task.assignedToUserId}:`, userError);
                                 return task; // Return the task as is if there's an error fetching user info
@@ -255,7 +249,7 @@ const Boards = ({
                     const userResponse = await UserService.getUserById(task.assignedToUserId);
                     const user = userResponse.data;
                     const assignedUserLetter = user.firstName.charAt(0).toUpperCase();
-                    task = { ...task, assignedUserLetter };
+                    task = {...task, assignedUserLetter};
                 } catch (userError) {
                     console.error(`Error fetching user info for userId ${task.assignedToUserId}:`, userError);
                     // Proceed without the assignedUserLetter if there's an error
@@ -527,7 +521,7 @@ const Boards = ({
             }
 
             const qaBoardId = qaBoard.boardId; // QA board ID
-            console.log("qaBoardId",qaBoardId)
+            console.log("qaBoardId", qaBoardId)
             // Find the 'Reviewing' status from the current board
             const reviewingStatus = statuses.find(status => status.title === 'Reviewing');
             if (!reviewingStatus) {
@@ -545,7 +539,7 @@ const Boards = ({
 
             // Update each task status and board ID
             for (const task of tasksToMove) {
-                console.log("check for task : ",task);
+                console.log("check for task : ", task);
                 try {
                     await TaskService.updateTask(task.taskId, {
                         ...task,
@@ -578,8 +572,6 @@ const Boards = ({
     };
 
 
-
-
     return (
         <DragDropContext onDragEnd={onDragEnd}>
             <div className="boardAllStatuses">
@@ -599,7 +591,7 @@ const Boards = ({
                                         {(provided) => (
                                             <div
                                                 className="backend-status-box"
-                                                style={{ backgroundColor: status.backgroundColor }}
+                                                style={{backgroundColor: status.backgroundColor}}
                                                 ref={provided.innerRef}
                                                 {...provided.droppableProps}
                                             >
@@ -649,13 +641,16 @@ const Boards = ({
                                                                                 className={`task-priority-display priority-${task.priority}`}
                                                                             >
                                                                                 {task.priority === 'high' && (
-                                                                                    <span className="priority-high">High</span>
+                                                                                    <span
+                                                                                        className="priority-high">High</span>
                                                                                 )}
                                                                                 {task.priority === 'medium' && (
-                                                                                    <span className="priority-medium">Medium</span>
+                                                                                    <span
+                                                                                        className="priority-medium">Medium</span>
                                                                                 )}
                                                                                 {task.priority === 'low' && (
-                                                                                    <span className="priority-low">Low</span>
+                                                                                    <span
+                                                                                        className="priority-low">Low</span>
                                                                                 )}
                                                                             </div>
                                                                         </div>
@@ -682,7 +677,8 @@ const Boards = ({
                                                                                 <div className="dateWithName">
                                                                                     <div className="dateCss">
                                                                                         {task.date && (
-                                                                                            <span className="task-due-date">
+                                                                                            <span
+                                                                                                className="task-due-date">
                                                                                             Due date: {new Date(task.date).toLocaleDateString()}
                                                                                         </span>
                                                                                         )}
@@ -690,7 +686,8 @@ const Boards = ({
                                                                                     {(status.id >= 2) && (
                                                                                         <div className="nameCircle">
                                                                                             {task.assignedToUserId && (
-                                                                                                <span className="taskMember">
+                                                                                                <span
+                                                                                                    className="taskMember">
                                                                                                 {task.assignedUserLetter}
                                                                                             </span>
                                                                                             )}

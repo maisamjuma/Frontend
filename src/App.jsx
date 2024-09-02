@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Route, Routes, Navigate } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {Route, Routes, Navigate} from 'react-router-dom';
 import Projects from './components/projects';
 import Workspace from './components/Workspace';
 import AddUser from "./components/Home/AddUser.jsx";
@@ -36,9 +36,9 @@ function App() {
                 path="/login"
                 element={
                     isAuthenticated ? (
-                        <Navigate to="/main" />
+                        <Navigate to="/main"/>
                     ) : (
-                        <Login onLogin={handleLogin} />
+                        <Login onLogin={handleLogin}/>
                     )
                 }
             />
@@ -51,9 +51,11 @@ function App() {
                                 <Route path="/" element={<HomePage/>}/>
                                 <Route path="ListUser" element={<ListUser/>}/>
                                 <Route path="AddUser" element={<AddUser/>}/>
-                                <Route path="notifications" element={<Notification loggedInUser={loggedInUser}/>}/> {/* Add Notification route */}
+                                <Route path="notifications" element={<Notification
+                                    loggedInUser={loggedInUser}/>}/> {/* Add Notification route */}
                                 <Route path=":projectName" element={<Projects/>}/> {/* Dynamic route for projects */}
-                                <Route path="edit-user/:userId" element={<EditUser />} /> {/* Add this route for editing users */}
+                                <Route path="edit-user/:userId"
+                                       element={<EditUser/>}/> {/* Add this route for editing users */}
                                 <Route path="workspace/:projectName/*" element={<Workspace/>}/>
                                 {/*<Route path="/" element={<ListUser />} />*/}
                                 {/*<Route path="listuser" element={<ListUser />} />*/}
@@ -63,11 +65,11 @@ function App() {
                             </Routes>
                         </Layout>
                     ) : (
-                        <Navigate to="/login" />
+                        <Navigate to="/login"/>
                     )
                 }
             />
-            <Route path="/" element={<Navigate to="/login" />} />
+            <Route path="/" element={<Navigate to="/login"/>}/>
         </Routes>
     );
 }

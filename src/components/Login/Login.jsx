@@ -16,25 +16,25 @@ const Login = ({onLogin}) => {
     //     onLogin();
     // };
 
-    const handleLogin =  async (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
 
         try {
-            const userData = await UserService.login(password,email)
+            const userData = await UserService.login(password, email)
             // console.log("userData userData:",userData)
             if (userData.token) {
                 localStorage.setItem('token', userData.token)
                 localStorage.setItem('role', userData.role)
                 // navigate('/profile')
                 onLogin();//the line that navigates to the main page
-            }else{
+            } else {
                 setError(userData.message)
             }
 
         } catch (error) {
             console.log(error)
             setError(error.message)
-            setTimeout(()=>{
+            setTimeout(() => {
                 setError('');
             }, 5000);
         }

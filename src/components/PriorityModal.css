@@ -10,12 +10,14 @@
     justify-content: center;
     align-items: center;
 }
-.priorityheader{
+
+.priorityheader {
     margin-top: 10px;
     margin-bottom: 20px;
 }
+
 .priority-modal-content {
-    background:#ffffff;
+    background: #ffffff;
     padding: 20px;
     border-radius: 8px;
     color: #dcdde1;
@@ -24,9 +26,9 @@
 }
 
 .priority-options {
-        display: flex;
-        flex-direction: column; /* Stack buttons vertically */
-        margin-top: 20px;
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    margin-top: 20px;
 }
 
 .priority-option {

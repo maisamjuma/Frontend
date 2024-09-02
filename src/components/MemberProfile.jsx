@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import './MemberProfile.css'; // Import the CSS file
 import RoleService from "../Services/RoleService.js";
 
-const MemberProfile = ({ member, userDetails, onClose, onLogout  }) => {
+const MemberProfile = ({member, userDetails, onClose, onLogout}) => {
     const [roleName, setRoleName] = useState('Loading role...'); // State to store the role name
 
     // Find user details for the selected member

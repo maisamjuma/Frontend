@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import Calendar from 'react-calendar';
 import './CalendarModal.css';
 
-const CalendarModal = ({ onClose, onSave, onRemoveDate }) => {
+const CalendarModal = ({onClose, onSave, onRemoveDate}) => {
     const [selectedDate, setSelectedDate] = useState(null);
 
     const handleDateChange = (date) => {
@@ -32,7 +32,7 @@ const CalendarModal = ({ onClose, onSave, onRemoveDate }) => {
                 <Calendar
                     onChange={handleDateChange}
                     value={selectedDate}
-                    tileClassName={({ date }) =>
+                    tileClassName={({date}) =>
                         selectedDate && date.toDateString() === new Date(selectedDate).toDateString()
                             ? 'selected-date'
                             : null

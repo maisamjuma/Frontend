@@ -223,7 +223,7 @@ const Sidebar = ({onMenuAction}) => {
                         <ul className="dropdown-list ">
                             {projects.map((project) => (
 
-                                <li  key={project.projectId} onClick={() => handleProjectClick(project)}>
+                                <li key={project.projectId} onClick={() => handleProjectClick(project)}>
                                     {isDeleteMode && (
                                         <input
                                             className="mx-3"

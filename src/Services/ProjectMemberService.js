@@ -8,7 +8,7 @@ class ProjectMemberService {
     // Get Project Member by projectMemberId
     getProjectMemberById(projectMemberId) {
         const token = localStorage.getItem("token");
-        return axios.get(`${MEMBERS_API_BASE_URL}/${projectMemberId}`,{
+        return axios.get(`${MEMBERS_API_BASE_URL}/${projectMemberId}`, {
             headers: {
                 'X-Auth-Token': token
             }
@@ -16,23 +16,25 @@ class ProjectMemberService {
     }
 
     // Delete a Member from a specific Project by projectMemberId
-    deleteMemberFromProject(projectMemberId,projectId) {
+    deleteMemberFromProject(projectMemberId, projectId) {
         const token = localStorage.getItem("token");
-        return axios.delete(`${MEMBERS_API_BASE_URL}/project/${projectId}/member/${projectMemberId}`,{
+        return axios.delete(`${MEMBERS_API_BASE_URL}/project/${projectId}/member/${projectMemberId}`, {
             headers: {
                 'X-Auth-Token': token
             }
         });
     }
+
     // Delete a Member from all projects by userId hhhh
     deleteMemberFromAllProjects(userId) {
         const token = localStorage.getItem("token");
-        return axios.delete(`${MEMBERS_API_BASE_URL}/user/${userId}`,{
+        return axios.delete(`${MEMBERS_API_BASE_URL}/user/${userId}`, {
             headers: {
                 'X-Auth-Token': token
             }
         });
     }
+
     // Update info of a Project Member by projectMemberId
     updateProjectMember(projectMemberId, memberData) {
         const token = localStorage.getItem("token");
@@ -60,6 +62,7 @@ class ProjectMemberService {
             }
         });
     }
+
     // Add Member to a project
     addMemberToProject(memberData) {
         const token = localStorage.getItem("token");

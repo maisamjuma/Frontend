@@ -39,7 +39,7 @@ class BoardService {
     createBoard(projectId, roleId) {
         const token = localStorage.getItem("token");
         const url = `${BOARDS_API_BASE_URL}/${roleId}`;
-        return axios.post(url, { projectId }, {
+        return axios.post(url, {projectId}, {
             headers: {
                 'Content-Type': 'application/json',
                 'X-Auth-Token': token

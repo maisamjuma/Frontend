@@ -8,7 +8,7 @@ class NotificationService {
     // Get Notification by notificationId
     getNotificationById(notificationId) {
         const token = localStorage.getItem("token");
-        return axios.get(`${NOTIFICATIONS_API_BASE_URL}/${notificationId}`,{
+        return axios.get(`${NOTIFICATIONS_API_BASE_URL}/${notificationId}`, {
             headers: {
                 'X-Auth-Token': token
             }
@@ -18,9 +18,9 @@ class NotificationService {
     // Get Notifications by userId
     getNotificationsByUserId(userId) {
         const token = localStorage.getItem("token");
-        return axios.get(`${NOTIFICATIONS_API_BASE_URL}/user/${userId}`,{
+        return axios.get(`${NOTIFICATIONS_API_BASE_URL}/user/${userId}`, {
             headers: {
-            'X-Auth-Token': token
+                'X-Auth-Token': token
             }
         });
     }
@@ -28,7 +28,7 @@ class NotificationService {
     // Delete Notification by notificationId
     deleteNotificationById(notificationId) {
         const token = localStorage.getItem("token");
-        return axios.delete(`${NOTIFICATIONS_API_BASE_URL}/${notificationId}`,{
+        return axios.delete(`${NOTIFICATIONS_API_BASE_URL}/${notificationId}`, {
             headers: {
                 'X-Auth-Token': token
             }
@@ -49,7 +49,7 @@ class NotificationService {
     // Get All Notifications
     getAllNotifications() {
         const token = localStorage.getItem("token");
-        return axios.get(NOTIFICATIONS_API_BASE_URL,{
+        return axios.get(NOTIFICATIONS_API_BASE_URL, {
             headers: {
                 'X-Auth-Token': token
             }

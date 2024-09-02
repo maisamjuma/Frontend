@@ -181,15 +181,17 @@
 .user-lists:hover,
 .Settings:hover,
 .projects-text:hover {
-    color:#3a3a3c; /* Change text color on hover to dark salmon */
+    color: #3a3a3c; /* Change text color on hover to dark salmon */
     font-weight: bold; /* Make text bold */
 }
-.projects-text{
+
+.projects-text {
     /*margin-left: 2px;*/
-    font-size:20px;
+    font-size: 20px;
     font-weight: bold;
 }
-.projectName-arrowDown{
+
+.projectName-arrowDown {
     display: flex;
     gap: 85px;
     padding: 15px;

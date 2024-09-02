@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import TaskModal from './TaskModal';
 
 const ParentComponent = () => {
@@ -15,12 +15,12 @@ const ParentComponent = () => {
             <button onClick={() => setIsTaskModalOpen(true)}>Open Task Modal</button>
             {isTaskModalOpen && (
                 <TaskModal
-                    task={{ id: '1', name: 'Sample Task', statusId: 1, labels: ['label1'] }}
+                    task={{id: '1', name: 'Sample Task', statusId: 1, labels: ['label1']}}
                     onClose={() => setIsTaskModalOpen(false)}
                     onDelete={(id) => console.log('Delete Task ID:', id)}
-                    boards={[{ id: 'back', name: 'Back' }, { id: 'front', name: 'Front' }]}
-                    statuses={[{ id: 1, title: 'To Do' }]}
-                    labels={[{ id: 'label1', name: 'Label 1', color: 'red' }]}
+                    boards={[{id: 'back', name: 'Back'}, {id: 'front', name: 'Front'}]}
+                    statuses={[{id: 1, title: 'To Do'}]}
+                    labels={[{id: 'label1', name: 'Label 1', color: 'red'}]}
                     onSaveDate={(date) => console.log('Save Date:', date)}
                     onRemoveDate={() => console.log('Remove Date')}
                     onSavePriority={(priority) => console.log('Save Priority:', priority)}

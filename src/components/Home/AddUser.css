@@ -80,7 +80,6 @@
 }
 
 
-
 .form-control:focus {
     border-color: #ffffff;
     outline: 0;
@@ -101,10 +100,10 @@
 .btn-successB {
     background-color: white;
     color: #333333;
-    padding: 5px ;
-    border-radius: 6px ;
-    cursor: pointer ;
-    font-size: 20px ;
+    padding: 5px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 20px;
     font-weight: bold;
     position: relative;
     left: 380px;
@@ -114,7 +113,7 @@
 }
 
 .btn-success:hover {
-    background-color: #E9967A ;
+    background-color: #E9967A;
 }
 
 input[type="datetime-local"] {
@@ -135,15 +134,18 @@ input[type="datetime-local"] {
     flex: 1;
     margin-right: 1rem;
 }
-.addUserInput{
+
+.addUserInput {
     border: solid 1px #E9967A;
     padding: 5px;
     border-radius: 5px;
 }
-.defualOption{
+
+.defualOption {
     background-color: darksalmon;
 }
-.dropDownRole{
+
+.dropDownRole {
     padding: 10px;
     font-size: 15px;
     font-weight: bold;

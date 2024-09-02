@@ -155,17 +155,18 @@
     outline: none; /* Remove default focus outline */
     color: #000;
 }
-.nameCon{
+
+.nameCon {
     margin-bottom: 20px;
     padding: 20px;
 }
 
-.boardAllStatuses{
+.boardAllStatuses {
     width: 1380px;
     padding-right: 140px;
 }
 
-    /* Allow status-container to extend with content and wrap items */
+/* Allow status-container to extend with content and wrap items */
 .backend-status-container {
     display: flex;
     flex-wrap: nowrap; /* Prevent items from wrapping to the next line */
@@ -174,6 +175,7 @@
     justify-content: flex-start; /* Align items to the start (left) */
     overflow-x: auto;
 }
+
 /* Hide scrollbars for Webkit browsers (Chrome, Safari) */
 .backend-status-container::-webkit-scrollbar {
     display: none; /* Hide scrollbar */
@@ -436,6 +438,7 @@
     margin-left: -10px;
     transform: scale(0.8);
 }
+
 .members-list-container {
     padding: 10px;
     border: 1px solid #ddd;
@@ -460,7 +463,6 @@
 .change-member-list-item:hover {
     background-color: #e0e0e0;
 }
-
 
 
 .selected-member {

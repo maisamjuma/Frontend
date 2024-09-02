@@ -24,6 +24,7 @@ class TaskService {
             }
         });
     }
+
     // Update a task by its ID
     updateTask(taskId, updatedTaskData) {
         const token = localStorage.getItem("token");
@@ -54,6 +55,7 @@ class TaskService {
             }
         });
     }
+
     // Fetch all tasks of a specific user by AddUser ID
     getTasksByUserId(userId) {
         return axios.get(`${TASKS_API_BASE_URL}/user/${userId}`);

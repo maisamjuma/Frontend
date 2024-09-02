@@ -13,9 +13,8 @@
     flex-direction: column;
     gap: 100px;
     min-height: 100%; /* Allow content to take full height */
-    overflow:hidden; /* Ensure children content isn't cut off */
+    overflow: hidden; /* Ensure children content isn't cut off */
 }
-
 
 
 .video-container {
@@ -79,7 +78,8 @@
     border: 2px solid #282E33;
     color: #E9967A;
 }
-.Assigncontent{
+
+.Assigncontent {
     width: 500px;
     margin-top: 20px;
     position: relative;
@@ -88,13 +88,15 @@
     padding: 30px;
 
 }
+
 .rolecontent {
     width: 500px;
     margin-top: 20px;
     border-left: 1px solid #ccc;
     padding: 30px;
 }
-.manage-homePage{
+
+.manage-homePage {
     display: flex;
     flex-direction: row;
     gap: 30px;

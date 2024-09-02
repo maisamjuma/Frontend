@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import './LabelModal.css';
 
-const LabelModal = ({ onClose, labels, selectedLabels, onSave }) => {
+const LabelModal = ({onClose, labels, selectedLabels, onSave}) => {
     const [currentLabels, setCurrentLabels] = useState(selectedLabels);
     const [searchTerm, setSearchTerm] = useState('');
     const [editingLabel, setEditingLabel] = useState(null);
     const [showCreateLabelForm, setShowCreateLabelForm] = useState(false);
-    const [newLabel, setNewLabel] = useState({ name: '', color: '#FF6F61' }); // Default color
+    const [newLabel, setNewLabel] = useState({name: '', color: '#FF6F61'}); // Default color
 
     const handleLabelClick = (label) => {
         setCurrentLabels((prevLabels) =>
@@ -23,7 +23,6 @@ const LabelModal = ({ onClose, labels, selectedLabels, onSave }) => {
     };
 
 
-
     const filteredLabels = labels.filter((label) =>
         label.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -34,20 +33,20 @@ const LabelModal = ({ onClose, labels, selectedLabels, onSave }) => {
 
     const handleCancelCreateLabel = () => {
         setShowCreateLabelForm(false);
-        setNewLabel({ name: '', color: '#FF6F61' }); // Reset form
+        setNewLabel({name: '', color: '#FF6F61'}); // Reset form
     };
 
     const handleNewLabelChange = (e) => {
-        setNewLabel({ ...newLabel, name: e.target.value });
+        setNewLabel({...newLabel, name: e.target.value});
     };
 
     const handleNewLabelColorChange = (color) => {
-        setNewLabel({ ...newLabel, color });
+        setNewLabel({...newLabel, color});
     };
 
     const handleSaveNewLabel = () => {
         if (newLabel.name.trim()) {
-            const newLabelWithId = { ...newLabel, id: `label-${Date.now()}` }; // Generate a unique ID
+            const newLabelWithId = {...newLabel, id: `label-${Date.now()}`}; // Generate a unique ID
             labels.push(newLabelWithId); // Update labels list
             setCurrentLabels([...currentLabels, newLabelWithId.id]); // Select the new label
             handleCancelCreateLabel(); // Close the form
@@ -71,11 +70,11 @@ const LabelModal = ({ onClose, labels, selectedLabels, onSave }) => {
                             onChange={handleNewLabelChange}
                         />
                         <div className="color-picker">
-                            {['#FF6F61', '#6B5B95', '#88B04B', '#F7CAC9','#f2d53c','#2d545e', '#ffa8B6','#c2edda','#51e2f5','#edf756','#ffb766','#a28089','#8458B3','#ff1d58','#59ce8f','#f75990','#12343b','#feb300','#f9c5bd','#7c677f','#39a0ca','#ff414e','#9bc400','#eb1736'].map((color) => (
+                            {['#FF6F61', '#6B5B95', '#88B04B', '#F7CAC9', '#f2d53c', '#2d545e', '#ffa8B6', '#c2edda', '#51e2f5', '#edf756', '#ffb766', '#a28089', '#8458B3', '#ff1d58', '#59ce8f', '#f75990', '#12343b', '#feb300', '#f9c5bd', '#7c677f', '#39a0ca', '#ff414e', '#9bc400', '#eb1736'].map((color) => (
                                 <div
                                     key={color}
                                     className={`color-swatch ${newLabel.color === color ? 'selected' : ''}`}
-                                    style={{ backgroundColor: color }}
+                                    style={{backgroundColor: color}}
                                     onClick={() => handleNewLabelColorChange(color)}
                                 />
                             ))}
