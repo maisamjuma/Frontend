@@ -38,17 +38,17 @@
     border-top-right-radius: 8px;
     font-size: 1.5rem;
     text-align: center;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     width: 100%; /* Full width of the card */
 }
 
 .form-groupE {
-    margin-bottom: 1.5rem;
+    margin-bottom: 10px;
 }
 
 .form-labelE {
     font-weight: bold;
-    margin-bottom: 0.5rem;
+    margin-bottom: 20px;
     display: block;
     color: #3a3a3c;
     font-size: 20px;
@@ -64,6 +64,8 @@
     font-weight: bold;
     color: black;
     margin-left: 0.5rem;
+    margin-bottom: 10px;
+
 }
 .adminlabelE{
     font-weight: bold;
@@ -80,6 +82,7 @@
     box-sizing: border-box;
     font-weight: bold;
     color: #3a3a3c;
+    margin-bottom: 15px;
 }
 
 .form-controlE:focus {
