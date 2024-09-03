@@ -2,23 +2,21 @@ import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import './Members.css';
 import RoleService from "../../Services/RoleService.js";
-//import MemberProfile from '../MemberProfile'; // Import MemberProfile
 
 const Members = ({
                      members,
                      userDetails,
-                     selectedMembers = [], // Default value added here
+                     selectedMembers = [],
                      onMemberClick
                  }) => {
-    // Create a map of userDetails for quick lookup
-    const [rolesMap, setRolesMap] = useState({}); // Map to store roleId to roleName
+
+    const [rolesMap, setRolesMap] = useState({});
 
     const userDetailMap = userDetails.reduce((acc, user) => {
         acc[user.userId] = user;
         return acc;
     }, {});
 
-    // Fetch role names when the component mounts or when members/userDetails change
     useEffect(() => {
         const fetchRoleNames = async () => {
             const uniqueRoleIds = [...new Set(userDetails.map(user => user.functionalRoleId))];
@@ -35,7 +33,7 @@ const Members = ({
 
             const roles = await Promise.all(rolesPromises);
             const newRolesMap = roles.reduce((acc, role) => {
-                acc[role.roleId] = role.roleName;
+                acc[role.functionalRoleId] = role.roleName; // Correctly map functionalRoleId to roleName
                 return acc;
             }, {});
 
@@ -56,18 +54,17 @@ const Members = ({
                     if (!user) {
                         return <div key={member.userId}>Loading user details...</div>;
                     }
-                    const roleName = rolesMap[user.role] || 'Loading role...';
+
+                    const roleName = rolesMap[user.functionalRoleId] || 'Loading role...'; // Correct lookup
 
                     return (
                         <div
                             key={member.userId}
                             className={`member-item-on-project ${selectedMembers.includes(member.userId) ? 'selected' : ''}`}
-                            onClick={() => onMemberClick(member)} // Ensure this is passing the full member object
+                            onClick={() => onMemberClick(member)}
                         >
-
                             <div className="member-name">{user.firstName} {user.lastName}</div>
                             <div className="member-role">{roleName}</div>
-
                         </div>
                     );
                 })
@@ -92,12 +89,10 @@ Members.propTypes = {
             email: PropTypes.string.isRequired,
             firstName: PropTypes.string.isRequired,
             lastName: PropTypes.string.isRequired,
-            role: PropTypes.number.isRequired,
+            functionalRoleId: PropTypes.number.isRequired, // Make sure this is functionalRoleId
         })
     ).isRequired,
-    isDeleting: PropTypes.bool.isRequired,
-    onCheckboxChange: PropTypes.func.isRequired,
-    selectedMembers: PropTypes.arrayOf(PropTypes.number), // Removed .isRequired to allow default value
+    selectedMembers: PropTypes.arrayOf(PropTypes.number),
     onMemberClick: PropTypes.func.isRequired,
 };
 
