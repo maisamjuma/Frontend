@@ -41,17 +41,43 @@ const Notification = ({loggedInUser}) => {
         fetchNotifications();
     }, [loggedInUser]);
 
+    // const handleSendNotification = async () => {
+    //     if (selectedUsers.length && message) {
+    //         const newNotification = {from: loggedInUser, to: selectedUsers, message};
+    //         try {
+    //             await NotificationService.createNotification(newNotification);
+    //             setMessages([newNotification, ...messages]);
+    //             setShowPopup(false);
+    //             resetForm();
+    //         } catch (error) {
+    //             console.error('Error sending notification:', error);
+    //         }
+    //     }
+    // };
     const handleSendNotification = async () => {
-        if (selectedUsers.length && message) {
-            const newNotification = {from: loggedInUser, to: selectedUsers, message};
-            try {
-                await NotificationService.createNotification(newNotification);
-                setMessages([newNotification, ...messages]);
-                setShowPopup(false);
-                resetForm();
-            } catch (error) {
-                console.error('Error sending notification:', error);
-            }
+        if (selectedUsers.length === 0) {
+            console.error('No recipients selected.');
+            return;
+        }
+
+        if (message.trim() === '') {
+            console.error('Message cannot be empty.');
+            return;
+        }
+
+        const newNotification = {
+            from: loggedInUser.userId,
+            to: selectedUsers,
+            message: message.trim(),
+        };
+
+        try {
+            await NotificationService.createNotification(newNotification);
+            setMessages([newNotification, ...messages]);
+            setShowPopup(false);
+            resetForm();
+        } catch (error) {
+            console.error('Error sending notification:', error.response?.data || error.message);
         }
     };
 
@@ -67,6 +93,7 @@ const Notification = ({loggedInUser}) => {
                 : [...prevSelectedUsers, user]
         );
     };
+
 
     const handleFilterIconMouseEnter = () => setFilterPopupVisible(true);
     const handleFilterIconMouseLeave = () => setFilterPopupVisible(false);

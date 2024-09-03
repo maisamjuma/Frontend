@@ -122,9 +122,9 @@ const HomePage = () => {
                             <select
                                 value={selectedRole}
                                 onChange={handleRoleChange}
-                                className='form-controlHb mb-2'
+                                className='form-contHb  '
                             >
-                                <option value="">Select Role</option>
+                                <option className="defualOption" value="">Select Role</option>
                                 <option value="Backend">Backend</option>
                                 <option value="Frontend">Frontend</option>
                                 <option value="QA">QA</option>
@@ -133,7 +133,7 @@ const HomePage = () => {
                             <select
                                 value={newTeamLeader}
                                 onChange={handleTeamLeaderChange}
-                                className='form-control mb-2'
+                                className='form-contHb '
                             >
                                 <option value="">Select Member</option>
                                 {users.map(user => (

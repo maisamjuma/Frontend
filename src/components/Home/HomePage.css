@@ -102,3 +102,52 @@
     gap: 30px;
     margin-bottom: 70px;
 }
+.form-contHb {
+
+    appearance: auto;
+    background-color: white;
+    color: #3a3a3c;
+    padding: 10px 15px;
+    font-size: 16px;
+    border: 2px solid darksalmon;
+    border-radius: 8px;
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    margin-right: 10px;
+    margin-bottom: 15px;
+    width: 200px;
+}
+
+.form-contHb:hover,
+.form-contHb:focus {
+    appearance: auto;
+    background-color: transparent  ;
+    border-color: #e9967a;
+}
+
+.form-contHb option {
+    appearance: auto;
+    color: black;
+    background-color: white !important;
+    padding: 10px;
+}
+
+.form-contHb option:hover,
+.form-contHb option:focus {
+    appearance: auto;
+    background-color: #ffdab9 !important;
+    color: black;
+    outline: none;
+}
+
+.form-contHb:focus option {
+    display: initial;
+    appearance: auto;
+    background-color: #ffdab9;
+    color: black;
+}
+.defualOption {
+    background-color: darksalmon;
+}
+
