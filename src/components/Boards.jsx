@@ -146,6 +146,10 @@ const Boards = ({
     };
 
 
+
+
+
+
     // Function to load or reset statuses
     const loadStatuses = () => {
         const savedStatuses = localStorage.getItem(`${projectId}_${boardId}_${name}_statuses`);
@@ -508,22 +512,21 @@ const Boards = ({
     // };
 
     const moveTasksToQA = async () => {
-        // Fetch boards for the project
         try {
-            const response = await BoardService.getBoardsByProject(projectId); // Ensure `projectId` is available
-            const boards = response.data; // Adjust according to your API response
-
-            // Find the QA board
+            const response = await BoardService.getBoardsByProject(projectId);
+            const boards = response.data;
+            console.log("boards:", boards)
+            console.log("board is im in?",boardId)
             const qaBoard = boards.find(board => board.name === 'QA');
             if (!qaBoard) {
                 console.error('QA board not found');
                 return;
             }
 
-            const qaBoardId = qaBoard.boardId; // QA board ID
-            console.log("qaBoardId", qaBoardId)
+            const qaBoardId = qaBoard.boardId;
+
             // Find the 'Reviewing' status from the current board
-            const reviewingStatus = statuses.find(status => status.title === 'Reviewing');
+            const reviewingStatus = statuses.find(status => status.title === 'Reviewing' && status.boardId === boardId);
             if (!reviewingStatus) {
                 console.error('Reviewing status not found');
                 return;
@@ -537,32 +540,28 @@ const Boards = ({
                 return;
             }
 
-            // Update each task status and board ID
             for (const task of tasksToMove) {
-                console.log("check for task : ", task);
                 try {
                     await TaskService.updateTask(task.taskId, {
                         ...task,
-                        status: 'Ready for QA', // Set the new status
-                        boardId: qaBoardId // Update the board ID
+                        status: 'Ready for QA',
+                        boardId: qaBoardId
                     });
                 } catch (error) {
                     console.error(`Error updating task ${task.taskId}:`, error);
                 }
             }
 
-            // alert('Tasks moved to QA successfully!');
-
-            // Optionally, update the local state if needed
             const updatedStatuses = statuses.map(status => {
-                if (status.title === 'Reviewing') {
+                if (status.title === 'Reviewing' && status.boardId === boardId) {
                     return {
                         ...status,
-                        tasks: [] // Clear tasks from 'Reviewing'
+                        tasks: []
                     };
                 }
                 return status;
             });
+
             setStatuses(updatedStatuses);
 
         } catch (error) {
@@ -570,6 +569,8 @@ const Boards = ({
             alert('There was an error moving the tasks. Please try again.');
         }
     };
+
+
 
 
     return (
