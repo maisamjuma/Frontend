@@ -5,11 +5,11 @@
     overflow-y: auto;
 }
 
-.card {
+.edit-user-card {
     border: 5px solid darksalmon;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    width: 700px; /* Increased width */
+    width: 400px; /* Increased width */
     max-width: 1000px; /* Increased max-width */
     height: 590px;
     padding: 20px;
@@ -19,12 +19,12 @@
     overflow: auto;
 }
 
-.card::-webkit-scrollbar {
+.edit-user-card::-webkit-scrollbar {
     width: 0;
     height: 0;
 }
 
-.card {
+.edit-user-card {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
 }

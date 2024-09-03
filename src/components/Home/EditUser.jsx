@@ -134,7 +134,7 @@ const EditUser = () => {
 
     return (
         <div className="full-screen-center">
-            <div className="card">
+            <div className="edit-user-card">
                 <h2 className="card-header">Edit User</h2>
                 <div className="card-body">
                     <form onSubmit={updateUser}>
