@@ -29,8 +29,8 @@
     border: 1px solid #ccc;
     border-radius: 8px;
     background-color: #f9f9f9;
-    min-width: 260px;
-    min-height: 300px;
+    min-width: 330px;
+    min-height: 500px;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -58,7 +58,7 @@
     display: flex;
     flex-direction: column;
     gap: 10px; /* Space between tasks */
-    max-height: 200px; /* Set a maximum height for the tasks container */
+    max-height: 370px; /* Set a maximum height for the tasks container */
     padding: 0 10px; /* Add padding for equal margin on both sides */
     background-color: #ffffff; /* Ensure background color remains white */
     border-radius: 8px;
@@ -277,6 +277,7 @@
     border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease; /* Smooth transition for background color */
+
 }
 
 .backend-show-add-task:hover {
