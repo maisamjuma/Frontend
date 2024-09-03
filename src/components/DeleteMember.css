@@ -9,6 +9,10 @@
     color: white; /* Ensure text is readable on the dark background */
 }
 
+.search-bar{
+    margin-bottom: 10px;
+}
+
 .member-item {
     display: flex;
     align-items: center;

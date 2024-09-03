@@ -9,6 +9,8 @@ const DeleteMember = ({
                           selectedMembers = [],
                           onMemberClick,
                       }) => {
+    const [searchTerm, setSearchTerm] = useState(''); // Separate search term state
+    const [filteredMembers, setFilteredMembers] = useState([]); // State for filtered members
     const [rolesMap, setRolesMap] = useState({}); // State to store roleId to roleName map
 
     // Create a map of userDetails for quick lookup
@@ -38,17 +40,35 @@ const DeleteMember = ({
             }, {});
 
             setRolesMap(newRolesMap);
+            setFilteredMembers(members); // Initialize filtered members with all members
         };
 
         fetchRoleNames();
-    }, [userDetails]);
+    }, [userDetails, members]);
+
+    const handleSearchChange = (e) => {
+        const term = e.target.value.toLowerCase();
+        setSearchTerm(term);
+        const filtered = members.filter((member) => {
+            const user = userDetailMap[member.userId];
+            return user && (user.firstName.toLowerCase().includes(term) || user.lastName.toLowerCase().includes(term));
+        });
+        setFilteredMembers(filtered);
+    };
 
     return (
         <div>
-            {members.length === 0 ? (
+            <input
+                type="text"
+                placeholder="Search members..."
+                value={searchTerm}
+                onChange={handleSearchChange}
+                className="search-bar w-100"
+            />
+            {filteredMembers.length === 0 ? (
                 <div>No members to delete.</div>
             ) : (
-                members.map((member) => {
+                filteredMembers.map((member) => {
                     const user = userDetailMap[member.userId];
 
                     if (!user) {
