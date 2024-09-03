@@ -138,7 +138,6 @@ const Boards = ({
         try {
             const statusTitle = destinationStatus.title; // Get status title
             await TaskService.updateTask(task.taskId, {...task, status: statusTitle});
-            alert('Task status updated successfully!');
         } catch (error) {
             console.error('Error updating task status:', error);
             alert('There was an error updating the task status. Please try again.');
