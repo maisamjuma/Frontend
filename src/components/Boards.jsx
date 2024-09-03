@@ -511,8 +511,7 @@ const Boards = ({
         try {
             const response = await BoardService.getBoardsByProject(projectId);
             const boards = response.data;
-            console.log("boards:", boards)
-            console.log("board is im in?", boardId)
+
             const qaBoard = boards.find(board => board.name === 'QA');
             if (!qaBoard) {
                 console.error('QA board not found');
@@ -520,16 +519,15 @@ const Boards = ({
             }
 
             const qaBoardId = qaBoard.boardId;
-
-            // Find the 'Reviewing' status from the current board
+            console.log('qaBoardId',qaBoardId)
+            // Find the 'Reviewing' status in the current board
             const reviewingStatus = statuses.find(status => status.title === 'Reviewing' && boardId);
-            console.log("reviewingStatus", reviewingStatus)
+            console.log('reviewingStatus',reviewingStatus)
             if (!reviewingStatus) {
-                console.error('Reviewing status not found');
+                console.error('Reviewing status not found in the current board');
                 return;
             }
 
-            // Prepare tasks to move
             const tasksToMove = reviewingStatus.tasks;
 
             if (tasksToMove.length === 0) {
@@ -539,28 +537,29 @@ const Boards = ({
 
             for (const task of tasksToMove) {
                 try {
-                    await TaskService.updateTask(task.taskId, {
+                    const updatedTask = {
                         ...task,
                         status: 'Ready for QA',
                         boardId: qaBoardId
-                    });
+                    };
+                    console.log('updatedTask',updatedTask)
+                    await TaskService.updateTask(task.taskId, updatedTask);
+
+                    // Update the local state for the moved task
+                    const updatedStatuses = statuses.map(status => ({
+                        ...status,
+                        tasks: status.tasks.map(t =>
+                            t.taskId === task.taskId ? updatedTask : t
+                        )
+                    }));
+
+                    setStatuses(updatedStatuses);
                 } catch (error) {
                     console.error(`Error updating task ${task.taskId}:`, error);
                 }
             }
 
-            const updatedStatuses = statuses.map(status => {
-                if (status.title === 'Reviewing' && status.boardId === boardId) {
-                    return {
-                        ...status,
-                        tasks: []
-                    };
-                }
-                return status;
-            });
-
-            setStatuses(updatedStatuses);
-
+            // alert('Tasks moved to QA successfully!');
         } catch (error) {
             console.error('Error fetching boards or moving tasks:', error);
             alert('There was an error moving the tasks. Please try again.');

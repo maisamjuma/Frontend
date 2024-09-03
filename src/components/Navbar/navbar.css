@@ -19,7 +19,7 @@
 }
 
 .navbar .navbar-nav .nav-link:hover {
-    color: #e9967a; /* Dark salmon color on hover */
+    color: #E9967A; /* Dark salmon color on hover */
 }
 
 .navbar .form-inline {
@@ -39,12 +39,12 @@
     }
 
     .DEV {
-        color: darksalmon;
+        color: #E9967A;
     }
 }
 
 .navbar .navbar-brand:hover {
-    color: #e9967a; /* Dark salmon color on hover */
+    color: #E9967A; /* Dark salmon color on hover */
 }
 
 .navbar .dropdown-menu {
@@ -54,14 +54,14 @@
 }
 
 .navbar .btn-outline-success {
-    border-color: #e9967a; /* Dark salmon border color */
-    color: #e9967a; /* Dark salmon text color */
+    border-color:#E9967A; /* Dark salmon border color */
+    color: #E9967A; /* Dark salmon text color */
 }
 
 .navbar .btn-outline-success:hover,
 .navbar .btn-outline-success:active,
 .navbar .btn-outline-success:focus {
-    background-color: #e9967a; /* Dark salmon background on hover */
+    background-color: #E9967A; /* Dark salmon background on hover */
     color: white; /* White text color */
 }
 
@@ -89,11 +89,19 @@ body {
 .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item {
     color: #333; /* Default text color */
 }
-
+.nav-link-logout{
+    background-color: #E9967A;
+    color:black;
+    margin-left: 1100px;
+}
+.nav-link-logout:hover{
+    color: #E9967A;
+    background-color: black;
+}
 .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item:hover {
-    background-color: #e9ecef; /* Light gray background on hover */
+    background-color: #E9967A; /* Light gray background on hover */
 }
 
 .track {
-    color: #e9967a; /* Dark salmon color for track */
+    color: #E9967A; /* Dark salmon color for track */
 }

@@ -108,7 +108,9 @@ body {
     color: black;
     margin-right: 10px;
 }
-
+.usernameFont{
+    color:white;
+}
 .profile-info h2 {
     margin: 0;
     font-size: 18px;
@@ -147,16 +149,16 @@ body {
 }
 
 .secondary-nav-button {
-    background-color: #e9ecef;
-    color: darksalmon;
+    background: none;
+    color: black;
     padding: 3px;
     font-weight: bolder;
     letter-spacing: 1px;
 }
 
 .secondary-nav-button-X {
-    background-color: #e9ecef;
-    color: darksalmon;
+    background: none;
+    color: black;
     padding: 3px;
     padding-right: 7px;
     padding-left: 7px;

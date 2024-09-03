@@ -5,7 +5,6 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {
     faUser,
     faCalendar,
-    faArrowsAlt,
     faTrash,
     faClipboard,
     faArrowUp,
@@ -39,7 +38,7 @@ const TaskModal = ({
                        setProjectDescription,
                        setProjectMembers
                    }) => {
-    const [isMoveModalOpen, setIsMoveModalOpen] = useState(false);
+    //const [isMoveModalOpen, setIsMoveModalOpen] = useState(false);
     const [isCalendarModalOpen, setIsCalendarModalOpen] = useState(false);
     const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
     const [isPriorityModalOpen, setIsPriorityModalOpen] = useState(false);
@@ -104,9 +103,9 @@ const TaskModal = ({
                     <button onClick={() => setIsCalendarModalOpen(true)}>
                         <FontAwesomeIcon icon={faCalendar}/> Edit Due Date
                     </button>
-                    <button onClick={() => setIsMoveModalOpen(true)}>
-                        <FontAwesomeIcon icon={faArrowsAlt}/> Move
-                    </button>
+                    {/*<button onClick={() => setIsMoveModalOpen(true)}>*/}
+                    {/*    <FontAwesomeIcon icon={faArrowsAlt}/> Move*/}
+                    {/*</button>*/}
                     <button onClick={() => setIsLabelModalOpen(true)}>
                         <FontAwesomeIcon icon={faTag}/> Edit Labels
                     </button>
@@ -114,9 +113,9 @@ const TaskModal = ({
                         <FontAwesomeIcon icon={faTrash}/> Delete
                     </button>
                 </div>
-                <div className="task-status">
-                    Status: {task.status}
-                </div>
+                {/*<div className="task-status">*/}
+                {/*    Status: {task.status}*/}
+                {/*</div>*/}
                 {task.date && (
                     <div className="task-date">
                         {new Date(task.date).toDateString()}
