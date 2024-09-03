@@ -2,13 +2,13 @@
 import React, {useState, useEffect} from 'react';
 import Navbar from "./Navbar/Navbar.jsx";
 import './Notification.css';
-import PropTypes from 'prop-types'; // Import PropTypes
 import SideBarForNoti from "./SideBarForNoti.jsx";
 import {Filter} from "./SVGIcons.jsx";
 import UserService from '../Services/UserService'; // Import your UserService
 import NotificationService from '../Services/NotificationService.js';
 
-const Notification = ({loggedInUser}) => {
+const Notification = () => {
+    const [loggedInUser, setLoggedInUser] = useState(null); // State to store logged-in user
     const [showPopup, setShowPopup] = useState(false);
     const [selectedUsers, setSelectedUsers] = useState([]);
     const [message, setMessage] = useState('');
@@ -19,6 +19,14 @@ const Notification = ({loggedInUser}) => {
     const [users, setUsers] = useState([]); // State to store fetched users
 
     useEffect(() => {
+        const storedUser = localStorage.getItem('loggedInUser');
+        if (storedUser) {
+            const user = JSON.parse(storedUser);
+            console.log("user from the localStorage: ", user);
+            setLoggedInUser(storedUser);
+
+        }
+
         const fetchUsers = async () => {
             try {
                 const response = await UserService.getAllUsers(); // Fetch users from the database
@@ -29,24 +37,40 @@ const Notification = ({loggedInUser}) => {
         };
 
         const fetchNotifications = async () => {
-            try {
-                const response = await NotificationService.getNotificationsByUserId(loggedInUser.userId);
-                setMessages(response.data);
-            } catch (error) {
-                console.error('Error fetching notifications:', error);
+            if (storedUser) {
+                try {
+                    const response = await NotificationService.getNotificationsByUserId(storedUser.userId);
+                    setMessages(response.data);
+                } catch (error) {
+                    console.error('Error fetching notifications:', error);
+                }
             }
         };
 
         fetchUsers();
         fetchNotifications();
-    }, [loggedInUser]);
+    }, []);
 
     const handleSendNotification = async () => {
         if (selectedUsers.length && message) {
-            const newNotification = {from: loggedInUser, to: selectedUsers, message};
             try {
-                await NotificationService.createNotification(newNotification);
-                setMessages([newNotification, ...messages]);
+                // Send notifications to each selected user
+                const notifications = await Promise.all(
+                    selectedUsers.map(async (userId) => {
+                        const newNotification = {
+                            message: message,
+                            userId: userId,
+                            isRead: true
+                        };
+                        console.log(newNotification);
+
+                        const response = await NotificationService.createNotification(newNotification);
+
+                        return response.data; // Assuming `response.data` contains the created notification
+                    })
+                );
+
+                setMessages([...notifications, ...messages]);
                 setShowPopup(false);
                 resetForm();
             } catch (error) {
@@ -54,6 +78,7 @@ const Notification = ({loggedInUser}) => {
             }
         }
     };
+
 
     const resetForm = () => {
         setMessage('');
@@ -116,7 +141,7 @@ const Notification = ({loggedInUser}) => {
                                         className="user-item"
                                         onClick={() => user && user.userId && handleUserFilterClick(user.userId)}
                                     >
-                                        {user && user.firstName ? user.firstName : 'Unknown AddUser'} {user && user.lastName ? user.lastName : 'Unknown AddUser'}{/* Assuming 'firstName' is the property */}
+                                        {user && user.firstName ? user.firstName : 'Unknown User'} {user && user.lastName ? user.lastName : 'Unknown User'}
                                     </li>
                                 ))}
                             </ul>
@@ -162,7 +187,7 @@ const Notification = ({loggedInUser}) => {
                                             <li
                                                 key={user.userId} // Ensure this is a unique identifier
                                                 className={`list-group-item ${selectedUsers.includes(user.userId) ? 'selected' : ''}`}
-                                                onClick={() => handleUserSelection(user.userId)} // Use firstname for selection
+                                                onClick={() => handleUserSelection(user.userId)} // Use userId for selection
                                             >
                                                 {user.firstName} {user.lastName}{/* Display firstName */}
                                             </li>
@@ -179,8 +204,7 @@ const Notification = ({loggedInUser}) => {
                                     />
                                 </div>
                                 <div className="d-flex justify-content-between mt-3">
-                                    <button className="saveNotificationBtn" onClick={handleSendNotification}>Send
-                                    </button>
+                                    <button className="saveNotificationBtn" onClick={handleSendNotification}>Send</button>
                                     <button className="cancelButton" onClick={() => setShowPopup(false)}>Cancel</button>
                                 </div>
                             </>
@@ -190,12 +214,6 @@ const Notification = ({loggedInUser}) => {
             )}
         </div>
     );
-};
-// Define prop types for validation
-Notification.propTypes = {
-    loggedInUser: PropTypes.shape({
-        userId: PropTypes.string.isRequired,
-    }).isRequired,
 };
 
 export default Notification;
