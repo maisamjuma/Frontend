@@ -1,35 +1,35 @@
-.full-screen-center {
+.full-screen-centerE {
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow-y: auto;
+    /*overflow-y: auto;*/
 }
 
-.edit-user-card {
+.cardE {
     border: 5px solid darksalmon;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    width: 400px; /* Increased width */
+    width: 700px; /* Increased width */
     max-width: 1000px; /* Increased max-width */
     height: 590px;
     padding: 20px;
     box-sizing: border-box;
     background: white;
     margin-bottom: 50px;
-    overflow: auto;
+    /*overflow: auto;*/
 }
 
-.edit-user-card::-webkit-scrollbar {
+.cardE::-webkit-scrollbar {
     width: 0;
     height: 0;
 }
 
-.edit-user-card {
+.cardE {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
 }
 
-.card-header {
+.card-headerE {
     background-color: #E9967A;
     color: white;
     padding: 15px;
@@ -42,11 +42,11 @@
     width: 100%; /* Full width of the card */
 }
 
-.form-group {
+.form-groupE {
     margin-bottom: 1.5rem;
 }
 
-.form-label {
+.form-labelE {
     font-weight: bold;
     margin-bottom: 0.5rem;
     display: block;
@@ -54,19 +54,24 @@
     font-size: 20px;
 }
 
-.checkbox-container {
+.checkbox-containerE {
     display: flex;
     align-items: center;
     margin: 10px;
 }
 
-.teamleaderlabel {
+.teamleaderlabelE {
+    font-weight: bold;
+    color: black;
+    margin-left: 0.5rem;
+}
+.adminlabelE{
     font-weight: bold;
     color: black;
     margin-left: 0.5rem;
 }
 
-.form-control {
+.form-controlE {
     border: 1px solid #E9967A;
     border-radius: 0.25rem;
     padding: 10px; /* Increased padding */
@@ -77,35 +82,47 @@
     color: #3a3a3c;
 }
 
-.form-control:focus {
+.form-controlE:focus {
     border-color: #ffffff;
     outline: 0;
 }
 
-.invalid-feedback {
+.invalid-feedbackE {
     display: block;
     color: #dc3545;
     font-size: 0.875rem;
 }
 
-.form-check-input {
-    width: 20px; /* Increased width */
+.form-check-inputE {
+    width: 25px;
     margin-right: 0.5rem;
-}
+    background-color: #333333;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    margin-bottom: 10px;
 
-.btn-successB {
+}
+.form-check-inputE :hover{
+    background-color: #ffdab9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+
+}
+.btn-successE {
     background-color: white;
     color: #333333;
-    padding: 10px; /* Increased padding */
+    padding: 10px;
     border-radius: 6px;
     cursor: pointer;
     font-size: 20px;
     font-weight: bold;
     border: solid 2px darksalmon;
-    width: 200px; /* Increased width */
+    width: 200px;
+    position: relative;
+    left:450px;
+    top: 140px;
 }
 
-.btn-success:hover {
+.btn-successE:hover {
     background-color: #E9967A;
 }
 
@@ -113,28 +130,28 @@ input[type="datetime-local"] {
     padding: 0.5rem;
 }
 
-.form-row {
+.form-rowE {
     display: flex;
     flex-wrap: wrap;
 }
 
-.vertical-group, .horizontal-group {
+.vertical-groupE, .horizontal-groupE {
     flex: 1;
     margin-right: 1rem;
 }
 
-.addUserInput {
+.addUserInputE {
     border: solid 1px #E9967A;
     padding: 10px; /* Increased padding */
     border-radius: 5px;
     width: 100%; /* Full width */
 }
 
-.defualOption {
+.defualOptionE {
     background-color: darksalmon;
 }
 
-.dropDownRole {
+.dropDownRoleE {
     padding: 10px;
     font-size: 15px;
     font-weight: bold;
@@ -142,5 +159,5 @@ input[type="datetime-local"] {
     margin-top: 5px;
     border: solid 1px #E9967A;
     color: #333333;
-    width: 100%; /* Full width */
+    width: 100%;
 }
