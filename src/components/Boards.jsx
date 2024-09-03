@@ -146,10 +146,6 @@ const Boards = ({
     };
 
 
-
-
-
-
     // Function to load or reset statuses
     const loadStatuses = () => {
         const savedStatuses = localStorage.getItem(`${projectId}_${boardId}_${name}_statuses`);
@@ -516,7 +512,7 @@ const Boards = ({
             const response = await BoardService.getBoardsByProject(projectId);
             const boards = response.data;
             console.log("boards:", boards)
-            console.log("board is im in?",boardId)
+            console.log("board is im in?", boardId)
             const qaBoard = boards.find(board => board.name === 'QA');
             if (!qaBoard) {
                 console.error('QA board not found');
@@ -526,7 +522,8 @@ const Boards = ({
             const qaBoardId = qaBoard.boardId;
 
             // Find the 'Reviewing' status from the current board
-            const reviewingStatus = statuses.find(status => status.title === 'Reviewing' && status.boardId === boardId);
+            const reviewingStatus = statuses.find(status => status.title === 'Reviewing' && boardId);
+            console.log("reviewingStatus", reviewingStatus)
             if (!reviewingStatus) {
                 console.error('Reviewing status not found');
                 return;
@@ -569,8 +566,6 @@ const Boards = ({
             alert('There was an error moving the tasks. Please try again.');
         }
     };
-
-
 
 
     return (

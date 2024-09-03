@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // const BOARDS_API_BASE_URL = "http://10.10.30.77:8080/api/boards"; // Adjust the URL to match your API
-const BOARDS_API_BASE_URL = "http://localhost:8080/api/boards"; // Adjust the URL to match your API
+const BOARDS_API_BASE_URL = "http://10.10.30.77:8080/api/boards"; // Adjust the URL to match your API
 
 class BoardService {
 
