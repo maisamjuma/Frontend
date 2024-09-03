@@ -34,6 +34,42 @@ const Sidebar = ({onMenuAction, onLogout}) => {
         description: 'A static project that always appears in the sidebar.'
     };
 
+    useEffect(() => {
+        // Fetch user details from local storage or API
+        const fetchUserDetails = () => {
+            try {
+                const userInfo = JSON.parse(localStorage.getItem('loggedInUser'));
+                if (userInfo) {
+                    setUserDetails(userInfo);
+                } else {
+                    console.error("No user info found in local storage!");
+                }
+            } catch (error) {
+                console.error("Error retrieving user info from local storage:", error);
+            }
+        };
+
+        fetchUserDetails();
+        setProjects([STATIC_PROJECT]);
+        fetchProjects();
+
+        const handleClickOutside = (event) => {
+            if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+                setIsProjectsOpen(false);
+                setIsMenuOpen(false);
+                setIsDeleteMode(false);
+                setIsAddProjectModalVisible(false);
+                setIsUserDetailsModalVisible(false); // Close user details modal
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+
+    }, []);
+
     const toggleProjects = () => {
         setIsProjectsOpen(!isProjectsOpen);
     };
@@ -191,16 +227,10 @@ const Sidebar = ({onMenuAction, onLogout}) => {
     };
 
     const handleDashboardClick = () => {
-        try {
-            const userInfo = JSON.parse(localStorage.getItem('loggedInUser'));
-            if (userInfo) {
-                setUserDetails(userInfo);
-                setIsUserDetailsModalVisible(true);
-            } else {
-                console.error("No user info found in local storage!");
-            }
-        } catch (error) {
-            console.error("Error retrieving user info from local storage:", error);
+        if (userDetails) {
+            setIsUserDetailsModalVisible(true);
+        } else {
+            console.error("No user info found in local storage!");
         }
     };
 
@@ -219,8 +249,10 @@ const Sidebar = ({onMenuAction, onLogout}) => {
             <ul>
                 <li onClick={handleDashboardClick}>
                     <div className="icon-text-container">
-                        <div className="circle-icon">D</div>
-                        <span className="sidebar-text">Dashboard</span>
+                        <div className="circle-icon">{userDetails ? userDetails.firstName.charAt(0) : 'U'}</div>
+                        <span className="sidebar-text">
+                            {userDetails ? `${userDetails.firstName} ${userDetails.lastName}` : 'User'}
+                        </span>
                     </div>
                 </li>
                 <hr/>

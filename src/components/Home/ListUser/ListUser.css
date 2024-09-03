@@ -4,8 +4,8 @@
     border: 1px solid #ddd; /* Light border for card */
     border-radius: 8px; /* Rounded corners */
     transition: transform 0.2s;
-    max-height: 300px; /* Set a max height to control the card size */
-    max-width: 320px; /* Set a max height to control the card size */
+    max-height: 320px; /* Set a max height to control the card size */
+    max-width: 360px; /* Set a max height to control the card size */
     background-color: #fff; /* White background for cards */
     transition: box-shadow 0.3s ease; /* Smooth shadow transition */
     /*margin: 5px; !* Space between cards *!*/
