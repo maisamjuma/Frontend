@@ -31,7 +31,6 @@ SideBarForNoti.propTypes = {
     users: PropTypes.arrayOf(
         PropTypes.shape({
             userId: PropTypes.number.isRequired,
-            username: PropTypes.string.isRequired,
             email: PropTypes.string.isRequired,
             firstName: PropTypes.string.isRequired,
             lastName: PropTypes.string.isRequired,

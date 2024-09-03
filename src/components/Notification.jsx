@@ -102,21 +102,31 @@ const Notification = () => {
     const handleSendNotification = async () => {
         if (selectedUsers.length && message && loggedInUser?.userId) {
             try {
-                const newNotification = {
-                    message: message,
-                    userId: loggedInUser.userId,
-                    to: selectedUsers,
-                    isRead: false
-                };
-                console.log("Sending notification:", newNotification);
-                const response = await NotificationService.createNotification(newNotification);
+                const promises = selectedUsers.map(async (recipientId) => {
+                    const newNotification = {
+                        message: message,
+                        recipientId: recipientId,
+                        senderId: loggedInUser.userId,
+                        isRead: false
+                    };
+                    console.log("Sending notification:", newNotification);
+                    const response = await NotificationService.createNotification(newNotification);
 
-                if (response.status === 200 || response.status === 201) {
-                    setMessages([response.data, ...messages]);
+                    if (response.status === 200 || response.status === 201) {
+                        return response.data;
+                    } else {
+                        console.error('Unexpected response status:', response.status);
+                        return null;
+                    }
+                });
+
+                const notifications = await Promise.all(promises);
+                const successfulNotifications = notifications.filter(n => n !== null);
+
+                if (successfulNotifications.length) {
+                    setMessages([...successfulNotifications, ...messages]);
                     setShowPopup(false);
                     resetForm();
-                } else {
-                    console.error('Unexpected response status:', response.status);
                 }
             } catch (error) {
                 console.error('Error sending notification:', error.response?.data || error.message);
@@ -125,6 +135,20 @@ const Notification = () => {
             console.warn('No users selected or message is empty or loggedInUser is not defined');
         }
     };
+
+
+
+    // const getRecipientNames = (recipientIds = []) => {
+    //     if (!Array.isArray(recipientIds)) {
+    //         console.error('Invalid recipientIds:', recipientIds);
+    //         return 'Unknown Recipient';
+    //     }
+    //
+    //     return recipientIds.map(userId => {
+    //         const recipient = users.find(user => user.userId === userId);
+    //         return recipient ? `${recipient.firstName} ${recipient.lastName}` : 'Unknown Recipient';
+    //     }).join(', ');
+    // };
 
 
     const getRecipientNames = (recipientIds = []) => {
@@ -137,6 +161,7 @@ const Notification = () => {
             const recipient = users.find(user => user.userId === userId);
             return recipient ? `${recipient.firstName} ${recipient.lastName}` : 'Unknown Recipient';
         }).join(', ');
+
     };
 
 
@@ -234,6 +259,8 @@ const Notification = () => {
                         })}
                     </div>
 
+
+
                 </div>
             </div>
             {showPopup && (
@@ -263,6 +290,7 @@ const Notification = () => {
                                             </li>
                                         ))}
                                     </ul>
+
                                 </div>
 
                                 <div className="form-group mt-2">
