@@ -260,7 +260,7 @@ const Workspace = ({isVisible}) => {
                                 ))}
                             </select>
                             <button onClick={handleAddBoard}>Add</button>
-                            <button onClick={handleCloseDropdown}>Cancel</button>
+                            {/*<button onClick={handleCloseDropdown}>Cancel</button>*/}
                         </div>
                     )}
                 </ul>

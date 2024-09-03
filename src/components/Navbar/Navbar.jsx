@@ -38,11 +38,11 @@ const Navbar = ({ onLogout }) => {
                             <Link className="nav-link" to="/main/notifications">Notifications</Link>
                         </li>
                         <li className="nav-item">
-                            <button className="nav-link btn btn-link" onClick={onLogout}>Logout</button>
+                            <button className="nav-link-logout" onClick={onLogout}>Logout</button>
                         </li>
-                        <li className="nav-item">
-                            <span className="nav-link">Settings</span>
-                        </li>
+                        {/*<li className="nav-item">*/}
+                        {/*    <span className="nav-link">Settings</span>*/}
+                        {/*</li>*/}
                     </ul>
                 </div>
             </div>
