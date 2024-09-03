@@ -205,7 +205,8 @@ const Notification = () => {
                                     />
                                 </div>
                                 <div className="d-flex justify-content-between mt-3">
-                                    <button className="saveNotificationBtn" onClick={handleSendNotification}>Send</button>
+                                    <button className="saveNotificationBtn" onClick={handleSendNotification}>Send
+                                    </button>
                                     <button className="cancelButton" onClick={() => setShowPopup(false)}>Cancel</button>
                                 </div>
                             </>
