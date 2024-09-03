@@ -30,6 +30,7 @@ const Notification = () => {
         const fetchUsers = async () => {
             try {
                 const response = await UserService.getAllUsers(); // Fetch users from the database
+                console.log("setUsers(response.data): ", response.data);
                 setUsers(response.data); // Update state with fetched users
             } catch (error) {
                 console.error('Error fetching users:', error);
@@ -37,9 +38,9 @@ const Notification = () => {
         };
 
         const fetchNotifications = async () => {
-            if (storedUser) {
+            if (loggedInUser) {
                 try {
-                    const response = await NotificationService.getNotificationsByUserId(storedUser.userId);
+                    const response = await NotificationService.getNotificationsByUserId(loggedInUser.userId);
                     setMessages(response.data);
                 } catch (error) {
                     console.error('Error fetching notifications:', error);
