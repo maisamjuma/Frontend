@@ -1,4 +1,3 @@
-/*Notification.css*/
 .d-flex {
     display: flex;
 }
@@ -22,27 +21,28 @@
     border-radius: 8px;
     overflow: auto;
     flex-grow: 1;
-    width: 1700px;
+    width: calc(100% - 270px);
+    margin-left: 270px;
     margin-bottom: 330px;
 }
 
 .secondary-navbarN {
     position: fixed;
     top: 60px;
-    left: 270px; /* Align to the left edge */
+    left: 250px;
     right: 0;
     z-index: 999;
     background-color: #e9ecef;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 6px;
     display: flex;
-    justify-content: space-between; /* Spread items across the container */
+    justify-content: space-between;
     align-items: center;
 }
 
 .secondary-navbarN h4 {
     margin: 0;
-    padding-left: 20px; /* Add padding to the left if needed */
+    padding-left: 20px;
 }
 
 .cancelButton {
@@ -59,24 +59,10 @@
     margin-left: 10px;
 }
 
-/*.filterIcon:hover::after {*/
-/*    content: "Filter";*/
-/*    position: absolute;*/
-/*    top: -30px;*/
-/*    right: 0;*/
-/*    background-color: indianred;*/
-/*    color: white;*/
-/*    padding: 5px 10px;*/
-/*    border-radius: 4px;*/
-/*    white-space: nowrap;*/
-/*    font-size: 12px;*/
-/*    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);*/
-/*}*/
-
 .search-popup {
     position: absolute;
-    top: 80px;
-    right: 20px;
+    top: 40px;
+    right: 0;
     background: white;
     padding: 15px;
     border-radius: 8px;
@@ -101,13 +87,21 @@
     margin-top: 10px;
     max-height: 200px;
     overflow-y: auto;
+    list-style: none;
+    padding: 0;
 }
 
 .user-item {
-    padding: 8px;
-    border-bottom: 1px solid #dee2e6;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    margin-bottom: 10px;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: background-color 0.3s ease;
 }
 
 .user-item:hover {
@@ -119,17 +113,16 @@
     flex-direction: row;
     flex-wrap: wrap;
     gap: 10px;
-    overflow-y: scroll;
     max-height: 700px;
+    overflow-y: scroll;
 }
 
 .message-list::-webkit-scrollbar {
-    display: none; /* Hide scrollbar */
+    display: none;
 }
 
-/* Hide scrollbars for Firefox */
 .message-list {
-    scrollbar-width: none; /* Hide scrollbar in Firefox */
+    scrollbar-width: none;
 }
 
 .message-item {
@@ -137,13 +130,18 @@
     border: 1px solid #dee2e6;
     padding: 10px;
     border-radius: 5px;
-    cursor: pointer;
     width: 300px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.message-item:hover {
+    background-color: #f8f9fa;
 }
 
 .popup-overlay {
     position: fixed;
-    top: 100px;
+    top: 0;
     left: 0;
     right: 0;
     bottom: 0;
@@ -154,18 +152,13 @@
 }
 
 .popup-content {
-    word-break: break-word;
-    word-wrap: break-word;
-    white-space: wrap;
     background: white;
     padding: 17px;
     border-radius: 8px;
     width: 700px;
-    height: 500px;
+    max-height: 500px;
     overflow-y: auto;
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-    overflow-x: hidden;
+    word-break: break-word;
 }
 
 .user-selection {
@@ -177,12 +170,12 @@
 }
 
 .list-group-item {
-    cursor: pointer;
-    padding: 5px 10px;
+    padding: 10px;
     margin-bottom: 5px;
     background-color: #fff;
     border: 1px solid #ccc;
     border-radius: 4px;
+    cursor: pointer;
 }
 
 .list-group-item.selected {
@@ -190,66 +183,18 @@
     color: #fff;
 }
 
-.search-popup {
-    position: absolute;
-    top: 30px;
-    right: 0;
-    background: white;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    width: 300px;
-}
-
-.search-popup input {
-    width: 100%;
-    padding: 10px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-}
-
-.user-list {
-    margin-top: 10px;
-    max-height: 200px;
-    list-style: none;
-    padding: 0;
-    overflow: auto; /* Keep overflow to enable scrolling */
-}
-
-.user-item {
-    padding: 10px;
-    border-bottom: 1px solid #dee2e6;
-    cursor: pointer;
-    display: flex;
-    align-items: center; /* Center items vertically */
-    gap: 25px; /* Adjust gap for better spacing */
-    background-color: #f9f9f9;
-    border-radius: 4px;
-    margin-bottom: 10px; /* Reduce bottom margin */
-    transition: background-color 0.3s ease;
-    position: relative; /* Position relative for checkbox positioning */
-}
-
-.user-item:hover {
-    background-color: #f8f9fa;
-}
-
 .member-list {
     list-style: none;
     padding: 0;
     margin: 0;
     max-height: 350px;
-    overflow: auto; /* Keep overflow to enable scrolling */
+    overflow-y: auto;
 }
 
-/* Hide scrollbars for Webkit browsers (Chrome, Safari) */
 .user-list::-webkit-scrollbar {
-    display: none; /* Hide scrollbar */
+    display: none;
 }
 
-/* Hide scrollbars for Firefox */
 .user-list {
-    scrollbar-width: none; /* Hide scrollbar in Firefox */
+    scrollbar-width: none;
 }
-

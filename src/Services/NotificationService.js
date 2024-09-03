@@ -18,7 +18,7 @@ class NotificationService {
     // Get Notifications by userId
     getNotificationsByUserId(userId) {
         const token = localStorage.getItem("token");
-        return axios.get(`${NOTIFICATIONS_API_BASE_URL}/user/${userId}`, {
+        return axios.get(`${NOTIFICATIONS_API_BASE_URL}/users/${userId}`, {
             headers: {
                 'X-Auth-Token': token
             }
