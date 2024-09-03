@@ -29,12 +29,12 @@
 .secondary-navbarN {
     position: fixed;
     top: 60px;
-    left: 250px;
+    left: 270px;
     right: 0;
     z-index: 999;
     background-color: #e9ecef;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 6px;
+    padding: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
