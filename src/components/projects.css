@@ -225,6 +225,9 @@ button:hover {
     display: none;
 }
 
+.delete-member{
+    color: black;
+}
 .secondary-nav-button {
     margin: 0 1px;
     background-color: #e9ecef;

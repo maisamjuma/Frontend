@@ -6,14 +6,12 @@ import PropTypes from 'prop-types';
 import './navbar.css';
 
 const Navbar = ({ onLogout }) => {
-    const navigate = useNavigate(); // Initialize useNavigate hook
+    const navigate = useNavigate();
 
     const handleDevTrackClick = (e) => {
         e.preventDefault();
-        navigate('/login'); // Navigate to the login page
+        navigate('/login');
     };
-
-
 
     return (
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -37,12 +35,11 @@ const Navbar = ({ onLogout }) => {
                         <li className="nav-item">
                             <Link className="nav-link" to="/main/notifications">Notifications</Link>
                         </li>
+                    </ul>
+                    <ul className="navbar-nav ms-auto">
                         <li className="nav-item">
                             <button className="nav-link-logout" onClick={onLogout}>Logout</button>
                         </li>
-                        {/*<li className="nav-item">*/}
-                        {/*    <span className="nav-link">Settings</span>*/}
-                        {/*</li>*/}
                     </ul>
                 </div>
             </div>

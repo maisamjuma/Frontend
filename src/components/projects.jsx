@@ -246,20 +246,20 @@ const Projects = () => {
                 <div className="modal-overlay">
                     <div className="modal-content">
                         <div className="mb-1  d-flex flex-row gap-5 ">
-                            <h3>Delete Member</h3>
+                            <h3 className="delete-member">Delete Member</h3>
                             <button className="titleAndx" onClick={handleCancelDelete}>X</button>
                         </div>
 
 
-                        <div className="serachForPopup">
+                        {/*<div className="serachForPopup">*/}
 
-                            <input
-                                type="text"
-                                placeholder="Search members..."
-                                className="search-bar w-100 "
-                            />
+                        {/*    <input*/}
+                        {/*        type="text"*/}
+                        {/*        placeholder="Search members..."*/}
+                        {/*        className="search-bar w-100 "*/}
+                        {/*    />*/}
 
-                        </div>
+                        {/*</div>*/}
 
                         <DeleteMember
                             members={projectMembers}

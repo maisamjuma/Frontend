@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import UserService from '../../Services/UserService.js';
 import RoleService from "../../Services/RoleService.js";
 import {useNavigate, useParams} from 'react-router-dom';
-import './AddUser.css';
+import './EditUser.css';
 
 const EditUser = () => {
     const {userId} = useParams();
