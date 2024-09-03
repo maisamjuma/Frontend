@@ -18,7 +18,7 @@ const AddMember = ({projectId, onAddMember, onSave, onDeleteMode, isDeleting}) =
                 const response = await UserService.getAllUsers();
                 const members = response.data;
                 setAvailableMembers(members);
-
+                setFilteredMembers(members);
 
                 const roles = {};
                 await Promise.all(members.map(async (member) => {
@@ -38,7 +38,8 @@ const AddMember = ({projectId, onAddMember, onSave, onDeleteMode, isDeleting}) =
         const term = e.target.value.toLowerCase();
         setSearchTerm(term);
         const filtered = availableMembers.filter((member) =>
-            member.firstName.toLowerCase().includes(term)
+            member.firstName.toLowerCase().includes(term) ||
+            member.lastName.toLowerCase().includes(term)
         );
         setFilteredMembers(filtered);
     };
@@ -83,7 +84,7 @@ const AddMember = ({projectId, onAddMember, onSave, onDeleteMode, isDeleting}) =
         <div className="modal-overlay">
             <div className="modal-content">
                 <div className="mb-1  d-flex flex-row gap-5 ">
-                    <h3>Edit Members</h3>
+                    <h3>Add Members</h3>
                     <button className="titleAndx" onClick={() => onSave(true)}>X</button>
                 </div>
                 <div className="serachForPopup ">
@@ -97,7 +98,7 @@ const AddMember = ({projectId, onAddMember, onSave, onDeleteMode, isDeleting}) =
 
                 </div>
                 <div className="member-list">
-                    {availableMembers.map((member) => (
+                    {(searchTerm ? filteredMembers : availableMembers).map((member) => (
                         <div
                             key={member.userId}
                             className={`member-item ${selectedMembers.includes(member.userId) ? 'selected' : ''}`}

@@ -1,18 +1,47 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import './DeleteMember.css';
+import RoleService from '../Services/RoleService'; // Make sure you have this service to fetch role names
 
 const DeleteMember = ({
                           members = [],
                           userDetails = [],
                           selectedMembers = [],
                           onMemberClick,
-
                       }) => {
+    const [rolesMap, setRolesMap] = useState({}); // State to store roleId to roleName map
+
+    // Create a map of userDetails for quick lookup
     const userDetailMap = userDetails.reduce((acc, user) => {
         acc[user.userId] = user;
         return acc;
     }, {});
+
+    useEffect(() => {
+        const fetchRoleNames = async () => {
+            const uniqueRoleIds = [...new Set(userDetails.map(user => user.functionalRoleId))];
+
+            const rolesPromises = uniqueRoleIds.map(async (roleId) => {
+                try {
+                    const response = await RoleService.getRoleById(roleId);
+                    return { roleId, roleName: response.data.roleName };
+                } catch (error) {
+                    console.error(`Error fetching role for roleId: ${roleId}`, error);
+                    return { roleId, roleName: 'Unknown Role' };
+                }
+            });
+
+            const roles = await Promise.all(rolesPromises);
+            const newRolesMap = roles.reduce((acc, role) => {
+                acc[role.roleId] = role.roleName;
+                return acc;
+            }, {});
+
+            setRolesMap(newRolesMap);
+        };
+
+        fetchRoleNames();
+    }, [userDetails]);
 
     return (
         <div>
@@ -26,17 +55,17 @@ const DeleteMember = ({
                         return <div key={member.userId}>Loading user details...</div>;
                     }
 
+                    const roleName = rolesMap[user.functionalRoleId] || 'Loading role...';
+
                     return (
                         <div
                             key={member.userId}
                             className={`member-item ${selectedMembers.includes(member.userId) ? 'selected' : ''}`}
                             onClick={() => onMemberClick(member)}
                         >
-
                             <div className="member-name">{user.firstName} {user.lastName}</div>
-                            <div className="member-role">{user.functionalRoleId}</div>
+                            <div className="member-role">{roleName}</div>
                         </div>
-
                     );
                 })
             )}
@@ -60,12 +89,11 @@ DeleteMember.propTypes = {
             email: PropTypes.string.isRequired,
             firstName: PropTypes.string.isRequired,
             lastName: PropTypes.string.isRequired,
-            role: PropTypes.string.isRequired,
+            functionalRoleId: PropTypes.string.isRequired,
         })
     ),
     selectedMembers: PropTypes.arrayOf(PropTypes.number),
     onMemberClick: PropTypes.func.isRequired,
-    onCheckboxChange: PropTypes.func.isRequired,
 };
 
 export default DeleteMember;
