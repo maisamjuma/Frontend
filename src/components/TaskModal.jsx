@@ -102,7 +102,7 @@ const TaskModal = ({
                         <FontAwesomeIcon icon={faUser}/> Change Member
                     </button>
                     <button onClick={() => setIsCalendarModalOpen(true)}>
-                        <FontAwesomeIcon icon={faCalendar}/> Edit Dates
+                        <FontAwesomeIcon icon={faCalendar}/> Edit Due Date
                     </button>
                     <button onClick={() => setIsMoveModalOpen(true)}>
                         <FontAwesomeIcon icon={faArrowsAlt}/> Move
