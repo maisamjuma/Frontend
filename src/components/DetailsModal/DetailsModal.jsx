@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import './DetailsModal.css';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faListAlt, faTasks, faTimes} from '@fortawesome/free-solid-svg-icons';
-import TaskService from '../../services/TaskService'; // Assuming you have a TaskService for API calls
+import TaskService from '../../services/TaskService';
+import CommentService from "../../Services/CommentService.js"; // Assuming you have a TaskService for API calls
 
 const DetailsModal = ({task, onClose}) => {
     const initialTableData = (task && task.tableData && Array.isArray(task.tableData) && task.tableData.length > 0)
@@ -34,7 +35,7 @@ const DetailsModal = ({task, onClose}) => {
             onClose();
         }
     };
-
+console.log("comments :",commentsData)
     const handleDescriptionChange = (e, rowIndex) => {
         const updatedData = [...descriptionData];
         updatedData[rowIndex].Description = e.target.value;
@@ -71,6 +72,37 @@ const DetailsModal = ({task, onClose}) => {
             alert("There was an error updating the task. Please try again.");
         }
     };
+
+
+    const handleSaveComment = async (commentText, rowIndex) => {
+        try {
+            const storedUser = localStorage.getItem('loggedInUser');
+            if (storedUser) {
+                const user = JSON.parse(storedUser);
+
+                const commentData = {
+                    taskId: task.taskId,
+                    comment: commentText,
+                    userId: user.userId, // Adjust based on the actual structure of your user object
+                };
+console.log("commentData",commentData)
+                await CommentService.createComment(commentData);
+
+                alert('Comment saved successfully!');
+                // Optionally, you can update commentsData to reflect the saved comment
+                const updatedComments = [...commentsData];
+                updatedComments[rowIndex].Comments = commentText;
+                setCommentsData(updatedComments);
+            } else {
+                alert('User information is not available. Please log in again.');
+            }
+        } catch (error) {
+            console.error("Error saving comment:", error);
+            alert("There was an error saving the comment. Please try again.");
+        }
+    };
+
+
 
     return (
         <div className="details-modal-overlay" onClick={handleOverlayClick}>
@@ -137,6 +169,12 @@ const DetailsModal = ({task, onClose}) => {
                                 </tr>
                                 </tbody>
                             </table>
+                            <button
+                                className="save-comment-btn"
+                                onClick={() => handleSaveComment(row.Comments, rowIndex)}
+                            >
+                                Save Comment
+                            </button>
                         </div>
                     ))}
                 </div>
