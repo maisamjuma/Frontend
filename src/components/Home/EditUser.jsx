@@ -133,56 +133,56 @@ const EditUser = () => {
     };
 
     return (
-        <div className="full-screen-center">
-            <div className="edit-user-card">
-                <h2 className="card-header">Edit User</h2>
-                <div className="card-body">
+        <div className="full-screen-centerE">
+            <div className="cardE">
+                <h2 className="card-headerE">Edit User</h2>
+                <div className="card-bodyE">
                     <form onSubmit={updateUser}>
-                        <div className="form-row">
-                            <div className="form-group mb-2 vertical-group">
-                                <label className='form-label'>Email:</label>
+                        <div className="form-rowE">
+                            <div className=" mb-2 vertical-groupE">
+                                <label className='form-labelE'>Email:</label>
                                 <input
                                     type="email"
                                     placeholder="Enter Employee Email"
                                     name="email"
                                     value={email}
-                                    className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+                                    className={`form-controlE ${errors.email ? 'is-invalid' : ''}`}
                                     onChange={handleEmail}
                                 />
-                                {errors.email && <div className='invalid-feedback'>{errors.email}</div>}
+                                {errors.email && <div className='invalid-feedbackE'>{errors.email}</div>}
                             </div>
                         </div>
-                        <div className="form-row">
-                            <div className="form-group mb-2 horizontal-group">
-                                <label className='form-label'>First Name:</label>
+                        <div className="form-rowE">
+                            <div className="  mb-2 horizontal-groupE">
+                                <label className='form-labelE'>First Name:</label>
                                 <input
                                     type="text"
                                     placeholder="Enter First Name"
                                     name="firstName"
                                     value={firstName}
-                                    className={`form-control ${errors.firstName ? 'is-invalid' : ''}`}
+                                    className={`addUserInputE ${errors.firstName ? 'is-invalid' : ''}`}
                                     onChange={handleFirstName}
                                 />
                                 {errors.firstName && <div className='invalid-feedback'>{errors.firstName}</div>}
                             </div>
-                            <div className="form-group mb-2 horizontal-group">
-                                <label className='form-label'>Last Name:</label>
+                            <div className=" mb-2 horizontal-group">
+                                <label className='form-labelE'>Last Name:</label>
                                 <input
                                     type="text"
                                     placeholder="Enter Last Name"
                                     name="lastName"
                                     value={lastName}
-                                    className={`form-control ${errors.lastName ? 'is-invalid' : ''}`}
+                                    className={`addUserInputE ${errors.lastName ? 'is-invalid' : ''}`}
                                     onChange={handleLastName}
                                 />
                                 {errors.lastName && <div className='invalid-feedback'>{errors.lastName}</div>}
                             </div>
-                            <div className="form-group mb-2 horizontal-group">
-                                <label className='form-label'>Role:</label>
+                            <div className=" mb-2 horizontal-group">
+                                <label className='form-labelE'>Role:</label>
                                 <select
                                     name="role"
                                     value={functionalRoleId}
-                                    className={`form-control ${errors.role ? 'is-invalid' : ''}`}
+                                    className={` addUserInputE ${errors.role ? 'is-invalid' : ''}`}
                                     onChange={handleRole}
                                 >
                                     <option value="">Select a role</option>
@@ -192,32 +192,34 @@ const EditUser = () => {
                                         </option>
                                     ))}
                                 </select>
-                                {errors.role && <div className='invalid-feedback'>{errors.role}</div>}
+                                {errors.role && <div className='invalid-feedbackE'>{errors.role}</div>}
                             </div>
                         </div>
-                        <div className="form-group mb-2">
-                            <div className="checkbox-container">
-                                <label className='teamleaderlabel'>Is Team Leader:</label>
+                        <div className="  mb-2">
+                            <div className="checkbox-containerE">
                                 <input
                                     type="checkbox"
                                     name="isTeamLeader"
                                     checked={isTeamLeader}
                                     onChange={handleIsTeamLeader}
                                 />
+                                <label className='teamleaderlabelE'>Is Team Leader</label>
+
                             </div>
                         </div>
-                        <div className="form-group mb-2">
-                            <div className="checkbox-container">
-                                <label className='adminlabel'>Is Admin:</label>
+                        <div className=" mb-2">
+                            <div className="checkbox-containerE">
                                 <input
                                     type="checkbox"
                                     name="isAdmin"
                                     checked={isAdmin}
                                     onChange={handleIsAdmin}
                                 />
+                                <label className='adminlabelE'>Is Admin</label>
+
                             </div>
                         </div>
-                        <button type="submit" className="btn btn-primary">Update</button>
+                        <button className="btn-successE">Update</button>
                     </form>
                 </div>
             </div>

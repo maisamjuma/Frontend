@@ -89,20 +89,32 @@
 }
 
 .form-check-input {
-    width: 20px; /* Increased width */
+    width: 25px;
     margin-right: 0.5rem;
-}
+    background-color: #333333;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    margin-bottom: 10px;
 
+}
+.form-check-input :hover{
+    background-color: #ffdab9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+
+}
 .btn-successB {
     background-color: white;
     color: #333333;
-    padding: 10px; /* Increased padding */
+    padding: 10px;
     border-radius: 6px;
     cursor: pointer;
     font-size: 20px;
     font-weight: bold;
     border: solid 2px darksalmon;
-    width: 200px; /* Increased width */
+    width: 200px;
+    position: relative;
+    left:400px;
+    top: 90px;
 }
 
 .btn-success:hover {
@@ -142,5 +154,5 @@ input[type="datetime-local"] {
     margin-top: 5px;
     border: solid 1px #E9967A;
     color: #333333;
-    width: 100%; /* Full width */
+    width: 100%;
 }
