@@ -29,8 +29,8 @@
     border: 1px solid #ccc;
     border-radius: 8px;
     background-color: #f9f9f9;
-    min-width: 260px;
-    min-height: 300px;
+    min-width: 330px;
+    min-height: 500px;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -58,7 +58,7 @@
     display: flex;
     flex-direction: column;
     gap: 10px; /* Space between tasks */
-    max-height: 200px; /* Set a maximum height for the tasks container */
+    max-height: 370px; /* Set a maximum height for the tasks container */
     padding: 0 10px; /* Add padding for equal margin on both sides */
     background-color: #ffffff; /* Ensure background color remains white */
     border-radius: 8px;
@@ -173,18 +173,18 @@
     align-items: flex-start; /* Align items to the start of the container */
     gap: 10px; /* Space between items */
     justify-content: flex-start; /* Align items to the start (left) */
-    overflow-x: auto;
+    overflow-x: scroll;
 }
 
 /* Hide scrollbars for Webkit browsers (Chrome, Safari) */
-.backend-status-container::-webkit-scrollbar {
-    display: none; /* Hide scrollbar */
-}
+/*.backend-status-container::-webkit-scrollbar {*/
+/*    display: none; !* Hide scrollbar *!*/
+/*}*/
 
 /* Hide scrollbars for Firefox */
-.backend-status-container {
-    scrollbar-width: none; /* Hide scrollbar in Firefox */
-}
+/*.backend-status-container {*/
+/*    scrollbar-width: none; !* Hide scrollbar in Firefox *!*/
+/*}*/
 
 /* Style for the status title */
 .backend-status-title {
@@ -277,6 +277,7 @@
     border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease; /* Smooth transition for background color */
+
 }
 
 .backend-show-add-task:hover {

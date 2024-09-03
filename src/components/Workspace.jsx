@@ -250,7 +250,11 @@ const Workspace = ({isVisible}) => {
                     {isDropdownOpen && (
                         <div className={`dropdownaddboard ${isVisible ? 'visible' : ''}`} ref={dropdownRef}>
                             <p>Add Board</p>
-                            <select value={selected_roleId} onChange={handleRoleChange}>
+                            <select
+                                className="dropDownInAddBoard"
+
+                                value={selected_roleId}
+                                onChange={handleRoleChange}>
                                 <option value="">Select Role</option>
                                 {roles.map(role => (
                                     <option key={role.id} value={role.id}>
