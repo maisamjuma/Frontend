@@ -1,32 +1,56 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './DetailsModal.css';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faListAlt, faTasks, faTimes} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faListAlt, faTasks, faTimes } from '@fortawesome/free-solid-svg-icons';
 import TaskService from '../../services/TaskService';
-import CommentService from "../../Services/CommentService.js"; // Assuming you have a TaskService for API calls
+import CommentService from "../../Services/CommentService.js";
+import UserService from "../../Services/UserService.js";
 
-const DetailsModal = ({task, onClose}) => {
+const DetailsModal = ({ task, onClose }) => {
     const initialTableData = (task && task.tableData && Array.isArray(task.tableData) && task.tableData.length > 0)
         ? task.tableData
-        : [{Description: task.taskDescription || "", Comments: ""}];
+        : [{ Description: task.taskDescription || "", Comments: "" }];
 
-    const [descriptionData, setDescriptionData] = useState(initialTableData.map(row => ({Description: row.Description})));
-    const [commentsData, setCommentsData] = useState(initialTableData.map(row => ({Comments: row.Comments})));
-    //const [statusName, setStatusName] = useState(task.statusName);
+    const [descriptionData, setDescriptionData] = useState(initialTableData.map(row => ({ Description: row.Description })));
+    const [commentsData, setCommentsData] = useState([]);
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
-        if (task && task.tableData && Array.isArray(task.tableData)) {
-            setDescriptionData(task.tableData.map(row => ({Description: row.Description})));
-            setCommentsData(task.tableData.map(row => ({Comments: row.Comments})));
+        const storedUser = localStorage.getItem('loggedInUser');
+        if (storedUser) {
+            setUser(JSON.parse(storedUser));
+        }
+    }, []);
+    useEffect(() => {
+        if (task && task.taskId) {
+            // Fetch task comments
+            CommentService.getCommentsByTaskId(task.taskId)
+                .then(async response => {
+                    const comments = response.data;
+                    // Fetch user details for each comment
+                    const formattedComments = await Promise.all(comments.map(async (comment) => {
+                        try {
+                            const userResponse = await UserService.getUserById(comment.commentedBy);
+                            return {
+                                Comments: comment.comment,
+                                CommentedBy: userResponse.data, // Assuming user data contains firstName and lastName
+                            };
+                        } catch (error) {
+                            console.error(`Error fetching user ${comment.commentedBy}:`, error);
+                            return {
+                                Comments: comment.comment,
+                                CommentedBy: { firstName: 'Unknown', lastName: '' },
+                            };
+                        }
+                    }));
+                    setCommentsData(formattedComments);
+                })
+                .catch(error => {
+                    console.error("Error fetching comments:", error);
+                });
         }
     }, [task]);
-
-    // useEffect(() => {
-    //     if (task.statusName) {
-    //         setStatusName(task.statusName);
-    //     }
-    // }, [task.statusName]);
 
     if (!task) return null;
 
@@ -35,7 +59,7 @@ const DetailsModal = ({task, onClose}) => {
             onClose();
         }
     };
-console.log("comments :",commentsData)
+
     const handleDescriptionChange = (e, rowIndex) => {
         const updatedData = [...descriptionData];
         updatedData[rowIndex].Description = e.target.value;
@@ -49,7 +73,11 @@ console.log("comments :",commentsData)
     };
 
     const handleAddCommentsRow = () => {
-        setCommentsData([...commentsData, {Comments: ''}]);
+        const storedUser = localStorage.getItem('loggedInUser');
+        if (storedUser) {
+            const user = JSON.parse(storedUser);
+        setCommentsData([...commentsData, { Comments: '', CommentedBy:
+                { firstName: user.firstName, lastName: user.lastName } }]);}
     };
 
     const handleSaveDescription = async () => {
@@ -73,7 +101,6 @@ console.log("comments :",commentsData)
         }
     };
 
-
     const handleSaveComment = async (commentText, rowIndex) => {
         try {
             const storedUser = localStorage.getItem('loggedInUser');
@@ -83,13 +110,12 @@ console.log("comments :",commentsData)
                 const commentData = {
                     taskId: task.taskId,
                     comment: commentText,
-                    userId: user.userId, // Adjust based on the actual structure of your user object
+                    commentedBy: user.userId, // Adjust based on the actual structure of your user object
                 };
-console.log("commentData",commentData)
+
                 await CommentService.createComment(commentData);
 
                 alert('Comment saved successfully!');
-                // Optionally, you can update commentsData to reflect the saved comment
                 const updatedComments = [...commentsData];
                 updatedComments[rowIndex].Comments = commentText;
                 setCommentsData(updatedComments);
@@ -102,21 +128,19 @@ console.log("commentData",commentData)
         }
     };
 
-
-
     return (
         <div className="details-modal-overlay" onClick={handleOverlayClick}>
             <div className="details-modal-content">
                 <div className="details-modal-header">
                     <div className="details-modal-title">
-                        <FontAwesomeIcon icon={faListAlt} className="details-icon"/>
+                        <FontAwesomeIcon icon={faListAlt} className="details-icon" />
                         <h2>{task.taskName}</h2>
                     </div>
-                    <FontAwesomeIcon icon={faTimes} className="close-icon" onClick={onClose}/>
+                    <FontAwesomeIcon icon={faTimes} className="close-icon" onClick={onClose} />
                 </div>
                 <p className="task-status">In Status: {task.status}</p>
                 <div className="detailstitle">
-                    <FontAwesomeIcon icon={faTasks} className="details-icon"/>
+                    <FontAwesomeIcon icon={faTasks} className="details-icon" />
                     <p className="task-description">Description:</p>
                 </div>
                 <div className="table-container">
@@ -126,12 +150,12 @@ console.log("commentData",commentData)
                                 <tbody>
                                 <tr>
                                     <td>
-                                        <textarea
-                                            className="textarea"
-                                            value={row.Description}
-                                            onChange={(e) => handleDescriptionChange(e, rowIndex)}
-                                            rows="10"
-                                        />
+                                            <textarea
+                                                className="textarea"
+                                                value={row.Description}
+                                                onChange={(e) => handleDescriptionChange(e, rowIndex)}
+                                                rows="10"
+                                            />
                                     </td>
                                 </tr>
                                 </tbody>
@@ -143,46 +167,55 @@ console.log("commentData",commentData)
                     <button className="save-description-btn" onClick={handleSaveDescription}>Save Description</button>
                 </div>
                 <div className="detailstitle">
-                    <FontAwesomeIcon icon={faTasks} className="details-icon"/>
+                    <FontAwesomeIcon icon={faTasks} className="details-icon" />
                     <p className="task-comment">Comments:</p>
                 </div>
                 <div className="table-container-comment">
                     {commentsData.map((row, rowIndex) => (
                         <div key={rowIndex} className="table-row">
-                            <div className="member-name-comment">Member Name:</div>
+
                             <table className="task-details-table-comment">
                                 <thead>
                                 <tr>
-                                    <th>Comment</th>
+                                    <th className="comment-header">
+                            <span className="member-name-comment">
+                                {row.CommentedBy.firstName} {row.CommentedBy.lastName}
+                            </span>
+                                        <button
+                                            className="save-comment-btn"
+                                            onClick={() => handleSaveComment(row.Comments, rowIndex)}
+                                        >
+                                            Save Comment
+                                        </button>
+                                    </th>
                                 </tr>
                                 </thead>
+
                                 <tbody>
                                 <tr>
                                     <td>
-                                        <textarea
-                                            className="textarea-comment"
-                                            value={row.Comments}
-                                            onChange={(e) => handleCommentsChange(e, rowIndex)}
-                                            rows="10"
-                                        />
+                                            <textarea
+                                                className="textarea-comment"
+                                                value={row.Comments}
+                                                onChange={(e) => handleCommentsChange(e, rowIndex)}
+                                                rows="10"
+                                            />
                                     </td>
                                 </tr>
                                 </tbody>
                             </table>
-                            <button
-                                className="save-comment-btn"
-                                onClick={() => handleSaveComment(row.Comments, rowIndex)}
-                            >
-                                Save Comment
-                            </button>
+                            {/*<button*/}
+                            {/*    className="save-comment-btn"*/}
+                            {/*    onClick={() => handleSaveComment(row.Comments, rowIndex)}*/}
+                            {/*>*/}
+                            {/*    Save Comment*/}
+                            {/*</button>*/}
                         </div>
                     ))}
                 </div>
-
                 <div className="table-controls-comment">
-                    <button className="addcomment" onClick={handleAddCommentsRow}>Add Comments</button>
+                    <button className="addcomment" onClick={handleAddCommentsRow}>Add Comment</button>
                 </div>
-
             </div>
         </div>
     );
@@ -195,7 +228,6 @@ DetailsModal.propTypes = {
         status: PropTypes.string.isRequired,
         date: PropTypes.instanceOf(Date),
         taskDescription: PropTypes.string.isRequired,
-        comment: PropTypes.string,
         tableData: PropTypes.arrayOf(PropTypes.shape({
             Description: PropTypes.string,
             Comments: PropTypes.string

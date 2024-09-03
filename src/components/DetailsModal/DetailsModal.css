@@ -77,13 +77,27 @@
 }
 
 .table-row {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+
+.save-comment-btn {
+    margin-left: 16px; /* Adjust margin as needed */
 }
 
 .member-name-comment {
     font-size: 1em;
     color: #333333; /* Dark text color */
     margin-bottom: 5px;
+    flex: 1;
+    font-weight: bold;
 }
 
 /* Task details table */
@@ -102,11 +116,21 @@
 }
 
 .task-details-table-comment {
+
     width: 70%; /* Reduce the width of the comment table */
     border-collapse: collapse;
-    margin-bottom: 5px; /* Reduced margin */
+    margin-bottom: 10px; /* Reduced margin */
+
     font-size: 0.85em; /* Smaller font size */
 }
+
+
+
+/* Add padding inside each comment row */
+.table-container-comment {
+    padding: 10px; /* Optional, adjust as needed */
+}
+
 
 .task-details-table-comment th,
 .task-details-table-comment td {
@@ -144,8 +168,10 @@
 }
 
 .textarea-comment {
-    min-height: 15px;
+    /*min-height: 15px;*/
+    max-height: 50px;
     resize: vertical;
+    margin: 10px 0; /* Adds space above and below the textarea */
 }
 
 /* Table controls styles */

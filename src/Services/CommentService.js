@@ -29,7 +29,7 @@ class CommentService {
     // Get comments by Task ID
     getCommentsByTaskId(taskId) {
         const token = localStorage.getItem("token");
-        return axios.get(`${COMMENTS_API_BASE_URL}/task/${taskId}`, {
+        return axios.get(`${COMMENTS_API_BASE_URL}/tasks/${taskId}`, {
             headers: {
                 'X-Auth-Token': token
             }
