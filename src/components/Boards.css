@@ -173,18 +173,18 @@
     align-items: flex-start; /* Align items to the start of the container */
     gap: 10px; /* Space between items */
     justify-content: flex-start; /* Align items to the start (left) */
-    overflow-x: auto;
+    overflow-x: scroll;
 }
 
 /* Hide scrollbars for Webkit browsers (Chrome, Safari) */
-.backend-status-container::-webkit-scrollbar {
-    display: none; /* Hide scrollbar */
-}
+/*.backend-status-container::-webkit-scrollbar {*/
+/*    display: none; !* Hide scrollbar *!*/
+/*}*/
 
 /* Hide scrollbars for Firefox */
-.backend-status-container {
-    scrollbar-width: none; /* Hide scrollbar in Firefox */
-}
+/*.backend-status-container {*/
+/*    scrollbar-width: none; !* Hide scrollbar in Firefox *!*/
+/*}*/
 
 /* Style for the status title */
 .backend-status-title {
