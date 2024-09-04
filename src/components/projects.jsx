@@ -153,7 +153,7 @@ const Projects = () => {
     };
     const navigateToProjectReport = () => {
         navigate(`/main/ProjectReport/${projectId}`, {
-            state: {projectDescription, projectId, projectMembers},
+            state: {projectDescription, projectId, projectMembers,projectName},
         });
     };
 

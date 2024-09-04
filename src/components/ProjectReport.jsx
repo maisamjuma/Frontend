@@ -1,81 +1,178 @@
-// src/components/ProjectReport.jsx
-
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { Bar } from 'react-chartjs-2';
+import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js';
 import './ProjectReport.css';
-import BoardService from "../Services/BoardService.js"; // Create this CSS file for styling
+import BoardService from "../Services/BoardService.js";
+import TaskService from "../Services/TaskService.js";
+import UserService from "../Services/UserService.js";
+
+// Register Chart.js components
+ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
 const ProjectReport = () => {
     const location = useLocation();
-    const { projectId, projectDescription } = location.state || {};
+    const { projectId, projectName } = location.state || {};
     const [boards, setBoards] = useState([]);
+    const [tasksByBoard, setTasksByBoard] = useState({});
+    const [users, setUsers] = useState({});
 
     useEffect(() => {
-        const fetchBoards = async () => {
+        const fetchData = async () => {
             try {
-                const response = await BoardService.getBoardsByProject(projectId);
-                if (Array.isArray(response.data)) {
-                    setBoards(response.data);
+                // Fetch boards
+                const boardsResponse = await BoardService.getBoardsByProject(projectId);
+                if (Array.isArray(boardsResponse.data)) {
+                    setBoards(boardsResponse.data);
+
+                    // Fetch tasks after fetching boards
+                    const tasksResponse = await TaskService.getTasksByProjectId(projectId);
+                    if (Array.isArray(tasksResponse.data)) {
+                        const tasksMap = tasksResponse.data.reduce((acc, task) => {
+                            if (!acc[task.boardId]) {
+                                acc[task.boardId] = [];
+                            }
+                            acc[task.boardId].push(task);
+                            return acc;
+                        }, {});
+                        setTasksByBoard(tasksMap);
+
+                        // Fetch users
+                        const userIds = [...new Set(tasksResponse.data
+                            .map(task => task.assignedToUserId)
+                            .filter(userId => userId != null))]; // Filter out null and undefined user IDs
+
+                        if (userIds.length > 0) {
+                            const userPromises = userIds.map(userId => UserService.getUserById(userId));
+                            try {
+                                const userResponses = await Promise.all(userPromises);
+                                console.log("User responses:", userResponses);
+
+                                const usersMap = userResponses.reduce((acc, response) => {
+                                    // Assuming the response contains user data directly
+                                    const user = response.data;
+                                    acc[user.userId] = user;
+                                    return acc;
+                                }, {});
+
+                                console.log("Users map:", usersMap);
+                                setUsers(usersMap);
+                            } catch (userError) {
+                                console.error('Error fetching users:', userError);
+                            }
+                        }
+                    } else {
+                        console.error('Invalid data format for tasks');
+                    }
                 } else {
                     console.error('Invalid data format for boards');
                 }
             } catch (error) {
-                console.error('Error fetching boards:', error);
+                console.error('Error fetching data:', error);
             }
         };
 
-        fetchBoards();
+        fetchData();
     }, [projectId]);
+
+    // Prepare chart data
+    const chartData = {
+        labels: boards.map(board => board.name), // Labels for the x-axis
+        datasets: [{
+            label: 'Number of Tasks',
+            data: boards.map(board => (tasksByBoard[board.boardId] || []).length), // Data for the y-axis
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1,
+        }],
+    };
+
+    // Chart options
+    const chartOptions = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        const label = context.dataset.label || '';
+                        const value = context.raw;
+                        return `${label}: ${value} tasks`;
+                    }
+                }
+            }
+        }
+    };
 
     return (
         <div className="report-page">
-            <h1>Project Report</h1>
-            <div className="report-content">
-                <h2>{projectDescription}</h2>
-                <table className="report-table">
-                    <thead>
-                    <tr>
-                        <th>Board ID</th>
-                        <th>Board Name</th>
-                        <th>Status</th>
-                        <th>Tasks</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {boards && boards.length > 0 ? (
-                        boards.map((board) => (
-                            <tr key={board.boardId}>
-                                <td>{board.boardId}</td>
-                                <td>{board.name}</td>
-                                <td>
-                                    {board.statuses && board.statuses.length > 0 ? (
-                                        board.statuses.map((status) => (
-                                            <div key={status.statusId}>
-                                                {status.title}
-                                                <ul>
-                                                    {status.tasks && status.tasks.length > 0 ? (
-                                                        status.tasks.map((task) => (
-                                                            <li key={task.taskId}>{task.taskName}</li>
-                                                        ))
-                                                    ) : (
-                                                        <li>No tasks</li>
-                                                    )}
-                                                </ul>
-                                            </div>
-                                        ))
-                                    ) : (
-                                        <div>No statuses</div>
-                                    )}
-                                </td>
-                            </tr>
-                        ))
-                    ) : (
+            <h3 className="project-report">
+                <i className="fas fa-chart-bar"></i> {/* Bar chart icon */}
+                Project  Report
+            </h3>
+            <div className="scroll-container">
+                <div className="chart-container">
+                    <Bar data={chartData} options={chartOptions} />
+                </div>
+                <div className="table-container">
+                    <table className="report-table">
+                        <thead>
                         <tr>
-                            <td colSpan="4">No boards available</td>
+                            <th>Board ID</th>
+                            <th>Board Name</th>
+                            <th>Status</th>
+                            <th>Task Name</th>
+                            <th>Description</th>
+                            <th>Priority</th>
+                            <th>Assigned to</th>
+                            <th>Created At</th>
+                            <th>Updated At</th>
                         </tr>
-                    )}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        {boards.length > 0 ? (
+                            boards.map(board => {
+                                const tasksForBoard = tasksByBoard[board.boardId] || [];
+                                return (
+                                    <React.Fragment key={board.boardId}>
+                                        {tasksForBoard.length > 0 ? (
+                                            tasksForBoard.map(task => {
+                                                const user = users[task.assignedToUserId] || {};
+                                                const userName = user.firstName && user.lastName
+                                                    ? `${user.firstName} ${user.lastName}`
+                                                    : 'Unassigned'; // Fallback for missing user data
+                                                return (
+                                                    <tr key={task.taskId}>
+                                                        <td>{board.boardId}</td>
+                                                        <td>{board.name}</td>
+                                                        <td>{task.status}</td>
+                                                        <td>{task.taskName}</td>
+                                                        <td>{task.taskDescription || 'No description'}</td>
+                                                        <td>{task.priority}</td>
+                                                        <td>{userName}</td>
+                                                        <td>{new Date(task.createdAt).toLocaleString()}</td>
+                                                        <td>{new Date(task.updatedAt).toLocaleString()}</td>
+                                                    </tr>
+                                                );
+                                            })
+                                        ) : (
+                                            <tr key={`no-tasks-${board.boardId}`}>
+                                                <td colSpan="9">No tasks for board {board.boardId}</td>
+                                            </tr>
+                                        )}
+                                    </React.Fragment>
+                                );
+                            })
+                        ) : (
+                            <tr>
+                                <td colSpan="9">No boards available</td>
+                            </tr>
+                        )}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     );
