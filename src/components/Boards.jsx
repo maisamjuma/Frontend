@@ -506,10 +506,11 @@ const Boards = ({
     //     }
     // };
 
-    const moveTasksToQA = async () => {
+    const moveTaskToQA = async (task) => {
         try {
             const response = await BoardService.getBoardsByProject(projectId);
             const boards = response.data;
+            // console.log("boards:",boards)
 
             const qaBoard = boards.find(board => board.name === 'QA');
             if (!qaBoard) {
@@ -518,37 +519,46 @@ const Boards = ({
             }
 
             const qaBoardId = qaBoard.boardId;
-            console.log('qaBoardId',qaBoardId)
+            // console.log('qaBoardId',qaBoardId)
+
             // Find the 'Reviewing' status in the current board
-            const reviewingStatus = statuses.find(status => status.title === 'Reviewing' && boardId);
-            console.log('reviewingStatus',reviewingStatus)
+            const reviewingStatus = statuses.find(status => status.title === 'Reviewing');
+            // console.log('reviewingStatus',reviewingStatus)
             if (!reviewingStatus) {
                 console.error('Reviewing status not found in the current board');
                 return;
             }
 
-            const tasksToMove = reviewingStatus.tasks;
+            //now i have qaBoardId and reviewingStatus, and im ready to make the action
+            // const tasksToMove = reviewingStatus.tasks;
+            // console.log('tasksToMove',tasksToMove)
 
-            if (tasksToMove.length === 0) {
-                console.log('No tasks to move');
+            // const firstTask = tasksToMove[0];
+
+            //removing fields that are not compatible with the updateTask endpoint
+            delete task.assignedUserLetter;
+            delete task.createdAt;
+
+            if (!task) {
+                console.error('No task to move');
                 return;
             }
 
-            for (const task of tasksToMove) {
+            // for (const task of tasksToMove) {
                 try {
                     const updatedTask = {
                         ...task,
                         status: 'Ready for QA',
                         boardId: qaBoardId
                     };
-                    console.log('updatedTask',updatedTask)
-                    await TaskService.updateTask(task.taskId, updatedTask);
+                    // console.log('updatedTask',updatedTask)
+                    await TaskService.updateTask(updatedTask.taskId, updatedTask);
 
                     // Update the local state for the moved task
                     const updatedStatuses = statuses.map(status => ({
                         ...status,
-                        tasks: status.tasks.map(t =>
-                            t.taskId === task.taskId ? updatedTask : t
+                        tasks: status.tasks.map(currentTask =>
+                            currentTask.taskId === task.taskId ? updatedTask : currentTask
                         )
                     }));
 
@@ -556,7 +566,7 @@ const Boards = ({
                 } catch (error) {
                     console.error(`Error updating task ${task.taskId}:`, error);
                 }
-            }
+            // }
 
             // alert('Tasks moved to QA successfully!');
         } catch (error) {
@@ -693,7 +703,7 @@ const Boards = ({
                                                                     </div>
                                                                     {status.id === 5 && (
                                                                         <button
-                                                                            onClick={() => moveTasksToQA(task)}
+                                                                            onClick={() => moveTaskToQA(task)}
                                                                             className="move-to-qa-button"
                                                                         >
                                                                             Move to QA
