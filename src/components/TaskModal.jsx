@@ -32,6 +32,7 @@ const TaskModal = ({
                        onSavePriority,
                        onSaveLabels,
                        projectId,
+                        boardId,
                        projectDescription,
                        projectMembers,
                        setProjectId,
@@ -48,6 +49,7 @@ const TaskModal = ({
     console.log("hhghg", selectedMember)
     // eslint-disable-next-line react/prop-types
     console.log("is task in taskmodal ? ", task)
+    console.log("is task in boardid ? ", boardId)
 
 
     if (!task) return null;
@@ -173,6 +175,7 @@ const TaskModal = ({
                     onSave={onSaveMember} // Pass the function to handle saving the member
                     task={{...task}}
                     projectId={projectId}
+                    boardId={boardId}
                     projectDescription={projectDescription}
                     projectMembers={projectMembers}
                     setProjectId={setProjectId}
@@ -218,6 +221,7 @@ TaskModal.propTypes = {
     onSaveMember: PropTypes.func.isRequired,
     onRemoveDate: PropTypes.func.isRequired,
     onSavePriority: PropTypes.func.isRequired,
+    boardId: PropTypes.number.isRequired,
     members: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.string.isRequired,
         username: PropTypes.string.isRequired,

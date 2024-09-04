@@ -1,46 +1,78 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import './ChangeMemberModal.css';
 import UserService from "../Services/UserService.js";
 import TaskService from "../Services/TaskService.js";
+import BoardService from "../Services/BoardService.js";
+import RoleService from "../Services/RoleService.js";
 
 const ChangeMemberModal = ({
-
                                onSave,
                                onClose,
                                task,
-                               projectId,
-                               projectDescription,
+                               boardId,
                                projectMembers,
-                               setProjectId,
-                               setProjectDescription,
                                setProjectMembers
                            }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedMemberId, setSelectedMemberId] = useState('');
-    const [selectedMembername, setSelectedMembername] = useState('');
+    const [selectedMemberName, setSelectedMemberName] = useState('');
     const [userDetails, setUserDetails] = useState([]);
-    console.log("change member task : ", task)
-    // Fetch user details based on projectMembers
+    const [boardName, setBoardName] = useState('');
+    const [roleFilter, setRoleFilter] = useState('');
+
+    // Fetch user details and board name
     useEffect(() => {
         const fetchUserDetails = async () => {
             try {
                 const userDetailsArray = await Promise.all(
                     projectMembers.map(async (member) => {
                         const response = await UserService.getUserById(member.userId);
-                        return response.data;
+                        const userData = response.data;
+
+                        // Fetch the role name based on the role ID
+                        if (userData.functionalRoleId) {
+                            try {
+                                const roleResponse = await RoleService.getRoleById(userData.functionalRoleId);
+                                userData.roleName = roleResponse.data.roleName;
+                            } catch (error) {
+                                console.error('Error fetching role name:', error);
+                            }
+                        }
+
+                        return userData;
                     })
                 );
-                setUserDetails(userDetailsArray);
+
+                // Apply role filter based on the board name
+                const filteredUsers = userDetailsArray.filter(user =>
+                    user.roleName === roleFilter
+                );
+
+                setUserDetails(filteredUsers);
             } catch (error) {
                 console.error('Error fetching user details:', error);
+            }
+        };
+
+        const fetchBoardName = async () => {
+            try {
+                const response = await BoardService.getBoardById(boardId);
+                const fetchedBoardName = response.data.name;
+                setBoardName(fetchedBoardName);
+
+                // Set role filter based on board name
+                setRoleFilter(fetchedBoardName);
+            } catch (error) {
+                console.error('Error fetching board name:', error);
             }
         };
 
         if (projectMembers.length > 0) {
             fetchUserDetails();
         }
-    }, [projectMembers]);
+        fetchBoardName();
+    }, [projectMembers, boardId, roleFilter]);
 
     // Filter members based on search term
     const filteredMembers = userDetails.filter(member =>
@@ -50,21 +82,17 @@ const ChangeMemberModal = ({
     const handleSave = async () => {
         if (selectedMemberId) {
             try {
-                // Create the updated task object with the new assigned user
                 const updatedTask = {
-                    ...task, // Spread the existing task details
-                    assignedToUserId: selectedMemberId, // Update the assigned user ID
+                    ...task,
+                    assignedToUserId: selectedMemberId,
                 };
 
-                // Call the TaskService to update the task with the new assigned user
                 await TaskService.updateTask(task.taskId, updatedTask);
 
-                // Alert the user that the assigned user was updated successfully
                 alert('Task assigned user updated successfully!');
-                onSave(selectedMemberId, selectedMembername); // Pass selected member to parent
-                onClose(); // Close modal after saving
+                onSave(selectedMemberId, selectedMemberName);
+                onClose();
             } catch (error) {
-                // Handle any errors that occur during the update
                 console.error('Error updating task assigned user:', error);
                 alert('There was an error updating the task assigned user. Please try again.');
             }
@@ -73,7 +101,7 @@ const ChangeMemberModal = ({
 
     const handleMemberClick = (memberId, memberUsername) => {
         setSelectedMemberId(memberId);
-        setSelectedMembername(memberUsername);
+        setSelectedMemberName(memberUsername);
     };
 
     const handleSearchChange = (e) => {
@@ -103,10 +131,10 @@ const ChangeMemberModal = ({
                                     onClick={() => handleMemberClick(member.userId, member.firstName)}
                                     className={`change-member-list-item ${member.userId === selectedMemberId ? 'selected-member' : ''}`}
                                 >
-                                <span className="member-initial-circle">
-                                    {member.firstName.charAt(0).toUpperCase()}
-                                </span>
-                                    {member.firstName} {member.lastName}
+                                    <span className="member-initial-circle">
+                                        {member.firstName.charAt(0).toUpperCase()}
+                                    </span>
+                                    {member.firstName} {member.lastName} - {member.roleName}
                                 </li>
                             ))
                         ) : (
@@ -115,19 +143,14 @@ const ChangeMemberModal = ({
                     </ul>
                     <div>
                         <button className="saveButton" onClick={handleSave}>Save</button>
-
                     </div>
                 </div>
-
-
             </div>
-
         </>
     );
 };
 
 ChangeMemberModal.propTypes = {
-
     onClose: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired,
     task: PropTypes.shape({
@@ -140,19 +163,13 @@ ChangeMemberModal.propTypes = {
         date: PropTypes.instanceOf(Date),
         taskDescription: PropTypes.string.isRequired,
     }),
-    projectId: PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-    ]),
-    projectDescription: PropTypes.string,
+    boardId: PropTypes.number.isRequired,
     projectMembers: PropTypes.arrayOf(PropTypes.shape({
         userId: PropTypes.number.isRequired,
         projectMemberId: PropTypes.number.isRequired,
         projectId: PropTypes.number.isRequired,
         joinedAt: PropTypes.string.isRequired,
     })),
-    setProjectId: PropTypes.func.isRequired,
-    setProjectDescription: PropTypes.func.isRequired,
     setProjectMembers: PropTypes.func.isRequired,
 };
 

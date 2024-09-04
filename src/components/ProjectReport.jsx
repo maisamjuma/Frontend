@@ -127,6 +127,7 @@ const ProjectReport = () => {
                             <th>Description</th>
                             <th>Priority</th>
                             <th>Assigned to</th>
+                            <th>Email</th>
                             <th>Created At</th>
                             <th>Updated At</th>
                         </tr>
@@ -158,6 +159,7 @@ const ProjectReport = () => {
                                                             {task.priority}
                                                         </td>
                                                         <td>{userName}</td>
+                                                        <td>{user.email}</td>
                                                         <td>{new Date(task.createdAt).toLocaleString()}</td>
                                                         <td>{new Date(task.updatedAt).toLocaleString()}</td>
                                                     </tr>
@@ -165,7 +167,7 @@ const ProjectReport = () => {
                                             })
                                         ) : (
                                             <tr key={`no-tasks-${board.boardId}`}>
-                                                <td colSpan="9">No tasks for board {board.name}</td>
+                                                <td colSpan="10">No tasks for board {board.name}</td>
                                             </tr>
                                         )}
                                     </React.Fragment>
@@ -173,7 +175,7 @@ const ProjectReport = () => {
                             })
                         ) : (
                             <tr>
-                                <td colSpan="9">No boards available</td>
+                                <td colSpan="10">No boards available</td>
                             </tr>
                         )}
                         </tbody>
