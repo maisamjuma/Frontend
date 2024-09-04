@@ -1,13 +1,9 @@
 import React, {useEffect, useState} from 'react';
-// import { useParams} from 'react-router-dom';
 import TaskModal from './TaskModal';
 import './Boards.css';
 import {FaPen} from 'react-icons/fa';
-// import MoveModal from "./MoveModal.jsx";
 import PriorityModal from './PriorityModal';
-import AddTaskModal from "./AddTaskModal"; // Import the new component
-// import PriorityModal from './PriorityModal';
-//import MoveModal from "./MoveModal/MoveModal.jsx";
+import AddTaskModal from "./AddTaskModal";
 import CalendarModal from "./CalendarModal/CalendarModal.jsx";
 import {DragDropContext, Draggable, Droppable} from 'react-beautiful-dnd';
 import PropTypes from "prop-types";
@@ -15,12 +11,6 @@ import ChangeMemberModal from "./ChangeMemberModal.jsx";
 import TaskService from "../Services/TaskService.js";
 import UserService from "../Services/UserService.js";
 import BoardService from "../Services/BoardService.js";
-//import DetailsModal from "./DetailsModal/DetailsModal.jsx";
-// import BoardService from "../Services/BoardService.js";
-//import members from "./Member/Members.jsx";
-//import members from "./Member/Members.jsx";
-//import TaskService from '../Services/TaskService';
-
 
 const Boards = ({
                     board,
@@ -31,9 +21,7 @@ const Boards = ({
                     setProjectDescription,
                     setProjectMembers
                 }) => {
-    // const { board} = useParams(); // Get boardName from the route parameters
-    // const [boardName, setBoardName] = useState(null);
-    // const { boardId, name } = board;
+
     const boardId = board?.boardId || 'No ID';
     const name = board?.name || 'No Name';
 
@@ -43,18 +31,13 @@ const Boards = ({
     const [selectedTask, setSelectedTask] = useState(null);
     const [dropdownStatusId, setDropdownStatusId] = useState(null);
     const [highlightedTaskId, setHighlightedTaskId] = useState(null);
-    // const [showMoveModal, setShowMoveModal] = useState(false);
     const [showPriorityModal, setShowPriorityModal] = useState(false);
     const [showAddTaskModal, setShowAddTaskModal] = useState(false);
-    const [showcalenderModal, setcalendarModal] = useState(false);
-//    const [showDetailsModal, setshowDetailsModal] = useState(false);
+    const [showCalenderModal, setCalenderModal] = useState(false);
     const [showChangeMemberModal, setShowChangeMemberModal] = useState(false);
     const [comingFromChangeMember, setComingFromChangeMember] = useState(false);
     const [selectedMember, setSelectedMember] = useState('');
     const [taskId, setTaskId] = useState(null);
-    console.log(projectMembers)
-    console.log("boardId ccccccccccccccccccccc", boardId)
-    console.log("projectid ccccccccccccccccccc", projectId)
 
 
     const onDragEnd = async (result) => {
@@ -141,7 +124,6 @@ const Boards = ({
         }
     };
 
-
     // Function to load or reset statuses
     const loadStatuses = () => {
         const savedStatuses = localStorage.getItem(`${projectId}_${boardId}_${name}_statuses`);
@@ -176,13 +158,7 @@ const Boards = ({
             statuses = statuses.filter(status => status.id <= 5);
         }
 
-
-        // // Ensure priority field exists in each task
-        // statuses.forEach(status => {
-        //     status.tasks.forEach(task => {
-        //         task.priority = task.priority || 'MEDIUM';  // Default to 'MEDIUM' if not set
-        //     });
-        // });
+        // Ensure priority field exists in each task
 
         return statuses;
     };
@@ -234,7 +210,6 @@ const Boards = ({
                 }
             };
             loadStatusesAndTasks();
-            // setComingFromChangeMember(false);
         }
     }, [projectId, boardId, name, showPriorityModal, selectedTask]);
 
@@ -244,7 +219,6 @@ const Boards = ({
             localStorage.setItem(`${projectId}_${boardId}_${name}_statuses`, JSON.stringify(statuses));
         }
     }, [statuses, projectId, boardId, name]);
-
 
     const handleAddTask = async (statusId, task) => {
         try {
@@ -287,13 +261,11 @@ const Boards = ({
         } else console.error("task id not found")
     };
 
-
     const handleDoubleClick = (taskId) => {
         setEditingTaskId(taskId);
     };
 
     const handleChangeMember = (memberId, memberUsername) => {
-
         setComingFromChangeMember(true);
         if (selectedTask) {
             console.log('selectedTask :', selectedTask);
@@ -315,7 +287,6 @@ const Boards = ({
                 console.log('Member not found');
             }
             setShowChangeMemberModal(false);
-            // setComingFromChangeMember(false);
         } else {
             console.log('No task selected');
         }
@@ -364,7 +335,6 @@ const Boards = ({
         }
     };
 
-
     const handlePencilClick = (task) => {
         console.log("task id:", task.taskId);
         console.log("task name:", task.taskName);
@@ -380,7 +350,6 @@ const Boards = ({
         setHighlightedTaskId(task.taskId); // Use taskId directly
     };
 
-
     const handleCloseModal = () => {
         setSelectedTask(null);
         setHighlightedTaskId(null);
@@ -389,7 +358,6 @@ const Boards = ({
     const handleSaveDate = (date) => {
         if (selectedTask) {
             const adjustedDate = new Date(date);
-            //adjustedDate.setDate(adjustedDate.getDate()); // Add one day
 
             const updatedStatuses = statuses.map(status => ({
                 ...status,
@@ -419,28 +387,6 @@ const Boards = ({
         setStatuses(updatedStatuses);
     };
 
-    // const handleMoveTask = (task, newStatusId) => {
-    //     console.log('Moving task:', task, 'to status:', newStatusId);
-    //
-    //     const updatedStatuses = statuses.map(status => {
-    //         if (status.id === newStatusId) {
-    //             return {
-    //                 ...status,
-    //                 tasks: [...status.tasks, {...task, statusId: newStatusId}] // Update statusId here
-    //             };
-    //         } else if (status.tasks.some(t => t.id === task.id)) {
-    //             return {
-    //                 ...status,
-    //                 tasks: status.tasks.filter(t => t.id !== task.id)
-    //             };
-    //         }
-    //         return status;
-    //     });
-    //
-    //     console.log('Updated statuses:', updatedStatuses);
-    //     setStatuses(updatedStatuses);
-    // };
-
     const handleSavePriority = (newPriority) => {
         setComingFromChangeMember(false);
 
@@ -454,54 +400,18 @@ const Boards = ({
         }
     };
 
-
     const handleClosePriorityModal = () => {
         setShowPriorityModal(false);
     };
 
     const handleCloseCalenderModal = () => {
-        setcalendarModal(false);
+        setCalenderModal(false);
     };
-
-    // const handleUpdateTask = async (taskId, updatedTaskData) => {
-    //     try {
-    //         await TaskService.updateTask(taskId, updatedTaskData);
-    //
-    //         const updatedStatuses = statuses.map(status => ({
-    //             ...status,
-    //             tasks: status.tasks.map(task =>
-    //                 task.id === taskId ? { ...task, ...updatedTaskData } : task
-    //             )
-    //         }));
-    //
-    //         setStatuses(updatedStatuses);
-    //     } catch (error) {
-    //         console.error("Error updating task:", error);
-    //         alert("Error updating task. Please try again.");
-    //     }
-    // };
-    //
-    // const handleDeleteTask = async (taskId) => {
-    //     try {
-    //         await TaskService.deleteTask(taskId);
-    //
-    //         const updatedStatuses = statuses.map(status => ({
-    //             ...status,
-    //             tasks: status.tasks.filter(task => task.id !== taskId)
-    //         }));
-    //
-    //         setStatuses(updatedStatuses);
-    //     } catch (error) {
-    //         console.error("Error deleting task:", error);
-    //         alert("Error deleting task. Please try again.");
-    //     }
-    // };
 
     const moveTaskToQA = async (task) => {
         try {
             const response = await BoardService.getBoardsByProject(projectId);
             const boards = response.data;
-            // console.log("boards:",boards)
 
             const qaBoard = boards.find(board => board.name === 'QA');
             if (!qaBoard) {
@@ -510,21 +420,15 @@ const Boards = ({
             }
 
             const qaBoardId = qaBoard.boardId;
-            // console.log('qaBoardId',qaBoardId)
 
             // Find the 'Reviewing' status in the current board
             const reviewingStatus = statuses.find(status => status.title === 'Reviewing');
-            // console.log('reviewingStatus',reviewingStatus)
             if (!reviewingStatus) {
                 console.error('Reviewing status not found in the current board');
                 return;
             }
 
             //now i have qaBoardId and reviewingStatus, and im ready to make the action
-            // const tasksToMove = reviewingStatus.tasks;
-            // console.log('tasksToMove',tasksToMove)
-
-            // const firstTask = tasksToMove[0];
 
             //removing fields that are not compatible with the updateTask endpoint
             delete task.assignedUserLetter;
@@ -535,7 +439,6 @@ const Boards = ({
                 return;
             }
 
-            // for (const task of tasksToMove) {
             try {
                 const updatedTask = {
                     ...task, status: 'Ready for QA', boardId: qaBoardId
@@ -553,15 +456,13 @@ const Boards = ({
             } catch (error) {
                 console.error(`Error updating task ${task.taskId}:`, error);
             }
-            // }
 
-            // alert('Tasks moved to QA successfully!');
+
         } catch (error) {
             console.error('Error fetching boards or moving tasks:', error);
             alert('There was an error moving the tasks. Please try again.');
         }
     };
-
 
     return (<DragDropContext onDragEnd={onDragEnd}>
             <div className="boardAllStatuses">
@@ -570,182 +471,165 @@ const Boards = ({
                 </div>
                 <Droppable droppableId="all-statuses" direction="horizontal">
                     {(provided) => (<div
-                            className="backend-status-container"
-                            ref={provided.innerRef}
-                            {...provided.droppableProps}
-                        >
-                            {statuses.map((status) => (<div key={status.id} className="backend-status-box-wrapper">
-                                    <Droppable droppableId={status.id.toString()} type="TASK">
-                                        {(provided) => (<div
-                                                className="backend-status-box"
-                                                style={{backgroundColor: status.backgroundColor}}
-                                                ref={provided.innerRef}
-                                                {...provided.droppableProps}
-                                            >
-                                                <div className="backend-status-header">
+                        className="backend-status-container"
+                        ref={provided.innerRef}
+                        {...provided.droppableProps}
+                    >
+                        {statuses.map((status) => (<div key={status.id} className="backend-status-box-wrapper">
+                            <Droppable droppableId={status.id.toString()} type="TASK">
+                                {(provided) => (<div
+                                    className="backend-status-box"
+                                    style={{backgroundColor: status.backgroundColor}}
+                                    ref={provided.innerRef}
+                                    {...provided.droppableProps}
+                                >
+                                    <div className="backend-status-header">
                                                 <span className="backend-status-title">
                                                     {status.title}
                                                 </span>
-                                                    <span
-                                                        className="backend-status-menu"
-                                                        onClick={() => setDropdownStatusId(dropdownStatusId === status.id ? null : status.id)}
-                                                    >
+                                        <span
+                                            className="backend-status-menu"
+                                            onClick={() => setDropdownStatusId(dropdownStatusId === status.id ? null : status.id)}
+                                        >
                                                     ...
                                                 </span>
-                                                    {dropdownStatusId === status.id && (
-                                                        <div className="backend-dropdown-menu">
-                                                            <div
-                                                                className="backend-dropdown-item"
-                                                                onClick={() => handleDeleteStatus(status.id)}
-                                                            >
-                                                                Delete Status
-                                                            </div>
-                                                        </div>)}
-                                                </div>
+                                        {dropdownStatusId === status.id && (
+                                            <div className="backend-dropdown-menu">
                                                 <div
-                                                    className="backend-tasks-container"
-                                                    ref={provided.innerRef}
-                                                    {...provided.droppableProps}
+                                                    className="backend-dropdown-item"
+                                                    onClick={() => handleDeleteStatus(status.id)}
                                                 >
-                                                    {status.tasks.map((task, taskIndex) => (<Draggable
-                                                            key={task.taskId}
-                                                            draggableId={task.taskId.toString()}
-                                                            index={taskIndex}
+                                                    Delete Status
+                                                </div>
+                                            </div>)}
+                                    </div>
+                                    <div
+                                        className="backend-tasks-container"
+                                        ref={provided.innerRef}
+                                        {...provided.droppableProps}
+                                    >
+                                        {status.tasks.map((task, taskIndex) => (<Draggable
+                                            key={task.taskId}
+                                            draggableId={task.taskId.toString()}
+                                            index={taskIndex}
+                                        >
+                                            {(provided) => (<div
+                                                className={`backend-task-box ${highlightedTaskId === task.taskId ? 'highlighted' : ''}`}
+                                                {...provided.draggableProps}
+                                                {...provided.dragHandleProps}
+                                                ref={provided.innerRef}
+                                                onDoubleClick={() => handleDoubleClick(task.taskId)}
+                                            >
+                                                <div className="topTop">
+                                                    <div className="topClass">
+                                                        <div
+                                                            className={`task-priority-display priority-${task.priority}`}
                                                         >
-                                                            {(provided) => (<div
-                                                                    className={`backend-task-box ${highlightedTaskId === task.taskId ? 'highlighted' : ''}`}
-                                                                    {...provided.draggableProps}
-                                                                    {...provided.dragHandleProps}
-                                                                    ref={provided.innerRef}
-                                                                    onDoubleClick={() => handleDoubleClick(task.taskId)}
-                                                                >
-                                                                    <div className="topTop">
-                                                                        <div className="topClass">
-                                                                            <div
-                                                                                className={`task-priority-display priority-${task.priority}`}
-                                                                            >
-                                                                                {task.priority === 'high' && (<span
-                                                                                        className="priority-high">High</span>)}
-                                                                                {task.priority === 'medium' && (<span
-                                                                                        className="priority-medium">Medium</span>)}
-                                                                                {task.priority === 'low' && (<span
-                                                                                        className="priority-low">Low</span>)}
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="topClass2">
-                                                                            <FaPen
-                                                                                className="backend-pencil-icon"
-                                                                                onClick={() => handlePencilClick(task)}
-                                                                            />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="MiddleClass">
-                                                                        {editingTaskId === task.taskId ? (<input
-                                                                                type="text"
-                                                                                defaultValue={task.taskName}
-                                                                                onBlur={(e) => handleBlur(status.id, task.taskId, e.target.value)}
-                                                                                className="backend-task-input"
-                                                                            />) : (<>
-                                                                                <div className="nameCss">
-                                                                                    <span>{task.taskName}</span>
-                                                                                </div>
-                                                                                <div className="dateWithName">
-                                                                                    <div className="dateCss">
-                                                                                        {task.date && (<span
-                                                                                                className="task-due-date">
+                                                            {task.priority === 'high' && (<span
+                                                                className="priority-high">High</span>)}
+                                                            {task.priority === 'medium' && (<span
+                                                                className="priority-medium">Medium</span>)}
+                                                            {task.priority === 'low' && (<span
+                                                                className="priority-low">Low</span>)}
+                                                        </div>
+                                                    </div>
+                                                    <div className="topClass2">
+                                                        <FaPen
+                                                            className="backend-pencil-icon"
+                                                            onClick={() => handlePencilClick(task)}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="MiddleClass">
+                                                    {editingTaskId === task.taskId ? (<input
+                                                        type="text"
+                                                        defaultValue={task.taskName}
+                                                        onBlur={(e) => handleBlur(status.id, task.taskId, e.target.value)}
+                                                        className="backend-task-input"
+                                                    />) : (<>
+                                                        <div className="nameCss">
+                                                            <span>{task.taskName}</span>
+                                                        </div>
+                                                        <div className="dateWithName">
+                                                            <div className="dateCss">
+                                                                {task.date && (<span
+                                                                    className="task-due-date">
                                                                                             Due date: {new Date(task.date).toLocaleDateString()}
                                                                                         </span>)}
-                                                                                    </div>
-                                                                                    {(status.id >= 2) && (
-                                                                                        <div className="nameCircle">
-                                                                                            {task.assignedToUserId && (
-                                                                                                <span
-                                                                                                    className="taskMember">
+                                                            </div>
+                                                            {(status.id >= 2) && (
+                                                                <div className="nameCircle">
+                                                                    {task.assignedToUserId && (
+                                                                        <span
+                                                                            className="taskMember">
                                                                                                 {task.assignedUserLetter}
                                                                                             </span>)}
-                                                                                        </div>)}
-                                                                                </div>
-                                                                            </>)}
-                                                                    </div>
-                                                                    {status.id === 5 && (<button
-                                                                            onClick={() => moveTaskToQA(task)}
-                                                                            className="move-to-qa-button"
-                                                                        >
-                                                                            Move to QA
-                                                                        </button>)}
                                                                 </div>)}
-                                                        </Draggable>))}
-                                                    {provided.placeholder}
+                                                        </div>
+                                                    </>)}
                                                 </div>
-                                                {(status.id === 1 || status.id === 2) && (<button
-                                                        onClick={() => {
-                                                            setCurrentStatusId(status.id);
-                                                            setShowAddTaskModal(true);
-                                                        }}
-                                                        className="backend-show-add-task"
-                                                    >
-                                                        + Add Task
-                                                    </button>)}
-                                                {/*{status.id === 5 && (*/}
-                                                {/*    <button*/}
-                                                {/*        onClick={() => moveTasksToQA()}*/}
-                                                {/*        className="move-to-qa-button"*/}
-                                                {/*    >*/}
-                                                {/*        Move to QA*/}
-                                                {/*    </button>*/}
-                                                {/*)}*/}
+                                                {status.id === 5 && (<button
+                                                    onClick={() => moveTaskToQA(task)}
+                                                    className="move-to-qa-button"
+                                                >
+                                                    Move to QA
+                                                </button>)}
                                             </div>)}
-                                    </Droppable>
-                                </div>))}
-                            {provided.placeholder}
-                        </div>)}
+                                        </Draggable>))}
+                                        {provided.placeholder}
+                                    </div>
+                                    {(status.id === 1 || status.id === 2) && (<button
+                                        onClick={() => {
+                                            setCurrentStatusId(status.id);
+                                            setShowAddTaskModal(true);
+                                        }}
+                                        className="backend-show-add-task"
+                                    >
+                                        + Add Task
+                                    </button>)}
+                                    {/*{status.id === 5 && (*/}
+                                    {/*    <button*/}
+                                    {/*        onClick={() => moveTasksToQA()}*/}
+                                    {/*        className="move-to-qa-button"*/}
+                                    {/*    >*/}
+                                    {/*        Move to QA*/}
+                                    {/*    </button>*/}
+                                    {/*)}*/}
+                                </div>)}
+                            </Droppable>
+                        </div>))}
+                        {provided.placeholder}
+                    </div>)}
                 </Droppable>
                 {selectedTask && (<TaskModal
-                        selectedMember={selectedMember}
-                        onDelete={handleDeleteTask}
-                        task={selectedTask}
-                        onClose={handleCloseModal}
-                        boards={statuses}
-                        statuses={statuses}
-                        onSaveDate={handleSaveDate}
-                        onSaveMember={handleChangeMember}
-                        onRemoveDate={handleRemoveDate}
-                        onSavePriority={handleSavePriority}
-                        members={projectMembers}
-                        projectId={projectId}
-                        projectDescription={projectDescription}
-                        projectMembers={projectMembers}
-                        setProjectId={setProjectId}
-                        setProjectDescription={setProjectDescription}
-                        setProjectMembers={setProjectMembers}
-                    />)}
-                {/*{showMoveModal && selectedTask && (*/}
-                {/*    <MoveModal*/}
-                {/*        task={selectedTask}*/}
-                {/*        statuses={statuses}*/}
-                {/*        onClose={() => setShowMoveModal(false)}*/}
-                {/*        onMoveTask={(task, newStatusId) => {*/}
-                {/*            handleMoveTask(task, newStatusId);*/}
-                {/*            setShowMoveModal(false);*/}
-                {/*        }}*/}
-                {/*        projectId={projectId}*/}
-                {/*        projectDescription={projectDescription}*/}
-                {/*        projectMembers={projectMembers}*/}
-                {/*        setProjectId={setProjectId}*/}
-                {/*        setProjectDescription={setProjectDescription}*/}
-                {/*        setProjectMembers={setProjectMembers}*/}
-                {/*    />*/}
-                {/*)}*/}
+                    selectedMember={selectedMember}
+                    onDelete={handleDeleteTask}
+                    task={selectedTask}
+                    onClose={handleCloseModal}
+                    boards={statuses}
+                    statuses={statuses}
+                    onSaveDate={handleSaveDate}
+                    onSaveMember={handleChangeMember}
+                    onRemoveDate={handleRemoveDate}
+                    onSavePriority={handleSavePriority}
+                    members={projectMembers}
+                    projectId={projectId}
+                    projectDescription={projectDescription}
+                    projectMembers={projectMembers}
+                    setProjectId={setProjectId}
+                    setProjectDescription={setProjectDescription}
+                    setProjectMembers={setProjectMembers}
+                />)}
                 {showPriorityModal && (<PriorityModal
-                        isVisible={showPriorityModal}
-                        onClose={handleClosePriorityModal}
-                        onSavePriority={handleSavePriority}
-                    />)}
-                {showcalenderModal && (<CalendarModal
-                        isVisible={showcalenderModal}
-                        onClose={handleCloseCalenderModal}
-                        onSavePriority={handleSaveDate}
-                        onRemoveDate={handleRemoveDate}/>)}
+                    isVisible={showPriorityModal}
+                    onClose={handleClosePriorityModal}
+                    onSavePriority={handleSavePriority}
+                />)}
+                {showCalenderModal && (<CalendarModal
+                    isVisible={showCalenderModal}
+                    onClose={handleCloseCalenderModal}
+                    onSavePriority={handleSaveDate}
+                    onRemoveDate={handleRemoveDate}/>)}
                 {showAddTaskModal && (
 
                     <AddTaskModal
@@ -787,8 +671,6 @@ const Boards = ({
 
             </div>
         </DragDropContext>
-
-
     );
 
 };
