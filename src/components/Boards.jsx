@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 // import { useParams} from 'react-router-dom';
 import TaskModal from './TaskModal';
 import './Boards.css';
@@ -9,7 +9,7 @@ import AddTaskModal from "./AddTaskModal"; // Import the new component
 // import PriorityModal from './PriorityModal';
 //import MoveModal from "./MoveModal/MoveModal.jsx";
 import CalendarModal from "./CalendarModal/CalendarModal.jsx";
-import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
+import {DragDropContext, Draggable, Droppable} from 'react-beautiful-dnd';
 import PropTypes from "prop-types";
 import ChangeMemberModal from "./ChangeMemberModal.jsx";
 import TaskService from "../Services/TaskService.js";
@@ -87,8 +87,7 @@ const Boards = ({
             const updatedStatuses = statuses.map(status => {
                 if (status.id === sourceStatusId) {
                     return {
-                        ...status,
-                        tasks: reorderedTasks
+                        ...status, tasks: reorderedTasks
                     };
                 }
                 return status;
@@ -120,13 +119,11 @@ const Boards = ({
         const updatedStatuses = statuses.map(status => {
             if (status.id === sourceStatusId) {
                 return {
-                    ...status,
-                    tasks: updatedSourceTasks,
+                    ...status, tasks: updatedSourceTasks,
                 };
             } else if (status.id === destinationStatusId) {
                 return {
-                    ...status,
-                    tasks: updatedDestinationTasks,
+                    ...status, tasks: updatedDestinationTasks,
                 };
             }
             return status;
@@ -148,17 +145,27 @@ const Boards = ({
     // Function to load or reset statuses
     const loadStatuses = () => {
         const savedStatuses = localStorage.getItem(`${projectId}_${boardId}_${name}_statuses`);
-        const defaultStatuses = [
-            {id: 1, title: 'Unassigned Tasks', tasks: [], backgroundColor: '#f9f9f9'},
-            {id: 2, title: 'To Do', tasks: [], backgroundColor: '#f9f9f9'},
-            {id: 3, title: 'Doing', tasks: [], backgroundColor: '#f9f9f9'},
-            {id: 4, title: 'Ready to Review', tasks: [], backgroundColor: '#f9f9f9'},
-            {id: 5, title: 'Reviewing', tasks: [], backgroundColor: '#f9f9f9'},
-            {id: 6, title: 'Ready for QA', tasks: [], backgroundColor: '#f9f9f9'},
-            {id: 7, title: 'In Progress', tasks: [], backgroundColor: '#f9f9f9'},
-            {id: 8, title: 'QA Failed', tasks: [], backgroundColor: '#f9f9f9'},
-            {id: 9, title: 'QA Passed', tasks: [], backgroundColor: '#f9f9f9'}
-        ];
+        const defaultStatuses = [{id: 1, title: 'Unassigned Tasks', tasks: [], backgroundColor: '#f9f9f9'}, {
+            id: 2,
+            title: 'To Do',
+            tasks: [],
+            backgroundColor: '#f9f9f9'
+        }, {id: 3, title: 'Doing', tasks: [], backgroundColor: '#f9f9f9'}, {
+            id: 4,
+            title: 'Ready to Review',
+            tasks: [],
+            backgroundColor: '#f9f9f9'
+        }, {id: 5, title: 'Reviewing', tasks: [], backgroundColor: '#f9f9f9'}, {
+            id: 6,
+            title: 'Ready for QA',
+            tasks: [],
+            backgroundColor: '#f9f9f9'
+        }, {id: 7, title: 'In Progress', tasks: [], backgroundColor: '#f9f9f9'}, {
+            id: 8,
+            title: 'QA Failed',
+            tasks: [],
+            backgroundColor: '#f9f9f9'
+        }, {id: 9, title: 'QA Passed', tasks: [], backgroundColor: '#f9f9f9'}];
 
         let statuses = savedStatuses ? JSON.parse(savedStatuses) : defaultStatuses;
 
@@ -217,8 +224,7 @@ const Boards = ({
                     const updatedStatuses = loadedStatuses.map(status => {
                         const tasksForStatus = updatedTasks.filter(task => task.status === status.title);
                         return {
-                            ...status,
-                            tasks: tasksForStatus
+                            ...status, tasks: tasksForStatus
                         };
                     });
 
@@ -259,8 +265,7 @@ const Boards = ({
             const updatedStatuses = statuses.map(status => {
                 if (status.id === statusId) {
                     return {
-                        ...status,
-                        tasks: [...status.tasks, task]
+                        ...status, tasks: [...status.tasks, task]
                     };
                 }
                 return status;
@@ -276,12 +281,10 @@ const Boards = ({
         console.log("is task id ?", taskId)
         if (taskId) {
             const updatedStatuses = statuses.map(status => ({
-                ...status,
-                tasks: status.tasks.filter(task => task.id !== taskId)
+                ...status, tasks: status.tasks.filter(task => task.id !== taskId)
             }));
             setStatuses(updatedStatuses);
-        } else
-            console.error("task id not found")
+        } else console.error("task id not found")
     };
 
 
@@ -303,14 +306,9 @@ const Boards = ({
                 setSelectedMember(initial);
 
                 const updatedStatuses = statuses.map(status => ({
-                    ...status,
-                    tasks: status.tasks.map(task =>
-                        task.taskId === selectedTask.taskId ? {
-                            ...task,
-                            assignedUserLetter: initial,
-                            assignedToUserId: memberId
-                        } : task
-                    )
+                    ...status, tasks: status.tasks.map(task => task.taskId === selectedTask.taskId ? {
+                        ...task, assignedUserLetter: initial, assignedToUserId: memberId
+                    } : task)
                 }));
                 setStatuses(updatedStatuses);
             } else {
@@ -354,10 +352,7 @@ const Boards = ({
             await TaskService.updateTask(taskId, updatedTask);
 
             const updatedStatuses = statuses.map(status => ({
-                ...status,
-                tasks: status.tasks.map(task =>
-                    task.taskId === taskId ? updatedTask : task
-                )
+                ...status, tasks: status.tasks.map(task => task.taskId === taskId ? updatedTask : task)
             }));
 
             setStatuses(updatedStatuses);
@@ -379,8 +374,7 @@ const Boards = ({
         console.log('statusId:', statusId);
         const status = statuses.find(status => status.id === statusId);
         setSelectedTask({
-            ...task,
-            statusName: status ? status.title : 'Unknown Status'
+            ...task, statusName: status ? status.title : 'Unknown Status'
         });
 
         setHighlightedTaskId(task.taskId); // Use taskId directly
@@ -399,9 +393,10 @@ const Boards = ({
 
             const updatedStatuses = statuses.map(status => ({
                 ...status,
-                tasks: status.tasks.map(task =>
-                    task.id === selectedTask.id ? {...task, dueDate: adjustedDate.toISOString().split('T')[0]} : task
-                )
+                tasks: status.tasks.map(task => task.id === selectedTask.id ? {
+                    ...task,
+                    dueDate: adjustedDate.toISOString().split('T')[0]
+                } : task)
             }));
             setStatuses(updatedStatuses);
             handleCloseModal();
@@ -412,9 +407,7 @@ const Boards = ({
         if (selectedTask) {
             const updatedStatuses = statuses.map(status => ({
                 ...status,
-                tasks: status.tasks.map(task =>
-                    task.id === selectedTask.id ? {...task, dueDate: null} : task
-                )
+                tasks: status.tasks.map(task => task.id === selectedTask.id ? {...task, dueDate: null} : task)
             }));
             setStatuses(updatedStatuses);
             handleCloseModal();
@@ -454,9 +447,7 @@ const Boards = ({
         if (taskId) {
             const updatedStatuses = statuses.map(status => ({
                 ...status,
-                tasks: status.tasks.map(task =>
-                    task.taskId === taskId ? {...task, priority: newPriority} : task
-                )
+                tasks: status.tasks.map(task => task.taskId === taskId ? {...task, priority: newPriority} : task)
             }));
             setStatuses(updatedStatuses);
             setShowPriorityModal(false);
@@ -545,27 +536,23 @@ const Boards = ({
             }
 
             // for (const task of tasksToMove) {
-                try {
-                    const updatedTask = {
-                        ...task,
-                        status: 'Ready for QA',
-                        boardId: qaBoardId
-                    };
-                    // console.log('updatedTask',updatedTask)
-                    await TaskService.updateTask(updatedTask.taskId, updatedTask);
+            try {
+                const updatedTask = {
+                    ...task, status: 'Ready for QA', boardId: qaBoardId
+                };
+                // console.log('updatedTask',updatedTask)
+                await TaskService.updateTask(updatedTask.taskId, updatedTask);
 
-                    // Update the local state for the moved task
-                    const updatedStatuses = statuses.map(status => ({
-                        ...status,
-                        tasks: status.tasks.map(currentTask =>
-                            currentTask.taskId === task.taskId ? updatedTask : currentTask
-                        )
-                    }));
+                // Update the local state for the moved task
+                const updatedStatuses = statuses.map(status => ({
+                    ...status,
+                    tasks: status.tasks.map(currentTask => currentTask.taskId === task.taskId ? updatedTask : currentTask)
+                }));
 
-                    setStatuses(updatedStatuses);
-                } catch (error) {
-                    console.error(`Error updating task ${task.taskId}:`, error);
-                }
+                setStatuses(updatedStatuses);
+            } catch (error) {
+                console.error(`Error updating task ${task.taskId}:`, error);
+            }
             // }
 
             // alert('Tasks moved to QA successfully!');
@@ -576,24 +563,20 @@ const Boards = ({
     };
 
 
-    return (
-        <DragDropContext onDragEnd={onDragEnd}>
+    return (<DragDropContext onDragEnd={onDragEnd}>
             <div className="boardAllStatuses">
                 <div>
                     <h1>{board.name}</h1>
                 </div>
                 <Droppable droppableId="all-statuses" direction="horizontal">
-                    {(provided) => (
-                        <div
+                    {(provided) => (<div
                             className="backend-status-container"
                             ref={provided.innerRef}
                             {...provided.droppableProps}
                         >
-                            {statuses.map((status) => (
-                                <div key={status.id} className="backend-status-box-wrapper">
+                            {statuses.map((status) => (<div key={status.id} className="backend-status-box-wrapper">
                                     <Droppable droppableId={status.id.toString()} type="TASK">
-                                        {(provided) => (
-                                            <div
+                                        {(provided) => (<div
                                                 className="backend-status-box"
                                                 style={{backgroundColor: status.backgroundColor}}
                                                 ref={provided.innerRef}
@@ -617,22 +600,19 @@ const Boards = ({
                                                             >
                                                                 Delete Status
                                                             </div>
-                                                        </div>
-                                                    )}
+                                                        </div>)}
                                                 </div>
                                                 <div
                                                     className="backend-tasks-container"
                                                     ref={provided.innerRef}
                                                     {...provided.droppableProps}
                                                 >
-                                                    {status.tasks.map((task, taskIndex) => (
-                                                        <Draggable
+                                                    {status.tasks.map((task, taskIndex) => (<Draggable
                                                             key={task.taskId}
                                                             draggableId={task.taskId.toString()}
                                                             index={taskIndex}
                                                         >
-                                                            {(provided) => (
-                                                                <div
+                                                            {(provided) => (<div
                                                                     className={`backend-task-box ${highlightedTaskId === task.taskId ? 'highlighted' : ''}`}
                                                                     {...provided.draggableProps}
                                                                     {...provided.dragHandleProps}
@@ -644,18 +624,12 @@ const Boards = ({
                                                                             <div
                                                                                 className={`task-priority-display priority-${task.priority}`}
                                                                             >
-                                                                                {task.priority === 'high' && (
-                                                                                    <span
-                                                                                        className="priority-high">High</span>
-                                                                                )}
-                                                                                {task.priority === 'medium' && (
-                                                                                    <span
-                                                                                        className="priority-medium">Medium</span>
-                                                                                )}
-                                                                                {task.priority === 'low' && (
-                                                                                    <span
-                                                                                        className="priority-low">Low</span>
-                                                                                )}
+                                                                                {task.priority === 'high' && (<span
+                                                                                        className="priority-high">High</span>)}
+                                                                                {task.priority === 'medium' && (<span
+                                                                                        className="priority-medium">Medium</span>)}
+                                                                                {task.priority === 'low' && (<span
+                                                                                        className="priority-low">Low</span>)}
                                                                             </div>
                                                                         </div>
                                                                         <div className="topClass2">
@@ -666,26 +640,21 @@ const Boards = ({
                                                                         </div>
                                                                     </div>
                                                                     <div className="MiddleClass">
-                                                                        {editingTaskId === task.taskId ? (
-                                                                            <input
+                                                                        {editingTaskId === task.taskId ? (<input
                                                                                 type="text"
                                                                                 defaultValue={task.taskName}
                                                                                 onBlur={(e) => handleBlur(status.id, task.taskId, e.target.value)}
                                                                                 className="backend-task-input"
-                                                                            />
-                                                                        ) : (
-                                                                            <>
+                                                                            />) : (<>
                                                                                 <div className="nameCss">
                                                                                     <span>{task.taskName}</span>
                                                                                 </div>
                                                                                 <div className="dateWithName">
                                                                                     <div className="dateCss">
-                                                                                        {task.date && (
-                                                                                            <span
+                                                                                        {task.date && (<span
                                                                                                 className="task-due-date">
                                                                                             Due date: {new Date(task.date).toLocaleDateString()}
-                                                                                        </span>
-                                                                                        )}
+                                                                                        </span>)}
                                                                                     </div>
                                                                                     {(status.id >= 2) && (
                                                                                         <div className="nameCircle">
@@ -693,30 +662,22 @@ const Boards = ({
                                                                                                 <span
                                                                                                     className="taskMember">
                                                                                                 {task.assignedUserLetter}
-                                                                                            </span>
-                                                                                            )}
-                                                                                        </div>
-                                                                                    )}
+                                                                                            </span>)}
+                                                                                        </div>)}
                                                                                 </div>
-                                                                            </>
-                                                                        )}
+                                                                            </>)}
                                                                     </div>
-                                                                    {status.id === 5 && (
-                                                                        <button
+                                                                    {status.id === 5 && (<button
                                                                             onClick={() => moveTaskToQA(task)}
                                                                             className="move-to-qa-button"
                                                                         >
                                                                             Move to QA
-                                                                        </button>
-                                                                    )}
-                                                                </div>
-                                                            )}
-                                                        </Draggable>
-                                                    ))}
+                                                                        </button>)}
+                                                                </div>)}
+                                                        </Draggable>))}
                                                     {provided.placeholder}
                                                 </div>
-                                                {(status.id === 1 || status.id === 2) && (
-                                                    <button
+                                                {(status.id === 1 || status.id === 2) && (<button
                                                         onClick={() => {
                                                             setCurrentStatusId(status.id);
                                                             setShowAddTaskModal(true);
@@ -724,8 +685,7 @@ const Boards = ({
                                                         className="backend-show-add-task"
                                                     >
                                                         + Add Task
-                                                    </button>
-                                                )}
+                                                    </button>)}
                                                 {/*{status.id === 5 && (*/}
                                                 {/*    <button*/}
                                                 {/*        onClick={() => moveTasksToQA()}*/}
@@ -734,17 +694,13 @@ const Boards = ({
                                                 {/*        Move to QA*/}
                                                 {/*    </button>*/}
                                                 {/*)}*/}
-                                            </div>
-                                        )}
+                                            </div>)}
                                     </Droppable>
-                                </div>
-                            ))}
+                                </div>))}
                             {provided.placeholder}
-                        </div>
-                    )}
+                        </div>)}
                 </Droppable>
-                {selectedTask && (
-                    <TaskModal
+                {selectedTask && (<TaskModal
                         selectedMember={selectedMember}
                         onDelete={handleDeleteTask}
                         task={selectedTask}
@@ -762,8 +718,7 @@ const Boards = ({
                         setProjectId={setProjectId}
                         setProjectDescription={setProjectDescription}
                         setProjectMembers={setProjectMembers}
-                    />
-                )}
+                    />)}
                 {/*{showMoveModal && selectedTask && (*/}
                 {/*    <MoveModal*/}
                 {/*        task={selectedTask}*/}
@@ -781,22 +736,16 @@ const Boards = ({
                 {/*        setProjectMembers={setProjectMembers}*/}
                 {/*    />*/}
                 {/*)}*/}
-                {showPriorityModal && (
-                    <PriorityModal
+                {showPriorityModal && (<PriorityModal
                         isVisible={showPriorityModal}
                         onClose={handleClosePriorityModal}
                         onSavePriority={handleSavePriority}
-                    />
-                )}
-                {
-                    showcalenderModal && (
-                        <CalendarModal
-                            isVisible={showcalenderModal}
-                            onClose={handleCloseCalenderModal}
-                            onSavePriority={handleSaveDate}
-                            onRemoveDate={handleRemoveDate}/>
-                    )
-                }
+                    />)}
+                {showcalenderModal && (<CalendarModal
+                        isVisible={showcalenderModal}
+                        onClose={handleCloseCalenderModal}
+                        onSavePriority={handleSaveDate}
+                        onRemoveDate={handleRemoveDate}/>)}
                 {showAddTaskModal && (
 
                     <AddTaskModal
@@ -821,8 +770,7 @@ const Boards = ({
                     />
 
                 )}
-                {showChangeMemberModal && (
-                    <ChangeMemberModal
+                {showChangeMemberModal && (<ChangeMemberModal
                         isVisible={showChangeMemberModal}
                         onClose={() => setShowChangeMemberModal(false)}
                         onSave={handleChangeMember}
@@ -845,10 +793,7 @@ const Boards = ({
 
 };
 Boards.propTypes = {
-    projectId: PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-    ]).isRequired,
+    projectId: PropTypes.oneOfType([PropTypes.number, PropTypes.string,]).isRequired,
     projectDescription: PropTypes.string,
     projectMembers: PropTypes.arrayOf(PropTypes.shape({
         userId: PropTypes.number.isRequired,
@@ -861,8 +806,7 @@ Boards.propTypes = {
     setProjectMembers: PropTypes.func.isRequired,
     memberId: PropTypes.string, // Added if you are using memberId
     board: PropTypes.shape({
-        boardId: PropTypes.number.isRequired,
-        name: PropTypes.string.isRequired
+        boardId: PropTypes.number.isRequired, name: PropTypes.string.isRequired
     }).isRequired, // Ensure board prop is defined and required
 };
 
