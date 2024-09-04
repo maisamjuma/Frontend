@@ -619,6 +619,7 @@ const Boards = ({
                     onSavePriority={handleSavePriority}
                     members={projectMembers}
                     projectId={projectId}
+                    boardId={boardId}
                     projectDescription={projectDescription}
                     projectMembers={projectMembers}
                     setProjectId={setProjectId}
@@ -664,6 +665,7 @@ const Boards = ({
                         onClose={() => setShowChangeMemberModal(false)}
                         onSave={handleChangeMember}
                         projectId={projectId}
+                        boardId={boardId}
                         projectDescription={projectDescription}
                         projectMembers={projectMembers} // Add this line
                         setProjectId={setProjectId}
