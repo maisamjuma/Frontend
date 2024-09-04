@@ -1,15 +1,18 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import PropTypes from 'prop-types';
 import './UserDetailsModal.css'; // Define styles for the modal
-import { Button } from 'react-bootstrap';
+import {Button, Form} from 'react-bootstrap';
 
 import RoleService from "../../Services/RoleService.js";
+import UserService from "../../Services/UserService.js";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSignOutAlt, faKey } from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faSignOutAlt, faKey} from '@fortawesome/free-solid-svg-icons';
 
-const UserDetailsModal = ({ isVisible, onClose, userDetails, onLogout }) => {
+const UserDetailsModal = ({isVisible, onClose, userDetails, onLogout}) => {
     const [roleName, setRoleName] = useState('Loading role...'); // State to store the role name
+    const [newPassword, setNewPassword] = useState(''); // State to store the new password
+    const [showResetForm, setShowResetForm] = useState(false); // State to control visibility of the reset form
     const modalRef = useRef(null); // Ref to the modal content
 
     useEffect(() => {
@@ -44,10 +47,22 @@ const UserDetailsModal = ({ isVisible, onClose, userDetails, onLogout }) => {
         };
     }, [isVisible, onClose]);
 
-    const handleResetPassword = () => {
-        // Implement your password reset logic here
-        // For example, open a modal or redirect to a password reset page
-        alert('Password reset functionality is not yet implemented.');
+    const handleResetPassword = async () => {
+        // Show a confirmation dialog before proceeding
+        const userConfirmed = window.confirm('Are you sure you want to reset the password for this user?');
+        if (!userConfirmed) return;
+
+        try {
+            await UserService.updateUser(userDetails.userId, {password: newPassword});
+            alert('Password reset successfully.');
+            setNewPassword('');
+            setShowResetForm(false); // Hide the form after successful reset
+        } catch (error) {
+            console.error('Error resetting password:', error);
+            setShowResetForm(false); // Hide the form after successful reset
+            setNewPassword('');
+            alert('Failed to reset password. Please try again.');
+        }
     };
 
     if (!isVisible) return null;
@@ -81,11 +96,49 @@ const UserDetailsModal = ({ isVisible, onClose, userDetails, onLogout }) => {
                     <p><strong>Role:</strong> {roleName}</p>
                 </div>
                 <div className="action-buttons">
-                    <Button variant="warning" onClick={handleResetPassword}>
-                        <FontAwesomeIcon icon={faKey} /> Reset Password
-                    </Button>
-                    <Button variant="primary" onClick={onLogout}>
-                        <FontAwesomeIcon icon={faSignOutAlt} /> Log Out
+                    {!showResetForm && (
+                        <Button variant="warning"
+                                onClick={() => setShowResetForm(!showResetForm)} className="Reset-Btn">
+                            <FontAwesomeIcon icon={faKey}
+                                             className="Reset-Icon"/> {showResetForm ? 'Confirm Reset' : 'Reset Password'}
+                        </Button>
+                    )}
+                    {showResetForm && (
+                        <div className="password-field-group">
+                            <Form.Group controlId="newPassword">
+                                <Form.Label className="new-passwordL">New Password</Form.Label>
+                                <Form.Control
+                                    type="password"
+                                    placeholder="Enter new password"
+                                    value={newPassword}
+                                    onChange={(e) => setNewPassword(e.target.value)}
+                                    className="custom-password-field"
+                                />
+                            </Form.Group>
+                            <div className="password-buttons">
+                                <Button
+                                    variant="warning"
+                                    onClick={handleResetPassword}
+                                    className="Reset-Btn"
+                                >
+                                    <FontAwesomeIcon icon={faKey}
+                                                     className="Reset-Icon"/> {showResetForm ? 'Confirm Reset' : 'Reset Password'}
+                                </Button>
+                                <Button
+                                    variant="warning"
+                                    onClick={() => {
+                                        setShowResetForm(!showResetForm);
+                                        setNewPassword('');
+                                    }}
+                                    className="Reset-Btn"
+                                >
+                                    Cancel
+                                </Button>
+                            </div>
+                        </div>
+                    )}
+                    <Button variant="primary" onClick={onLogout} className="LogOut-Btn">
+                        <FontAwesomeIcon icon={faSignOutAlt} className="LogOut-Icon"/> Log Out
                     </Button>
                 </div>
             </div>

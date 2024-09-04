@@ -11,7 +11,7 @@
 }
 
 .modal-content {
-    background: #fff;
+    background: #f8f9fa;
     padding: 20px;
     border-radius: 5px;
     width: 500px;
@@ -48,4 +48,64 @@
 
 .action-buttons .btn {
     width: 100%;
+}
+
+.Reset-Btn:hover .Reset-Icon,
+.LogOut-Btn:hover .LogOut-Icon {
+    color: white; /* Change the color to red on hover */
+}
+
+.Reset-Btn, .LogOut-Btn {
+    color: inherit; /* Inherit the button's base color */
+    transition: color 0.3s ease; /* Smooth transition for color change */
+}
+
+/* Change the color of the icon and text on hover */
+.Reset-Btn:hover, .Reset-Btn:hover .Reset-Icon,
+.LogOut-Btn:hover, .LogOut-Btn:hover .LogOut-Icon {
+    color: black !important; /* Ensure red color on hover */
+}
+
+
+/* New styles for password field and buttons */
+.password-field-group {
+    border: 3px solid darksalmon;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.password-field-group .form-control {
+    border: none;
+    box-shadow: none;
+}
+
+.password-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 10px; /* Adjust margin as needed */
+}
+
+.password-buttons .btn {
+    flex: 1;
+}
+
+.Reset-Btn:active,
+.LogOut-Btn:active{
+    background-color: #4f4f4f !important; /* Color when button is pressed */
+    color: white !important;
+}
+
+.custom-password-field{
+    background-color: white !important; /* Red background color */
+}
+
+.custom-password-field::placeholder{
+    color: #DCDDE1 !important;
+    font-size: 16px;
+}
+
+.new-passwordL{
+    color: #544e4e !important;
 }
