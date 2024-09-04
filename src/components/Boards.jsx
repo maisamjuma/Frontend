@@ -39,6 +39,8 @@ const Boards = ({
     const [selectedMember, setSelectedMember] = useState('');
     const [taskId, setTaskId] = useState(null);
 
+    const [refreshKey, setRefreshKey] = useState(0);
+
 
     const onDragEnd = async (result) => {
         console.log("result", result);
@@ -213,7 +215,12 @@ const Boards = ({
             };
             loadStatusesAndTasks();
         }
-    }, [boardId, name, showPriorityModal, selectedTask]);
+    }, [boardId, name, showPriorityModal, selectedTask, refreshKey]);
+
+    // Call this function when moving a task
+    const refreshBoard = () => {
+        setRefreshKey(prev => prev + 1); // Increment to trigger useEffect
+    };
 
     useEffect(() => {
         if (statuses.length > 0) {
@@ -412,9 +419,11 @@ const Boards = ({
 
     const moveTaskToQA = async (task) => {
         try {
-            const response = await BoardService.getBoardsByProject(projectId);
-            const boards = response.data;
+            // Fetch boards for the project
+            const boardsResponse = await BoardService.getBoardsByProject(projectId);
+            const boards = boardsResponse.data;
 
+            // Find the QA board
             const qaBoard = boards.find(board => board.name === 'QA');
             if (!qaBoard) {
                 console.error('QA board not found');
@@ -423,49 +432,44 @@ const Boards = ({
 
             const qaBoardId = qaBoard.boardId;
 
-            // Find the 'Reviewing' status in the current board
-            const reviewingStatus = statuses.find(status => status.title === 'Reviewing');
-            if (!reviewingStatus) {
-                console.error('Reviewing status not found in the current board');
-                return;
-            }
+            // Prepare the updated task
+            const updatedTask = {
+                ...task,
+                status: 'Ready for QA',
+                boardId: qaBoardId
+            };
 
-            //now i have qaBoardId and reviewingStatus, and im ready to make the action
+            // Remove fields that are not compatible with the updateTask endpoint
+            delete updatedTask.assignedUserLetter;
+            delete updatedTask.createdAt;
 
-            //removing fields that are not compatible with the updateTask endpoint
-            delete task.assignedUserLetter;
-            delete task.createdAt;
+            // Update the task on the server
+            const updateTaskResponse = await TaskService.updateTask(task.taskId, updatedTask);
+            console.log('Task updated:', updateTaskResponse);
 
-            if (!task) {
-                console.error('No task to move');
-                return;
-            }
+            // Update the local state
+            const updatedStatuses = statuses.map(status => {
+                if (status.boardId === task.boardId) {
+                    // Remove the task from the current board's status
+                    return {
+                        ...status,
+                        tasks: status.tasks.filter(currentTask => currentTask.taskId !== task.taskId)
+                    };
+                } else if (status.boardId === qaBoardId) {
+                    // Add the task to the QA board's status
+                    return {
+                        ...status,
+                        tasks: [...status.tasks, updatedTask]
+                    };
+                }
+                return status;
+            });
 
-            try {
-                const updatedTask = {
-                    ...task,
-                    status: 'Ready for QA',
-                    boardId: qaBoardId
-                };
-                // console.log('updatedTask',updatedTask)
-                const response =await TaskService.updateTask(task.taskId, updatedTask);
-                console.log('response', response)
-
-                // Update the local state for the moved task
-                const updatedStatuses = statuses.map(status => ({
-                    ...status,
-                    tasks: status.tasks.map(currentTask => currentTask.taskId === task.taskId ? updatedTask : currentTask)
-                }));
-
-                setStatuses(updatedStatuses);
-            } catch (error) {
-                console.error(`Error updating task ${task.taskId}:`, error);
-            }
-
-
+            setStatuses(updatedStatuses);
+            refreshBoard();
         } catch (error) {
-            console.error('Error fetching boards or moving tasks:', error);
-            alert('There was an error moving the tasks. Please try again.');
+            console.error('Error moving task:', error);
+            alert('There was an error moving the task. Please try again.');
         }
     };
 
