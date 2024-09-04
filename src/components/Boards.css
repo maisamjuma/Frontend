@@ -103,15 +103,16 @@
 .topTop {
     display: flex;
     flex-direction: row;
-    gap: 70px;
+    gap: 120px;
     justify-content: space-around;
     flex: 1;
     margin-right: 10px;
+    width: 228px;
 }
 
 .topClass2 {
     display: flex;
-    margin-left: 0px;
+    margin-left: 15px;
     margin-right: 10px;
 }
 
@@ -141,7 +142,7 @@
 
 /* Input field when editing */
 .backend-task-box input {
-    width: 176px;
+    width: 200px;
     padding: 10px;
     border: 1px solid #f9f9f9;
     border-radius: 1px;
@@ -405,13 +406,12 @@
     gap: 10px;
     font-weight: bold;
     color: #34495e;
-
 }
 
 .nameCss {
     border: 2px solid #ccc;
     border-radius: 8px;
-    width: 180px;
+    width: 100%;
     padding-left: 5px;
     padding-top: 3px;
     padding-bottom: 3px;
@@ -419,8 +419,6 @@
     word-wrap: break-word;
     white-space: wrap;
     word-spacing: 3px;
-
-
 }
 
 .nameCss:hover {
@@ -428,7 +426,7 @@
 }
 
 .dateCss {
-    width: 170px;
+    width: 228px;
     padding-left: 0px;
     padding-top: 3px;
     padding-bottom: 3px;
