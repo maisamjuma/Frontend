@@ -168,7 +168,7 @@ const HomePage = () => {
 
 
                     <div className="rolecontent" ref={roleContentRef}>
-                        <h3>Add New Roll</h3>
+                        <h3>Add New Role</h3>
                         <input
                             type='text'
                             value={newRole}
