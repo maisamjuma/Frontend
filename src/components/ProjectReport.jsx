@@ -150,7 +150,13 @@ const ProjectReport = () => {
                                                         <td>{task.status}</td>
                                                         <td>{task.taskName}</td>
                                                         <td>{task.taskDescription || 'No description'}</td>
-                                                        <td>{task.priority}</td>
+                                                        <td className={
+                                                            task.priority === 'high' ? 'priority-high' :
+                                                                task.priority === 'medium' ? 'priority-medium' :
+                                                                    'priority-low'
+                                                        }>
+                                                            {task.priority}
+                                                        </td>
                                                         <td>{userName}</td>
                                                         <td>{new Date(task.createdAt).toLocaleString()}</td>
                                                         <td>{new Date(task.updatedAt).toLocaleString()}</td>
@@ -159,7 +165,7 @@ const ProjectReport = () => {
                                             })
                                         ) : (
                                             <tr key={`no-tasks-${board.boardId}`}>
-                                                <td colSpan="9">No tasks for board {board.boardId}</td>
+                                                <td colSpan="9">No tasks for board {board.name}</td>
                                             </tr>
                                         )}
                                     </React.Fragment>

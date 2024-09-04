@@ -15,6 +15,7 @@
 .scroll-container {
     max-height: 500px; /* Adjust this value as needed */
     overflow: auto; /* Enable scrolling if needed */
+    background-color: #f4f4f9;
 }
 
 /* Ensure the chart container handles overflow */
@@ -60,4 +61,31 @@
 
 .project-name {
     color: black; /* Color for the project name */
+}
+
+.priority-high {
+    color: #ae2e24; /* Red for high priority */
+    width: 80px;
+    text-align: center;
+    border-radius: 6px;
+    font-weight: bold;
+    background-color: #f4f4f9;
+}
+
+.priority-medium {
+    color: #7f5f01; /* Yellow for medium priority */
+    width: 80px;
+    text-align: center;
+    border-radius: 6px;
+    font-weight: bold;
+    background-color: #f4f4f9;
+}
+
+.priority-low {
+    color: #216e4e; /* Green for low priority */
+    width: 80px;
+    text-align: center;
+    border-radius: 6px;
+    font-weight: bold;
+    background-color: #f4f4f9;
 }
