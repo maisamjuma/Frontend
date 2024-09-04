@@ -1,4 +1,11 @@
 /* src/components/projects.css */
+/* Add this CSS to your project's CSS file */
+.scrollable-page {
+    overflow-y: hidden;
+    max-height: 100vh; /* Adjust as necessary */
+    padding: 20px; /* Optional: Add some padding */
+}
+
 
 .projectscon {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
