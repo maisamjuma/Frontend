@@ -174,10 +174,10 @@ const Workspace = ({isVisible}) => {
             console.error('Error creating board:', error);
         }
     };
-
-    const handleCloseDropdown = () => {
-        setIsDropdownOpen(false);
-    };
+    //
+    // const handleCloseDropdown = () => {
+    //     setIsDropdownOpen(false);
+    // };
 
     const handleDeleteBoard = async (boardId) => {
         try {

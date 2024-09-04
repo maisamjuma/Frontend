@@ -691,6 +691,14 @@ const Boards = ({
                                                                             </>
                                                                         )}
                                                                     </div>
+                                                                    {status.id === 5 && (
+                                                                        <button
+                                                                            onClick={() => moveTasksToQA(task)}
+                                                                            className="move-to-qa-button"
+                                                                        >
+                                                                            Move to QA
+                                                                        </button>
+                                                                    )}
                                                                 </div>
                                                             )}
                                                         </Draggable>
@@ -708,14 +716,14 @@ const Boards = ({
                                                         + Add Task
                                                     </button>
                                                 )}
-                                                {status.id === 5 && (
-                                                    <button
-                                                        onClick={() => moveTasksToQA()}
-                                                        className="move-to-qa-button"
-                                                    >
-                                                        Move to QA
-                                                    </button>
-                                                )}
+                                                {/*{status.id === 5 && (*/}
+                                                {/*    <button*/}
+                                                {/*        onClick={() => moveTasksToQA()}*/}
+                                                {/*        className="move-to-qa-button"*/}
+                                                {/*    >*/}
+                                                {/*        Move to QA*/}
+                                                {/*    </button>*/}
+                                                {/*)}*/}
                                             </div>
                                         )}
                                     </Droppable>
