@@ -73,7 +73,7 @@ const Workspace = ({isVisible}) => {
         try {
             const response = await RoleService.getAllRoles();
             const rolesWithIds = response.data.map(role => ({
-                id: role.roleId,
+                    funcRoleId:role.funcRoleId,
                 roleName: role.roleName
             }));
             setRoles(rolesWithIds);
@@ -148,6 +148,7 @@ const Workspace = ({isVisible}) => {
 
     const handleAddBoard = async () => {
         if (!projectId || !selected_roleId) return;
+console.log("!projectId || !selected_roleId",projectId,selected_roleId)
 
         try {
             // Fetch the role details by ID
@@ -163,7 +164,7 @@ const Workspace = ({isVisible}) => {
                 boardId: selected_roleId,
                 name: role.roleName || 'New Board',
             };
-
+            console.log("new board", newBoard)
             await BoardService.createBoard(projectId, selected_roleId);
             setBoards([...boards, newBoard]);
 
@@ -257,7 +258,7 @@ const Workspace = ({isVisible}) => {
                                 onChange={handleRoleChange}>
                                 <option value="">Select Role</option>
                                 {roles.map(role => (
-                                    <option key={role.id} value={role.id}>
+                                    <option key={role.funcRoleId} value={role.funcRoleId}>
                                         {role.roleName}
                                     </option
                                     >

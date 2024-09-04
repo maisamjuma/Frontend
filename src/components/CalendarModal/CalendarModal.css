@@ -14,7 +14,8 @@
 /* Calendar modal content */
 .calendar-modal-content {
     background: #ffffff; /* Light background for modal */
-    color: #333333; /* Dark gray text color */
+    color: black; /* Dark gray text color */
+    font-weight: bold;
     padding: 20px;
     border-radius: 8px; /* Rounded corners */
     position: relative;

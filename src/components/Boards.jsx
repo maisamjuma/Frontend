@@ -535,11 +535,11 @@ const Boards = ({
                                                             className={`task-priority-display priority-${task.priority}`}
                                                         >
                                                             {task.priority === 'high' && (<span
-                                                                className="priority-high">High</span>)}
+                                                                className="priority-highB">High</span>)}
                                                             {task.priority === 'medium' && (<span
-                                                                className="priority-medium">Medium</span>)}
+                                                                className="priority-mediumB">Medium</span>)}
                                                             {task.priority === 'low' && (<span
-                                                                className="priority-low">Low</span>)}
+                                                                className="priority-lowB">Low</span>)}
                                                         </div>
                                                     </div>
                                                     <div className="topClass2">

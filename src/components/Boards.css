@@ -366,7 +366,7 @@
     color: #fff; /* Adjust color as needed */
 }
 
-.priority-high {
+.priority-highB {
     background-color: #ae2e24; /* Red for high priority */
     color: #fbfafd;
     width: 80px;
@@ -374,14 +374,15 @@
     border-radius: 6px;
 }
 
-.priority-medium {
+.priority-mediumB {
     background-color: #7f5f01; /* Yellow for medium priority */
+    color: #e9f6fd;
     width: 80px;
     text-align: center;
     border-radius: 6px;
 }
 
-.priority-low {
+.priority-lowB {
     background-color: #216e4e; /* Green for low priority */
     color: #e9f6fd;
     width: 80px;
