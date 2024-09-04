@@ -152,7 +152,9 @@ const Boards = ({
         let statuses = savedStatuses ? JSON.parse(savedStatuses) : defaultStatuses;
 
         // Filter statuses based on board name
-        if (name === 'QA') {
+        console.log("name",name);
+        if (name === "QA") {
+             console.log("loading QA statuses")
             statuses = statuses.filter(status => status.id > 5);
         } else if (name === 'Backend' || name === 'Frontend') {
             statuses = statuses.filter(status => status.id <= 5);
@@ -168,16 +170,16 @@ const Boards = ({
             const loadStatusesAndTasks = async () => {
                 if (!name) return;
 
-                console.log(`Loading statuses for {projectId: ${projectId}, boardId: ${boardId}, name: '${name}'}`);
+                console.log(`Loading statuses for {boardId: ${boardId}, name: '${name}'}`);
 
                 // Load statuses
                 const loadedStatuses = loadStatuses();
                 setStatuses(loadedStatuses);
 
                 try {
-                    // Fetch tasks
-                    const response = await TaskService.getTasksByProjectId(projectId);
-                    const tasks = response.data.filter(task => task.boardId === boardId);
+                    // Fetch tasks by board ID
+                    const response = await TaskService.getTasksByBoardId(boardId);
+                    const tasks = response.data;
 
                     // Fetch user details for each task and add assignedUserLetter
                     const updatedTasks = await Promise.all(tasks.map(async task => {
@@ -211,7 +213,7 @@ const Boards = ({
             };
             loadStatusesAndTasks();
         }
-    }, [projectId, boardId, name, showPriorityModal, selectedTask]);
+    }, [boardId, name, showPriorityModal, selectedTask]);
 
     useEffect(() => {
         if (statuses.length > 0) {
@@ -441,10 +443,13 @@ const Boards = ({
 
             try {
                 const updatedTask = {
-                    ...task, status: 'Ready for QA', boardId: qaBoardId
+                    ...task,
+                    status: 'Ready for QA',
+                    boardId: qaBoardId
                 };
                 // console.log('updatedTask',updatedTask)
-                await TaskService.updateTask(updatedTask.taskId, updatedTask);
+                const response =await TaskService.updateTask(task.taskId, updatedTask);
+                console.log('response', response)
 
                 // Update the local state for the moved task
                 const updatedStatuses = statuses.map(status => ({

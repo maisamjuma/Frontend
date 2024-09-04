@@ -68,6 +68,15 @@ class TaskService {
         return axios.get(`${TASKS_API_BASE_URL}/user/${userId}`);
     }
 
+    // Fetch all tasks of a specific board by Board ID
+    getTasksByBoardId(boardId) {
+        const token = localStorage.getItem("token");
+        return axios.get(`${TASKS_API_BASE_URL}/board/${boardId}`, {
+            headers: {
+                'X-Auth-Token': token
+            }
+        });
+    }
     // Create a new task and assign it to a user and a project
     createTask(task) {
         const token = localStorage.getItem("token");
