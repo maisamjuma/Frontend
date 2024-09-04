@@ -106,6 +106,8 @@
     padding: 10px;
     border-radius: 5px; /* Makes the ends of the list item round */
     list-style: none;
+    width: 175px;
+    text-align: left;
 }
 
 /* Hover effect for add and delete project buttons */

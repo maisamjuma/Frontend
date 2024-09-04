@@ -9,7 +9,9 @@ import {userIsAdmin} from '../utils/authUtils';
 import {ArrowDownIcon} from "./SVGIcons.jsx";
 import {FaPen} from "react-icons/fa";
 
-import UserDetailsModal from './UserDetails/UserDetailsModal.jsx'; // Import the UserDetailsModal component
+import UserDetailsModal from './UserDetails/UserDetailsModal.jsx';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"; // Import the UserDetailsModal component
+import {faMinusSquare, faPlusSquare} from '@fortawesome/free-solid-svg-icons';
 
 
 const Sidebar = ({onMenuAction, onLogout}) => {
@@ -272,8 +274,10 @@ const Sidebar = ({onMenuAction, onLogout}) => {
                             {/*<span className="menu-toggle" onClick={toggleMenu}>...</span>*/}
                             {isMenuOpen && (
                                 <ul className="menu-list" onClick={(e) => e.stopPropagation()}>
-                                    <li className="addpro" onClick={() => handleMenuAction('Add')}>Add</li>
-                                    <li className="deletepro" onClick={() => handleMenuAction('Delete')}>Delete</li>
+                                    <li className="addpro" onClick={() => handleMenuAction('Add')}>
+                                        <FontAwesomeIcon icon={faPlusSquare} /> Add Project</li>
+                                    <li className="deletepro" onClick={() => handleMenuAction('Delete')}>
+                                        <FontAwesomeIcon icon={faMinusSquare} /> Delete Project</li>
                                 </ul>
                             )}
                         </div>
