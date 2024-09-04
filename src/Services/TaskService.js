@@ -26,14 +26,21 @@ class TaskService {
     }
 
     // Update a task by its ID
-    updateTask(taskId, updatedTaskData) {
+    async updateTask(taskId, updatedTaskData) {
         const token = localStorage.getItem("token");
-        return axios.put(`${TASKS_API_BASE_URL}/${taskId}`, updatedTaskData, {
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Auth-Token': token
-            }
-        });
+        try {
+            console.log('updatedTaskData', updatedTaskData)
+            const response = await axios.put(`${TASKS_API_BASE_URL}/${taskId}`, updatedTaskData, {
+                headers: {
+                    'X-Auth-Token': token
+                }
+            });
+            return response.data;
+
+        } catch (err) {
+            console.error('Error updating task:', err.response ? err.response.data : err.message);
+            throw err;
+        }
     }
 
     // Fetch all tasks

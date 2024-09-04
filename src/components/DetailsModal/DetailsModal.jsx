@@ -15,6 +15,7 @@ const DetailsModal = ({ task, onClose }) => {
     const [descriptionData, setDescriptionData] = useState(initialTableData.map(row => ({ Description: row.Description })));
     const [commentsData, setCommentsData] = useState([]);
     const [user, setUser] = useState(null);
+    const [editingIndex, setEditingIndex] = useState(null); // State to track the index of the comment being edited
 
     useEffect(() => {
         const storedUser = localStorage.getItem('loggedInUser');
@@ -70,6 +71,7 @@ const DetailsModal = ({ task, onClose }) => {
         const updatedData = [...commentsData];
         updatedData[rowIndex].Comments = e.target.value;
         setCommentsData(updatedData);
+        setEditingIndex(rowIndex); // Set the editing index when a comment is being edited
     };
 
     const handleAddCommentsRow = () => {
@@ -77,7 +79,10 @@ const DetailsModal = ({ task, onClose }) => {
         if (storedUser) {
             const user = JSON.parse(storedUser);
         setCommentsData([...commentsData, { Comments: '', CommentedBy:
-                { firstName: user.firstName, lastName: user.lastName } }]);}
+                { firstName: user.firstName, lastName: user.lastName } }]);
+
+            setEditingIndex(commentsData.length); // Set the new comment as the one being edited
+        }
     };
 
     const handleSaveDescription = async () => {
@@ -119,6 +124,8 @@ const DetailsModal = ({ task, onClose }) => {
                 const updatedComments = [...commentsData];
                 updatedComments[rowIndex].Comments = commentText;
                 setCommentsData(updatedComments);
+                setEditingIndex(null); // Clear the editing index once the comment is saved
+
             } else {
                 alert('User information is not available. Please log in again.');
             }
@@ -150,12 +157,12 @@ const DetailsModal = ({ task, onClose }) => {
                                 <tbody>
                                 <tr>
                                     <td>
-                                            <textarea
-                                                className="textarea"
-                                                value={row.Description}
-                                                onChange={(e) => handleDescriptionChange(e, rowIndex)}
-                                                rows="10"
-                                            />
+                                        <textarea
+                                            className="textarea"
+                                            value={row.Description}
+                                            onChange={(e) => handleDescriptionChange(e, rowIndex)}
+                                            rows="10"
+                                        />
                                     </td>
                                 </tr>
                                 </tbody>
@@ -164,7 +171,9 @@ const DetailsModal = ({ task, onClose }) => {
                     ))}
                 </div>
                 <div className="table-controls">
-                    <button className="save-description-btn" onClick={handleSaveDescription}>Save Description</button>
+                    <button className="save-description-btn" onClick={handleSaveDescription}>
+                        Save Description
+                    </button>
                 </div>
                 <div className="detailstitle">
                     <FontAwesomeIcon icon={faTasks} className="details-icon" />
@@ -172,53 +181,43 @@ const DetailsModal = ({ task, onClose }) => {
                 </div>
                 <div className="table-container-comment">
                     {commentsData.map((row, rowIndex) => (
-                        <div key={rowIndex} className="table-row">
-
-                            <table className="task-details-table-comment">
-                                <thead>
-                                <tr>
-                                    <th className="comment-header">
-                            <span className="member-name-comment">
+                        <div key={rowIndex} className="comment-row">
+                            <div className="comment-header">
+                            <span className="comment-circle">
+                                {row.CommentedBy.firstName.charAt(0)}
+                            </span>
+                                <span className="member-name-comment">
                                 {row.CommentedBy.firstName} {row.CommentedBy.lastName}
                             </span>
-                                        <button
-                                            className="save-comment-btn"
-                                            onClick={() => handleSaveComment(row.Comments, rowIndex)}
-                                        >
-                                            Save Comment
-                                        </button>
-                                    </th>
-                                </tr>
-                                </thead>
-
-                                <tbody>
-                                <tr>
-                                    <td>
-                                            <textarea
-                                                className="textarea-comment"
-                                                value={row.Comments}
-                                                onChange={(e) => handleCommentsChange(e, rowIndex)}
-                                                rows="10"
-                                            />
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            {/*<button*/}
-                            {/*    className="save-comment-btn"*/}
-                            {/*    onClick={() => handleSaveComment(row.Comments, rowIndex)}*/}
-                            {/*>*/}
-                            {/*    Save Comment*/}
-                            {/*</button>*/}
+                            </div>
+                            <div className="comment-content">
+                            <textarea
+                                className="textarea-comment"
+                                value={row.Comments}
+                                onChange={(e) => handleCommentsChange(e, rowIndex)}
+                                rows="10"
+                            />
+                                {editingIndex === rowIndex && (
+                                    <button
+                                        className="save-comment-btn"
+                                        onClick={() => handleSaveComment(row.Comments, rowIndex)}
+                                    >
+                                        Save
+                                    </button>
+                                )}
+                            </div>
                         </div>
                     ))}
                 </div>
                 <div className="table-controls-comment">
-                    <button className="addcomment" onClick={handleAddCommentsRow}>Add Comment</button>
+                    <button className="addcomment" onClick={handleAddCommentsRow}>
+                        Add Comment
+                    </button>
                 </div>
             </div>
         </div>
     );
+
 };
 
 DetailsModal.propTypes = {

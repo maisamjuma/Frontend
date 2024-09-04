@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Route, Routes, Navigate, useNavigate} from 'react-router-dom';
 import Projects from './components/projects';
 import Workspace from './components/Workspace';
+
 import AddUser from "./components/Home/AddUser.jsx";
 import Layout from "./components/Layout/Layout.jsx";
 import Login from "./components/Login/Login.jsx";
@@ -10,6 +11,7 @@ import EditUser from "./components/Home/EditUser.jsx"; // Import the EditUser co
 import Notification from "./components/Notification.jsx";
 import HomePage from "./components/Home/HomePage.jsx";
 import PropTypes from "prop-types";
+import ProjectReport from "./components/ProjectReport.jsx";
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -96,6 +98,7 @@ function App() {
                                 <Route path="edit-user/:userId"
                                        element={<EditUser/>}/> {/* Add this route for editing users */}
                                 <Route path="workspace/:projectName/*" element={<Workspace/>}/>
+                                <Route path="ProjectReport/:projectId/*" element={<ProjectReport/>}/>
                                 {/*<Route path="/" element={<ListUser />} />*/}
                                 {/*<Route path="listuser" element={<ListUser />} />*/}
                                 {/*<Route path="user" element={<AddUser />} />*/}
