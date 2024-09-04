@@ -94,3 +94,13 @@
 .member-item.selected {
     background-color: #d1e7ff; /* Light blue to indicate selection */
 }
+
+.search-bar{
+    color: #6c757d !important;
+    background-color: #f0f0f0 !important;
+}
+
+.secondary-nav-button:hover {
+    background-color: #7f8fa6 !important;
+    color: white !important;
+}
