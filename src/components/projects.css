@@ -256,6 +256,12 @@ button:hover {
     margin-left: 350px;
 }
 
+.btn-project-details{
+    position: absolute;
+    margin-top: 95px;
+    margin-left: 363px;
+}
+
 .secondary-navbarForPro {
     position: fixed;
     top: 60px; /* Adjust based on navbar height */

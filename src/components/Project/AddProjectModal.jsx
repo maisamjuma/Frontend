@@ -100,29 +100,27 @@ const AddProjectModal = ({isVisible, onClose, onAddProject}) => {
                     {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
                     <form>
                         <div className="form-group">
-                            <label>Name:</label>
+                            <label className="newProjectLables">Name:</label>
                             <input
                                 placeholder="Project Name"
                                 name="name"
-                                className="form-control"
+                                className="form-control-of-description-and-name"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                             />
                         </div>
                         <div className="form-group">
-                            <label>Description:</label>
+                            <label className="newProjectLables">Description:</label>
                             <textarea
                                 placeholder="Project Description"
                                 name="description"
-                                className="form-control"
+                                className="form-control-of-description-and-name"
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
                             />
                         </div>
                         <button type="button" className="btn btn-success" onClick={handleAddProject}>Save</button>
-                        <button type="button" className="btn btn-danger" onClick={onClose}
-                                style={{marginLeft: "10px"}}>Cancel
-                        </button>
+                        <button type="button" className="btn btn-danger" onClick={onClose}>Cancel</button>
                     </form>
                 </div>
             </div>

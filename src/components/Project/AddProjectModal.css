@@ -77,21 +77,38 @@
 
 .btn-success {
     background-color: #7f8fa6; /* Updated to match theme */
+    margin-left: 10px;
 }
 
 .btn-danger {
-    background-color: #dc3545;
+    background-color: #dc3545 !important;
+    margin-left: 10px;
 }
 
 .btn-success:hover {
-    background-color: #6c757d; /* Darker shade for hover effect */
+    background-color: #7f8fa6 !important; /* Updated to match theme */
+    color: white !important; /* Darker shade for hover effect */
 }
 
 .btn-danger:hover {
-    background-color: #c82333;
+    background-color: #dc3545 !important;
+    color: white !important;
 }
 
 /* Adjust spacing for buttons */
 button {
     margin-right: 10px;
+}
+
+.form-control-of-description-and-name{
+    background-color: white !important;
+}
+
+.form-control-of-description-and-name::placeholder{
+    color: #DCDDE1 !important;
+    font-size: 16px;
+}
+
+.newProjectLables{
+    color: #4a4e52 !important;
 }
