@@ -1,22 +1,39 @@
-/* src/components/projectReport.css */
+/* src/components/ProjectReport.css */
 
+/* Ensure the report-page container handles overflow */
 .report-page {
     padding: 20px;
-    max-width: 1200px;
+    max-width: 1000px;
     margin: auto;
     background-color: #f4f4f9;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    overflow: auto; /* Enable scrolling if needed */
 }
 
-.report-content {
+/* Container for both chart and table with overflow handling */
+.scroll-container {
+    max-height: 500px; /* Adjust this value as needed */
+    overflow: auto; /* Enable scrolling if needed */
+}
+
+/* Ensure the chart container handles overflow */
+.chart-container {
     margin-top: 20px;
+    max-width: 100%; /* Ensure the chart container is responsive */
 }
 
+/* Ensure the table container handles overflow */
+.table-container {
+    margin-top: 20px; /* Add some space above the table */
+    width: 100%;
+}
+
+/* Ensure the table handles overflow and remains responsive */
 .report-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    overflow-x: auto; /* Ensure table can scroll horizontally */
 }
 
 .report-table th, .report-table td {
@@ -30,4 +47,17 @@
     text-align: left;
     background-color: #f2f2f2;
     color: black;
+}
+
+.report-table td {
+    word-wrap: break-word; /* To handle long text in cells */
+}
+
+/* Project report styling */
+.project-report {
+    color: darksalmon; /* Default color for the text */
+}
+
+.project-name {
+    color: black; /* Color for the project name */
 }
