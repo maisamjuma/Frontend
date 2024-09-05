@@ -107,7 +107,7 @@ const Boards = ({
             console.log("task selected:",task)
             setShowChangeMemberModal(true);
             setSelectedTask(task); // Set selected task for the modal
-            return;
+            // return;
         }
 
         const updatedStatuses = statuses.map(status => {
@@ -452,7 +452,8 @@ const Boards = ({
             const updatedTask = {
                 ...task,
                 status: 'Ready for QA',
-                boardId: qaBoardId
+                boardId: qaBoardId,
+                assignedToUserId: null
             };
 
             // Remove fields that are not compatible with the updateTask endpoint

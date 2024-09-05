@@ -137,6 +137,8 @@ const DetailsModal = ({ task, onClose }) => {
         }
     };
 
+
+
     return (
         <div className="details-modal-overlay" onClick={handleOverlayClick}>
             <div className="details-modal-content">
