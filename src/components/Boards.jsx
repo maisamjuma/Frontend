@@ -11,6 +11,7 @@ import ChangeMemberModal from "./ChangeMemberModal.jsx";
 import TaskService from "../Services/TaskService.js";
 import UserService from "../Services/UserService.js";
 import BoardService from "../Services/BoardService.js";
+import { userIsAdmin, userIsTeamLeader } from '../utils/authUtils'; // Import the utility functions
 
 const Boards = ({
                     board,
@@ -38,8 +39,10 @@ const Boards = ({
     const [comingFromChangeMember, setComingFromChangeMember] = useState(false);
     const [selectedMember, setSelectedMember] = useState('');
     const [taskId, setTaskId] = useState(null);
+   // const [changeMemberModalCallback, setChangeMemberModalCallback] = useState(null);
 
     const [refreshKey, setRefreshKey] = useState(0);
+
 
 
     const onDragEnd = async (result) => {
@@ -98,6 +101,12 @@ const Boards = ({
 
         if (destinationStatusId === 1 && sourceStatusId >= 2) {
             alert("You cannot move tasks from a higher status back to the unassigned tasks.");
+            return;
+        }
+        if (destinationStatusId === 2 && sourceStatusId === 1) {
+            console.log("task selected:",task)
+            setShowChangeMemberModal(true);
+            setSelectedTask(task); // Set selected task for the modal
             return;
         }
 
@@ -166,6 +175,10 @@ const Boards = ({
         }
 
         // Ensure priority field exists in each task
+        // Conditionally exclude 'Unassigned Tasks' status
+        if (!userIsAdmin() && !userIsTeamLeader()) {
+            statuses = statuses.filter(status => status.id !== 1); // Exclude 'Unassigned Tasks'
+        }
 
         return statuses;
     };

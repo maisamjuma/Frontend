@@ -17,6 +17,7 @@ import DetailsModal from "./DetailsModal/DetailsModal.jsx";
 import LabelModal from "./LabelModal.jsx";
 import ChangeMemberModal from './ChangeMemberModal';
 import TaskService from "../Services/TaskService.js";
+import { userIsAdmin, userIsTeamLeader } from '../utils/authUtils'; // Import the utility functions
 
 // eslint-disable-next-line react/prop-types
 const TaskModal = ({
@@ -88,7 +89,8 @@ const TaskModal = ({
     //     // For example, update the task with the new member ID
     //     // updateTaskMember(task.id, memberId);
     // };
-
+// Determine if the Change Member button should be visible
+    const canChangeMembers = userIsAdmin() || userIsTeamLeader();
     return (
         <div className="task-modal-overlay" onClick={handleOverlayClick}>
             <div className="task-modal-content" style={{backgroundColor: getTaskBackgroundColor()}}>
@@ -99,9 +101,11 @@ const TaskModal = ({
                     <button onClick={() => setIsPriorityModalOpen(true)}>
                         <FontAwesomeIcon icon={faArrowUp}/> Edit Priority
                     </button>
-                    <button onClick={() => setIsChangeMemberModalOpen(true)}>
-                        <FontAwesomeIcon icon={faUser}/> Change Member
-                    </button>
+                    {canChangeMembers && (
+                        <button onClick={() => setIsChangeMemberModalOpen(true)}>
+                            <FontAwesomeIcon icon={faUser} /> Change Member
+                        </button>
+                    )}
                     <button onClick={() => setIsCalendarModalOpen(true)}>
                         <FontAwesomeIcon icon={faCalendar}/> Edit Due Date
                     </button>
