@@ -16,15 +16,8 @@ const DetailsModal = ({ task, onClose }) => {
     const [commentsData, setCommentsData] = useState([]);
     const [user, setUser] = useState(null);
     const [editingIndex, setEditingIndex] = useState(null); // State to track the index of the comment being edited
-    const [isCommentSaved, setIsCommentSaved] = useState({});
 
-    useEffect(() => {
-        const initialSavedState = commentsData.reduce((acc, _, index) => {
-            acc[index] = false; // Default to false
-            return acc;
-        }, {});
-        setIsCommentSaved(initialSavedState);
-    }, [commentsData]);
+
 
     useEffect(() => {
         const storedUser = localStorage.getItem('loggedInUser');
@@ -133,7 +126,7 @@ const DetailsModal = ({ task, onClose }) => {
                 updatedComments[rowIndex] = { ...updatedComments[rowIndex], Comments: commentText }; // Update the existing comment
                 setCommentsData(updatedComments);
                 setEditingIndex(null); // Clear the editing index once the comment is saved
-                setIsCommentSaved(prev => ({ ...prev, [rowIndex]: true })); // Mark the comment as saved
+
 
             } else {
                 alert('User information is not available. Please log in again.');
@@ -200,29 +193,27 @@ const DetailsModal = ({ task, onClose }) => {
                                 </span>
                             </div>
                             <div className="comment-content">
-                                {isCommentSaved[rowIndex] ? (
-                                    <span className="comment-text">{row.Comments}</span>
+                                {editingIndex === rowIndex ? (
+                                    // Show textarea only when editing a new or unsaved comment
+                                    <>
+                        <textarea
+                            className="textarea-comment"
+                            value={row.Comments}
+                            onChange={(e) => handleCommentsChange(e, rowIndex)}
+                            rows="10"
+                        />
+                                        <button
+                                            className="save-comment-btn"
+                                            onClick={() => handleSaveComment(row.Comments, rowIndex)}
+                                        >
+                                            Save
+                                        </button>
+                                    </>
                                 ) : (
-                                    <textarea
-                                        className="textarea-comment"
-                                        value={row.Comments}
-                                        onChange={(e) => handleCommentsChange(e, rowIndex)}
-                                        rows="10"
-                                        style={{
-                                            backgroundColor: isCommentSaved[rowIndex] ? '#f0f0f0' : 'white',
-                                            cursor: isCommentSaved[rowIndex] ? 'not-allowed' : 'text'
-                                        }}
-                                        disabled={isCommentSaved[rowIndex]}
-                                    />
-
-                                )}
-                                {editingIndex === rowIndex && !isCommentSaved[rowIndex] && (
-                                    <button
-                                        className="save-comment-btn"
-                                        onClick={() => handleSaveComment(row.Comments, rowIndex)}
-                                    >
-                                        Save
-                                    </button>
+                                    // Show span for existing, saved comments without allowing editing
+                                    <span className="comment-text">
+                        {row.Comments}
+                    </span>
                                 )}
                             </div>
                         </div>
