@@ -12,6 +12,7 @@ import Notification from "./components/Notification.jsx";
 import HomePage from "./components/Home/HomePage.jsx";
 import PropTypes from "prop-types";
 import ProjectReport from "./components/ProjectReport.jsx";
+import PasswordResetConfirmationPage from './Services/PasswordResetConfirmationPage.jsx'; // Import the new confirmation page
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -110,6 +111,10 @@ function App() {
                         <Navigate to="/login"/>
                     )
                 }
+            />
+            <Route
+                path="/reset-password-confirmation"
+                element={<PasswordResetConfirmationPage/>} // Add the new route for the confirmation page
             />
             <Route path="/" element={<Navigate to="/login"/>}/>
         </Routes>
