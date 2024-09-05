@@ -12,6 +12,7 @@ import {userIsAdmin, userIsTeamLeader} from '../utils/authUtils';
 import BoardService from "../Services/BoardService.js";
 //import PropTypes from "prop-types"; // Import the utility function
 
+
 const Projects = () => {
     const {projectName} = useParams();
     const navigate = useNavigate();
@@ -156,6 +157,7 @@ const Projects = () => {
             state: {projectDescription, projectId, projectMembers,projectName},
         });
     };
+    const CanSeeReport = userIsAdmin() || userIsTeamLeader();
 
     return (
         <div className="scrollable-page" ref={containerRef}>
@@ -221,9 +223,11 @@ const Projects = () => {
                     <button className="btn-primaryForProject" onClick={navigateToWorkspace}>
                         Go to Workspace
                     </button>
+                    {CanSeeReport && (
                     <button className="btn-project-details" onClick={navigateToProjectReport}>
                         project details
                     </button>
+                    )}
                 </div>
 
                 <div className="projectsconM">

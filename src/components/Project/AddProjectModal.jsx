@@ -3,6 +3,7 @@ import React, {useState, useRef, useEffect} from 'react';
 import ProjectService from '../../Services/ProjectService.js';
 import BoardService from '../../Services/BoardService.js';
 import PropTypes from "prop-types";
+import {useNavigate} from "react-router-dom";
 
 const AddProjectModal = ({isVisible, onClose, onAddProject}) => {
     const [name, setName] = useState('');
@@ -11,6 +12,7 @@ const AddProjectModal = ({isVisible, onClose, onAddProject}) => {
     const [errorMessage, setErrorMessage] = useState(''); // Added for error handling
 
     const modalRef = useRef(null);
+    const navigate = useNavigate(); // Initialize the useNavigate hook
 
     const handleClickOutside = (e) => {
         if (modalRef.current && !modalRef.current.contains(e.target)) {
@@ -77,6 +79,8 @@ const AddProjectModal = ({isVisible, onClose, onAddProject}) => {
                 setName('');
                 setDescription('');
                 setErrorMessage(''); // Clear any previous error message
+                navigate(`/main/${project.name}`); // Assuming your project route is /project/:projectId
+
             } catch (error) {
                 console.error('There was an error adding the project or default boards!', error);
                 setErrorMessage('Failed to add project or default boards. Please try again.');

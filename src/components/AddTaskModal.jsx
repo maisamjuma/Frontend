@@ -1,9 +1,11 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import './AddTaskModal.css';
 import Calendar from 'react-calendar';
 import PropTypes from 'prop-types';
 import UserService from '../Services/UserService.js';
 import TaskService from '../Services/TaskService.js';
+import BoardService from '../Services/BoardService.js';
+import RoleService from '../Services/RoleService.js';
 
 const AddTaskModal = ({
                           isVisible,
@@ -14,34 +16,87 @@ const AddTaskModal = ({
                           projectMembers,
                           boardId
                       }) => {
+    // State declarations
     const [taskName, setTaskName] = useState('');
     const [taskDescription, setTaskDescription] = useState('');
     const [dueDate, setDueDate] = useState(new Date());
     const [priority, setPriority] = useState('medium');
     const [assignedToUserId, setAssignedUserId] = useState('');
     const [userDetails, setUserDetails] = useState([]);
+    const [boardName, setBoardName] = useState('');
+    const [roleFilter, setRoleFilter] = useState('');
+    // const [boards, setBoards] = useState([]);
+    //
+    // // Fetch boards when component is visible and projectId changes
+    // useEffect(() => {
+    //     const fetchBoards = async () => {
+    //         try {
+    //             const response = await BoardService.getBoardsByProject(projectId);
+    //             if (response.data && Array.isArray(response.data)) {
+    //                 const boardsWithIds = response.data.map(board => ({
+    //                     boardId: board.boardId,
+    //                     name: board.name
+    //                 }));
+    //                 setBoards(boardsWithIds);
+    //                 console.log('Fetched boards:', boardsWithIds);
+    //             } else {
+    //                 throw new Error('Unexpected response format');
+    //             }
+    //         } catch (error) {
+    //             console.error('Error fetching boards:', error);
+    //         }
+    //     };
+    //
+    //     if (isVisible) {
+    //         fetchBoards();
+    //     }
+    // }, [isVisible, projectId]);
 
+    // Fetch user details and board name
     useEffect(() => {
-        if (isVisible) {
-            setDueDate(new Date());
-            fetchUserDetails();
-        }
-    }, [isVisible]);
+        const fetchData = async () => {
+            if (isVisible && boardId) {
+                try {
+                    // Clear userDetails before fetching new ones
+                    setUserDetails([]);
 
-    const fetchUserDetails = async () => {
-        try {
-            const userDetailsArray = await Promise.all(
-                projectMembers.map(async (member) => {
-                    const response = await UserService.getUserById(member.userId);
-                    return response.data;
-                })
-            );
-            setUserDetails(userDetailsArray);
-        } catch (error) {
-            console.error('Error fetching user details:', error);
-        }
-    };
+                    // Fetch the board name and set role filter
+                    const boardResponse = await BoardService.getBoardById(boardId);
+                    const boardName = boardResponse.data.name;
+                    setBoardName(boardName);
+                    setRoleFilter(boardName);
 
+                    // Fetch user details and roles
+                    const userDetailsArray = await Promise.all(
+                        projectMembers.map(async (member) => {
+                            const userResponse = await UserService.getUserById(member.userId);
+                            const userData = userResponse.data;
+
+                            if (userData.functionalRoleId) {
+                                const roleResponse = await RoleService.getRoleById(userData.functionalRoleId);
+                                userData.roleName = roleResponse.data.roleName;
+                            }
+
+                            return userData;
+                        })
+                    );
+
+                    // Filter users based on updated roleFilter
+                    const filteredUsers = userDetailsArray.filter(user =>
+                        user.roleName === boardName
+                    );
+
+                    setUserDetails(filteredUsers);
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                }
+            }
+        };
+
+        fetchData();
+    }, [isVisible, boardId, projectMembers, boardName]);
+
+    // Handle adding task
     const handleAddTask = async () => {
         if (taskName.trim()) {
             try {
@@ -49,21 +104,17 @@ const AddTaskModal = ({
                     projectId,
                     taskName,
                     boardId,
-                    taskDescription: taskDescription,
+                    taskDescription,
                     status: status.title,
                     priority,
-                    dueDate: dueDate.toISOString(), // Use ISO format
+                    dueDate: dueDate.toISOString(),
                     assignedToUserId: assignedToUserId || null
                 };
 
                 const response = await TaskService.createTask(newTask);
-                const {taskId} = response.data; // Access response data
-                console.log('Task created:', response.data);
-                console.log("task id :", taskId);
+                const { taskId } = response.data;
 
                 onAddTask(taskId, projectId, taskName, taskDescription, boardId, status, priority, assignedToUserId);
-
-                // Reset form fields
                 setTaskName('');
                 setTaskDescription('');
                 setDueDate(new Date());
@@ -104,7 +155,7 @@ const AddTaskModal = ({
                         <Calendar
                             onChange={(date) => setDueDate(date)}
                             value={dueDate}
-                            tileClassName={({date}) =>
+                            tileClassName={({ date }) =>
                                 dueDate && date.toDateString() === new Date(dueDate).toDateString()
                                     ? 'selected-date'
                                     : null
@@ -139,7 +190,7 @@ const AddTaskModal = ({
                                             key={user.userId}
                                             value={user.userId}
                                         >
-                                            {user.firstName} {user.lastName}
+                                            {user.firstName} {user.lastName} - {user.roleName}
                                         </option>
                                     ))
                                 ) : (
@@ -166,10 +217,7 @@ AddTaskModal.propTypes = {
         id: PropTypes.number.isRequired,
         title: PropTypes.string.isRequired
     }).isRequired,
-    projectId: PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-    ]).isRequired,
+    projectId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
     projectMembers: PropTypes.arrayOf(PropTypes.shape({
         userId: PropTypes.number.isRequired,
         projectMemberId: PropTypes.number.isRequired,

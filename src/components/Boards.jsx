@@ -11,6 +11,7 @@ import ChangeMemberModal from "./ChangeMemberModal.jsx";
 import TaskService from "../Services/TaskService.js";
 import UserService from "../Services/UserService.js";
 import BoardService from "../Services/BoardService.js";
+import { userIsAdmin, userIsTeamLeader } from '../utils/authUtils'; // Import the utility functions
 
 const Boards = ({
                     board,
@@ -38,8 +39,10 @@ const Boards = ({
     const [comingFromChangeMember, setComingFromChangeMember] = useState(false);
     const [selectedMember, setSelectedMember] = useState('');
     const [taskId, setTaskId] = useState(null);
+   // const [changeMemberModalCallback, setChangeMemberModalCallback] = useState(null);
 
     const [refreshKey, setRefreshKey] = useState(0);
+
 
 
     const onDragEnd = async (result) => {
@@ -100,6 +103,12 @@ const Boards = ({
             alert("You cannot move tasks from a higher status back to the unassigned tasks.");
             return;
         }
+        if (destinationStatusId === 2 && sourceStatusId === 1) {
+            console.log("task selected:",task)
+            setShowChangeMemberModal(true);
+            setSelectedTask(task); // Set selected task for the modal
+            // return;
+        }
 
         const updatedStatuses = statuses.map(status => {
             if (status.id === sourceStatusId) {
@@ -149,20 +158,27 @@ const Boards = ({
             title: 'QA Failed',
             tasks: [],
             backgroundColor: '#f9f9f9'
-        }, {id: 9, title: 'QA Passed', tasks: [], backgroundColor: '#f9f9f9'}];
+        }, {id: 9, title: 'QA Passed', tasks: [], backgroundColor: '#f9f9f9'},
+            {id: 10, title: 'Done', tasks: [], backgroundColor: '#f9f9f9'}];
 
         let statuses = savedStatuses ? JSON.parse(savedStatuses) : defaultStatuses;
 
         // Filter statuses based on board name
-        console.log("name",name);
+        console.log("name", name);
         if (name === "QA") {
-             console.log("loading QA statuses")
-            statuses = statuses.filter(status => status.id > 5);
+            console.log("loading QA statuses");
+            statuses = statuses.filter(status => status.id > 5 && status.id !== 10);
         } else if (name === 'Backend' || name === 'Frontend') {
-            statuses = statuses.filter(status => status.id <= 5);
+            statuses = statuses.filter(status => status.id <= 5 && status.id !== 10);
+        } else {
+            statuses = statuses.filter(status => [1, 2, 7, 10].includes(status.id));
         }
 
         // Ensure priority field exists in each task
+        // Conditionally exclude 'Unassigned Tasks' status
+        if (!userIsAdmin() && !userIsTeamLeader()) {
+            statuses = statuses.filter(status => status.id !== 1); // Exclude 'Unassigned Tasks'
+        }
 
         return statuses;
     };
@@ -436,7 +452,8 @@ const Boards = ({
             const updatedTask = {
                 ...task,
                 status: 'Ready for QA',
-                boardId: qaBoardId
+                boardId: qaBoardId,
+                assignedToUserId: null
             };
 
             // Remove fields that are not compatible with the updateTask endpoint
@@ -472,6 +489,7 @@ const Boards = ({
             alert('There was an error moving the task. Please try again.');
         }
     };
+
 
     return (<DragDropContext onDragEnd={onDragEnd}>
             <div className="boardAllStatuses">
@@ -521,9 +539,11 @@ const Boards = ({
                                             key={task.taskId}
                                             draggableId={task.taskId.toString()}
                                             index={taskIndex}
+
                                         >
                                             {(provided) => (<div
-                                                className={`backend-task-box ${highlightedTaskId === task.taskId ? 'highlighted' : ''}`}
+                                                className={`backend-task-box task-color-${status.id} ${highlightedTaskId === task.taskId ? 'highlighted' : ''},`}
+
                                                 {...provided.draggableProps}
                                                 {...provided.dragHandleProps}
                                                 ref={provided.innerRef}

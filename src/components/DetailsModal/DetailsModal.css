@@ -118,6 +118,10 @@
     max-height: 30px;
 }
 
+.input-comment:disabled {
+    background-color: #f0f0f0; /* Ensure it's visible */
+    cursor: not-allowed;
+}
 
 .save-comment-btn {
     margin-left: 16px; /* Adjust margin as needed */
@@ -187,7 +191,7 @@
 
 /* Textarea styles */
 .textarea,
-.textarea-comment {
+.input-comment {
     width: 100%;
     background: #F8F9FA; /* Light gray background for textareas */
     color: #333333; /* Dark text color */
@@ -201,7 +205,7 @@
     resize: vertical;
 }
 
-.textarea-comment {
+.input-comment {
     /*min-height: 15px;*/
     max-height: 60px;
     resize: vertical;
@@ -246,4 +250,15 @@
 .table-container,
 .table-container-comment {
     margin-bottom: 20px;
+}
+
+.comment-text{
+    border: 1px solid #E9967A;
+    padding: 2px;
+    margin-left: 40px;
+    margin-top: 7px;
+    display: flex;
+    width: 650px;
+    height: 65px;
+
 }

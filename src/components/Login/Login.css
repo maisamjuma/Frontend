@@ -6,12 +6,25 @@ html, body {
 
 .login-container {
     display: flex;
+    flex-direction: column; /* Stack children vertically */
     justify-content: center; /* Center horizontally */
     align-items: center; /* Center vertically */
     height: 100vh; /* Full viewport height */
     width: 100vw; /* Full viewport width */
     background-color: #f8f9fa; /* Light gray background to match the theme */
     box-sizing: border-box; /* Include padding and border in the width */
+}
+
+.error-message {
+    color: #d9534f; /* Bootstrap's danger color */
+    background-color: #f2dede; /* Bootstrap's danger background color */
+    border: 1px solid #ebccd1; /* Bootstrap's danger border color */
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px; /* Space between error message and form */
+    width: 100%;
+    max-width: 400px; /* Match the form width */
+    text-align: center;
 }
 
 .login-form {
