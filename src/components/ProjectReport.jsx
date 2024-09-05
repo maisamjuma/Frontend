@@ -146,22 +146,38 @@ const ProjectReport = () => {
                                                     : 'Unassigned'; // Fallback for missing user data
                                                 return (
                                                     <tr key={task.taskId}>
-                                                        <td>{board.boardId}</td>
-                                                        <td>{board.name}</td>
-                                                        <td>{task.status}</td>
-                                                        <td>{task.taskName}</td>
-                                                        <td>{task.taskDescription || 'No description'}</td>
-                                                        <td className={
-                                                            task.priority === 'high' ? 'priority-high' :
-                                                                task.priority === 'medium' ? 'priority-medium' :
-                                                                    'priority-low'
-                                                        }>
-                                                            {task.priority}
+                                                        <td className="limited-text">
+                                                            <span>{board.boardId}</span>
                                                         </td>
-                                                        <td>{userName}</td>
-                                                        <td>{user.email}</td>
-                                                        <td>{new Date(task.createdAt).toLocaleString()}</td>
-                                                        <td>{new Date(task.updatedAt).toLocaleString()}</td>
+                                                        <td className="limited-text">
+                                                            <span>{board.name}</span>
+                                                        </td>
+                                                        <td className="limited-text">
+                                                            <span>{task.status}</span>
+                                                        </td>
+                                                        <td className="limited-text">
+                                                            <span>{task.taskName}</span>
+                                                        </td>
+                                                        <td className="limited-text">
+                                                            <span>{task.taskDescription || 'No description'}</span>
+                                                        </td>
+                                                        <td className={`limited-text ${task.priority === 'high' ? 'priority-high' : 
+                                                            task.priority === 'medium' ? 'priority-medium' : 'priority-low'}`}>
+                                                            <span>{task.priority}</span>
+                                                        </td>
+                                                        <td className="limited-text">
+                                                            <span>{userName}</span>
+                                                        </td>
+                                                        <td className="limited-text">
+                                                            <span>{user.email}</span>
+                                                        </td>
+                                                        <td className="limited-text">
+                                                            <span>{new Date(task.createdAt).toLocaleString()}</span>
+                                                        </td>
+                                                        <td className="limited-text">
+                                                            <span>{new Date(task.updatedAt).toLocaleString()}</span>
+                                                        </td>
+
                                                     </tr>
                                                 );
                                             })

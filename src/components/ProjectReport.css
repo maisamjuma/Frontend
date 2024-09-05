@@ -38,7 +38,7 @@
 }
 
 .report-table th, .report-table td {
-    border: 1px solid #ddd;
+    border: 2px solid #ddd;
     padding: 8px;
 }
 
@@ -88,4 +88,18 @@
     border-radius: 6px;
     font-weight: bold;
     background-color: #f4f4f9;
+}
+
+.limited-text{
+    max-width: 270px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    position: relative; /* Add this to ensure the tooltip is positioned correctly */
+}
+
+.limited-text:hover{
+    overflow: visible;
+    text-overflow: initial;
+    white-space: normal;
 }
