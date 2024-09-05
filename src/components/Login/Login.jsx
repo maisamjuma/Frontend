@@ -2,7 +2,8 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import './Login.css';
-import UserService from "../../Services/UserService.js";
+// import UserService from "../../Services/UserService.js";
+import AuthService from "../../Services/authService.js";
 import {getUserInfoFromToken} from "../../utils/authUtils.js";
 
 const Login = ({onLogin}) => {
@@ -21,7 +22,7 @@ const Login = ({onLogin}) => {
         e.preventDefault();
 
         try {
-            const newToken = await UserService.login(password, email)
+            const newToken = await AuthService.login(password, email)
             // console.log("userData userData:",userData)
             if (newToken.token) {
                 localStorage.setItem('token', newToken.token)

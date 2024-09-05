@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 // import { createUser, getUserById } from '../Services/UserService';
-import UserService from '../../Services/UserService.js';
+// import UserService from '../../Services/UserService.js';
+import AuthService from "../../Services/authService.js";
 
 import RoleService from "../../Services/RoleService.js";
 // import { createUser,checkUserRoles } from '../Services/authService.js'; // Import from FirebaseAuthService
@@ -90,7 +91,7 @@ const AddUser = () => {
                 console.log(" AddUser:", user);
 
                 // Save user details using the register method
-                const response = await UserService.register(user);
+                const response = await AuthService.register(user);
                 // const response = await UserService.register(user);
 
 
