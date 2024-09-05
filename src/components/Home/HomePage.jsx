@@ -2,10 +2,10 @@ import React, {useEffect, useState, useRef} from 'react';
 import {useNavigate} from "react-router-dom";
 import UserService from "../../Services/UserService.js";
 import RoleService from '../../Services/RoleService.js';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faUserPlus, faUserShield, faUserTag} from '@fortawesome/free-solid-svg-icons';
+// import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+// import {faUserPlus, faUserShield, faUserTag} from '@fortawesome/free-solid-svg-icons';
 import './HomePage.css';
-import {userIsAdmin} from '../../utils/authUtils.js';
+import {userIsAdmin,userIsTeamLeader} from '../../utils/authUtils.js';
 import ListUser from './ListUser/ListUser.jsx'; // Import the ListUser component
 
 const HomePage = () => {
@@ -20,6 +20,7 @@ const HomePage = () => {
     const navigator = useNavigate();
 
     const userRoleIsAdmin = userIsAdmin(); // Check if the user is an admin
+    const userRoleIsTeamLeader = userIsTeamLeader(); // Check if the user is an admin
 
     // Refs for scrolling
     const assignContentRef = useRef(null);
@@ -167,27 +168,27 @@ const HomePage = () => {
                     )}
 
 
-                    <div className="rolecontent" ref={roleContentRef}>
-                        <h3>Add New Role</h3>
-                        <input
-                            type='text'
-                            value={newRole}
-                            onChange={e => setNewRole(e.target.value)}
-                            placeholder='Enter new role'
-                            className='form-control mb-2'
-                        />
-                        {successMessage && <div className="alert alert-success">{successMessage}</div>}
-                        <button
-                            type='button'
-                            className='btn btn-primary'
-                            onClick={handleSaveRole}
-                        >
-                            Save Role
-                        </button>
-
-                    </div>
+                    {(userRoleIsAdmin || userRoleIsTeamLeader) && (
+                        <div className="rolecontent" ref={roleContentRef}>
+                            <h3>Add New Role</h3>
+                            <input
+                                type='text'
+                                value={newRole}
+                                onChange={e => setNewRole(e.target.value)}
+                                placeholder='Enter new role'
+                                className='form-control mb-2'
+                            />
+                            {successMessage && <div className="alert alert-success">{successMessage}</div>}
+                            <button
+                                type='button'
+                                className='btn btn-primary'
+                                onClick={handleSaveRole}
+                            >
+                                Save Role
+                            </button>
+                        </div>
+                    )}
                 </div>
-
             </div>
 
 

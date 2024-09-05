@@ -6,6 +6,7 @@ import Navbar from "./Navbar/Navbar.jsx";
 import PropTypes from 'prop-types';
 import RoleService from '../Services/RoleService';
 import BoardService from '../Services/BoardService';
+import { userIsAdmin, userIsTeamLeader } from '../utils/authUtils'; // Import the utility functions
 
 const Workspace = ({isVisible}) => {
     const [roles, setRoles] = useState([]);
@@ -26,6 +27,12 @@ const Workspace = ({isVisible}) => {
     const dropdownRef = useRef(null);
     const boardsDropdownRef = useRef(null);
     const location = useLocation();
+
+
+    const canAddBoard = () => {
+        return userIsAdmin() || userIsTeamLeader();
+    };
+
 
     useEffect(() => {
         if (location.state) {
@@ -193,8 +200,7 @@ console.log("!projectId || !selected_roleId",projectId,selected_roleId)
 
     return (
         <div className="layout">
-            <Navbar onLogout={() => {
-            }}/>
+            <Navbar onLogout={() => {}}/>
             <nav className="secondary-navbar">
                 <ul className="secondary-nav" ref={secondaryNavRef}>
                     {boards.slice(0, 5).map((board) => (
@@ -247,25 +253,26 @@ console.log("!projectId || !selected_roleId",projectId,selected_roleId)
                         </div>
                     )}
 
-                    <button onClick={handleAddClick} className="add-board-button">+</button>
+                    {canAddBoard() && (
+                        <button onClick={handleAddClick} className="add-board-button">+</button>
+                    )}
+
                     {isDropdownOpen && (
                         <div className={`dropdownaddboard ${isVisible ? 'visible' : ''}`} ref={dropdownRef}>
                             <p>Add Board</p>
                             <select
                                 className="dropDownInAddBoard"
-
                                 value={selected_roleId}
-                                onChange={handleRoleChange}>
+                                onChange={handleRoleChange}
+                            >
                                 <option value="">Select Role</option>
                                 {roles.map(role => (
                                     <option key={role.funcRoleId} value={role.funcRoleId}>
                                         {role.roleName}
-                                    </option
-                                    >
+                                    </option>
                                 ))}
                             </select>
                             <button onClick={handleAddBoard}>Add</button>
-                            {/*<button onClick={handleCloseDropdown}>Cancel</button>*/}
                         </div>
                     )}
                 </ul>
@@ -288,13 +295,12 @@ console.log("!projectId || !selected_roleId",projectId,selected_roleId)
                     />
                 </Routes>
             </div>
-
         </div>
     );
 };
 
 Workspace.propTypes = {
-    isVisible: PropTypes.bool,
+    isVisible: PropTypes.bool.isRequired
 };
 
 export default Workspace;
