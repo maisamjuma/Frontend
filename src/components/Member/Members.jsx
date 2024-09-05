@@ -52,7 +52,7 @@ const Members = ({
                     const user = userDetailMap[member.userId];
 
                     if (!user) {
-                        return <div key={member.userId}>Loading user details...</div>;
+                        return <div key={member.userId}>Loading member...</div>;
                     }
 
                     const roleName = rolesMap[user.functionalRoleId] || 'Loading role...'; // Correct lookup

@@ -24,7 +24,7 @@ const PriorityModal = ({onClose, task, onSave}) => {
             await TaskService.updateTask(task.taskId, updatedTask);
 
             // Alert the user that the priority was updated successfully
-            alert('Task priority updated successfully!');
+            // alert('Task priority updated successfully!');
             onSave(selectedPriority);
             // Close the modal after saving
             onClose();

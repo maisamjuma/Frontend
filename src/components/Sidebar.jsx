@@ -25,6 +25,7 @@ const Sidebar = ({onMenuAction, onLogout}) => {
     const sidebarRef = useRef(null);
     const navigate = useNavigate();
     const userRoleIsAdmin = userIsAdmin(); // Check if the user is an admin
+    const [activeProjectId, setActiveProjectId] = useState(null); // Track active (selected) project
 
     const [userDetails, setUserDetails] = useState(null); // State to store user details
     const [isUserDetailsModalVisible, setIsUserDetailsModalVisible] = useState(false); // State to manage modal visibility
@@ -57,7 +58,7 @@ const Sidebar = ({onMenuAction, onLogout}) => {
 
         const handleClickOutside = (event) => {
             if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
-                setIsProjectsOpen(false);
+                // setIsProjectsOpen(false);
                 setIsMenuOpen(false);
                 setIsDeleteMode(false);
                 setIsAddProjectModalVisible(false);
@@ -95,6 +96,7 @@ const Sidebar = ({onMenuAction, onLogout}) => {
 
     const handleProjectClick = (project) => {
         if (!isDeleteMode) {
+            setActiveProjectId(project.id);  // Set the clicked project as active
             console.log('china number one ID::', project.id);
             project.projectId = project.id;
             console.log('china number one ID::', project.projectId);
@@ -126,7 +128,7 @@ const Sidebar = ({onMenuAction, onLogout}) => {
 
     const handleClickOutside = (event) => {
         if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
-            setIsProjectsOpen(false);
+            // setIsProjectsOpen(false);
             setIsMenuOpen(false);
             setIsDeleteMode(false);
             setIsAddProjectModalVisible(false);
@@ -223,9 +225,10 @@ const Sidebar = ({onMenuAction, onLogout}) => {
     const handleAddProject = (projectId, projectName, projectDescription) => {
         // const newProject = {id: Date.now().toString(), name: projectName, description: projectDescription};
         const newProject = {id: projectId, name: projectName, description: projectDescription};
-
-
         setProjects((projects) => [newProject, ...projects]);
+        // Set the newly added project as active
+        setActiveProjectId(projectId);
+        setIsAddProjectModalVisible(false); // Close the modal
     };
 
     const handleDashboardClick = () => {
@@ -288,7 +291,11 @@ const Sidebar = ({onMenuAction, onLogout}) => {
                         <ul className="dropdown-list ">
                             {projects.map((project) => (
 
-                                <li key={project.projectId} onClick={() => handleProjectClick(project)}>
+                                <li
+                                    key={project.id}
+                                    onClick={() => handleProjectClick(project)}
+                                    className={activeProjectId === project.id ? 'active-project' : ''}
+                                >
                                     {isDeleteMode && (
                                         <input
                                             className="mx-3"

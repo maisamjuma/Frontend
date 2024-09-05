@@ -14,6 +14,12 @@
     height: calc(100vh - 60px); /* Takes up remaining vertical space */
 
 }
+/* Add this CSS to highlight the active project */
+.active-project {
+    background-color: #E9967A; /* Gold background for active project */
+    font-weight: bold;
+    color: #333;
+}
 
 /* Dropdown list item styling */
 .dropdown-list li {

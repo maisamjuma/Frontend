@@ -101,7 +101,7 @@ const DetailsModal = ({task, onClose}) => {
 
             await TaskService.updateTask(task.taskId, updatedTask);
 
-            alert('Task description updated successfully!');
+            // alert('Task description updated successfully!');
             onClose(); // Close the modal after saving
         } catch (error) {
             console.error("Error updating task:", error);
@@ -123,7 +123,7 @@ const DetailsModal = ({task, onClose}) => {
 
                 await CommentService.createComment(commentData);
 
-                alert('Comment saved successfully!');
+                // alert('Comment saved successfully!');
                 const updatedComments = [...commentsData];
                 updatedComments[rowIndex] = {...updatedComments[rowIndex], Comments: commentText}; // Update the existing comment
                 setCommentsData(updatedComments);
