@@ -79,7 +79,25 @@ const AddProjectModal = ({isVisible, onClose, onAddProject}) => {
                 setName('');
                 setDescription('');
                 setErrorMessage(''); // Clear any previous error message
-                navigate(`/main/${project.name}`); // Assuming your project route is /project/:projectId
+
+
+                // setActiveProjectId(project.id);  // Set the clicked project as active
+                // console.log('china number one ID::', project.id);
+                // project.projectId = project.id;
+                // console.log('china number one ID::', project.projectId);
+
+                // console.log('china number one description::', project.description);
+                navigate(`/main/${project.name}`, {
+
+                    state: {
+                        projectDescription: project.description,
+                        projectId: projectId
+                    }
+                });
+
+
+                // handleProjectClick(project)
+                // navigate(`/main/${project.name}`); // Assuming your project route is /project/:projectId
 
             } catch (error) {
                 console.error('There was an error adding the project or default boards!', error);
@@ -124,7 +142,7 @@ const AddProjectModal = ({isVisible, onClose, onAddProject}) => {
                             />
                         </div>
                         <button type="button" className="btn btn-success" onClick={handleAddProject}>Save</button>
-                        <button type="button" className="btn btn-danger" onClick={onClose}>Cancel</button>
+                        <button type="button" className="btn " onClick={onClose}>Cancel</button>
                     </form>
                 </div>
             </div>
