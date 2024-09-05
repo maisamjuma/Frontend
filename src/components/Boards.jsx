@@ -453,13 +453,16 @@ const Boards = ({
                 ...task,
                 status: 'Ready for QA',
                 boardId: qaBoardId,
-                assignedToUserId: null
+
             };
 
             // Remove fields that are not compatible with the updateTask endpoint
             delete updatedTask.assignedUserLetter;
             delete updatedTask.createdAt;
 
+            updatedTask.assignedToUserId = null;
+
+            console.log("updatedTask 4:14",updatedTask);
             // Update the task on the server
             const updateTaskResponse = await TaskService.updateTask(task.taskId, updatedTask);
             console.log('Task updated:', updateTaskResponse);
