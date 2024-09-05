@@ -149,17 +149,20 @@ const Boards = ({
             title: 'QA Failed',
             tasks: [],
             backgroundColor: '#f9f9f9'
-        }, {id: 9, title: 'QA Passed', tasks: [], backgroundColor: '#f9f9f9'}];
+        }, {id: 9, title: 'QA Passed', tasks: [], backgroundColor: '#f9f9f9'},
+            {id: 10, title: 'Done', tasks: [], backgroundColor: '#f9f9f9'}];
 
         let statuses = savedStatuses ? JSON.parse(savedStatuses) : defaultStatuses;
 
         // Filter statuses based on board name
-        console.log("name",name);
+        console.log("name", name);
         if (name === "QA") {
-             console.log("loading QA statuses")
-            statuses = statuses.filter(status => status.id > 5);
+            console.log("loading QA statuses");
+            statuses = statuses.filter(status => status.id > 5 && status.id !== 10);
         } else if (name === 'Backend' || name === 'Frontend') {
-            statuses = statuses.filter(status => status.id <= 5);
+            statuses = statuses.filter(status => status.id <= 5 && status.id !== 10);
+        } else {
+            statuses = statuses.filter(status => [1, 2, 7, 10].includes(status.id));
         }
 
         // Ensure priority field exists in each task
@@ -472,6 +475,20 @@ const Boards = ({
             alert('There was an error moving the task. Please try again.');
         }
     };
+    // // src/constants/statusColors.js
+    // const statusColors = {
+    //     1: '#a41d1d',  // Red
+    //     2: '#ff8c00',  // Orange
+    //     3: '#ffd700',  // Yellow
+    //     4: '#32cd32',  // Lime Green
+    //     5: '#00bfff',  // Deep Sky Blue
+    //     6: '#ff69b4',  // Hot Pink
+    //     7: '#8a2be2',  // Blue Violet
+    //     8: '#ff6347',  // Tomato
+    //     9: '#4682b4',  // Steel Blue
+    //     10: '#d3d3d3'  // Light Gray
+    // };
+
 
     return (<DragDropContext onDragEnd={onDragEnd}>
             <div className="boardAllStatuses">
@@ -521,9 +538,11 @@ const Boards = ({
                                             key={task.taskId}
                                             draggableId={task.taskId.toString()}
                                             index={taskIndex}
+
                                         >
                                             {(provided) => (<div
-                                                className={`backend-task-box ${highlightedTaskId === task.taskId ? 'highlighted' : ''}`}
+                                                className={`backend-task-box task-color-${status.id} ${highlightedTaskId === task.taskId ? 'highlighted' : ''},`}
+
                                                 {...provided.draggableProps}
                                                 {...provided.dragHandleProps}
                                                 ref={provided.innerRef}
