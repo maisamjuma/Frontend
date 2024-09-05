@@ -1,22 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import './DetailsModal.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faListAlt, faTasks, faTimes } from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faListAlt, faTasks, faTimes} from '@fortawesome/free-solid-svg-icons';
 import TaskService from '../../services/TaskService';
 import CommentService from "../../Services/CommentService.js";
 import UserService from "../../Services/UserService.js";
 
-const DetailsModal = ({ task, onClose }) => {
+const DetailsModal = ({task, onClose}) => {
     const initialTableData = (task && task.tableData && Array.isArray(task.tableData) && task.tableData.length > 0)
         ? task.tableData
-        : [{ Description: task.taskDescription || "", Comments: "" }];
+        : [{Description: task.taskDescription || "", Comments: ""}];
 
-    const [descriptionData, setDescriptionData] = useState(initialTableData.map(row => ({ Description: row.Description })));
+    const [descriptionData, setDescriptionData] = useState(initialTableData.map(row => ({Description: row.Description})));
     const [commentsData, setCommentsData] = useState([]);
     const [user, setUser] = useState(null);
     const [editingIndex, setEditingIndex] = useState(null); // State to track the index of the comment being edited
-
 
 
     useEffect(() => {
@@ -44,7 +43,7 @@ const DetailsModal = ({ task, onClose }) => {
                             console.error(`Error fetching user ${comment.commentedBy}:`, error);
                             return {
                                 Comments: comment.comment,
-                                CommentedBy: { firstName: 'Unknown', lastName: '' },
+                                CommentedBy: {firstName: 'Unknown', lastName: ''},
                             };
                         }
                     }));
@@ -81,7 +80,10 @@ const DetailsModal = ({ task, onClose }) => {
         const storedUser = localStorage.getItem('loggedInUser');
         if (storedUser) {
             const user = JSON.parse(storedUser);
-            setCommentsData([...commentsData, { Comments: '', CommentedBy: { firstName: user.firstName, lastName: user.lastName } }]);
+            setCommentsData([...commentsData, {
+                Comments: '',
+                CommentedBy: {firstName: user.firstName, lastName: user.lastName}
+            }]);
             setEditingIndex(commentsData.length); // Set the new comment as the one being edited
         }
     };
@@ -123,7 +125,7 @@ const DetailsModal = ({ task, onClose }) => {
 
                 alert('Comment saved successfully!');
                 const updatedComments = [...commentsData];
-                updatedComments[rowIndex] = { ...updatedComments[rowIndex], Comments: commentText }; // Update the existing comment
+                updatedComments[rowIndex] = {...updatedComments[rowIndex], Comments: commentText}; // Update the existing comment
                 setCommentsData(updatedComments);
                 setEditingIndex(null); // Clear the editing index once the comment is saved
 
@@ -138,20 +140,19 @@ const DetailsModal = ({ task, onClose }) => {
     };
 
 
-
     return (
         <div className="details-modal-overlay" onClick={handleOverlayClick}>
             <div className="details-modal-content">
                 <div className="details-modal-header">
                     <div className="details-modal-title">
-                        <FontAwesomeIcon icon={faListAlt} className="details-icon" />
+                        <FontAwesomeIcon icon={faListAlt} className="details-icon"/>
                         <h2>{task.taskName}</h2>
                     </div>
-                    <FontAwesomeIcon icon={faTimes} className="close-icon" onClick={onClose} />
+                    <FontAwesomeIcon icon={faTimes} className="close-icon" onClick={onClose}/>
                 </div>
                 <p className="task-status">In Status: {task.status}</p>
                 <div className="detailstitle">
-                    <FontAwesomeIcon icon={faTasks} className="details-icon" />
+                    <FontAwesomeIcon icon={faTasks} className="details-icon"/>
                     <p className="task-description">Description:</p>
                 </div>
                 <div className="table-container">
@@ -180,7 +181,7 @@ const DetailsModal = ({ task, onClose }) => {
                     </button>
                 </div>
                 <div className="detailstitle">
-                    <FontAwesomeIcon icon={faTasks} className="details-icon" />
+                    <FontAwesomeIcon icon={faTasks} className="details-icon"/>
                     <p className="task-comment">Comments:</p>
                 </div>
                 <div className="table-container-comment">

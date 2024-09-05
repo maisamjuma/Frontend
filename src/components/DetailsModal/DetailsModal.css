@@ -251,3 +251,14 @@
 .table-container-comment {
     margin-bottom: 20px;
 }
+
+.comment-text{
+    border: 1px solid #E9967A;
+    padding: 2px;
+    margin-left: 40px;
+    margin-top: 7px;
+    display: flex;
+    width: 650px;
+    height: 65px;
+
+}
