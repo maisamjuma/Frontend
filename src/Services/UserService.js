@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-// const USERS_API_BASE_URL = 'http://10.10.30.77:8080/api/users';
 const USERS_API_BASE_URL = 'http://10.10.30.77:8080/api/users';
+// const USERS_API_BASE_URL = 'http://localhost:8080/api/users';
 
-const BASE_URL = 'http://10.10.30.77:8080';
 // const BASE_URL = 'http://localhost:8080';
+const BASE_URL = 'http://10.10.30.77:8080';
 
 
 class UserService {
@@ -82,29 +82,29 @@ class UserService {
     }
 
     // AddUser login
-    async login(password, email) {
-        try {
-            const response = await axios.post(`${BASE_URL}/auth`, {password, email});
-            return response.data;
-        } catch (err) {
-            throw err;
-        }
-    }
+    // async login(password, email) {
+    //     try {
+    //         const response = await axios.post(`${BASE_URL}/auth`, {password, email});
+    //         return response.data;
+    //     } catch (err) {
+    //         throw err;
+    //     }
+    // }
 
-// Register a new user
-    async register(userData) {
-        try {
-            // Ensure the user data includes the necessary fields
-            const response = await axios.post(`${BASE_URL}/auth/register`, userData, {
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            });
-            return response.data;
-        } catch (err) {
-            throw err;
-        }
-    }
+// // Register a new user
+//     async register(userData) {
+//         try {
+//             // Ensure the user data includes the necessary fields
+//             const response = await axios.post(`${BASE_URL}/auth/register`, userData, {
+//                 headers: {
+//                     'Content-Type': 'application/json',
+//                 }
+//             });
+//             return response.data;
+//         } catch (err) {
+//             throw err;
+//         }
+//     }
 
 
     // Get all users
