@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// const TASKS_API_BASE_URL = "http://10.10.30.77:8080/api/tasks";
 const TASKS_API_BASE_URL = "http://10.10.30.77:8080/api/tasks";
+// const TASKS_API_BASE_URL = "http://localhost:8080/api/tasks";
 
 class TaskService {
 

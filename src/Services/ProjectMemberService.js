@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// const MEMBERS_API_BASE_URL = 'http://10.10.30.77:8080/api/project-members';
 const MEMBERS_API_BASE_URL = 'http://10.10.30.77:8080/api/project-members';
+// const MEMBERS_API_BASE_URL = 'http://localhost:8080/api/project-members';
 
 class ProjectMemberService {
 
