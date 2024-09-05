@@ -118,6 +118,10 @@
     max-height: 30px;
 }
 
+.textarea-comment:disabled {
+    background-color: #f0f0f0; /* Ensure it's visible */
+    cursor: not-allowed;
+}
 
 .save-comment-btn {
     margin-left: 16px; /* Adjust margin as needed */

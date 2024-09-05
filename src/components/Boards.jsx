@@ -475,19 +475,6 @@ const Boards = ({
             alert('There was an error moving the task. Please try again.');
         }
     };
-    // // src/constants/statusColors.js
-    // const statusColors = {
-    //     1: '#a41d1d',  // Red
-    //     2: '#ff8c00',  // Orange
-    //     3: '#ffd700',  // Yellow
-    //     4: '#32cd32',  // Lime Green
-    //     5: '#00bfff',  // Deep Sky Blue
-    //     6: '#ff69b4',  // Hot Pink
-    //     7: '#8a2be2',  // Blue Violet
-    //     8: '#ff6347',  // Tomato
-    //     9: '#4682b4',  // Steel Blue
-    //     10: '#d3d3d3'  // Light Gray
-    // };
 
 
     return (<DragDropContext onDragEnd={onDragEnd}>

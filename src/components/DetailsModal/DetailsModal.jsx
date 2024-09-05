@@ -16,6 +16,15 @@ const DetailsModal = ({ task, onClose }) => {
     const [commentsData, setCommentsData] = useState([]);
     const [user, setUser] = useState(null);
     const [editingIndex, setEditingIndex] = useState(null); // State to track the index of the comment being edited
+    const [isCommentSaved, setIsCommentSaved] = useState({});
+
+    useEffect(() => {
+        const initialSavedState = commentsData.reduce((acc, _, index) => {
+            acc[index] = false; // Default to false
+            return acc;
+        }, {});
+        setIsCommentSaved(initialSavedState);
+    }, [commentsData]);
 
     useEffect(() => {
         const storedUser = localStorage.getItem('loggedInUser');
@@ -23,6 +32,7 @@ const DetailsModal = ({ task, onClose }) => {
             setUser(JSON.parse(storedUser));
         }
     }, []);
+
     useEffect(() => {
         if (task && task.taskId) {
             // Fetch task comments
@@ -78,9 +88,7 @@ const DetailsModal = ({ task, onClose }) => {
         const storedUser = localStorage.getItem('loggedInUser');
         if (storedUser) {
             const user = JSON.parse(storedUser);
-        setCommentsData([...commentsData, { Comments: '', CommentedBy:
-                { firstName: user.firstName, lastName: user.lastName } }]);
-
+            setCommentsData([...commentsData, { Comments: '', CommentedBy: { firstName: user.firstName, lastName: user.lastName } }]);
             setEditingIndex(commentsData.length); // Set the new comment as the one being edited
         }
     };
@@ -122,9 +130,10 @@ const DetailsModal = ({ task, onClose }) => {
 
                 alert('Comment saved successfully!');
                 const updatedComments = [...commentsData];
-                updatedComments[rowIndex].Comments = commentText;
+                updatedComments[rowIndex] = { ...updatedComments[rowIndex], Comments: commentText }; // Update the existing comment
                 setCommentsData(updatedComments);
                 setEditingIndex(null); // Clear the editing index once the comment is saved
+                setIsCommentSaved(prev => ({ ...prev, [rowIndex]: true })); // Mark the comment as saved
 
             } else {
                 alert('User information is not available. Please log in again.');
@@ -183,21 +192,31 @@ const DetailsModal = ({ task, onClose }) => {
                     {commentsData.map((row, rowIndex) => (
                         <div key={rowIndex} className="comment-row">
                             <div className="comment-header">
-                            <span className="comment-circle">
-                                {row.CommentedBy.firstName.charAt(0)}
-                            </span>
+                                <span className="comment-circle">
+                                    {row.CommentedBy.firstName.charAt(0)}
+                                </span>
                                 <span className="member-name-comment">
-                                {row.CommentedBy.firstName} {row.CommentedBy.lastName}
-                            </span>
+                                    {row.CommentedBy.firstName} {row.CommentedBy.lastName}
+                                </span>
                             </div>
                             <div className="comment-content">
-                            <textarea
-                                className="textarea-comment"
-                                value={row.Comments}
-                                onChange={(e) => handleCommentsChange(e, rowIndex)}
-                                rows="10"
-                            />
-                                {editingIndex === rowIndex && (
+                                {isCommentSaved[rowIndex] ? (
+                                    <span className="comment-text">{row.Comments}</span>
+                                ) : (
+                                    <textarea
+                                        className="textarea-comment"
+                                        value={row.Comments}
+                                        onChange={(e) => handleCommentsChange(e, rowIndex)}
+                                        rows="10"
+                                        style={{
+                                            backgroundColor: isCommentSaved[rowIndex] ? '#f0f0f0' : 'white',
+                                            cursor: isCommentSaved[rowIndex] ? 'not-allowed' : 'text'
+                                        }}
+                                        disabled={isCommentSaved[rowIndex]}
+                                    />
+
+                                )}
+                                {editingIndex === rowIndex && !isCommentSaved[rowIndex] && (
                                     <button
                                         className="save-comment-btn"
                                         onClick={() => handleSaveComment(row.Comments, rowIndex)}
@@ -217,7 +236,6 @@ const DetailsModal = ({ task, onClose }) => {
             </div>
         </div>
     );
-
 };
 
 DetailsModal.propTypes = {
