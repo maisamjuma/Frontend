@@ -118,7 +118,7 @@
     max-height: 30px;
 }
 
-.textarea-comment:disabled {
+.input-comment:disabled {
     background-color: #f0f0f0; /* Ensure it's visible */
     cursor: not-allowed;
 }
@@ -191,7 +191,7 @@
 
 /* Textarea styles */
 .textarea,
-.textarea-comment {
+.input-comment {
     width: 100%;
     background: #F8F9FA; /* Light gray background for textareas */
     color: #333333; /* Dark text color */
@@ -205,7 +205,7 @@
     resize: vertical;
 }
 
-.textarea-comment {
+.input-comment {
     /*min-height: 15px;*/
     max-height: 60px;
     resize: vertical;

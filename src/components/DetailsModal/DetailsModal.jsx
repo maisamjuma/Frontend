@@ -127,13 +127,13 @@ const DetailsModal = ({ task, onClose }) => {
                 };
 
                 await CommentService.createComment(commentData);
-
-                alert('Comment saved successfully!');
                 const updatedComments = [...commentsData];
                 updatedComments[rowIndex] = { ...updatedComments[rowIndex], Comments: commentText }; // Update the existing comment
                 setCommentsData(updatedComments);
                 setEditingIndex(null); // Clear the editing index once the comment is saved
                 setIsCommentSaved(prev => ({ ...prev, [rowIndex]: true })); // Mark the comment as saved
+
+                alert('Comment saved successfully!');
 
             } else {
                 alert('User information is not available. Please log in again.');
@@ -203,8 +203,9 @@ const DetailsModal = ({ task, onClose }) => {
                                 {isCommentSaved[rowIndex] ? (
                                     <span className="comment-text">{row.Comments}</span>
                                 ) : (
-                                    <textarea
-                                        className="textarea-comment"
+                                    <input
+                                        type="text"
+                                        className="input-comment"
                                         value={row.Comments}
                                         onChange={(e) => handleCommentsChange(e, rowIndex)}
                                         rows="10"
@@ -214,7 +215,6 @@ const DetailsModal = ({ task, onClose }) => {
                                         }}
                                         disabled={isCommentSaved[rowIndex]}
                                     />
-
                                 )}
                                 {editingIndex === rowIndex && !isCommentSaved[rowIndex] && (
                                     <button
