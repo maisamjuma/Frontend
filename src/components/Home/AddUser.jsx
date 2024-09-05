@@ -33,6 +33,10 @@ const AddUser = () => {
         role: '',
         // isTeamLeader: '',
     });
+    // State variables for pop-up messages
+    const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+    const [showErrorPopup, setShowErrorPopup] = useState(false);
+
 
     useEffect(() => {
         // Fetch roles from the database
@@ -98,11 +102,20 @@ const AddUser = () => {
                 console.log(" AddUser:", user);
                 console.log("Response :", response);
 
+                setShowSuccessPopup(true);  // Show success message
+
                 // Navigate to the desired page after successful user creation
-                navigate('/main');
+                setTimeout(() => {
+                    setShowSuccessPopup(false);
+                    navigate('/main');
+                }, 2000);
             } catch (error) {
                 console.error("Error saving user:", error);
+                setShowErrorPopup(true);  // Show error message
+                setTimeout(() => setShowSuccessPopup(false), 2000);
             }
+        }else{
+            setShowErrorPopup(true);  // Show error message if form is invalid
         }
     };
 
@@ -278,6 +291,22 @@ const AddUser = () => {
                     </form>
                 </div>
             </div>
+            {showSuccessPopup && (
+                <div className="popup-success">
+                    <div className="popup-content">
+                        <p>Data added successfully!</p>
+                        <button onClick={() => setShowSuccessPopup(false)}>Close</button>
+                    </div>
+                </div>
+            )}
+            {showErrorPopup && (
+                <div className="popup-error">
+                    <div className="popup-content">
+                        <p>Something went wrong, please try again.</p>
+                        <button onClick={() => setShowErrorPopup(false)}>Close</button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
