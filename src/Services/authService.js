@@ -2,8 +2,8 @@
 
 import axios from 'axios';
 
-const BASE_URL = 'http://10.10.30.77:8080/auth';
-// const BASE_URL = 'http://localhost:8080/auth';
+// const BASE_URL = 'http://10.10.30.77:8080/auth';
+const BASE_URL = 'http://localhost:8080/auth';
 
 class AuthService {
 

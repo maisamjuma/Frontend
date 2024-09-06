@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 // Define the base URL for the API
-const COMMENTS_API_BASE_URL = "http://10.10.30.77:8080/api/comments";
-// const COMMENTS_API_BASE_URL = "http://localhost:8080/api/comments";
+// const COMMENTS_API_BASE_URL = "http://10.10.30.77:8080/api/comments";
+const COMMENTS_API_BASE_URL = "http://localhost:8080/api/comments";
 
 class CommentService {
 
