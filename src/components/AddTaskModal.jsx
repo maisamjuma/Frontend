@@ -107,14 +107,15 @@ const AddTaskModal = ({
                     taskDescription,
                     status: status.title,
                     priority,
-                    dueDate: dueDate.toISOString(),
+                    dueDate:dueDate.toISOString(),  // Convert dueDate to ISO string format
                     assignedToUserId: assignedToUserId || null
                 };
-
+                console.log("Task to sent ",newTask);
                 const response = await TaskService.createTask(newTask);
                 const { taskId } = response.data;
+                console.log("Task added ",response.data);
 
-                onAddTask(taskId, projectId, taskName, taskDescription, boardId, status, priority, assignedToUserId);
+                onAddTask(taskId, projectId, taskName, taskDescription, boardId, status, priority,dueDate, assignedToUserId);
                 setTaskName('');
                 setTaskDescription('');
                 setDueDate(new Date());
@@ -153,15 +154,14 @@ const AddTaskModal = ({
                     <div className="date-options">
                         <p className="paragraph">Due date:</p>
                         <Calendar
-                            onChange={(date) => setDueDate(date)}
                             value={dueDate}
+                            onChange={(date) => setDueDate(date)}  // Directly receive the date value here
                             tileClassName={({ date }) =>
-                                dueDate && date.toDateString() === new Date(dueDate).toDateString()
-                                    ? 'selected-date'
-                                    : null
+                                dueDate && date.toISOString() === new Date(dueDate).toISOString() ? 'selected-date' : null
                             }
                             className="custom-calendar"
                         />
+
                     </div>
                     <div className="priority-options">
                         <p className="paragraph">Priority:</p>
