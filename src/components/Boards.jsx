@@ -110,6 +110,11 @@ const Boards = ({
             // return;
         }
 
+        if (destinationStatusId >= 3 && sourceStatusId === 1) {
+            alert("You can only move the Task from Unassigned to ToDo.");
+            return;
+        }
+
         const updatedStatuses = statuses.map(status => {
             if (status.id === sourceStatusId) {
                 return {
@@ -246,10 +251,14 @@ const Boards = ({
     }, [statuses, projectId, boardId, name]);
 
     const handleAddTask = async (statusId, task) => {
+        console.log(task)
         try {
             // Fetch the user details if the task has an assigned user
             if (task.assignedToUserId) {
                 try {
+
+                    console.log("task.assignedToUserId",task.assignedToUserId)
+
                     const userResponse = await UserService.getUserById(task.assignedToUserId);
                     const user = userResponse.data;
                     const assignedUserLetter = user.firstName.charAt(0).toUpperCase();
@@ -584,9 +593,9 @@ const Boards = ({
                                                         </div>
                                                         <div className="dateWithName">
                                                             <div className="dateCss">
-                                                                {task.date && (<span
+                                                                {task.dueDate && (<span
                                                                     className="task-due-date">
-                                                                                            Due date: {new Date(task.date).toLocaleDateString()}
+                                                                                            Due date: {new Date(task.dueDate).toLocaleDateString()}
                                                                                         </span>)}
                                                             </div>
                                                             {(status.id >= 2) && (
@@ -661,14 +670,14 @@ const Boards = ({
                 {showCalenderModal && (<CalendarModal
                     isVisible={showCalenderModal}
                     onClose={handleCloseCalenderModal}
-                    onSavePriority={handleSaveDate}
+                    onSavedate={handleSaveDate}
                     onRemoveDate={handleRemoveDate}/>)}
                 {showAddTaskModal && (
 
                     <AddTaskModal
                         isVisible={showAddTaskModal}
                         onClose={() => setShowAddTaskModal(false)}
-                        onAddTask={(taskId, projectId, taskName, taskDescription, boardId, status, priority, assignedToUserId) => {
+                        onAddTask={(taskId, projectId, taskName, taskDescription, boardId, status, priority,dueDate, assignedToUserId) => {
                             handleAddTask(currentStatusId, {
                                 taskId,
                                 projectId,
@@ -677,6 +686,7 @@ const Boards = ({
                                 boardId,
                                 status,
                                 priority,
+                                dueDate,
                                 assignedToUserId
                             });
                         }}

@@ -76,7 +76,7 @@ PriorityModal.propTypes = {
         taskName: PropTypes.string.isRequired,
         status: PropTypes.string.isRequired,
         priority: PropTypes.string.isRequired,
-        date: PropTypes.instanceOf(Date),
+        dueDate: PropTypes.instanceOf(Date),
         taskDescription: PropTypes.string.isRequired,
     }),
 };

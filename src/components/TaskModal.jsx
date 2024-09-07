@@ -122,9 +122,9 @@ const TaskModal = ({
                 {/*<div className="task-status">*/}
                 {/*    Status: {task.status}*/}
                 {/*</div>*/}
-                {task.date && (
+                {task.dueDate && (
                     <div className="task-date">
-                        {new Date(task.date).toDateString()}
+                        {new Date(task.dueDate).toISOString()}
                     </div>
                 )}
             </div>
@@ -146,6 +146,7 @@ const TaskModal = ({
                 <CalendarModal
                     onClose={() => setIsCalendarModalOpen(false)}
                     onSave={onSaveDate}
+                    task={{...task}}
                     onRemoveDate={() => {
                         onRemoveDate();
                         onClose();
@@ -201,7 +202,7 @@ TaskModal.propTypes = {
         taskId: PropTypes.number.isRequired,
         status: PropTypes.string.isRequired,
         taskDescription: PropTypes.string.isRequired,
-        date: PropTypes.instanceOf(Date),
+        dueDate: PropTypes.instanceOf(Date),
         priority: PropTypes.string.isRequired,
         labels: PropTypes.arrayOf(PropTypes.string),
         memberId: PropTypes.string, // Added if you are using memberId
