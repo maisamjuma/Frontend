@@ -253,7 +253,8 @@
 }
 
 .comment-text{
-    border: 1px solid #E9967A;
+    border: 4px solid #E9967A;
+    border-image: linear-gradient(black, #E9967A) 1; /* Double border effect */
     padding: 2px;
     margin-left: 35px;
     margin-top: 7px;
@@ -269,4 +270,6 @@
     margin-top: 7px;
     width: 560px;
     height: 120px;
+    border: 4px solid #E9967A;
+    border-image: linear-gradient(black, #E9967A) 1;
 }
