@@ -56,6 +56,18 @@ class NotificationService {
         });
     }
 
+// Get Notifications by senderId
+    getNotificationsBySenderId(senderId) {
+        const token = localStorage.getItem("token");
+        return axios.get(`${NOTIFICATIONS_API_BASE_URL}/senders/${senderId}`, {
+            headers: {
+                'X-Auth-Token': token
+            }
+        });
+
+    }
+    
+    
     // Create Notification
     createNotification(notificationData) {
         const token = localStorage.getItem("token");

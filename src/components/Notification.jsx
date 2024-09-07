@@ -39,14 +39,7 @@ const Notification = () => {
     }, []);
 
     useEffect(() => {
-        // const storedUser = localStorage.getItem('loggedInUser');
-        // if (storedUser) {
-        //     const user = JSON.parse(storedUser);
-        //     console.log("user from the localStorage: ", user);
-        //     setLoggedInUser(storedUser);
-        //
-        // }
-
+        // Fetch users from the database
         const fetchUsers = async () => {
             try {
                 const response = await UserService.getAllUsers(); // Fetch users from the database
@@ -57,10 +50,11 @@ const Notification = () => {
             }
         };
 
+        // Fetch notifications by senderId
         const fetchNotifications = async () => {
             if (loggedInUser) {
                 try {
-                    const response = await NotificationService.getNotificationsByUserId(loggedInUser.userId);
+                    const response = await NotificationService.getNotificationsBySenderId(loggedInUser.userId); // Use senderId
                     setMessages(response.data);
                 } catch (error) {
                     console.error('Error fetching notifications:', error);
@@ -70,7 +64,8 @@ const Notification = () => {
 
         fetchUsers();
         fetchNotifications();
-    }, []);
+    }, [loggedInUser]); // Dependency array includes loggedInUser
+
 
     // const handleSendNotification = async () => {
     //     if (selectedUsers.length && message) {
@@ -102,15 +97,16 @@ const Notification = () => {
     const handleSendNotification = async () => {
         if (selectedUsers.length && message && loggedInUser?.userId) {
             try {
-                const promises = selectedUsers.map(async (recipientId) => {
+                const promises = selectedUsers.map(async (selectedUsers) => {
                     const newNotification = {
                         message: message,
-                        recipientId: recipientId,
+                        recipientId: selectedUsers,
                         senderId: loggedInUser.userId,
-                        isRead: false
+                        isRead: true
                     };
                     console.log("Sending notification:", newNotification);
                     const response = await NotificationService.createNotification(newNotification);
+                    console.log("Sending notification:", newNotification);
 
                     if (response.status === 200 || response.status === 201) {
                         return response.data;
@@ -118,6 +114,7 @@ const Notification = () => {
                         console.error('Unexpected response status:', response.status);
                         return null;
                     }
+
                 });
 
                 const notifications = await Promise.all(promises);
@@ -159,10 +156,16 @@ const Notification = () => {
 
         return recipientIds.map(userId => {
             const recipient = users.find(user => user.userId === userId);
-            return recipient ? `${recipient.firstName} ${recipient.lastName}` : 'Unknown Recipient';
+            if (recipient) {
+                return `${recipient.firstName} ${recipient.lastName}`;
+            } else {
+                console.error('Recipient not found for userId:', userId);
+                return 'Unknown Recipient';
+            }
         }).join(', ');
-
     };
+
+
 
 
 
@@ -246,8 +249,9 @@ const Notification = () => {
                     <div className="message-list border-2 d-flex flex-row g-5">
                         {filteredMessages.map((msg, index) => {
                             console.log('Message:', msg); // Log the entire message object
-                            const fromUser = users.find(user => user.userId === msg.userId);
+                            const fromUser = users.find(user => user.userId === msg.senderId); // Use senderId, not userId
                             const fromName = fromUser ? `${fromUser.firstName} ${fromUser.lastName}` : 'Unknown Sender';
+
                             const recipientNames = getRecipientNames(msg.to);
 
                             return (
