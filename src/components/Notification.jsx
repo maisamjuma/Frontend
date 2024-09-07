@@ -1,11 +1,13 @@
 // Notification.jsx
 import React, {useState, useEffect} from 'react';
+import PropTypes from 'prop-types'; // Import PropTypes
 import Navbar from "./Navbar/Navbar.jsx";
 import './Notification.css';
 import SideBarForNoti from "./SideBarForNoti.jsx";
 import {Filter} from "./SVGIcons.jsx";
 import UserService from '../Services/UserService';
 import NotificationService from '../Services/NotificationService.js';
+import MessageItem from './MessageItem.jsx';
 
 const Notification = () => {
     const [loggedInUser, setLoggedInUser] = useState(null);
@@ -17,6 +19,7 @@ const Notification = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedUserForFilter, setSelectedUserForFilter] = useState('');
     const [users, setUsers] = useState([]);
+    const [selectedMessage, setSelectedMessage] = useState(null); // New state for selected message
     useEffect(() => {
         const storedUser = localStorage.getItem('loggedInUser');
         if (storedUser) {
@@ -64,43 +67,15 @@ const Notification = () => {
 
         fetchUsers();
         fetchNotifications();
-    }, [loggedInUser]); // Dependency array includes loggedInUser
-
-
-    // const handleSendNotification = async () => {
-    //     if (selectedUsers.length && message) {
-    //         try {
-    //             const newNotification = {
-    //                 message: message,
-    //                 userId: loggedInUser.userId,
-    //                 to: selectedUsers,
-    //                 isRead: false
-    //             };
-    //             console.log(loggedInUser);
-    //             const response = await NotificationService.createNotification(newNotification);
-    //
-    //             if (response.status === 200) {
-    //                 setMessages([response.data, ...messages]);
-    //                 setShowPopup(false);
-    //                 resetForm();
-    //             } else {
-    //                 console.error('Unexpected response status:', response.status);
-    //             }
-    //         } catch (error) {
-    //             console.error('Error sending notification:', error.response?.data || error.message);
-    //         }
-    //     } else {
-    //         console.warn('No users selected or message is empty');
-    //     }
-    // };
+    }, [loggedInUser]);
 
     const handleSendNotification = async () => {
         if (selectedUsers.length && message && loggedInUser?.userId) {
             try {
-                const promises = selectedUsers.map(async (selectedUsers) => {
+                const promises = selectedUsers.map(async (selectedUser) => {
                     const newNotification = {
                         message: message,
-                        recipientId: selectedUsers,
+                        recipientId: selectedUser,
                         senderId: loggedInUser.userId,
                         isRead: true
                     };
@@ -133,27 +108,19 @@ const Notification = () => {
         }
     };
 
-
-
-    // const getRecipientNames = (recipientIds = []) => {
-    //     if (!Array.isArray(recipientIds)) {
-    //         console.error('Invalid recipientIds:', recipientIds);
-    //         return 'Unknown Recipient';
-    //     }
-    //
-    //     return recipientIds.map(userId => {
-    //         const recipient = users.find(user => user.userId === userId);
-    //         return recipient ? `${recipient.firstName} ${recipient.lastName}` : 'Unknown Recipient';
-    //     }).join(', ');
-    // };
-
-
-    const getRecipientNames = (recipientIds = []) => {
+    const getRecipientNames = (recipientIds) => {
+        // Ensure recipientIds is an array
         if (!Array.isArray(recipientIds)) {
-            console.error('Invalid recipientIds:', recipientIds);
-            return 'Unknown Recipient';
+            // If it's a single ID, convert it to an array
+            if (typeof recipientIds === 'string' || typeof recipientIds === 'number') {
+                recipientIds = [recipientIds];
+            } else {
+                console.error('Invalid recipientIds:', recipientIds);
+                return 'Unknown Recipient';
+            }
         }
 
+        // Map over recipientIds to get names
         return recipientIds.map(userId => {
             const recipient = users.find(user => user.userId === userId);
             if (recipient) {
@@ -190,6 +157,11 @@ const Notification = () => {
         setFilterPopupVisible(false); // Hide filter popup after selection
     };
 
+    const handleMessageClick = (message) => {
+        setSelectedMessage(message);
+        setShowPopup(true);
+    };
+
     const filteredUsers = users.filter(user =>
         user && user.firstName && user.firstName.toLowerCase().includes((searchQuery || '').toLowerCase())
     );
@@ -200,6 +172,12 @@ const Notification = () => {
             msg.from === selectedUserForFilter || msg.to.includes(selectedUserForFilter)
         )
         : messages;
+
+    // Get the name of the sender
+    const getSenderName = (senderId) => {
+        const sender = users.find(user => user.userId === senderId);
+        return sender ? `${sender.firstName} ${sender.lastName}` : 'Unknown Sender';
+    };
 
     return (
         <div>
@@ -247,70 +225,59 @@ const Notification = () => {
                 <div className="main-contentN">
 
                     <div className="message-list border-2 d-flex flex-row g-5">
-                        {filteredMessages.map((msg, index) => {
-                            console.log('Message:', msg); // Log the entire message object
-                            const fromUser = users.find(user => user.userId === msg.senderId); // Use senderId, not userId
-                            const fromName = fromUser ? `${fromUser.firstName} ${fromUser.lastName}` : 'Unknown Sender';
-
-                            const recipientNames = getRecipientNames(msg.to);
-
-                            return (
-                                <div key={index} className="message-item" onClick={() => setShowPopup(msg)}>
-                                    <strong>From:</strong> {fromName}<br/>
-                                    <strong>To:</strong> {recipientNames}
-                                </div>
-                            );
-                        })}
+                        {filteredMessages.map(message => (
+                            <MessageItem
+                                key={message.id}
+                                message={message}
+                                users={users}
+                                getRecipientNames={getRecipientNames} // Pass as prop
+                                onClick={() => handleMessageClick(message)} // Update onClick handler
+                            />
+                        ))}
                     </div>
 
 
 
                 </div>
             </div>
-            {showPopup && (
+            {showPopup && selectedMessage && (
                 <div className="popup-overlay">
                     <div className="popup-content">
-                        {typeof showPopup === 'object' ? (
-                            <>
-                                <h4>Message Details</h4>
-                                <p className="border-1"><strong>From:</strong> {showPopup.from}</p>
-                                <p><strong>To:</strong> {(showPopup.to || []).join(', ')}</p>
-                                <p><strong>Message:</strong> {showPopup.message}</p>
-                                <button className="btn btn-secondary" onClick={() => setShowPopup(false)}>Close</button>
-                            </>
-                        ) : (
-                            <>
-                                <h4>New Message</h4>
-                                <div className="form-group">
-                                    <label>Recipients</label>
-                                    <ul className="user-selection">
-                                        {users.map(user => (
-                                            <li
-                                                key={user.userId}
-                                                className={`list-group-item ${selectedUsers.includes(user.userId) ? 'selected' : ''}`}
-                                                onClick={() => handleUserSelection(user.userId)}
-                                            >
-                                                {user.firstName} {user.lastName}
-                                            </li>
-                                        ))}
-                                    </ul>
-
-                                </div>
-
-                                <div className="form-group mt-2">
-                                    <label>Message</label>
-                                    <textarea
-                                        className="form-control"
-                                        value={message}
-                                        onChange={e => setMessage(e.target.value)}
-                                    />
-                                </div>
-                                <div className="d-flex justify-content-between mt-3">
-                                    <button className="saveNotificationBtn" onClick={handleSendNotification}>Send</button>
-                                    <button className="cancelButton" onClick={() => setShowPopup(false)}>Cancel</button>
-                                </div>
-                            </>
-                        )}
+                        <h4>Message Details</h4>
+                        <p className="border-1"><strong>From:</strong> {getSenderName(selectedMessage.senderId)}</p> {/* Updated */}
+                        <p><strong>To:</strong> {getRecipientNames(selectedMessage.recipientId)}</p> {/* Updated */}
+                        <p><strong>Message:</strong> {selectedMessage.message}</p>
+                        <button className="btn btn-secondary" onClick={() => setShowPopup(false)}>Close</button>
+                    </div>
+                </div>
+            )}
+            {showPopup && !selectedMessage && (
+                <div className="popup-overlay">
+                    <div className="popup-content">
+                        <h4>New Message</h4>
+                        <div className="form-group">
+                            <label>Recipients</label>
+                            <ul className="user-selection">
+                                {users.map(user => (
+                                    <li
+                                        key={user.userId}
+                                        className={`list-group-item ${selectedUsers.includes(user.userId) ? 'selected' : ''}`}
+                                        onClick={() => handleUserSelection(user.userId)}
+                                    >
+                                        {user.firstName} {user.lastName}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                        <div className="form-group">
+                            <label>Message</label>
+                            <textarea
+                                value={message}
+                                onChange={(e) => setMessage(e.target.value)}
+                            />
+                        </div>
+                        <button className="btn btn-primary" onClick={handleSendNotification}>Send</button>
+                        <button className="btn btn-secondary" onClick={() => setShowPopup(false)}>Close</button>
                     </div>
                 </div>
             )}
@@ -319,4 +286,15 @@ const Notification = () => {
     );
 };
 
+Notification.propTypes = {
+    users: PropTypes.arrayOf(PropTypes.shape({
+        userId: PropTypes.string.isRequired,
+        firstName: PropTypes.string.isRequired,
+        lastName: PropTypes.string.isRequired,
+    })).isRequired,
+    loggedInUser: PropTypes.shape({
+        userId: PropTypes.string.isRequired
+    }),
+    onSendNotification: PropTypes.func.isRequired
+};
 export default Notification;
