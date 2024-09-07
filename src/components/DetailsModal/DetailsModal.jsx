@@ -1,22 +1,24 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './DetailsModal.css';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faListAlt, faTasks, faTimes} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faListAlt, faTasks, faTimes } from '@fortawesome/free-solid-svg-icons';
 import TaskService from '../../services/TaskService';
 import CommentService from "../../Services/CommentService.js";
 import UserService from "../../Services/UserService.js";
 
-const DetailsModal = ({task, onClose}) => {
+const DetailsModal = ({ task, onClose }) => {
     const initialTableData = (task && task.tableData && Array.isArray(task.tableData) && task.tableData.length > 0)
         ? task.tableData
-        : [{Description: task.taskDescription || "", Comments: ""}];
+        : [{ Description: task.taskDescription || "", Comments: "" }];
 
-    const [descriptionData, setDescriptionData] = useState(initialTableData.map(row => ({Description: row.Description})));
+    const [descriptionData, setDescriptionData] = useState(initialTableData.map(row => ({ Description: row.Description })));
     const [commentsData, setCommentsData] = useState([]);
     const [user, setUser] = useState(null);
     const [editingIndex, setEditingIndex] = useState(null); // State to track the index of the comment being edited
-
+    const [taskStatus, setTaskStatus] = useState('');
+    const [taskDetails, setTaskDetails] = useState(null);
+    const [forceUpdate, setForceUpdate] = useState(false);
 
     useEffect(() => {
         const storedUser = localStorage.getItem('loggedInUser');
@@ -27,23 +29,38 @@ const DetailsModal = ({task, onClose}) => {
 
     useEffect(() => {
         if (task && task.taskId) {
-            // Fetch task comments
+            TaskService.getTaskById(task.taskId)
+                .then(response => {
+                    setTaskDetails(response.data);
+                    setTaskStatus(response.data.status); // Ensure status is updated
+                    // Initialize descriptionData and commentsData if needed
+                    const taskData = response.data;
+                    setDescriptionData(taskData.tableData.map(row => ({ Description: row.Description })));
+                    setCommentsData(taskData.tableData.map(row => ({ Comments: row.Comments, CommentedBy: { firstName: 'Unknown', lastName: '' } })));
+                })
+                .catch(error => {
+                    console.error("Error fetching task details:", error);
+                });
+        }
+    }, [task?.taskId, forceUpdate]);
+
+    useEffect(() => {
+        if (task && task.taskId) {
             CommentService.getCommentsByTaskId(task.taskId)
                 .then(async response => {
                     const comments = response.data;
-                    // Fetch user details for each comment
                     const formattedComments = await Promise.all(comments.map(async (comment) => {
                         try {
                             const userResponse = await UserService.getUserById(comment.commentedBy);
                             return {
                                 Comments: comment.comment,
-                                CommentedBy: userResponse.data, // Assuming user data contains firstName and lastName
+                                CommentedBy: userResponse.data,
                             };
                         } catch (error) {
                             console.error(`Error fetching user ${comment.commentedBy}:`, error);
                             return {
                                 Comments: comment.comment,
-                                CommentedBy: {firstName: 'Unknown', lastName: ''},
+                                CommentedBy: { firstName: 'Unknown', lastName: '' },
                             };
                         }
                     }));
@@ -52,6 +69,12 @@ const DetailsModal = ({task, onClose}) => {
                 .catch(error => {
                     console.error("Error fetching comments:", error);
                 });
+        }
+    }, [task]);
+
+    useEffect(() => {
+        if (task) {
+            setForceUpdate(prev => !prev); // Trigger update when task changes
         }
     }, [task]);
 
@@ -82,7 +105,7 @@ const DetailsModal = ({task, onClose}) => {
             const user = JSON.parse(storedUser);
             setCommentsData([...commentsData, {
                 Comments: '',
-                CommentedBy: {firstName: user.firstName, lastName: user.lastName}
+                CommentedBy: { firstName: user.firstName, lastName: user.lastName }
             }]);
             setEditingIndex(commentsData.length); // Set the new comment as the one being edited
         }
@@ -97,11 +120,11 @@ const DetailsModal = ({task, onClose}) => {
                     ...desc,
                     Comments: commentsData[index]?.Comments || '',
                 })),
+                status: taskStatus, // Update the status here
             };
 
             await TaskService.updateTask(task.taskId, updatedTask);
 
-            // alert('Task description updated successfully!');
             onClose(); // Close the modal after saving
         } catch (error) {
             console.error("Error updating task:", error);
@@ -118,17 +141,15 @@ const DetailsModal = ({task, onClose}) => {
                 const commentData = {
                     taskId: task.taskId,
                     comment: commentText,
-                    commentedBy: user.userId, // Adjust based on the actual structure of your user object
+                    commentedBy: user.userId,
                 };
 
                 await CommentService.createComment(commentData);
 
-                // alert('Comment saved successfully!');
                 const updatedComments = [...commentsData];
-                updatedComments[rowIndex] = {...updatedComments[rowIndex], Comments: commentText}; // Update the existing comment
+                updatedComments[rowIndex] = { ...updatedComments[rowIndex], Comments: commentText }; // Update the existing comment
                 setCommentsData(updatedComments);
                 setEditingIndex(null); // Clear the editing index once the comment is saved
-
 
             } else {
                 alert('User information is not available. Please log in again.');
@@ -139,20 +160,19 @@ const DetailsModal = ({task, onClose}) => {
         }
     };
 
-
     return (
         <div className="details-modal-overlay" onClick={handleOverlayClick}>
             <div className="details-modal-content">
                 <div className="details-modal-header">
                     <div className="details-modal-title">
-                        <FontAwesomeIcon icon={faListAlt} className="details-icon"/>
+                        <FontAwesomeIcon icon={faListAlt} className="details-icon" />
                         <h2>{task.taskName}</h2>
                     </div>
-                    <FontAwesomeIcon icon={faTimes} className="close-icon" onClick={onClose}/>
+                    <FontAwesomeIcon icon={faTimes} className="close-icon" onClick={onClose} />
                 </div>
-                <p className="task-status">In Status: {task.status}</p>
+                <p className="task-status">In Status: {taskStatus}</p>
                 <div className="detailstitle">
-                    <FontAwesomeIcon icon={faTasks} className="details-icon"/>
+                    <FontAwesomeIcon icon={faTasks} className="details-icon" />
                     <p className="task-description">Description:</p>
                 </div>
                 <div className="table-container">
@@ -162,12 +182,12 @@ const DetailsModal = ({task, onClose}) => {
                                 <tbody>
                                 <tr>
                                     <td>
-                                        <textarea
-                                            className="textarea"
-                                            value={row.Description}
-                                            onChange={(e) => handleDescriptionChange(e, rowIndex)}
-                                            rows="10"
-                                        />
+                                            <textarea
+                                                className="textarea"
+                                                value={row.Description}
+                                                onChange={(e) => handleDescriptionChange(e, rowIndex)}
+                                                rows="10"
+                                            />
                                     </td>
                                 </tr>
                                 </tbody>
@@ -181,7 +201,7 @@ const DetailsModal = ({task, onClose}) => {
                     </button>
                 </div>
                 <div className="detailstitle">
-                    <FontAwesomeIcon icon={faTasks} className="details-icon"/>
+                    <FontAwesomeIcon icon={faTasks} className="details-icon" />
                     <p className="task-comment">Comments:</p>
                 </div>
                 <div className="table-container-comment">
@@ -197,14 +217,13 @@ const DetailsModal = ({task, onClose}) => {
                             </div>
                             <div className="comment-content">
                                 {editingIndex === rowIndex ? (
-                                    // Show textarea only when editing a new or unsaved comment
                                     <>
-                        <textarea
-                            className="textarea-comment"
-                            value={row.Comments}
-                            onChange={(e) => handleCommentsChange(e, rowIndex)}
-                            rows="10"
-                        />
+                                        <textarea
+                                            className="textarea-comment"
+                                            value={row.Comments}
+                                            onChange={(e) => handleCommentsChange(e, rowIndex)}
+                                            rows="10"
+                                        />
                                         <button
                                             className="save-comment-btn"
                                             onClick={() => handleSaveComment(row.Comments, rowIndex)}
@@ -213,10 +232,9 @@ const DetailsModal = ({task, onClose}) => {
                                         </button>
                                     </>
                                 ) : (
-                                    // Show span for existing, saved comments without allowing editing
                                     <span className="comment-text">
-                        {row.Comments}
-                    </span>
+                                        {row.Comments}
+                                    </span>
                                 )}
                             </div>
                         </div>
