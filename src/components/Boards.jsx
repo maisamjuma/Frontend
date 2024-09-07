@@ -110,6 +110,11 @@ const Boards = ({
             // return;
         }
 
+        if (destinationStatusId >= 3 && sourceStatusId === 1) {
+            alert("You can only move the Task from Unassigned to ToDo.");
+            return;
+        }
+
         const updatedStatuses = statuses.map(status => {
             if (status.id === sourceStatusId) {
                 return {
