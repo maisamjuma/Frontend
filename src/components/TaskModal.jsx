@@ -46,12 +46,24 @@ const TaskModal = ({
     const [isPriorityModalOpen, setIsPriorityModalOpen] = useState(false);
     const [isLabelModalOpen, setIsLabelModalOpen] = useState(false);
     const [isChangeMemberModalOpen, setIsChangeMemberModalOpen] = useState(false);
+    // const userRoleIsAdmin = userIsAdmin(); // Check if the user is an admin
+    // const userRoleIsTeamLeader = userIsTeamLeader(); // Check if the user is an admin
     console.log("projectId:", projectId, "projectDescription:", projectDescription, "projectMembers:", projectMembers);
     console.log("hhghg", selectedMember)
     // eslint-disable-next-line react/prop-types
     console.log("is task in taskmodal ? ", task)
     console.log("is task in boardid ? ", boardId)
 
+// Get the logged-in user from localStorage
+    const storedUser = localStorage.getItem('loggedInUser');
+    if (storedUser) {
+        const user = JSON.parse(storedUser);
+        console.log("user from the localStorage: ", user);
+    }
+    const loggedInUser = storedUser ? JSON.parse(storedUser) : null;
+
+    // Check if the logged-in user is assigned to the task
+    const isAssignedToTask = loggedInUser && loggedInUser.userId === task.assignedToUserId;
 
     if (!task) return null;
 
@@ -70,6 +82,13 @@ const TaskModal = ({
     };
 
     const handleDeleteClick = async () => {
+        if (!isAssignedToTask) {
+            // If the user is not assigned to the task, show an alert and do not proceed
+            alert('You are not assigned to this task and cannot delete it.');
+            return; // Prevent the deletion process
+        }
+
+        // Proceed with the deletion if the user is assigned
         if (window.confirm('Are you sure you want to delete this task?')) {
             try {
                 await TaskService.deleteTask(task.taskId); // Call the service method
@@ -81,6 +100,7 @@ const TaskModal = ({
             }
         }
     };
+
 
 
     // const handleSaveMember = (memberId) => {
@@ -115,9 +135,11 @@ const TaskModal = ({
                     <button onClick={() => setIsLabelModalOpen(true)}>
                         <FontAwesomeIcon icon={faTag}/> Edit Labels
                     </button>
-                    <button onClick={handleDeleteClick}>
-                        <FontAwesomeIcon icon={faTrash}/> Delete
-                    </button>
+
+                        <button onClick={handleDeleteClick}>
+                            <FontAwesomeIcon icon={faTrash} /> Delete
+                        </button>
+
                 </div>
                 {/*<div className="task-status">*/}
                 {/*    Status: {task.status}*/}
@@ -205,7 +227,7 @@ TaskModal.propTypes = {
         dueDate: PropTypes.instanceOf(Date),
         priority: PropTypes.string.isRequired,
         labels: PropTypes.arrayOf(PropTypes.string),
-        memberId: PropTypes.string, // Added if you are using memberId
+        assignedToUserId: PropTypes.string, // Added if you are using memberId
     }),
     onClose: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,

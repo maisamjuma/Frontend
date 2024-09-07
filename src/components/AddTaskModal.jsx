@@ -6,7 +6,7 @@ import UserService from '../Services/UserService.js';
 import TaskService from '../Services/TaskService.js';
 import BoardService from '../Services/BoardService.js';
 import RoleService from '../Services/RoleService.js';
-
+import {userIsAdmin, userIsTeamLeader} from '../utils/authUtils';
 const AddTaskModal = ({
                           isVisible,
                           onClose,
@@ -25,6 +25,19 @@ const AddTaskModal = ({
     const [userDetails, setUserDetails] = useState([]);
     const [boardName, setBoardName] = useState('');
     const [roleFilter, setRoleFilter] = useState('');
+    const userRoleIsAdmin = userIsAdmin(); // Check if the user is an admin
+    const userRoleIsTeamLeader = userIsTeamLeader(); // Check if the user is an admin
+    const [storedUser, setStoredUser] = useState(null); // State to store the logged-in user
+
+    // Fetch the logged-in user from localStorage
+    useEffect(() => {
+        const storedUser = localStorage.getItem('loggedInUser');
+        if (storedUser) {
+            const user = JSON.parse(storedUser);
+            setStoredUser(user);
+            console.log("User from localStorage:", user);
+        }
+    }, []);
     // const [boards, setBoards] = useState([]);
     //
     // // Fetch boards when component is visible and projectId changes
@@ -100,6 +113,9 @@ const AddTaskModal = ({
     const handleAddTask = async () => {
         if (taskName.trim()) {
             try {
+                // Automatically assign task to the logged-in user if they're not admin or team leader
+                const assignedUser = userRoleIsAdmin || userRoleIsTeamLeader ? assignedToUserId : storedUser?.userId;
+
                 const newTask = {
                     projectId,
                     taskName,
@@ -107,8 +123,8 @@ const AddTaskModal = ({
                     taskDescription,
                     status: status.title,
                     priority,
-                    dueDate:dueDate.toISOString(),  // Convert dueDate to ISO string format
-                    assignedToUserId: assignedToUserId || null
+                    dueDate: dueDate.toISOString(),
+                    assignedToUserId: assignedUser || null // Use the assigned user ID
                 };
                 console.log("Task to sent ",newTask);
                 const response = await TaskService.createTask(newTask);
@@ -175,7 +191,8 @@ const AddTaskModal = ({
                             <option value="low">Low</option>
                         </select>
                     </div>
-                    {status.id === 2 && (
+
+                    {status.id === 2 && (userRoleIsAdmin || userRoleIsTeamLeader) && (
                         <div className="user-options">
                             <p className="paragraph">Assign To:</p>
                             <select
@@ -199,6 +216,7 @@ const AddTaskModal = ({
                             </select>
                         </div>
                     )}
+
                     <div className="modal-actions">
                         <button onClick={handleAddTask} className="modal-add-button">Add Task</button>
                         <button onClick={onClose} className="modal-cancel-button">Cancel</button>

@@ -34,12 +34,19 @@ const Projects = () => {
     const containerRef = useRef(null);
     const [boards, setBoards] = useState([]); // For storing boards data
     const [userRole, setUserRole] = useState(''); // For storing user role
-    //just a test:
-    const storedUser = localStorage.getItem('loggedInUser');
-    if (storedUser) {
-        const user = JSON.parse(storedUser);
-        console.log("user from the localStorage: ", user);
-    }
+    const [storedUser, setStoredUser] = useState(null); // State to store the logged-in user
+
+    // Fetch the logged-in user from localStorage
+    useEffect(() => {
+        const storedUser = localStorage.getItem('loggedInUser');
+        if (storedUser) {
+            const user = JSON.parse(storedUser);
+            setStoredUser(user);
+            console.log("User from localStorage:", user);
+        }
+    }, []);
+
+
     const handleLogout = () => {
         localStorage.removeItem('authToken');
         sessionStorage.removeItem('authToken');
@@ -96,14 +103,11 @@ const Projects = () => {
         }
     }, [projectMembers]);
 
-    // Fetch logged-in user's role
     useEffect(() => {
         const fetchUserRole = async () => {
             try {
-                const storedUser = localStorage.getItem('loggedInUser');
                 if (storedUser) {
-                    const user = JSON.parse(storedUser);
-                    const response = await RoleService.getRoleById(user.functionalRoleId);
+                    const response = await RoleService.getRoleById(storedUser.functionalRoleId);
                     setUserRole(response.data.roleName); // Assuming roleName is the field for role
                 }
             } catch (error) {
@@ -112,7 +116,7 @@ const Projects = () => {
         };
 
         fetchUserRole();
-    }, []);
+    }, [storedUser]);
 
     const handleDeleteMode = () => {
         setIsDeleting(true);

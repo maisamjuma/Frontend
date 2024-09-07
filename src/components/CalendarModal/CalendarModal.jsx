@@ -8,6 +8,16 @@ const CalendarModal = ({onClose, onSave,task, onRemoveDate}) => {
     // const [dueDate, setSelectedDate] = useState(null);
     const [dueDate, setSelectedDate] = useState(task.dueDate ? new Date(task.dueDate) : null);
 
+// Get the logged-in user from localStorage
+    const storedUser = localStorage.getItem('loggedInUser');
+    if (storedUser) {
+        const user = JSON.parse(storedUser);
+        console.log("user from the localStorage: ", user);
+    }
+    const loggedInUser = storedUser ? JSON.parse(storedUser) : null;
+
+    // Check if the logged-in user is assigned to the task
+    const isAssignedToTask = loggedInUser && loggedInUser.userId === task.assignedToUserId;
 
     const handleDateChange = (date) => {
         setSelectedDate(date);
@@ -15,6 +25,11 @@ const CalendarModal = ({onClose, onSave,task, onRemoveDate}) => {
 
 
     const handleSave = async () => {
+        if (!isAssignedToTask) {
+            // If the user is not assigned to the task, show an alert and do not proceed
+            alert('You are not assigned to this task and cannot change the dueDate.');
+            return; // Prevent the deletion process
+        }
         console.log("task?",task)
         console.log("selected : ", dueDate)
         try {
@@ -48,6 +63,11 @@ const CalendarModal = ({onClose, onSave,task, onRemoveDate}) => {
     // };
 
     const handleRemove = async () => {
+        if (!isAssignedToTask) {
+            // If the user is not assigned to the task, show an alert and do not proceed
+            alert('You are not assigned to this task and cannot delete the dueDate.');
+            return; // Prevent the deletion process
+        }
         try {
             // Create the updated task object with dueDate set to null
             const updatedTask = {
@@ -101,6 +121,7 @@ CalendarModal.propTypes = {
         priority: PropTypes.string.isRequired,
         dueDate: PropTypes.instanceOf(Date),
         taskDescription: PropTypes.string.isRequired,
+        assignedToUserId: PropTypes.string, // Added if you are using memberId
     }),
     onRemoveDate: PropTypes.func.isRequired
 };
