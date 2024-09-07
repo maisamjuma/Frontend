@@ -198,6 +198,7 @@ const EditUser = () => {
                         <div className="  mb-2">
                             <div className="checkbox-containerE">
                                 <input
+                                    className="form-check-input"
                                     type="checkbox"
                                     name="isTeamLeader"
                                     checked={isTeamLeader}
@@ -210,6 +211,7 @@ const EditUser = () => {
                         <div className=" mb-2">
                             <div className="checkbox-containerE">
                                 <input
+                                    className="form-check-input"
                                     type="checkbox"
                                     name="isAdmin"
                                     checked={isAdmin}

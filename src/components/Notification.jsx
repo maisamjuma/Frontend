@@ -238,15 +238,15 @@ const Notification = () => {
                     )}
                 </div>
             </nav>
-            <div className="d-flex">
+
                 <SideBarForNoti
                     users={users}
                     loggedInUser={loggedInUser}
                     onSendNotification={() => setShowPopup(true)}
                 />
-                <div className="main-contentN">
 
-                    <div className="message-list border-2 d-flex flex-row g-5">
+
+                    <div className="message-list ">
                         {filteredMessages.map((msg, index) => {
                             console.log('Message:', msg); // Log the entire message object
                             const fromUser = users.find(user => user.userId === msg.senderId); // Use senderId, not userId
@@ -265,8 +265,8 @@ const Notification = () => {
 
 
 
-                </div>
-            </div>
+
+
             {showPopup && (
                 <div className="popup-overlay">
                     <div className="popup-content">

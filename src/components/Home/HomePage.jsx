@@ -136,7 +136,7 @@ const HomePage = () => {
                                 onChange={handleTeamLeaderChange}
                                 className='form-contHb '
                             >
-                                <option value="">Select Member</option>
+                                <option className="defualOption" value="">Select Member</option>
                                 {users.map(user => (
                                     <option key={user.userId} value={user.userId}>
                                         {user.firstName} {user.lastName}
