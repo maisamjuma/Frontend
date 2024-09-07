@@ -216,15 +216,14 @@ const Notification = () => {
                     )}
                 </div>
             </nav>
-            <div className="d-flex">
                 <SideBarForNoti
                     users={users}
                     loggedInUser={loggedInUser}
                     onSendNotification={() => setShowPopup(true)}
                 />
-                <div className="main-contentN">
 
-                    <div className="message-list border-2 d-flex flex-row g-5">
+
+                    <div className="message-list">
                         {filteredMessages.map(message => (
                             <MessageItem
                                 key={message.id}
@@ -238,12 +237,10 @@ const Notification = () => {
 
 
 
-                </div>
-            </div>
             {showPopup && selectedMessage && (
                 <div className="popup-overlay">
                     <div className="popup-content">
-                        <h4>Message Details</h4>
+                        <h4 className="popup-content-head4">Message Details</h4>
                         <p className="border-1"><strong>From:</strong> {getSenderName(selectedMessage.senderId)}</p> {/* Updated */}
                         <p><strong>To:</strong> {getRecipientNames(selectedMessage.recipientId)}</p> {/* Updated */}
                         <p><strong>Message:</strong> {selectedMessage.message}</p>
@@ -253,7 +250,7 @@ const Notification = () => {
             )}
             {showPopup && !selectedMessage && (
                 <div className="popup-overlay">
-                    <div className="popup-content">
+                    <div className="popup-content-new-message">
                         <h4>New Message</h4>
                         <div className="form-group">
                             <label>Recipients</label>
@@ -269,15 +266,19 @@ const Notification = () => {
                                 ))}
                             </ul>
                         </div>
-                        <div className="form-group">
+                        <div className="d-flex flex-wrap flex-column gap-2 mb-4">
                             <label>Message</label>
                             <textarea
+                                className="messageTA"
                                 value={message}
                                 onChange={(e) => setMessage(e.target.value)}
                             />
                         </div>
-                        <button className="btn btn-primary" onClick={handleSendNotification}>Send</button>
-                        <button className="btn btn-secondary" onClick={() => setShowPopup(false)}>Close</button>
+                        <div className="d-flex flex-row gap-2 mb-4">
+                            <button className="cancelButton" onClick={() => setShowPopup(false)}>Close</button>
+                            <button className="saveNotificationBtn" onClick={handleSendNotification}>Send</button>
+
+                        </div>
                     </div>
                 </div>
             )}
