@@ -42,7 +42,11 @@
 
 .message-text {
     font-size: 14px;
-    margin: 0;
+    max-width: 170px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    position: relative; /* Add this to ensure the tooltip is positioned correctly */
 }
 
 .message-recipients {
