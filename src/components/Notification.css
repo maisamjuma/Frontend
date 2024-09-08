@@ -102,17 +102,17 @@
     flex-direction: column;
     flex-wrap: wrap;
     gap: 10px;
-    max-height: 700px;
+    max-height: 800px;
     overflow-y: scroll;
     border: 1px solid #dee2e6;
     border-radius: 4px;
     padding: 15px;
-    width: 1090px;
+    width: 1200px;
     height: 500px;
     overflow-x: scroll;
     position: absolute;
     top: 150px;
-    right: 190px;
+    right: 50px;
 
 }
 

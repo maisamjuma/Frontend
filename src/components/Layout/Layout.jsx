@@ -79,7 +79,7 @@ const Layout = ({children, onLogout}) => {
                 </div>
 
                 {/* Main Content */}
-                <div className="">
+                <div className="main-content">
                     {children}
                 </div>
             </div>
