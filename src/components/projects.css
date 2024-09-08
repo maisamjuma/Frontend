@@ -11,8 +11,8 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: #333;
     padding: 20px;
-    max-width: 1200px;
-    height: 400px;
+    max-width: 600px;
+    min-height: 400px;
     margin: auto;
     background-color: #f4f4f9;
     border-radius: 8px;
@@ -251,15 +251,14 @@ button:hover {
 }
 
 .btn-primaryForProject {
-    position: absolute;
-    margin-top: 30px;
-    margin-left: 350px;
+    position: relative;
+    margin-top: 10px;
+    left: 295px;
 }
 
 .btn-project-details{
-    position: absolute;
-    margin-top: 95px;
-    margin-left: 363px;
+    position: relative;
+    right: 110px;
 }
 
 .secondary-navbarForPro {
