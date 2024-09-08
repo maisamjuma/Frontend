@@ -12,6 +12,10 @@
     z-index: 1000;
 }
 
+.calendar-modal-content{
+    height: 500px !important;
+}
+
 /* Content of the task modal */
 .task-modal-content {
     padding: 20px;
