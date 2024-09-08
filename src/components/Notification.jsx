@@ -221,11 +221,11 @@ const Notification = () => {
             {showPopup && selectedMessage && (
                 <div className="popup-overlay">
                     <div className="popup-content">
-                        <h4 className="popup-content-head4">Message Details</h4>
-                        <p className="border-1"><strong>From:</strong> {getSenderName(selectedMessage.senderId)}</p>
-                        <p><strong>To:</strong> {getRecipientNames(selectedMessage.recipientId)}</p>
-                        <p><strong>Message:</strong> {selectedMessage.message}</p>
-                        <button className="btn btn-secondary" onClick={() => setShowPopup(false)}>Close</button>
+                        {/*<h4 className="popup-content-head4">Message Details</h4>*/}
+                        <p className="border-1"><strong></strong> {getSenderName(selectedMessage.senderId)}</p>
+                        <p className="border-recipient"><strong>to :</strong> {getRecipientNames(selectedMessage.recipientId)}</p>
+                        <p className="border-message"><strong></strong> {selectedMessage.message}</p>
+                        <button className="close-button-on-message" onClick={() => setShowPopup(false)}>Close</button>
                     </div>
                 </div>
             )}
@@ -233,6 +233,7 @@ const Notification = () => {
                 <div className="popup-overlay">
                     <div className="popup-content-new-message">
                         <h4>New Message</h4>
+                        <button className="cancelButton" onClick={() => setShowNewMassagePopup(false)}>x</button>
                         <div className="form-group">
                             <label>Recipients</label>
                             <ul className="user-selection">
@@ -248,15 +249,14 @@ const Notification = () => {
                             </ul>
                         </div>
                         <div className="d-flex flex-wrap flex-column gap-2 mb-4">
-                            <label>Message</label>
                             <textarea
                                 className="messageTA"
                                 value={message}
+                                placeholder="Message..."
                                 onChange={(e) => setMessage(e.target.value)}
                             />
                         </div>
                         <div className="d-flex flex-row gap-2 mb-4">
-                            <button className="cancelButton" onClick={() => setShowNewMassagePopup(false)}>Close</button>
                             <button className="saveNotificationBtn" onClick={handleSendNotification}>Send</button>
                         </div>
                     </div>

@@ -6,7 +6,7 @@ import './MessageItem.css'; // Ensure this file includes your CSS styles
 const MessageItem = ({ message, users, onClick, getRecipientNames }) => {
     const fromUser = users.find(user => user.userId === message.senderId);
     const fromName = fromUser ? `${fromUser.firstName} ${fromUser.lastName}` : 'Unknown Sender';
-    const fromInitials = fromUser ? `${fromUser.firstName[0]}${fromUser.lastName[0]}` : 'U';
+    const fromInitials = fromUser ? `${fromUser.firstName[0].toUpperCase()}${fromUser.lastName[0].toUpperCase()}` : 'U';
 
     // Ensure recipientId is an array
     const recipientIds = Array.isArray(message.recipientId) ? message.recipientId : [message.recipientId];
@@ -24,13 +24,15 @@ const MessageItem = ({ message, users, onClick, getRecipientNames }) => {
                 </div>
                 <div className="sender-details">
                     <p className="sender-name">{fromName}</p>
+                </div>
+                <div className="message-details-on-info">
                     <p className="message-text">{message.message}</p>
                 </div>
                 <div className="recipient-info">
-                    <div className="recipient-badge">
-                        {recipientInitials || 'No Recipients'}
-                    </div>
-
+                    <p>{message.data}</p>
+                    {/*<div className="recipient-badge">*/}
+                    {/*    {recipientInitials || 'No Recipients'}*/}
+                    {/*</div>*/}
                 </div>
             </div>
         </div>
