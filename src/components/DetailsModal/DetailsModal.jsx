@@ -112,23 +112,36 @@ const DetailsModal = ({ task, onClose }) => {
     };
 
     const handleSaveDescription = async () => {
-        try {
-            const updatedTask = {
-                ...task,
-                taskDescription: descriptionData[0].Description,
-                tableData: descriptionData.map((desc, index) => ({
-                    ...desc,
-                    Comments: commentsData[index]?.Comments || '',
-                })),
-                status: taskStatus, // Update the status here
-            };
+        const storedUser = localStorage.getItem('loggedInUser');
+        if (storedUser) {
+            const user = JSON.parse(storedUser);
+            console.log("User from localStorage: ", user);
 
-            await TaskService.updateTask(task.taskId, updatedTask);
+            try {
+                // Check if the logged-in user is assigned to the task
+                if (user.userId === task.assignedToUserId) {
+                    const updatedTask = {
+                        ...task,
+                        taskDescription: descriptionData[0].Description,
+                        tableData: descriptionData.map((desc, index) => ({
+                            ...desc,
+                            Comments: commentsData[index]?.Comments || '',
+                        })),
+                        status: taskStatus, // Update the status here
+                    };
 
-            onClose(); // Close the modal after saving
-        } catch (error) {
-            console.error("Error updating task:", error);
-            alert("There was an error updating the task. Please try again.");
+                    await TaskService.updateTask(task.taskId, updatedTask);
+
+                    onClose(); // Close the modal after saving
+                } else {
+                    alert('You are not authorized to update this task.');
+                }
+            } catch (error) {
+                console.error("Error updating task:", error);
+                alert("There was an error updating the task. Please try again.");
+            }
+        } else {
+            alert('User information is not available. Please log in again.');
         }
     };
 
@@ -254,6 +267,7 @@ DetailsModal.propTypes = {
     task: PropTypes.shape({
         taskId: PropTypes.number.isRequired,
         taskName: PropTypes.string.isRequired,
+        assignedToUserId: PropTypes.string.isRequired,
         status: PropTypes.string.isRequired,
         date: PropTypes.instanceOf(Date),
         taskDescription: PropTypes.string.isRequired,
