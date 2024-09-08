@@ -102,13 +102,6 @@ const TaskModal = ({
     };
 
 
-
-    // const handleSaveMember = (memberId) => {
-    //     console.log('Selected member ID:', memberId);
-    //     // Handle the logic to save the selected member
-    //     // For example, update the task with the new member ID
-    //     // updateTaskMember(task.id, memberId);
-    // };
 // Determine if the Change Member button should be visible
     const canChangeMembers = userIsAdmin() || userIsTeamLeader();
     return (

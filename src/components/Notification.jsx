@@ -12,6 +12,7 @@ import MessageItem from './MessageItem.jsx';
 const Notification = () => {
     const [loggedInUser, setLoggedInUser] = useState(null);
     const [showPopup, setShowPopup] = useState(false);
+    const [showNewMassagePopup, setShowNewMassagePopup] = useState(false);
     const [selectedUsers, setSelectedUsers] = useState([]);
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
@@ -75,30 +76,37 @@ const Notification = () => {
                 const promises = selectedUsers.map(async (selectedUser) => {
                     const newNotification = {
                         message: message,
-                        recipientId: selectedUser,
+                        recipientId: selectedUser, // Send the notification to each recipient one by one
                         senderId: loggedInUser.userId,
                         isRead: true
                     };
                     console.log("Sending notification:", newNotification);
+
+                    // Make the backend request for each user
                     const response = await NotificationService.createNotification(newNotification);
-                    console.log("Sending notification:", newNotification);
 
                     if (response.status === 200 || response.status === 201) {
-                        return response.data;
+                        return {
+                            ...response.data,  // Returned data from backend
+                            recipientId: selectedUser  // Ensure the correct recipient is displayed
+                        };
                     } else {
                         console.error('Unexpected response status:', response.status);
                         return null;
                     }
-
                 });
 
+                // Wait for all the notifications to be created
                 const notifications = await Promise.all(promises);
+
+                // Filter out any failed notifications
                 const successfulNotifications = notifications.filter(n => n !== null);
 
+                // Add these new notifications to the messages array in state
                 if (successfulNotifications.length) {
-                    setMessages([...successfulNotifications, ...messages]);
-                    setShowPopup(false);
-                    resetForm();
+                    setMessages(prevMessages => [...successfulNotifications, ...prevMessages]);
+                    setShowNewMassagePopup(false); // Close the popup after sending
+                    resetForm(); // Reset the form after sending the notifications
                 }
             } catch (error) {
                 console.error('Error sending notification:', error.response?.data || error.message);
@@ -107,6 +115,7 @@ const Notification = () => {
             console.warn('No users selected or message is empty or loggedInUser is not defined');
         }
     };
+
 
     const getRecipientNames = (recipientIds) => {
         // Ensure recipientIds is an array
@@ -159,8 +168,10 @@ const Notification = () => {
 
     const handleMessageClick = (message) => {
         setSelectedMessage(message);
-        setShowPopup(true);
+        setShowPopup(true);  // Open the message details popup
+        setShowNewMassagePopup(false);  // Close the new message popup
     };
+
 
     const filteredUsers = users.filter(user =>
         user && user.firstName && user.firstName.toLowerCase().includes((searchQuery || '').toLowerCase())
@@ -216,14 +227,18 @@ const Notification = () => {
                     )}
                 </div>
             </nav>
-                <SideBarForNoti
-                    users={users}
-                    loggedInUser={loggedInUser}
-                    onSendNotification={() => setShowPopup(true)}
-                />
+            <SideBarForNoti
+                users={users}
+                loggedInUser={loggedInUser}
+                onSendNotification={() => {
+                    setSelectedMessage(null);  // Reset selected message
+                    setShowNewMassagePopup(true);  // Open the new message popup
+                    setShowPopup(false);  // Close the message details popup
+                }}
+            />
 
 
-                    <div className="message-list">
+            <div className="message-list">
                         {filteredMessages.map(message => (
                             <MessageItem
                                 key={message.id}
@@ -248,7 +263,7 @@ const Notification = () => {
                     </div>
                 </div>
             )}
-            {showPopup && !selectedMessage && (
+            {showNewMassagePopup && !selectedMessage && (
                 <div className="popup-overlay">
                     <div className="popup-content-new-message">
                         <h4>New Message</h4>
@@ -275,7 +290,7 @@ const Notification = () => {
                             />
                         </div>
                         <div className="d-flex flex-row gap-2 mb-4">
-                            <button className="cancelButton" onClick={() => setShowPopup(false)}>Close</button>
+                            <button className="cancelButton" onClick={() => setShowNewMassagePopup(false)}>Close</button>
                             <button className="saveNotificationBtn" onClick={handleSendNotification}>Send</button>
 
                         </div>

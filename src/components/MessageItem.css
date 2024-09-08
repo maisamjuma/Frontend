@@ -1,0 +1,68 @@
+/* MessageItem.css */
+.message-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    background-color: #f9f9f9;
+    position: relative; /* Ensure relative positioning for the badge */
+}
+
+.sender-info {
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
+
+.sender-badge {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: darksalmon;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.sender-details {
+    flex: 1;
+}
+
+.sender-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.message-text {
+    font-size: 14px;
+    margin: 0;
+}
+
+.message-recipients {
+    margin-top: 5px;
+    font-size: 14px;
+}
+
+/* New styles for recipient badge in the bottom-right corner */
+.recipient-badge {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: #28a745; /* Change color as needed */
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    position: absolute;
+    bottom: 10px; /* Adjust distance from bottom */
+    right: 10px; /* Adjust distance from right */
+}
