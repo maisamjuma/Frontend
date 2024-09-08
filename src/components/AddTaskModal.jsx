@@ -29,6 +29,8 @@ const AddTaskModal = ({
     const userRoleIsTeamLeader = userIsTeamLeader(); // Check if the user is an admin
     const [storedUser, setStoredUser] = useState(null); // State to store the logged-in user
 
+
+
     // Fetch the logged-in user from localStorage
     useEffect(() => {
         const storedUser = localStorage.getItem('loggedInUser');
@@ -38,34 +40,7 @@ const AddTaskModal = ({
             console.log("User from localStorage:", user);
         }
     }, []);
-    // const [boards, setBoards] = useState([]);
-    //
-    // // Fetch boards when component is visible and projectId changes
-    // useEffect(() => {
-    //     const fetchBoards = async () => {
-    //         try {
-    //             const response = await BoardService.getBoardsByProject(projectId);
-    //             if (response.data && Array.isArray(response.data)) {
-    //                 const boardsWithIds = response.data.map(board => ({
-    //                     boardId: board.boardId,
-    //                     name: board.name
-    //                 }));
-    //                 setBoards(boardsWithIds);
-    //                 console.log('Fetched boards:', boardsWithIds);
-    //             } else {
-    //                 throw new Error('Unexpected response format');
-    //             }
-    //         } catch (error) {
-    //             console.error('Error fetching boards:', error);
-    //         }
-    //     };
-    //
-    //     if (isVisible) {
-    //         fetchBoards();
-    //     }
-    // }, [isVisible, projectId]);
 
-    // Fetch user details and board name
     useEffect(() => {
         const fetchData = async () => {
             if (isVisible && boardId) {
@@ -109,12 +84,23 @@ const AddTaskModal = ({
         fetchData();
     }, [isVisible, boardId, projectMembers, boardName]);
 
+
     // Handle adding task
     const handleAddTask = async () => {
         if (taskName.trim()) {
             try {
-                // Automatically assign task to the logged-in user if they're not admin or team leader
+                // Determine the user to assign the task to
                 const assignedUser = userRoleIsAdmin || userRoleIsTeamLeader ? assignedToUserId : storedUser?.userId;
+                let assignedUserLetter = "";
+                // If the status title is not "unassigned", proceed with assigning a user
+                if (status.title.toLowerCase() !== 'unassigned tasks') {
+                    // If no user is assigned, show an error and prevent task creation
+                    if (!assignedUser) {
+                        alert('Task must be assigned to a user.');
+                        return;
+                    }
+                }
+
 
                 const newTask = {
                     projectId,
@@ -124,19 +110,21 @@ const AddTaskModal = ({
                     status: status.title,
                     priority,
                     dueDate: dueDate.toISOString(),
-                    assignedToUserId: assignedUser || null // Use the assigned user ID
+                    assignedToUserId: assignedUser || null,
+                    // assignedUserLetter:assignedUserLetter// Use the assigned user ID
                 };
                 console.log("Task to sent ",newTask);
                 const response = await TaskService.createTask(newTask);
                 const { taskId } = response.data;
                 console.log("Task added ",response.data);
 
-                onAddTask(taskId, projectId, taskName, taskDescription, boardId, status, priority,dueDate, assignedToUserId);
+                onAddTask(taskId, projectId, taskName, taskDescription, boardId, status, priority,dueDate, assignedToUserId,assignedUserLetter);
                 setTaskName('');
                 setTaskDescription('');
                 setDueDate(new Date());
                 setPriority('medium');
                 setAssignedUserId('');
+                // refreshBoard();
                 onClose();
             } catch (error) {
                 console.error('Error adding task:', error);
