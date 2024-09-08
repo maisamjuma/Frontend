@@ -41,7 +41,7 @@ const Boards = ({
     const [taskId, setTaskId] = useState(null);
     const userRoleIsAdmin = userIsAdmin(); // Check if the user is an admin
     const userRoleIsTeamLeader = userIsTeamLeader(); // Check if the user is an admin
-   // const [changeMemberModalCallback, setChangeMemberModalCallback] = useState(null);
+    // const [changeMemberModalCallback, setChangeMemberModalCallback] = useState(null);
 
     const [refreshKey, setRefreshKey] = useState(0);
     //const [storedUser, setStoredUser] = useState(null); // State to store the logged-in user
@@ -541,10 +541,10 @@ const Boards = ({
                                                     {status.title}
                                                 </span>
                                         {(userRoleIsAdmin || userRoleIsTeamLeader) && (
-                                        <span
-                                            className="backend-status-menu"
-                                            onClick={() => setDropdownStatusId(dropdownStatusId === status.id ? null : status.id)}
-                                        >
+                                            <span
+                                                className="backend-status-menu"
+                                                onClick={() => setDropdownStatusId(dropdownStatusId === status.id ? null : status.id)}
+                                            >
                                                     ...
                                                 </span>
                                         )}

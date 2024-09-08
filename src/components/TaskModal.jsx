@@ -33,7 +33,7 @@ const TaskModal = ({
                        onSavePriority,
                        onSaveLabels,
                        projectId,
-                        boardId,
+                       boardId,
                        projectDescription,
                        projectMembers,
                        setProjectId,
@@ -129,9 +129,9 @@ const TaskModal = ({
                     {/*    <FontAwesomeIcon icon={faTag}/> Edit Labels*/}
                     {/*</button>*/}
 
-                        <button onClick={handleDeleteClick}>
-                            <FontAwesomeIcon icon={faTrash} /> Delete
-                        </button>
+                    <button onClick={handleDeleteClick}>
+                        <FontAwesomeIcon icon={faTrash} /> Delete
+                    </button>
 
                 </div>
                 {/*<div className="task-status">*/}
