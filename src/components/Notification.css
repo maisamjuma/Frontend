@@ -34,8 +34,12 @@
 }
 
 .cancelButton {
-    padding-right: 30px;
-    padding-left: 30px;
+    position: absolute;
+    padding: 5px;
+    background-color: #fff;
+    color: black;
+    right: 20px;
+    top: 20px;
 }
 
 .filterIcon {
@@ -99,9 +103,9 @@
 
 .message-list {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 2px;
     max-height: 800px;
     overflow-y: scroll;
     border: 1px solid #dee2e6;
@@ -124,12 +128,45 @@
     scrollbar-width: none;
 }
 
+.border-1{
+    font-size: 22px;
+    font-weight: bold;
+    margin-left: -220px;
+    margin-top: -30px;
+}
+
+.border-recipient{
+    font-size: 17px;
+    color: blue;
+    margin-left: -200px;
+    margin-top: -25px;
+}
+
+.close-button-on-message{
+    color: black;
+    width: 60px; /* Reduced width */
+    margin-left: 340px; /* Adjust as needed */
+    margin-top: 50px !important; /* Moves the button down */
+    padding: 5px; /* Optional: Adjust padding to fit the new width */
+    font-size: 17px; /* Optional: Adjust font size if needed */
+}
+
+.border-message{
+    border: 4px solid black;
+    border-image: linear-gradient(black, #E9967A) 1;
+    min-height: 180px !important;
+    width: 400px !important;
+    text-align: left;
+    padding-left: 5px;
+    padding-top: 2px;
+}
+
 .message-item {
     background-color: #ffffff;
     border: 1px solid #dee2e6;
     padding: 10px;
     border-radius: 5px;
-    width: 300px;
+    width: 100%;
     cursor: pointer;
     transition: background-color 0.2s ease;
 }
@@ -154,13 +191,17 @@
     background-color: #fff;
     padding: 50px;
     border-radius: 12px;
-    width: 500px !important;
-    height: 330px;
+    min-width: 500px !important;
+    height: 430px;
     overflow-y: auto;
     word-break: break-word;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Modern shadow effect */
     transition: all 0.3s ease-in-out; /* Smooth transition for a modern feel */
     border: 1px solid #f0f0f0; /* Subtle border for definition */
+}
+
+.popup-content::-webkit-scrollbar{
+    display: none;
 }
 
 .popup-content-new-message {
