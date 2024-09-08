@@ -112,10 +112,10 @@
     border-radius: 4px;
     padding: 15px;
     width: 1200px;
-    height: 500px;
+    height: 600px;
     overflow-x: scroll;
     position: absolute;
-    top: 150px;
+    top: 100px;
     right: 50px;
 
 }

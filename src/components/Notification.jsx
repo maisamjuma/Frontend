@@ -161,41 +161,44 @@ const Notification = () => {
 
     return (
         <div>
-            <Navbar />
-            <nav className="secondary-navbarN">
-                <h4>Notifications</h4>
-                <div
-                    className="filterIcon"
-                    onMouseEnter={handleFilterIconMouseEnter}
-                    onMouseLeave={handleFilterIconMouseLeave}
-                >
-                    <Filter />
-                    {filterPopupVisible && (
-                        <div
-                            className="search-popup active"
-                            onMouseLeave={handleFilterIconMouseLeave}
-                        >
-                            <input
-                                type="text"
-                                placeholder="Search by firstName..."
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                            />
-                            <ul className="user-list">
-                                {filteredUsers.map(user => (
-                                    <li
-                                        key={user.userId}
-                                        className="user-item"
-                                        onClick={() => user && user.userId && handleUserFilterClick(user.userId)}
-                                    >
-                                        {user && user.firstName ? user.firstName : 'Unknown User'} {user && user.lastName ? user.lastName : 'Unknown User'}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    )}
-                </div>
-            </nav>
+            {/*<Navbar />*/}
+            {/*<nav className="secondary-navbarN">*/}
+            {/*    <h4>*/}
+            {/*        /!*<i className="fa-solid fa-envelope fa-fw"></i>*!/*/}
+            {/*        DevMail*/}
+            {/*    </h4>*/}
+            {/*    <div*/}
+            {/*        className="filterIcon"*/}
+            {/*        onMouseEnter={handleFilterIconMouseEnter}*/}
+            {/*        onMouseLeave={handleFilterIconMouseLeave}*/}
+            {/*    >*/}
+            {/*        <Filter />*/}
+            {/*        {filterPopupVisible && (*/}
+            {/*            <div*/}
+            {/*                className="search-popup active"*/}
+            {/*                onMouseLeave={handleFilterIconMouseLeave}*/}
+            {/*            >*/}
+            {/*                <input*/}
+            {/*                    type="text"*/}
+            {/*                    placeholder="Search by firstName..."*/}
+            {/*                    value={searchQuery}*/}
+            {/*                    onChange={(e) => setSearchQuery(e.target.value)}*/}
+            {/*                />*/}
+            {/*                <ul className="user-list">*/}
+            {/*                    {filteredUsers.map(user => (*/}
+            {/*                        <li*/}
+            {/*                            key={user.userId}*/}
+            {/*                            className="user-item"*/}
+            {/*                            onClick={() => user && user.userId && handleUserFilterClick(user.userId)}*/}
+            {/*                        >*/}
+            {/*                            {user && user.firstName ? user.firstName : 'Unknown User'} {user && user.lastName ? user.lastName : 'Unknown User'}*/}
+            {/*                        </li>*/}
+            {/*                    ))}*/}
+            {/*                </ul>*/}
+            {/*            </div>*/}
+            {/*        )}*/}
+            {/*    </div>*/}
+            {/*</nav>*/}
             <SideBarForNoti
                 users={users}
                 loggedInUser={loggedInUser}
