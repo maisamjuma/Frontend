@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import './SideBarForNoti.css';
-import { userIsAdmin, userIsTeamLeader } from '../utils/authUtils'; // Import the utility functions
+import {userIsAdmin, userIsTeamLeader} from '../utils/authUtils'; // Import the utility functions
 // import UserService from '../Services/UserService';
 import RoleService from "../Services/RoleService.js"; // Assuming you have a service to fetch roles
 
-const SideBarForNoti = ({ users, loggedInUser, onSendNotification }) => {
+const SideBarForNoti = ({users, loggedInUser, onSendNotification}) => {
     // Check if the logged-in user is an admin or team leader
     const isAdmin = userIsAdmin(loggedInUser);
     const isTeamLeader = userIsTeamLeader(loggedInUser);
@@ -17,7 +17,7 @@ const SideBarForNoti = ({ users, loggedInUser, onSendNotification }) => {
     const fetchRoleName = async (roleId) => {
         try {
             const response = await RoleService.getRoleById(roleId);
-            console.log("response.data.roleName",response.data.roleName)
+            console.log("response.data.roleName", response.data.roleName)
             return response.data.roleName; // Assuming the API returns the roleName field
 
         } catch (error) {
@@ -31,7 +31,7 @@ const SideBarForNoti = ({ users, loggedInUser, onSendNotification }) => {
         const fetchLoggedInUserRole = async () => {
             if (loggedInUser?.functionalRoleId) {
                 const roleName = await fetchRoleName(loggedInUser.functionalRoleId);
-                console.log("loggedInUser",roleName)
+                console.log("loggedInUser", roleName)
                 setLoggedInUserRole(roleName);
             }
         };
@@ -40,9 +40,9 @@ const SideBarForNoti = ({ users, loggedInUser, onSendNotification }) => {
         const fetchAllUserRoles = async () => {
             const roles = {};
             const rolePromises = users.map(async (user) => {
-                console.log("role id",user.functionalRoleId)
+                console.log("role id", user.functionalRoleId)
                 const roleName = await fetchRoleName(user.functionalRoleId);
-                console.log("user",roleName)
+                console.log("user", roleName)
                 roles[user.userId] = roleName; // Store role name with userId as key
             });
 
