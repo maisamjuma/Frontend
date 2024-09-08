@@ -25,6 +25,16 @@ class NotificationService {
         });
     }
 
+
+    // Get Notifications by userId
+    getNotificationsByRecipientId(recipientId) {
+        const token = localStorage.getItem("token");
+        return axios.get(`${NOTIFICATIONS_API_BASE_URL}/recipients/${recipientId}`, {
+            headers: {
+                'X-Auth-Token': token
+            }
+        });
+    }
     // Delete Notification by notificationId
     deleteNotificationById(notificationId) {
         const token = localStorage.getItem("token");
