@@ -136,12 +136,12 @@ const TaskModal = ({
                 </div>
                 {/*<div className="task-status">*/}
                 {/*    Status: {task.status}*/}
-                {/*</div>*/}
-                {task.dueDate && (
-                    <div className="task-date">
-                        {new Date(task.dueDate).toISOString()}
-                    </div>
-                )}
+                {/*/!*</div>*!/*/}
+                {/*{task.dueDate && (*/}
+                {/*    <div className="task-date">*/}
+                {/*        {new Date(task.dueDate).toISOString()}*/}
+                {/*    </div>*/}
+                {/*)}*/}
             </div>
             {/*{isMoveModalOpen && (*/}
             {/*    <MoveModal*/}
