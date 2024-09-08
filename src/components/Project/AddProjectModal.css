@@ -75,22 +75,22 @@
     text-align: center;
 }
 
-.btn-success {
+.btn-success-add-project {
     background-color: #7f8fa6; /* Updated to match theme */
     margin-left: 10px;
 }
 
-.btn-danger {
+.btn-danger-add-project {
     background-color: #dc3545 !important;
     margin-left: 10px;
 }
 
-.btn-success:hover {
+.btn-success-add-project:hover {
     background-color: #7f8fa6 !important; /* Updated to match theme */
     color: white !important; /* Darker shade for hover effect */
 }
 
-.btn-danger:hover {
+.btn-danger-add-project:hover {
     background-color: #dc3545 !important;
     color: white !important;
 }
@@ -100,12 +100,23 @@ button {
     margin-right: 10px;
 }
 
-.form-control-of-description-and-name{
+.form-control-of-name{
     background-color: white !important;
     color: black !important;
 }
 
-.form-control-of-description-and-name::placeholder{
+.form-control-of-description{
+    background-color: white !important;
+    color: black !important;
+    min-height: 150px;
+}
+
+.form-control-of-name::placeholder{
+    color: #DCDDE1 !important;
+    font-size: 16px;
+}
+
+.form-control-of-description::placeholder{
     color: #DCDDE1 !important;
     font-size: 16px;
 }

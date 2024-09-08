@@ -126,7 +126,7 @@ const AddProjectModal = ({isVisible, onClose, onAddProject}) => {
                             <input
                                 placeholder="Project Name"
                                 name="name"
-                                className="form-control-of-description-and-name"
+                                className="form-control-of-name"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                             />
@@ -136,13 +136,13 @@ const AddProjectModal = ({isVisible, onClose, onAddProject}) => {
                             <textarea
                                 placeholder="Project Description"
                                 name="description"
-                                className="form-control-of-description-and-name"
+                                className="form-control-of-description"
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
                             />
                         </div>
-                        <button type="button" className="btn btn-success" onClick={handleAddProject}>Save</button>
-                        <button type="button" className="btn " onClick={onClose}>Cancel</button>
+                        <button type="button" className="btn-success-add-project" onClick={handleAddProject}>Save</button>
+                        <button type="button" className="btn-danger-add-project" onClick={onClose}>Cancel</button>
                     </form>
                 </div>
             </div>

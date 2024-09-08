@@ -130,4 +130,10 @@
 
 .Reset-Email-Btn{
     width: 438px !important;
+    margin-left: 11px !important;
+    background-color: red !important;
+}
+
+.Reset-Email-Btn:hover{
+    color: white !important;
 }

@@ -125,9 +125,9 @@ const TaskModal = ({
                     {/*<button onClick={() => setIsMoveModalOpen(true)}>*/}
                     {/*    <FontAwesomeIcon icon={faArrowsAlt}/> Move*/}
                     {/*</button>*/}
-                    <button onClick={() => setIsLabelModalOpen(true)}>
-                        <FontAwesomeIcon icon={faTag}/> Edit Labels
-                    </button>
+                    {/*<button onClick={() => setIsLabelModalOpen(true)}>*/}
+                    {/*    <FontAwesomeIcon icon={faTag}/> Edit Labels*/}
+                    {/*</button>*/}
 
                         <button onClick={handleDeleteClick}>
                             <FontAwesomeIcon icon={faTrash} /> Delete
@@ -181,14 +181,14 @@ const TaskModal = ({
                     task={{...task}}
                 />
             )}
-            {isLabelModalOpen && (
-                <LabelModal
-                    onClose={() => setIsLabelModalOpen(false)}
-                    labels={labels}
-                    selectedLabels={task.labels || []}
-                    onSave={onSaveLabels}
-                />
-            )}
+            {/*{isLabelModalOpen && (*/}
+            {/*    <LabelModal*/}
+            {/*        onClose={() => setIsLabelModalOpen(false)}*/}
+            {/*        labels={labels}*/}
+            {/*        selectedLabels={task.labels || []}*/}
+            {/*        onSave={onSaveLabels}*/}
+            {/*    />*/}
+            {/*)}*/}
             {isChangeMemberModalOpen && (
                 <ChangeMemberModal
                     onClose={() => setIsChangeMemberModalOpen(false)}
