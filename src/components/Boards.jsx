@@ -44,7 +44,17 @@ const Boards = ({
    // const [changeMemberModalCallback, setChangeMemberModalCallback] = useState(null);
 
     const [refreshKey, setRefreshKey] = useState(0);
+    //const [storedUser, setStoredUser] = useState(null); // State to store the logged-in user
 
+    // // Fetch the logged-in user from localStorage
+    // useEffect(() => {
+    //     const storedUser = localStorage.getItem('loggedInUser');
+    //     if (storedUser) {
+    //         const user = JSON.parse(storedUser);
+    //         setStoredUser(user);
+    //         console.log("User from localStorage:", user);
+    //     }
+    // }, []);
 
 
     const onDragEnd = async (result) => {
@@ -253,6 +263,7 @@ const Boards = ({
     }, [statuses, projectId, boardId, name]);
 
     const handleAddTask = async (statusId, task) => {
+
         console.log(task)
         try {
             // Fetch the user details if the task has an assigned user
@@ -282,6 +293,7 @@ const Boards = ({
             });
 
             setStatuses(updatedStatuses);
+            refreshBoard();
         } catch (error) {
             console.error('Error adding task:', error);
         }
@@ -681,7 +693,7 @@ const Boards = ({
                     <AddTaskModal
                         isVisible={showAddTaskModal}
                         onClose={() => setShowAddTaskModal(false)}
-                        onAddTask={(taskId, projectId, taskName, taskDescription, boardId, status, priority,dueDate, assignedToUserId) => {
+                        onAddTask={(taskId, projectId, taskName, taskDescription, boardId, status, priority,dueDate, assignedToUserId,assignedUserLetter) => {
                             handleAddTask(currentStatusId, {
                                 taskId,
                                 projectId,
@@ -691,7 +703,8 @@ const Boards = ({
                                 status,
                                 priority,
                                 dueDate,
-                                assignedToUserId
+                                assignedToUserId,
+                                assignedUserLetter
                             });
                         }}
                         status={statuses.find(status => status.id === currentStatusId)}
