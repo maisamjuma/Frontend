@@ -261,7 +261,7 @@ const Projects = () => {
                     </button>
                     {CanSeeReport && (
                         <button className="btn-project-details" onClick={navigateToProjectReport}>
-                            project details
+                            Project Details
                         </button>
                     )}
                 </div>
