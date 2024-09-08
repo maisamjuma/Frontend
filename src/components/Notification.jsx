@@ -110,7 +110,7 @@ const Notification = () => {
         return recipientIds.map(userId => {
             const recipient = users.find(user => user.userId === userId);
             if (recipient) {
-                return `${recipient.firstName} ${recipient.lastName}`;
+                return `${recipient.email}`;
             } else {
                 return 'Unknown Recipient';
             }
@@ -223,10 +223,10 @@ const Notification = () => {
 
             {showPopup && selectedMessage && (
                 <div className="popup-overlay">
-                    <div className="popup-content">
+                    <div className="popup-content-in-message">
                         {/*<h4 className="popup-content-head4">Message Details</h4>*/}
-                        <p className="border-1"><strong></strong> {getSenderName(selectedMessage.senderId)}</p>
-                        <p className="border-recipient"><strong>to :</strong> {getRecipientNames(selectedMessage.recipientId)}</p>
+                        <p className="border-sender"><strong></strong> {getSenderName(selectedMessage.senderId)}</p>
+                        <p className="border-recipient"><strong className="to-message">to:</strong> {getRecipientNames(selectedMessage.recipientId)}</p>
                         <p className="border-message"><strong></strong> {selectedMessage.message}</p>
                         <button className="close-button-on-message" onClick={() => setShowPopup(false)}>Close</button>
                     </div>
@@ -274,6 +274,7 @@ Notification.propTypes = {
         userId: PropTypes.string.isRequired,
         firstName: PropTypes.string.isRequired,
         lastName: PropTypes.string.isRequired,
+        email: PropTypes.string.isRequired,  // Adding email prop
     })).isRequired,
     loggedInUser: PropTypes.shape({
         userId: PropTypes.string.isRequired
