@@ -183,7 +183,7 @@ const ProjectReport = () => {
                                             })
                                         ) : (
                                             <tr key={`no-tasks-${board.boardId}`}>
-                                                <td colSpan="10">No tasks for board {board.name}</td>
+                                                <td colSpan="10">No tasks for {board.name}</td>
                                             </tr>
                                         )}
                                     </React.Fragment>
