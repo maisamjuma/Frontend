@@ -26,11 +26,13 @@ const MessageItem = ({ message, users, onClick, getRecipientNames }) => {
                     <p className="sender-name">{fromName}</p>
                     <p className="message-text">{message.message}</p>
                 </div>
-                <div className="recipient-badge">
-                    {recipientInitials}
+                <div className="recipient-info">
+                    <div className="recipient-badge">
+                        {recipientInitials || 'No Recipients'}
+                    </div>
+
                 </div>
             </div>
-
         </div>
     );
 };
@@ -39,7 +41,7 @@ MessageItem.propTypes = {
     message: PropTypes.shape({
         senderId: PropTypes.string.isRequired,
         recipientId: PropTypes.arrayOf(PropTypes.string).isRequired,
-        message: PropTypes.string.isRequired, // Ensure message is included
+        message: PropTypes.string.isRequired,
     }).isRequired,
     users: PropTypes.arrayOf(PropTypes.shape({
         userId: PropTypes.string.isRequired,

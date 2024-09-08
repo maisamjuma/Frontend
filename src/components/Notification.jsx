@@ -76,37 +76,30 @@ const Notification = () => {
                 const promises = selectedUsers.map(async (selectedUser) => {
                     const newNotification = {
                         message: message,
-                        recipientId: selectedUser, // Send the notification to each recipient one by one
+                        recipientId: selectedUser,
                         senderId: loggedInUser.userId,
                         isRead: true
                     };
                     console.log("Sending notification:", newNotification);
-
-                    // Make the backend request for each user
                     const response = await NotificationService.createNotification(newNotification);
+                    console.log("Sending notification:", newNotification);
 
                     if (response.status === 200 || response.status === 201) {
-                        return {
-                            ...response.data,  // Returned data from backend
-                            recipientId: selectedUser  // Ensure the correct recipient is displayed
-                        };
+                        return response.data;
                     } else {
                         console.error('Unexpected response status:', response.status);
                         return null;
                     }
+
                 });
 
-                // Wait for all the notifications to be created
                 const notifications = await Promise.all(promises);
-
-                // Filter out any failed notifications
                 const successfulNotifications = notifications.filter(n => n !== null);
 
-                // Add these new notifications to the messages array in state
                 if (successfulNotifications.length) {
-                    setMessages(prevMessages => [...successfulNotifications, ...prevMessages]);
-                    setShowNewMassagePopup(false); // Close the popup after sending
-                    resetForm(); // Reset the form after sending the notifications
+                    setMessages([...successfulNotifications, ...messages]);
+                    setShowNewMassagePopup(false);
+                    resetForm();
                 }
             } catch (error) {
                 console.error('Error sending notification:', error.response?.data || error.message);
@@ -115,7 +108,6 @@ const Notification = () => {
             console.warn('No users selected or message is empty or loggedInUser is not defined');
         }
     };
-
 
     const getRecipientNames = (recipientIds) => {
         // Ensure recipientIds is an array
