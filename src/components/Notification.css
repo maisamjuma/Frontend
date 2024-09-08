@@ -1,6 +1,4 @@
-.d-flex {
-    display: flex;
-}
+
 
 .sidebar {
     width: 220px;
@@ -15,16 +13,6 @@
     overflow-y: auto;
 }
 
-.main-contentN {
-    padding: 30px;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    overflow: auto;
-    flex-grow: 1;
-    width: calc(100% - 270px);
-    margin-left: 270px;
-    margin-bottom: 330px;
-}
 
 .secondary-navbarN {
     position: fixed;
@@ -34,7 +22,7 @@
     z-index: 999;
     background-color: #e9ecef;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 10px;
+    padding: 6px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -99,6 +87,7 @@
     margin-bottom: 10px;
     cursor: pointer;
     display: flex;
+    flex-direction: column-reverse;
     align-items: center;
     gap: 15px;
     transition: background-color 0.3s ease;
@@ -110,11 +99,21 @@
 
 .message-list {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     flex-wrap: wrap;
     gap: 10px;
     max-height: 700px;
     overflow-y: scroll;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 15px;
+    width: 1090px;
+    height: 500px;
+    overflow-x: scroll;
+    position: absolute;
+    top: 150px;
+    right: 190px;
+
 }
 
 .message-list::-webkit-scrollbar {
@@ -152,14 +151,59 @@
 }
 
 .popup-content {
-    background: white;
-    padding: 17px;
-    border-radius: 8px;
-    width: 700px;
-    max-height: 500px;
+    background-color: #fff;
+    padding: 50px;
+    border-radius: 12px;
+    width: 500px !important;
+    height: 330px;
     overflow-y: auto;
     word-break: break-word;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Modern shadow effect */
+    transition: all 0.3s ease-in-out; /* Smooth transition for a modern feel */
+    border: 1px solid #f0f0f0; /* Subtle border for definition */
 }
+
+.popup-content-new-message {
+    position: relative;
+    top:20px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    width: 600px ;
+    height: 580px;
+    overflow-y: auto;
+    word-break: break-word;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Modern shadow effect */
+    transition: all 0.3s ease-in-out; /* Smooth transition for a modern feel */
+    border: 1px solid #f0f0f0; /* Subtle border for definition */
+}
+
+.popup-content-head4{
+    padding-bottom: 15px;
+}
+
+/* Add a hover effect for interactive feel */
+.popup-content:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px); /* Slight lift on hover */
+}
+
+/* Ensure scrollbars are modern and styled nicely */
+.popup-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.popup-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 12px;
+}
+
+.popup-content::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 12px;
+    border: 2px solid transparent;
+}
+
 
 .user-selection {
     background-color: #e9ecef;
@@ -197,4 +241,8 @@
 
 .user-list {
     scrollbar-width: none;
+}
+.messageTA{
+    background-color: #e0e0e0;
+    height: 150px;
 }

@@ -39,6 +39,8 @@ const Boards = ({
     const [comingFromChangeMember, setComingFromChangeMember] = useState(false);
     const [selectedMember, setSelectedMember] = useState('');
     const [taskId, setTaskId] = useState(null);
+    const userRoleIsAdmin = userIsAdmin(); // Check if the user is an admin
+    const userRoleIsTeamLeader = userIsTeamLeader(); // Check if the user is an admin
    // const [changeMemberModalCallback, setChangeMemberModalCallback] = useState(null);
 
     const [refreshKey, setRefreshKey] = useState(0);
@@ -526,12 +528,14 @@ const Boards = ({
                                                 <span className="backend-status-title">
                                                     {status.title}
                                                 </span>
+                                        {(userRoleIsAdmin || userRoleIsTeamLeader) && (
                                         <span
                                             className="backend-status-menu"
                                             onClick={() => setDropdownStatusId(dropdownStatusId === status.id ? null : status.id)}
                                         >
                                                     ...
                                                 </span>
+                                        )}
                                         {dropdownStatusId === status.id && (
                                             <div className="backend-dropdown-menu">
                                                 <div

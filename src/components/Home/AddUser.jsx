@@ -267,6 +267,7 @@ const AddUser = () => {
                         <div className=" mb-2">
                             <div className="checkbox-container">
                                 <input
+                                    className="form-check-input"
                                     type="checkbox"
                                     name="isTeamLeader"
                                     checked={isTeamLeader}
@@ -279,6 +280,7 @@ const AddUser = () => {
                         <div className=" mb-2">
                             <div className="checkbox-container">
                                 <input
+                                    className="form-check-input"
                                     type="checkbox"
                                     name="isAdmin"
                                     checked={isAdmin}

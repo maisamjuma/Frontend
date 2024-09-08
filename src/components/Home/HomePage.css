@@ -147,6 +147,10 @@
     color: black;
 }
 .defualOption {
-    background-color: darksalmon;
+    font-weight: bold;
+    color: darksalmon;
 }
-
+.form-check-label{
+    font-weight: bold;
+    color: #333333;
+}

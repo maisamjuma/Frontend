@@ -10,6 +10,7 @@ import ProjectMemberService from '../Services/ProjectMemberService';
 import UserService from '../Services/UserService.js';
 import {userIsAdmin, userIsTeamLeader} from '../utils/authUtils';
 import BoardService from "../Services/BoardService.js";
+import RoleService from "../Services/RoleService.js";
 //import PropTypes from "prop-types"; // Import the utility function
 
 
@@ -32,13 +33,20 @@ const Projects = () => {
     const userRoleIsTeamLeader = userIsTeamLeader(); // Check if the user is an admin
     const containerRef = useRef(null);
     const [boards, setBoards] = useState([]); // For storing boards data
-    // useEffect(() => {
-    //     const isAuthenticated = true; // Replace with actual auth check
-    //     if (!isAuthenticated) {
-    //         navigate('/login');
-    //     }
-    // }, [navigate]);
-    //
+    const [userRole, setUserRole] = useState(''); // For storing user role
+    const [storedUser, setStoredUser] = useState(null); // State to store the logged-in user
+
+    // Fetch the logged-in user from localStorage
+    useEffect(() => {
+        const storedUser = localStorage.getItem('loggedInUser');
+        if (storedUser) {
+            const user = JSON.parse(storedUser);
+            setStoredUser(user);
+            console.log("User from localStorage:", user);
+        }
+    }, []);
+
+
     const handleLogout = () => {
         localStorage.removeItem('authToken');
         sessionStorage.removeItem('authToken');
@@ -95,6 +103,21 @@ const Projects = () => {
         }
     }, [projectMembers]);
 
+    useEffect(() => {
+        const fetchUserRole = async () => {
+            try {
+                if (storedUser) {
+                    const response = await RoleService.getRoleById(storedUser.functionalRoleId);
+                    setUserRole(response.data.roleName); // Assuming roleName is the field for role
+                }
+            } catch (error) {
+                console.error('Error fetching user role:', error);
+            }
+        };
+
+        fetchUserRole();
+    }, [storedUser]);
+
     const handleDeleteMode = () => {
         setIsDeleting(true);
         setShowDeletePopup(true);
@@ -147,16 +170,29 @@ const Projects = () => {
 
     const handleDeleteImageClick = () => setImage(defaultProjectIcon);
 
-    const navigateToWorkspace = () => {
-        navigate(`/main/workspace/${projectName}`, {
-            state: {projectDescription, projectId, projectMembers},
-        });
+    // Navigate to workspace with default board if applicable
+    const navigateToWorkspace = async () => {
+        console.log("boards",boards)
+        const defaultBoard = boards.find(board => board.name === userRole);
+        console.log("default",defaultBoard)
+        if (defaultBoard) {
+            navigate(`/main/workspace/${projectName}`, {
+                state: { projectDescription, projectId, projectMembers,defaultBoard },
+            });
+        } else {
+            navigate(`/main/workspace/${projectName}`, {
+                state: { projectDescription, projectId, projectMembers },
+            });
+        }
     };
+
+
     const navigateToProjectReport = () => {
         navigate(`/main/ProjectReport/${projectId}`, {
-            state: {projectDescription, projectId, projectMembers,projectName},
+            state: {projectDescription, projectId, projectMembers, projectName},
         });
     };
+
     const CanSeeReport = userIsAdmin() || userIsTeamLeader();
 
     return (
@@ -224,9 +260,9 @@ const Projects = () => {
                         Go to Workspace
                     </button>
                     {CanSeeReport && (
-                    <button className="btn-project-details" onClick={navigateToProjectReport}>
-                        project details
-                    </button>
+                        <button className="btn-project-details" onClick={navigateToProjectReport}>
+                            project details
+                        </button>
                     )}
                 </div>
 

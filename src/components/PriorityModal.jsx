@@ -11,7 +11,24 @@ const PriorityModal = ({onClose, task, onSave}) => {
         setSelectedPriority(priority);
     };
 
+   // Get the logged-in user from localStorage
+    const storedUser = localStorage.getItem('loggedInUser');
+    if (storedUser) {
+        const user = JSON.parse(storedUser);
+        console.log("user from the localStorage: ", user);
+    }
+    const loggedInUser = storedUser ? JSON.parse(storedUser) : null;
+
+    // Check if the logged-in user is assigned to the task
+    const isAssignedToTask = loggedInUser && loggedInUser.userId === task.assignedToUserId;
+
+
     const handleSaveClick = async () => {
+        if (!isAssignedToTask) {
+            // If the user is not assigned to the task, show an alert and do not proceed
+            alert('You are not assigned to this task and cannot change the priority.');
+            return; // Prevent the deletion process
+        }
         console.log("selected : ", selectedPriority)
         try {
             // Create the updated task object with the new priority
@@ -78,6 +95,7 @@ PriorityModal.propTypes = {
         priority: PropTypes.string.isRequired,
         dueDate: PropTypes.instanceOf(Date),
         taskDescription: PropTypes.string.isRequired,
+        assignedToUserId: PropTypes.string, // Added if you are using memberId
     }),
 };
 
