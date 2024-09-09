@@ -168,7 +168,7 @@ const HomePage = () => {
                     )}
 
 
-                    {(userRoleIsAdmin || userRoleIsTeamLeader) && (
+                    {userRoleIsAdmin && (
                         <div className="rolecontent" ref={roleContentRef}>
                             <h3>Add New Role</h3>
                             <input
