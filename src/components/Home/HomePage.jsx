@@ -119,7 +119,7 @@ const HomePage = () => {
                 <div className="manage-homePage">
                     {userRoleIsAdmin && (
                         <div className='Assigncontent'>
-                            <h3>Assign A Team Leader</h3>
+                            <h3>Assign Team Leaders</h3>
                             <select
                                 value={selectedRole}
                                 onChange={handleRoleChange}

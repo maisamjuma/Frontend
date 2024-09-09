@@ -101,6 +101,9 @@ const AddTaskModal = ({
                     }
                 }
 
+                // Add one day to the dueDate
+                const updatedDueDate = new Date(dueDate);
+                updatedDueDate.setDate(updatedDueDate.getDate() + 1);
 
                 const newTask = {
                     projectId,
@@ -109,16 +112,17 @@ const AddTaskModal = ({
                     taskDescription,
                     status: status.title,
                     priority,
-                    dueDate: dueDate.toISOString(),
+                    dueDate: updatedDueDate.toISOString(),
                     assignedToUserId: assignedUser || null,
                     // assignedUserLetter:assignedUserLetter// Use the assigned user ID
                 };
+                console.log('the Date is : ', dueDate.toDateString());
                 console.log("Task to sent ",newTask);
                 const response = await TaskService.createTask(newTask);
                 const { taskId } = response.data;
                 console.log("Task added ",response.data);
 
-                onAddTask(taskId, projectId, taskName, taskDescription, boardId, status, priority,dueDate, assignedToUserId,assignedUserLetter);
+                onAddTask(taskId, projectId, taskName, taskDescription, boardId, status, priority,updatedDueDate, assignedToUserId,assignedUserLetter);
                 setTaskName('');
                 setTaskDescription('');
                 setDueDate(new Date());

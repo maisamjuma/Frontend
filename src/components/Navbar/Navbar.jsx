@@ -1,11 +1,10 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
-import { Link, useNavigate } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import './navbar.css';
-
-const Navbar = ({ onLogout }) => {
+const Navbar = ({onLogout}) => {
     const navigate = useNavigate();
 
     const handleDevTrackClick = (e) => {
@@ -33,7 +32,10 @@ const Navbar = ({ onLogout }) => {
                             <Link className="nav-link active" aria-current="page" to="/">Home</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link" to="/main/notifications">Notifications</Link>
+                            <Link className="nav-link" to="/main/notifications">
+                                <i className="fa-solid fa-envelope fa-fw"></i>
+                                DevMail
+                            </Link>
                         </li>
                     </ul>
                     <ul className="navbar-nav ms-auto">

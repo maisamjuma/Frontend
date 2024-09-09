@@ -14,6 +14,7 @@ import BoardService from "../Services/BoardService.js";
 import { userIsAdmin, userIsTeamLeader } from '../utils/authUtils'; // Import the utility functions
 import AssignUserModal from './AssignUser';
 import Navbar from "./Navbar/Navbar.jsx";
+import RoleService from "../Services/RoleService.js"; // Import the utility functions
 
 const Boards = ({
                     board,
@@ -49,21 +50,22 @@ const Boards = ({
     const userRoleIsAdmin = userIsAdmin(); // Check if the user is an admin
     const userRoleIsTeamLeader = userIsTeamLeader(); // Check if the user is an admin
     // const [changeMemberModalCallback, setChangeMemberModalCallback] = useState(null);
+    const [storedUser, setStoredUser] = useState(null); // State to store the logged-in user
 
     const [refreshKey, setRefreshKey] = useState(0);
     //const [storedUser, setStoredUser] = useState(null); // State to store the logged-in user
     // const [selectedTaskForViewing, setSelectedTaskForViewing] = useState(null);
     const [selectedTaskForAssigning, setSelectedTaskForAssigning] = useState(null);
 
-    // // Fetch the logged-in user from localStorage
-    // useEffect(() => {
-    //     const storedUser = localStorage.getItem('loggedInUser');
-    //     if (storedUser) {
-    //         const user = JSON.parse(storedUser);
-    //         setStoredUser(user);
-    //         console.log("User from localStorage:", user);
-    //     }
-    // }, []);
+    // Fetch the logged-in user from localStorage
+    useEffect(() => {
+        const storedUser = localStorage.getItem('loggedInUser');
+        if (storedUser) {
+            const user = JSON.parse(storedUser);
+            setStoredUser(user);
+            console.log("User from localStorage:", user);
+        }
+    }, []);
 
 
     const onDragEnd = async (result) => {
@@ -146,6 +148,20 @@ const Boards = ({
             alert("You can only move the Task from Unassigned to ToDo.");
             return;
         }
+        // Fetch the role name of the logged-in user
+        let roleName = '';
+        try {
+            const roleResponse = await RoleService.getRoleById(storedUser.functionalRoleId);
+            roleName = roleResponse.data.roleName;
+        } catch (error) {
+            console.error(`Error fetching role for roleId: ${storedUser.functionalRoleId}`, error);
+        }
+
+        // Check if roleName matches the board name
+        if (board.name !== roleName) {
+            alert("You are not authorized to move tasks to this board.");
+            return;
+        }
 
         const updatedStatuses = statuses.map(status => {
             if (status.id === sourceStatusId) {
@@ -165,7 +181,14 @@ const Boards = ({
         // Update task status in the database
         try {
             const statusTitle = destinationStatus.title; // Get status title
-            await TaskService.updateTask(task.taskId, {...task, status: statusTitle});
+            console.log("statusTitle",statusTitle)
+            console.log("destinationStatusId",destinationStatusId)
+            await TaskService.updateTask(task.taskId, {...task,
+                status: statusTitle,
+                assignedToUserId: (destinationStatusId === 5 || destinationStatusId === 7)  ? storedUser.userId : task.assignedToUserId, // Update member only if moving to "Reviewing"
+
+            });
+            refreshBoard();
         } catch (error) {
             console.error('Error updating task status:', error);
             alert('There was an error updating the task status. Please try again.');

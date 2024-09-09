@@ -20,6 +20,7 @@ const Workspace = ({ isVisible , onLogout}) => {
     const [isboardsDropdownOpen, setIsboardsDropdownOpen] = useState(false);
     const [showMore, setShowMore] = useState(false);
     const [dropdownBoards, setDropdownBoards] = useState([]);
+    const [refreshKey, setRefreshKey] = useState(0);
 
     const secondaryNavRef = useRef(null);
     const dropdownRef = useRef(null);
@@ -54,7 +55,7 @@ const Workspace = ({ isVisible , onLogout}) => {
                 });
             }
         }
-    }, [location.state, navigate]);
+    }, [location.state, navigate,refreshKey]);
 
     useEffect(() => {
         fetchRoles();
@@ -97,7 +98,10 @@ const Workspace = ({ isVisible , onLogout}) => {
             console.error('Error fetching roles:', error);
         }
     };
-
+// Call this function when moving a task
+    const refreshBoard = () => {
+        setRefreshKey(prev => prev + 1); // Increment to trigger useEffect
+    };
     const fetchBoards = async () => {
         try {
             const response = await BoardService.getBoardsByProject(projectId);
@@ -167,6 +171,7 @@ const Workspace = ({ isVisible , onLogout}) => {
 
             setSelected_roleId(null);
             setIsDropdownOpen(false);
+            refreshBoard();
         } catch (error) {
             console.error('Error creating board:', error);
         }

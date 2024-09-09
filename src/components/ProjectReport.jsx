@@ -120,7 +120,7 @@ const ProjectReport = () => {
                     <table className="report-table">
                         <thead>
                         <tr>
-                            <th>Board ID</th>
+                            {/*<th>Board ID</th>*/}
                             <th>Board Name</th>
                             <th>Status</th>
                             <th>Task Name</th>
@@ -146,9 +146,9 @@ const ProjectReport = () => {
                                                     : 'Unassigned'; // Fallback for missing user data
                                                 return (
                                                     <tr key={task.taskId}>
-                                                        <td className="limited-text">
-                                                            <span>{board.boardId}</span>
-                                                        </td>
+                                                        {/*<td className="limited-text">*/}
+                                                        {/*    <span>{board.boardId}</span>*/}
+                                                        {/*</td>*/}
                                                         <td className="limited-text">
                                                             <span>{board.name}</span>
                                                         </td>
@@ -183,7 +183,7 @@ const ProjectReport = () => {
                                             })
                                         ) : (
                                             <tr key={`no-tasks-${board.boardId}`}>
-                                                <td colSpan="10">No tasks for board {board.name}</td>
+                                                <td colSpan="9">No tasks for {board.name}</td>
                                             </tr>
                                         )}
                                     </React.Fragment>
@@ -191,7 +191,7 @@ const ProjectReport = () => {
                             })
                         ) : (
                             <tr>
-                                <td colSpan="10">No boards available</td>
+                                <td colSpan="9">No boards available</td>
                             </tr>
                         )}
                         </tbody>
