@@ -1,0 +1,84 @@
+/* AssignUserModal.css */
+
+.assign-user-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000; /* Ensures the modal is on top */
+}
+
+.assign-user-modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 80%;
+    max-width: 500px;
+    position: relative;
+}
+
+.assign-user-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.assign-user-modal-close-button {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.assign-user-modal-search-input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.assign-user-modal-member-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.assign-user-modal-member-list-item {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.assign-user-modal-member-list-item.selected-member {
+    background-color: #e0e0e0;
+}
+
+.assign-user-modal-member-initial-circle {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #007bff;
+    color: #fff;
+    text-align: center;
+    line-height: 30px;
+    margin-right: 10px;
+}
+
+.assign-user-modal-save-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.assign-user-modal-save-button:hover {
+    background-color: #0056b3;
+}

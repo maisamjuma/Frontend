@@ -8,7 +8,7 @@ import RoleService from '../Services/RoleService';
 import BoardService from '../Services/BoardService';
 import { userIsAdmin, userIsTeamLeader } from '../utils/authUtils'; // Import the utility functions
 
-const Workspace = ({ isVisible }) => {
+const Workspace = ({ isVisible , onLogout}) => {
     const [roles, setRoles] = useState([]);
     const [selected_roleId, setSelected_roleId] = useState(null);
     const [projectId, setProjectId] = useState(null);
@@ -188,7 +188,10 @@ const Workspace = ({ isVisible }) => {
 
     return (
         <div className="layout">
-            <Navbar onLogout={() => {}} />
+            {/*<Navbar onLogout={() => {}} />*/}
+            <div className="navbar">
+                <Navbar onLogout={onLogout}/> {/* Pass onLogout to Navbar */}
+            </div>
             <nav className="secondary-navbar">
                 <ul className="secondary-nav" ref={secondaryNavRef}>
                     {boards.slice(0, 5).map((board) => (
@@ -277,6 +280,7 @@ const Workspace = ({ isVisible }) => {
                                 setProjectDescription={setProjectDescription}
                                 setProjectMembers={setProjectMembers}
                                 board={selectedBoard}
+                                onLogout={onLogout}
                             />
                         }
                     />
@@ -287,7 +291,8 @@ const Workspace = ({ isVisible }) => {
 };
 
 Workspace.propTypes = {
-    isVisible: PropTypes.bool.isRequired
+    isVisible: PropTypes.bool.isRequired,
+    onLogout: PropTypes.func.isRequired,  // Add prop type for onLogout
 };
 
 export default Workspace;

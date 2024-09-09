@@ -7,11 +7,13 @@ import AddTaskModal from "./AddTaskModal";
 import CalendarModal from "./CalendarModal/CalendarModal.jsx";
 import {DragDropContext, Draggable, Droppable} from 'react-beautiful-dnd';
 import PropTypes from "prop-types";
-import ChangeMemberModal from "./ChangeMemberModal.jsx";
+// import ChangeMemberModal from "./ChangeMemberModal.jsx";
 import TaskService from "../Services/TaskService.js";
 import UserService from "../Services/UserService.js";
 import BoardService from "../Services/BoardService.js";
 import { userIsAdmin, userIsTeamLeader } from '../utils/authUtils'; // Import the utility functions
+import AssignUserModal from './AssignUser';
+import Navbar from "./Navbar/Navbar.jsx";
 
 const Boards = ({
                     board,
@@ -20,16 +22,21 @@ const Boards = ({
                     projectMembers,
                     setProjectId,
                     setProjectDescription,
-                    setProjectMembers
+                    setProjectMembers,
+                    onLogout
                 }) => {
 
     const boardId = board?.boardId || 'No ID';
     const name = board?.name || 'No Name';
+    const [isAssignUserOpen, setIsAssignUserOpen] = useState(false); // Modal open state
 
     const [statuses, setStatuses] = useState([]);
     const [currentStatusId, setCurrentStatusId] = useState(null);
     const [editingTaskId, setEditingTaskId] = useState(null);
     const [selectedTask, setSelectedTask] = useState(null);
+    const [taskToAssignUser, setTaskToAssignUser] = useState(null);
+    // const [taskId, setTaskId] = useState(null);
+
     const [dropdownStatusId, setDropdownStatusId] = useState(null);
     const [highlightedTaskId, setHighlightedTaskId] = useState(null);
     const [showPriorityModal, setShowPriorityModal] = useState(false);
@@ -45,6 +52,8 @@ const Boards = ({
 
     const [refreshKey, setRefreshKey] = useState(0);
     //const [storedUser, setStoredUser] = useState(null); // State to store the logged-in user
+    // const [selectedTaskForViewing, setSelectedTaskForViewing] = useState(null);
+    const [selectedTaskForAssigning, setSelectedTaskForAssigning] = useState(null);
 
     // // Fetch the logged-in user from localStorage
     // useEffect(() => {
@@ -115,10 +124,21 @@ const Boards = ({
             alert("You cannot move tasks from a higher status back to the unassigned tasks.");
             return;
         }
+        // console.log("destinationStatusId", destinationStatusId);
+        // console.log("sourceStatusId", sourceStatusId);
+
         if (destinationStatusId === 2 && sourceStatusId === 1) {
-            console.log("task selected:",task)
-            setShowChangeMemberModal(true);
-            setSelectedTask(task); // Set selected task for the modal
+
+
+            // console.log("task selected from onDragEnd:",task)
+            // setShowChangeMemberModal(true);
+            const task = sourceStatus.tasks.find(task => task.taskId === draggableTaskId);
+            console.log("task selected from onDragEnd:",task)
+            setSelectedTaskForAssigning(task);
+            // setTaskToAssignUser(task);
+            // setSelectedTask(task); // Set selected task for the modal
+            // console.log("setSelectedTask(taskToAssignUser)",taskToAssignUser)
+            openAssignUserModal()
             // return;
         }
 
@@ -262,6 +282,35 @@ const Boards = ({
         }
     }, [statuses, projectId, boardId, name]);
 
+    ////////////////////===================================================///////////////////
+    // Function to open the modal
+    const openAssignUserModal = () => {
+        // console.log("task id:", task.taskId);
+        // console.log("task name:", task.taskName);
+
+        // Assuming `taskId` is now just a direct ID rather than needing to be split
+        // const statusId = parseInt(task.taskId, 10); // Use taskId directly
+        // console.log('statusId:', statusId);
+        // const status = statuses.find(status => status.id === statusId);
+        // setSelectedTask({
+        //     ...task, statusName: status ? status.title : 'Unknown Status'
+        // });
+        //
+        // setHighlightedTaskId(task.taskId); // Use taskId directly
+        // handleCloseModal();
+        // console.log("(selectedTask) before:",selectedTask)
+        console.log("(taskToAssignUser) after:",taskToAssignUser)
+        // setSelectedTask(null);
+        setIsAssignUserOpen(true);
+        console.log("(taskToAssignUser) after:",taskToAssignUser)
+    };
+
+    // Function to close the modal
+    const closeAssignUserModal = () => {
+        setSelectedTaskForAssigning(null);
+        setIsAssignUserOpen(false);
+        refreshBoard();
+    };
     const handleAddTask = async (statusId, task) => {
 
         console.log(task)
@@ -517,7 +566,37 @@ const Boards = ({
     };
 
 
+    // const onSaveAssignUser = (assignedUserId, assignedUserName) => {
+    //     // Update the statuses to reflect the newly assigned user
+    //     // setStatuses((prevStatuses) => {
+    //     //     return prevStatuses.map((status) => {
+    //     //         return {
+    //     //             ...status,
+    //     //             tasks: status.tasks.map((task) => {
+    //     //                 if (task.taskId === selectedTask.taskId) {
+    //     //                     return {
+    //     //                         ...task,
+    //     //                         assignedToUserId: assignedUserId,
+    //     //                         assignedUserLetter: assignedUserName.charAt(0).toUpperCase() // Set the user letter
+    //     //                     };
+    //     //                 }
+    //     //                 return task;
+    //     //             })
+    //     //         };
+    //     //     });
+    //     // });
+    //
+    //     refreshBoard();
+    //     // Close the AssignUserModal
+    //     // closeAssignUserModal();
+    //     // console.log(`User with ID: ${assignedUserId} and name: ${assignedUserName} assigned to task ${selectedTask.taskId}`);
+    // };
+
+
     return (<DragDropContext onDragEnd={onDragEnd}>
+            <div className="navbar">
+                <Navbar onLogout={onLogout}/> {/* Pass onLogout to Navbar */}
+            </div>
             <div className="boardAllStatuses">
                 <div>
                     <h1>{board.name}</h1>
@@ -658,6 +737,29 @@ const Boards = ({
                         {provided.placeholder}
                     </div>)}
                 </Droppable>
+
+                {selectedTaskForAssigning &&
+                    (<AssignUserModal
+                            boardId={boardId}
+                            // boardName={boardName}
+                            onClose={closeAssignUserModal}
+                            taskId={selectedTaskForAssigning.taskId}  // Passing the selected task
+                            projectMembers={projectMembers}  // Passing the list of project members
+                            // onSave={handleChangeMember}
+                            // onSave={onSaveAssignUser}  // Pass this method as a prop to the modal
+
+
+                            // isVisible={isAssignUserOpen }
+                            // onClose={() => setShowChangeMemberModal(false)}
+                            // projectId={projectId}
+                            // projectDescription={projectDescription}
+                            // setProjectId={setProjectId}
+                            // setProjectDescription={setProjectDescription}
+                            // setProjectMembers={setProjectMembers}
+                        />
+
+                    )}
+
                 {selectedTask && (<TaskModal
                     selectedMember={selectedMember}
                     onDelete={handleDeleteTask}
@@ -693,7 +795,7 @@ const Boards = ({
                     <AddTaskModal
                         isVisible={showAddTaskModal}
                         onClose={() => setShowAddTaskModal(false)}
-                        onAddTask={(taskId, projectId, taskName, taskDescription, boardId, status, priority,dueDate, assignedToUserId,assignedUserLetter) => {
+                        onAddTask={(taskId, projectId, taskName, taskDescription, boardId, status, priority, dueDate, assignedToUserId, assignedUserLetter) => {
                             handleAddTask(currentStatusId, {
                                 taskId,
                                 projectId,
@@ -711,20 +813,6 @@ const Boards = ({
                         projectId={projectId}
                         projectMembers={projectMembers}
                         boardId={boardId}
-                    />
-
-                )}
-                {showChangeMemberModal && (<ChangeMemberModal
-                        isVisible={showChangeMemberModal}
-                        onClose={() => setShowChangeMemberModal(false)}
-                        onSave={handleChangeMember}
-                        projectId={projectId}
-                        boardId={boardId}
-                        projectDescription={projectDescription}
-                        projectMembers={projectMembers} // Add this line
-                        setProjectId={setProjectId}
-                        setProjectDescription={setProjectDescription}
-                        setProjectMembers={setProjectMembers}
                     />
 
                 )}
@@ -751,6 +839,7 @@ Boards.propTypes = {
     board: PropTypes.shape({
         boardId: PropTypes.number.isRequired, name: PropTypes.string.isRequired
     }).isRequired, // Ensure board prop is defined and required
+    onLogout: PropTypes.func.isRequired
 };
 
 export default Boards;

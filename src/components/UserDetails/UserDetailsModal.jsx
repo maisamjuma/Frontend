@@ -4,7 +4,8 @@ import './UserDetailsModal.css'; // Define styles for the modal
 import { Button, Form, Spinner } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignOutAlt, faKey } from '@fortawesome/free-solid-svg-icons';
-import AuthService from '../../Services/authService.js'; // Import the updated AuthService
+import AuthService from '../../Services/authService.js';
+import RoleService from "../../Services/RoleService.js"; // Import the updated AuthService
 
 const UserDetailsModal = ({ isVisible, onClose, userDetails, onLogout }) => {
     const [roleName, setRoleName] = useState('Loading role...'); // State to store the role name
@@ -26,20 +27,29 @@ const UserDetailsModal = ({ isVisible, onClose, userDetails, onLogout }) => {
     }, []); // Runs once on component mount
 
     useEffect(() => {
+        const fetchRoleName = async () => {
+            try {
+                // Assuming `userDetails` contains the user information
+                const funcRoleId = userDetails.functionalRoleId;
+
+                // Fetch the role name using the `getRoleById` function
+                const roleResponse = await RoleService.getRoleById(funcRoleId);
+                const roleName = roleResponse.data.roleName; // Assuming the response contains a roleName field
+
+                // Set the role name state
+                setRoleName(roleName);
+            } catch (error) {
+                console.error(`Error fetching role for roleId: ${userDetails.functionalRoleId}`, error);
+                setRoleName('Unknown Role');
+            }
+        };
+
         if (userDetails) {
-            // Fetch the role name using the role ID
-            const fetchRoleName = async () => {
-                try {
-                    // Replace this with your actual role fetching logic
-                    setRoleName('Role name from your logic'); // Mocked for demo purposes
-                } catch (error) {
-                    console.error(`Error fetching role for roleId: ${userDetails.functionalRoleId}`, error);
-                    setRoleName('Unknown Role');
-                }
-            };
             fetchRoleName();
         }
     }, [userDetails]);
+
+
 
     useEffect(() => {
         const handleClickOutside = (event) => {
